@@ -1,1 +1,1 @@
-# composition
+# composition <a href='https://github.com/padhi-homelab/composition/actions?query=workflow%3A%22Docker+CI+Release%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/composition/Docker%20CI%20Release?logo=github&logoWidth=24&style=flat-square'></img></a>
