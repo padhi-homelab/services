@@ -25,4 +25,4 @@ jobs:
       -
         name: "Docker: Compose test"
         run: |
-          docker-compose exec pihole pihole status
+          docker-compose exec -T pihole pihole status
