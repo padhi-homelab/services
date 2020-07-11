@@ -1,0 +1,6 @@
+version: "3"
+
+services:
+  netdata:
+    ports:
+      - 1234:19999

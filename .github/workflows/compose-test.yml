@@ -26,3 +26,23 @@ jobs:
         name: "Docker: Compose test"
         run: |
           docker-compose exec -T pihole pihole status
+
+  test--netdata:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Docker: Compose prepare"
+        run: |
+          cp 'netdata/docker-compose.yml' .
+      -
+        name: "Docker: Compose start"
+        run: |
+          docker-compose up -d
+          sleep 5s
+      -
+        name: "Docker: Compose test"
+        run: |
+          docker-compose exec -T netdata systemctl status netdata

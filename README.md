@@ -21,23 +21,52 @@
         +
         <a href='https://hub.docker.com/repository/docker/padhihomelab/cloudflared'>cloudflared</a>
       </sub></th>
-      <td align='center'>:heavy_check_mark:</td>
       <td align='center'>
-        <sub>:heavy_multiplication_x:</sub>
-        <br>
-        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
+        <sub>:heavy_check_mark:</sub>
       </td>
       <td align='center'>
         <sub>:heavy_multiplication_x:</sub>
         <br>
         <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
       </td>
-      <td align='center'>:heavy_check_mark:</td>
-      <td align='center'>:heavy_check_mark:</td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
+        <br>
+        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
       <td align='center'>
         <sub>:heavy_multiplication_x:</sub>
         <br>
         <sub>[ :heavy_multiplication_x: :heavy_multiplication_x: ]</sub>
+      </td>
+    </tr>
+    <tr>
+      <th align='right'><sub>
+        <a href='https://hub.docker.com/r/netdata/netdata/'>netdata</a>
+      </sub></th>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_check_mark:</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
       </td>
     </tr>
   </tbody>

@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  netdata:
+    container_name: netdata
+    image: netdata/netdata:v1.23.1
+    restart: unless-stopped
+    hostname: pihole
+    volumes:
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/etc/os-release:/host/etc/os-release:ro"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+    environment:
+      - DO_NOT_TRACK=1
+
+volumes:
+  netdatalib:
+  netdatacache:
