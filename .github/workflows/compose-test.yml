@@ -14,9 +14,15 @@ jobs:
         name: "Git: Checkout"
         uses: actions/checkout@v2
       -
+        name: "Docker: Compose prepare"
+        run: |
+          cp 'pihole+cloudflared/docker-compose.yml' .
+      -
         name: "Docker: Compose start"
-        run: docker-compose -f 'compose_pihole+cloudflared.yml' up -d
+        run: |
+          docker-compose up -d
+          sleep 5s
       -
         name: "Docker: Compose test"
         run: |
-          docker-compose run pi-hole pihole status
+          docker-compose exec pihole pihole status
