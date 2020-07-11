@@ -2,11 +2,43 @@
 
 ### Support Matrix
 
-| ⬐ Composition &nbsp; \ &nbsp; Arch 🠒 | amd64 | i386 | arm/v6 | arm/v7 | arm64 | ppc64le |
-|--------------------------------------:|:-----:|:----:|:------:|:------:|:-----:|:-------:|
-| **[pihole] + [cloudflared]** | :heavy_check_mark: | :heavy_multiplication_x: <br> :heavy_multiplication_x: &nbsp; :heavy_check_mark: | :heavy_multiplication_x: <br> :heavy_multiplication_x: &nbsp; :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :heavy_multiplication_x: <br> :heavy_multiplication_x: &nbsp; :heavy_multiplication_x: |
-
-
-
-[pihole]:     https://hub.docker.com/r/pihole/pihole/
-[cloudflared]: https://hub.docker.com/repository/docker/padhihomelab/cloudflared
+<table>
+  <thead>
+    <tr>
+      <th><sub>⬐ Composition &nbsp; \ &nbsp; Arch 🠒</sub></th>
+      <th><sub>amd64</sub></th>
+      <th><sub>i386</sub></th>
+      <th><sub>arm/v6</sub></th>
+      <th><sub>arm/v7</sub></th>
+      <th><sub>arm64</sub></th>
+      <th><sub>ppc64le</sub></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th align='right'><sub>
+        <a href='https://hub.docker.com/r/pihole/pihole/'>pihole</a>
+        +
+        <a href='https://hub.docker.com/repository/docker/padhihomelab/cloudflared'>cloudflared</a>
+      </sub></th>
+      <td align='center'>:heavy_check_mark:</td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
+        <br>
+        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
+      </td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
+        <br>
+        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
+      </td>
+      <td align='center'>:heavy_check_mark:</td>
+      <td align='center'>:heavy_check_mark:</td>
+      <td align='center'>
+        <sub>:heavy_multiplication_x:</sub>
+        <br>
+        <sub>[ :heavy_multiplication_x: :heavy_multiplication_x: ]</sub>
+      </td>
+    </tr>
+  </tbody>
+</table>
