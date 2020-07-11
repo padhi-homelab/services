@@ -45,4 +45,5 @@ jobs:
       -
         name: "Docker: Compose test"
         run: |
-          docker-compose exec -T netdata systemctl status netdata
+          REPLY="$(docker-compose exec -T netdata netdatacli ping)"
+          [[ "$REPLY" == "pong" ]] || exit 1
