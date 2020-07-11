@@ -36,7 +36,7 @@ jobs:
       -
         name: "Docker: Compose prepare"
         run: |
-          cp 'netdata/docker-compose.yml' .
+          cp netdata/docker-compose.yml netdata/*.conf .
       -
         name: "Docker: Compose start"
         run: |
