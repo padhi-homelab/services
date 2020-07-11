@@ -15,10 +15,10 @@ services:
     restart: unless-stopped
     hostname: pihole
     volumes:
-      - "./config/pihole:/etc/pihole"
-      - "./config/dnsmasq:/etc/dnsmasq.d"
+      - "./etc_pihole:/etc/pihole"
+      - "./etc_dnsmasq.d:/etc/dnsmasq.d"
     environment:
-      - DNS1='10.0.0.2#5054'
+      - DNS1='10.0.0.2#5053'
       - DNS2=''
       - IPv6=false
       - TZ=America/New_York
@@ -28,7 +28,7 @@ services:
       pihole_net:
         ipv4_address: 10.0.0.3
     dns:
-      - '10.0.0.2#5054'
+      - '127.0.0.1'
       - ''
     cap_add:
       - NET_ADMIN
