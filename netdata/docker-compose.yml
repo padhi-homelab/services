@@ -9,6 +9,8 @@ services:
     volumes:
       - netdatalib:/var/lib/netdata
       - netdatacache:/var/cache/netdata
+      - "./netdata.conf:/etc/netdata/netdata.conf"
+      - "./opt-out-from-anonymous-statistics:/etc/netdata/.opt-out-from-anonymous-statistics"
       - "/proc:/host/proc:ro"
       - "/sys:/host/sys:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
