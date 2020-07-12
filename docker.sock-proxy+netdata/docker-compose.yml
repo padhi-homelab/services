@@ -21,6 +21,7 @@ services:
     volumes:
       - netdatalib:/var/lib/netdata
       - netdatacache:/var/cache/netdata
+      - "./charts.d.conf:/etc/netdata/charts.d.conf"
       - "./netdata.conf:/etc/netdata/netdata.conf"
       - "/etc/group:/host/etc/group:ro"
       - "/etc/os-release:/host/etc/os-release:ro"
@@ -47,4 +48,10 @@ networks:
 
 volumes:
   netdatalib:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
   netdatacache:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
