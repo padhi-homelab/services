@@ -5,7 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th><sub>⬐ Services &nbsp; \ &nbsp; Arch 🠒</sub></th>
+      <th><sub>Services &nbsp; \ &nbsp; Arch</sub></th>
       <th><sub>amd64</sub></th>
       <th><sub>i386</sub></th>
       <th><sub>arm/v6</sub></th>
@@ -16,15 +16,13 @@
   </thead>
   <tbody>
     <tr>
-      <th align='right'><sub>
+      <th align='left'><sub>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/cloudflared'>
-          cloudflared
-          <sup>&#8413;</sup>
+          Ⓐ cloudflared [2020.07.1]
         </a>
-        +
+        <br>
         <a href='https://hub.docker.com/r/pihole/pihole/'>
-          pihole
-          <sup>&hairsp;&#9679;&hairsp;</sup>
+          Ⓒ pihole [v5.0]
         </a>
       </sub></th>
       <td align='center'>
@@ -53,15 +51,13 @@
       </td>
     </tr>
     <tr>
-      <th align='right'><sub>
+      <th align='left'><sub>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy/'>
-          docker.sock-proxy
-          <sup>&#8413;</sup>
+          Ⓐ docker.sock-proxy [2.2]
         </a>
-        +
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata/'>
-          netdata
-          <sup>&#8413;</sup>
+          Ⓐ netdata [v1.23.1]
         </a>
       </sub></th>
       <td align='center'>
@@ -86,11 +82,11 @@
   </tbody>
 </table>
 
-<sup>&#8413;</sup>&nbsp;
+Ⓐ&nbsp;
 Dockerfiles maintained by me, and services compiled from sources
 <br>
-<sup>&#9938;</sup>&nbsp;
+Ⓑ&nbsp;
 Dockerfiles maintained by me, but use pre-compiled services
 <br>
-<sup>&hairsp;&#9679;&hairsp;</sup>&nbsp;
+Ⓒ&nbsp;
 Dockerfiles **not** maintained by me
