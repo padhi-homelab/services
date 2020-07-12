@@ -11,7 +11,7 @@ services:
       - CONTAINERS=1
     networks:
       netdata_net:
-        ipv4_address: 10.0.0.2
+        ipv4_address: 10.0.1.2
 
   netdata:
     container_name: netdata
@@ -33,17 +33,17 @@ services:
       - SYS_PTRACE
     environment:
       - DO_NOT_TRACK=1
-      - DOCKER_HOST=10.0.0.2:1279
+      - DOCKER_HOST=10.0.1.2:1279
     networks:
       netdata_net:
-        ipv4_address: 10.0.0.3
+        ipv4_address: 10.0.1.3
 
 networks:
   netdata_net:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.0.0.0/29
+        - subnet: 10.0.1.0/29
 
 volumes:
   netdatalib:
