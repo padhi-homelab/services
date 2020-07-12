@@ -2,8 +2,12 @@ version: '2.4'
 
 services:
   docker.sock-proxy:
+    cpus: '0.1'
+    mem_limit: 20M
     ports:
       - 1235:9000
   netdata:
+    cpus: '0.6'
+    mem_limit: 200M
     ports:
       - 1234:19999

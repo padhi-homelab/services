@@ -17,9 +17,6 @@ services:
     image: padhihomelab/docker.sock-proxy:2.2
     restart: unless-stopped
 
-    cpus: '0.05'
-    mem_limit: 20M
-
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -31,9 +28,6 @@ services:
     hostname: netdata
     image: padhihomelab/netdata:1.23.1
     restart: unless-stopped
-
-    cpus: '0.25'
-    mem_limit: 200M
 
     volumes:
     - netdatalib:/var/lib/netdata:rw
