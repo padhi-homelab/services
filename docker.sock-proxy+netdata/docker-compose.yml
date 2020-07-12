@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  docker.sock-proxy:
+    container_name: docker.sock-proxy
+    image: padhihomelab/docker.sock-proxy:2.2
+    restart: unless-stopped
+    volumes:
+     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - CONTAINERS=1
+    networks:
+      netdata_net:
+        ipv4_address: 10.0.0.2
+
+  netdata:
+    container_name: netdata
+    image: padhihomelab/netdata:1.23.1
+    restart: unless-stopped
+    hostname: pihole
+    volumes:
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - "./netdata.conf:/etc/netdata/netdata.conf"
+      - "./telemetry.conf:/etc/netdata/.opt-out-from-anonymous-statistics"
+      - "/etc/group:/host/etc/group:ro"
+      - "/etc/os-release:/host/etc/os-release:ro"
+      - "/etc/passwd:/host/etc/passwd:ro"
+      - "/proc:/host/proc:ro"
+      - "/sys:/host/sys:ro"
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+    environment:
+      - DO_NOT_TRACK=1
+      - DOCKER_HOST=10.0.0.2:1279
+    networks:
+      netdata_net:
+        ipv4_address: 10.0.0.3
+
+networks:
+  netdata_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/29
+
+volumes:
+  netdatalib:
+  netdatacache:

@@ -1,6 +1,9 @@
 version: "3"
 
 services:
+  docker.sock-proxy:
+    ports:
+      - 1235:9000
   netdata:
     ports:
       - 1234:19999

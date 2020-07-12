@@ -7,7 +7,7 @@ on:
     branches: master
 
 jobs:
-  test--pihole_cloudflared:
+  test--cloudflared_pihole:
     runs-on: ubuntu-latest
     steps:
       -
@@ -16,7 +16,7 @@ jobs:
       -
         name: "Docker: Compose prepare"
         run: |
-          cp 'pihole+cloudflared/docker-compose.yml' .
+          cp 'cloudflared+pihole/docker-compose.yml' .
       -
         name: "Docker: Compose start"
         run: |
@@ -27,7 +27,7 @@ jobs:
         run: |
           docker-compose exec -T pihole pihole status
 
-  test--netdata:
+  test--docker-sock-proxy_netdata:
     runs-on: ubuntu-latest
     steps:
       -
@@ -36,7 +36,7 @@ jobs:
       -
         name: "Docker: Compose prepare"
         run: |
-          cp netdata/docker-compose.yml netdata/*.conf .
+          cp 'docker.sock-proxy+netdata/docker-compose.yml' 'docker.sock-proxy+netdata'/*.conf .
       -
         name: "Docker: Compose start"
         run: |
