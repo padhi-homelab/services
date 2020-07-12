@@ -22,7 +22,6 @@ services:
       - netdatalib:/var/lib/netdata
       - netdatacache:/var/cache/netdata
       - "./netdata.conf:/etc/netdata/netdata.conf"
-      - "./telemetry.conf:/etc/netdata/.opt-out-from-anonymous-statistics"
       - "/etc/group:/host/etc/group:ro"
       - "/etc/os-release:/host/etc/os-release:ro"
       - "/etc/passwd:/host/etc/passwd:ro"

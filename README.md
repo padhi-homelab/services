@@ -89,4 +89,7 @@ Dockerfiles maintained by me, and services compiled from sources
 Dockerfiles maintained by me, but use pre-compiled services
 <br>
 Ⓒ&nbsp;
-Dockerfiles **not** maintained by me
+Official dockerfiles provided by authors
+<br>
+Ⓓ&nbsp;
+Third-party dockerfiles!

@@ -10,8 +10,8 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      builder: ${{ steps.filter.outputs.builder }}
-      runtime: ${{ steps.filter.outputs.runtime }}
+      cloudflared_pihole: ${{ steps.filter.outputs.cloudflared_pihole }}
+      docker-sock-proxy_netdata: ${{ steps.filter.outputs.docker-sock-proxy_netdata }}
     steps:
     - uses: actions/checkout@v2
     - uses: dorny/paths-filter@v2.2.0
@@ -19,9 +19,9 @@ jobs:
       with:
         filters: |
           cloudflared_pihole:
-            - "cloudflared+pihole/**"
+            - 'cloudflared+pihole/**/*'
           docker-sock-proxy_netdata:
-            - "docker+sock-proxy+netdata/**"
+            - 'docker.sock-proxy+netdata/**/*'
 
   test--cloudflared_pihole:
     needs: [changes]
