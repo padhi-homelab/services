@@ -88,9 +88,9 @@
 
 <sup>&#8413;</sup>&nbsp;
 Dockerfiles maintained by me, and services compiled from sources
-
+<br>
 <sup>&#9938;</sup>&nbsp;
 Dockerfiles maintained by me, but use pre-compiled services
-
+<br>
 <sup>&hairsp;&#9679;&hairsp;</sup>&nbsp;
 Dockerfiles **not** maintained by me

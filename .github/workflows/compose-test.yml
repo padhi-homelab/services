@@ -7,7 +7,25 @@ on:
     branches: master
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      builder: ${{ steps.filter.outputs.builder }}
+      runtime: ${{ steps.filter.outputs.runtime }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: dorny/paths-filter@v2.2.0
+      id: filter
+      with:
+        filters: |
+          cloudflared_pihole:
+            - "cloudflared+pihole/**"
+          docker-sock-proxy_netdata:
+            - "docker+sock-proxy+netdata/**"
+
   test--cloudflared_pihole:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.cloudflared_pihole == 'true' }}
     runs-on: ubuntu-latest
     steps:
       -
@@ -28,6 +46,8 @@ jobs:
           docker-compose exec -T pihole pihole status
 
   test--docker-sock-proxy_netdata:
+    needs: [changes]
+    if: ${{ needs.changes.outputs.docker-sock-proxy_netdata == 'true' }}
     runs-on: ubuntu-latest
     steps:
       -
