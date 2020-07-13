@@ -5,93 +5,105 @@
 <table>
   <thead>
     <tr>
-      <th><sub>Services &nbsp; \ &nbsp; Arch</sub></th>
-      <th><sub>amd64</sub></th>
-      <th><sub>i386</sub></th>
-      <th><sub>arm/v6</sub></th>
-      <th><sub>arm/v7</sub></th>
-      <th><sub>arm64</sub></th>
-      <th><sub>ppc64le</sub></th>
+      <th colspan='3'>&#x2B9F; Services &nbsp; &nbsp; &nbsp; \ &nbsp; &nbsp; &nbsp; Arch &#x2B9E;</th>
+      <th>amd64</th>
+      <th>i386</th>
+      <th>arm/v6</th>
+      <th>arm/v7</th>
+      <th>arm64</th>
+      <th>ppc64le</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th align='left'><sub>
+      <th>
+        ✰ <br> 🞅
+      </th>
+      <th align='right'>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
-          ⓪ dnscrypt-proxy [2.0.44]
+          dnscrypt-proxy
         </a>
         <br>
         <a href='https://hub.docker.com/r/pihole/pihole/'>
-          ② pihole [v5.0]
+          pihole
         </a>
-      </sub></th>
+      </th>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
-      </td>
-      <td align='center'>
-        <sub>:heavy_multiplication_x:</sub>
+        <code>2.0.44</code>
         <br>
-        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
+        <code>v5.0</code>
       </td>
       <td align='center'>
-        <sub>:heavy_multiplication_x:</sub>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
         <br>
-        <sub>[ :heavy_multiplication_x: :heavy_check_mark: ]</sub>
-      </td>
-      <td align='center'>
-        <sub>:heavy_check_mark:</sub>
-      </td>
-      <td align='center'>
-        <sub>:heavy_check_mark:</sub>
-      </td>
-      <td align='center'>
-        <sub>:heavy_multiplication_x:</sub>
-        <br>
-        <sub>[ :heavy_multiplication_x: :heavy_multiplication_x: ]</sub>
+        [ :heavy_check_mark: :heavy_multiplication_x: ]
       </td>
     </tr>
     <tr>
-      <th align='left'><sub>
+      <th>
+        ❍ <br> ✰
+      </th>
+      <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy/'>
-          ① docker.sock-proxy [2.2]
+          docker.sock-proxy
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata/'>
-          ⓪ netdata [v1.23.1]
+          netdata
         </a>
-      </sub></th>
+      </th>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        <code>2.2</code>
+        <br>
+        <code>v1.23.1</code>
       </td>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        :heavy_check_mark:
       </td>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        :heavy_check_mark:
       </td>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        :heavy_check_mark:
       </td>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        :heavy_check_mark:
       </td>
       <td align='center'>
-        <sub>:heavy_check_mark:</sub>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
   </tbody>
 </table>
 
-⓪&nbsp;
+✰&nbsp;
 Dockerfiles maintained by me using binaries compiled from sources
 <br>
-①&nbsp;
+❍&nbsp;
 Dockerfiles maintained by me, but with pre-compiled binaries from open-source projects
 <br>
-②&nbsp;
-Official dockerfiles (and binaries) from  open source projects
+🞅&nbsp;
+Official dockerfiles (and binaries) from open-source projects
 <br>
-❸&nbsp;
+🞉&nbsp;
 Third-party dockerfiles devoid of closed-source binaries
 <br>
 🅧&nbsp;
