@@ -1,0 +1,98 @@
+listen_addresses = ['0.0.0.0:8053']
+max_clients = 256
+
+server_names = []
+
+ipv4_servers = true
+ipv6_servers = false
+dnscrypt_servers = true
+doh_servers = true
+
+require_dnssec = false
+require_nolog = true
+require_nofilter = true
+
+disabled_server_names = []
+
+force_tcp = false
+
+timeout = 4096
+keepalive = 30
+
+lb_strategy = 'ph'
+lb_estimator = true
+
+log_level = 2
+log_file = '/dev/stdout'
+# log_file = '/var/log/dnscrypt-proxy.log'
+# use_syslog = true
+# log_files_max_size = 10
+# log_files_max_age = 7
+# log_files_max_backups = 1
+
+cert_refresh_delay = 240
+
+fallback_resolvers = ['9.9.9.9:53', '1.1.1.1:53']
+ignore_system_dns = true
+
+netprobe_timeout = 60
+netprobe_address = '9.9.9.9:53'
+
+block_ipv6 = true
+block_unqualified = true
+block_undelegated = true
+
+reject_ttl = 600
+
+cache = true
+cache_size = 4096
+cache_min_ttl = 2400
+cache_max_ttl = 86400
+cache_neg_min_ttl = 60
+cache_neg_max_ttl = 600
+
+
+[sources]
+
+  ## A fast subset of the default source list from https://github.com/DNSCrypt/dnscrypt-resolvers
+
+  [sources.'fast-public-resolvers']
+    urls = ['https://raw.githubusercontent.com/padhi-homelab/services/master/dnscrypt-proxy+pihole/resolvers.md']
+    cache_file = 'fast-public-resolvers.md'
+    minisign_key = 'RWQl3IVwr9SBWW5G0sqzYLkyLq4bhTeQOocdEtC+V/7N4HWlDzvr5+4q'
+    prefix = 'fast-'
+
+  ## Default source list from https://github.com/DNSCrypt/dnscrypt-resolvers
+
+  #[sources.'public-resolvers']
+  #  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md']
+  #  cache_file = 'public-resolvers.md'
+  #  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  #  prefix = ''
+
+  ## OpenNIC servers - https://www.opennic.org/
+
+  #[sources.opennic-resolvers]
+  #  urls = ['https://download.dnscrypt.info/dnscrypt-resolvers/v3/opennic.md']
+  #  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  #  cache_file = 'opennic-resolvers.md'
+  #  prefix = 'opennic-'
+
+  ## Anonymized DNS relays
+
+  #[sources.'relays']
+  #  urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md']
+  #  cache_file = 'relays.md'
+  #  minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+  #  refresh_delay = 72
+  #  prefix = ''
+
+
+[broken_implementations]
+
+fragments_blocked = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'quad9-dnscrypt-ip4-filter-pri', 'quad9-dnscrypt-ip4-nofilter-pri', 'quad9-dnscrypt-ip6-filter-pri', 'quad9-dnscrypt-ip6-nofilter-pri', 'cleanbrowsing-adult', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-security']
+
+
+[anonymized_dns]
+
+skip_incompatible = false

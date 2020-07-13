@@ -17,6 +17,8 @@ services:
     networks:
       pihole_net:
         ipv4_address: 10.0.0.2
+    volumes:
+    - './dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro'
 
   pihole:
     container_name: pihole
@@ -28,8 +30,8 @@ services:
       pihole_net:
         ipv4_address: 10.0.0.3
     volumes:
-    - './etc_pihole:/etc/pihole'
-    - './etc_dnsmasq.d:/etc/dnsmasq.d'
+    - './etc_pihole:/etc/pihole:rw'
+    - './etc_dnsmasq.d:/etc/dnsmasq.d:rw'
 
     cap_add:
       - NET_ADMIN

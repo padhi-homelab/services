@@ -18,11 +18,11 @@
     <tr>
       <th align='left'><sub>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
-          Ⓐ dnscrypt-proxy [2.0.44]
+          ⓪ dnscrypt-proxy [2.0.44]
         </a>
         <br>
         <a href='https://hub.docker.com/r/pihole/pihole/'>
-          🅒 pihole [v5.0]
+          ② pihole [v5.0]
         </a>
       </sub></th>
       <td align='center'>
@@ -53,11 +53,11 @@
     <tr>
       <th align='left'><sub>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy/'>
-          Ⓐ docker.sock-proxy [2.2]
+          ① docker.sock-proxy [2.2]
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata/'>
-          Ⓐ netdata [v1.23.1]
+          ⓪ netdata [v1.23.1]
         </a>
       </sub></th>
       <td align='center'>
@@ -82,17 +82,17 @@
   </tbody>
 </table>
 
-Ⓐ&nbsp;
+⓪&nbsp;
 Dockerfiles maintained by me using binaries compiled from sources
 <br>
-Ⓑ&nbsp;
+①&nbsp;
 Dockerfiles maintained by me, but with pre-compiled binaries from open-source projects
 <br>
-🅒&nbsp;
+②&nbsp;
 Official dockerfiles (and binaries) from  open source projects
 <br>
-🅓&nbsp;
+❸&nbsp;
 Third-party dockerfiles devoid of closed-source binaries
 <br>
-🆇&nbsp;
+🅧&nbsp;
 Dockerfiles containing closed-source binaries (blobs)

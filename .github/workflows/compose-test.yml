@@ -16,7 +16,7 @@ jobs:
       -
         name: "Docker: Compose prepare"
         run: |
-          cp 'dnscrypt-proxy+pihole'/* .
+          cp -r 'dnscrypt-proxy+pihole'/* .
           rm -f docker-compose.override.yml
       -
         name: "Docker: Compose start"
@@ -38,7 +38,7 @@ jobs:
       -
         name: "Docker: Compose prepare"
         run: |
-          cp 'docker.sock-proxy+netdata'/* .
+          cp -r 'docker.sock-proxy+netdata'/* .
           rm -f docker-compose.override.yml
       -
         name: "Docker: Compose start"
