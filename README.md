@@ -17,12 +17,12 @@
   <tbody>
     <tr>
       <th align='left'><sub>
-        <a href='https://hub.docker.com/repository/docker/padhihomelab/cloudflared'>
-          Ⓐ cloudflared [2020.07.1]
+        <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
+          Ⓐ dnscrypt-proxy [2.0.44]
         </a>
         <br>
         <a href='https://hub.docker.com/r/pihole/pihole/'>
-          Ⓒ pihole [v5.0]
+          🅒 pihole [v5.0]
         </a>
       </sub></th>
       <td align='center'>
@@ -83,13 +83,16 @@
 </table>
 
 Ⓐ&nbsp;
-Dockerfiles maintained by me, and services compiled from sources
+Dockerfiles maintained by me using binaries compiled from sources
 <br>
 Ⓑ&nbsp;
-Dockerfiles maintained by me, but use pre-compiled services
+Dockerfiles maintained by me, but with pre-compiled binaries from open-source projects
 <br>
-Ⓒ&nbsp;
-Official dockerfiles provided by authors
+🅒&nbsp;
+Official dockerfiles (and binaries) from  open source projects
 <br>
-Ⓓ&nbsp;
-Third-party dockerfiles!
+🅓&nbsp;
+Third-party dockerfiles devoid of closed-source binaries
+<br>
+🆇&nbsp;
+Dockerfiles containing closed-source binaries (blobs)

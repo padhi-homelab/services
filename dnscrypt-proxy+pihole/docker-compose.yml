@@ -8,10 +8,10 @@ networks:
       - subnet: 10.0.0.0/29
 
 services:
-  cloudflared:
-    container_name: cloudflared
-    hostname: cloudflared
-    image: padhihomelab/cloudflared:20.07.1
+  dnscrypt-proxy:
+    container_name: dnscrypt-proxy
+    hostname: dnscrypt-proxy
+    image: padhihomelab/dnscrypt-proxy:2.0.44
     restart: unless-stopped
 
     networks:
@@ -35,10 +35,10 @@ services:
       - NET_ADMIN
     dns:
       - 127.0.0.1
-      - ''
+      - 10.0.0.3
     environment:
-      DNS1: '10.0.0.2#5053'
-      DNS2: '10.0.0.2#5053'
+      DNS1: '10.0.0.2#8053'
+      DNS2: '10.0.0.2#8053'
       IPv6: 'false'
       TZ: America/New_York
       DNSMASQ_LISTENING: all
