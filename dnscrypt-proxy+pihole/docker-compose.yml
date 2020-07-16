@@ -19,6 +19,7 @@ services:
         ipv4_address: 10.0.0.2
     volumes:
     - './dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro'
+    - '/etc/timezone:/etc/timezone:ro'
 
   pihole:
     container_name: pihole
@@ -32,12 +33,13 @@ services:
     volumes:
     - './etc_pihole:/etc/pihole:rw'
     - './etc_dnsmasq.d:/etc/dnsmasq.d:rw'
+    - '/etc/timezone:/etc/timezone:ro'
 
     cap_add:
-      - NET_ADMIN
+    - NET_ADMIN
     dns:
-      - 127.0.0.1
-      - 10.0.0.3
+    - 127.0.0.1
+    - 10.0.0.3
     environment:
       DNS1: '10.0.0.2#8053'
       DNS2: '10.0.0.2#8053'

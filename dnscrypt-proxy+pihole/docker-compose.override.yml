@@ -3,6 +3,6 @@ version: '2.4'
 services:
   pihole:
     ports:
-      - '80:80/tcp'
-      - '53:53/tcp'
-      - '53:53/udp'
+    - '80:80/tcp'
+    - '53:53/tcp'
+    - '53:53/udp'
