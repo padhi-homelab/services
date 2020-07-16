@@ -21,17 +21,17 @@
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
-          dnscrypt-proxy
+          <sub>dnscrypt-proxy</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/pihole/pihole/'>
-          pihole
+          <sub>pihole</sub>
         </a>
       </th>
       <td align='center'>
-        <code>2.0.44</code>
+        <code><sub>2.0.44</sub></code>
         <br>
-        <code>v5.0</code>
+        <code><sub>v5.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -60,17 +60,17 @@
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy/'>
-          docker.sock-proxy
+          <sub>docker.sock-proxy</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata/'>
-          netdata
+          <sub>netdata</sub>
         </a>
       </th>
       <td align='center'>
-        <code>2.2</code>
+        <code><sub>2.2</sub></code>
         <br>
-        <code>v1.23.1</code>
+        <code><sub>v1.23.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
