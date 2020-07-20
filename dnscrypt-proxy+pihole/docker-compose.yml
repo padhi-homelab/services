@@ -24,7 +24,7 @@ services:
   pihole:
     container_name: pihole
     hostname: pihole
-    image: pihole/pihole:v5.0
+    image: pihole/pihole:v5.1.1
     restart: unless-stopped
 
     networks:
@@ -36,7 +36,7 @@ services:
     - '/etc/timezone:/etc/timezone:ro'
 
     cap_add:
-    - NET_ADMIN
+    - NET_BIND_SERVICE
     dns:
     - 127.0.0.1
     - 10.0.0.3
@@ -44,6 +44,5 @@ services:
       DNS1: '10.0.0.2#8053'
       DNS2: '10.0.0.2#8053'
       IPv6: 'false'
-      TZ: America/New_York
       DNSMASQ_LISTENING: all
       WEBPASSWORD: admin
