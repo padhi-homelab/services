@@ -24,7 +24,7 @@ services:
   pihole:
     container_name: pihole
     hostname: pihole
-    image: pihole/pihole:v5.1.1
+    image: pihole/pihole:v5.1.2
     restart: unless-stopped
 
     networks:

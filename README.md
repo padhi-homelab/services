@@ -31,7 +31,7 @@
       <td align='center'>
         <code><sub>2.0.44</sub></code>
         <br>
-        <code><sub>v5.1.1</sub></code>
+        <code><sub>v5.1.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -70,7 +70,7 @@
       <td align='center'>
         <code><sub>2.2</sub></code>
         <br>
-        <code><sub>v1.23.2</sub></code>
+        <code><sub>v1.24.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
