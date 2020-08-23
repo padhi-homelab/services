@@ -1,0 +1,40 @@
+version: '2.4'
+
+volumes:
+  mongo_configdb:
+  mongo_db:
+  unifi_cert:
+  unifi_run:
+
+services:
+  mongo:
+    container_name: mongo
+    hostname: mongo
+    image: mongo:3.6
+    restart: unless-stopped
+
+    volumes:
+    - mongo_configdb:/data/configdb:rw
+    - mongo_db:/data/db:rw
+
+  unifi:
+    container_name: unifi
+    hostname: unifi
+    image: padhihomelab/unifi:5.13.32
+    restart: unless-stopped
+
+    depends_on:
+    - mongo
+
+    volumes:
+    - ./data:/unifi/data:rw
+    - ./init:/unifi/init.d:ro
+    - ./log:/unifi/log:rw
+    - unifi_cert:/unifi/cert:rw
+    - unifi_run:/var/run/unifi:rw
+
+    init: true
+    environment:
+      DB_MONGO_URI: mongodb://mongo/unifi
+      STATDB_MONGO_URI: mongodb://mongo/unifi_stat
+      UNIFI_DB_NAME: unifi

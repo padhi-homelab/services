@@ -91,6 +91,51 @@
         :heavy_check_mark:
       </td>
     </tr>
+    <tr>
+      <th>
+        🞅 <br> ✰
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/mongo'>
+          <sub>mongodb</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/unifi/'>
+          <sub>unifi</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>3.6</sub></code>
+        <br>
+        <code><sub>5.13.32</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        [ :heavy_multiplication_x: :heavy_check_mark: ]
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        [ :heavy_multiplication_x: :heavy_multiplication_x: ]
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        [ :heavy_multiplication_x: :heavy_multiplication_x: ]
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        [ :heavy_multiplication_x: :heavy_multiplication_x: ]
+      </td>
+    </tr>
   </tbody>
 </table>
 

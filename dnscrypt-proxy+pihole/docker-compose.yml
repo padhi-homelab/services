@@ -18,8 +18,8 @@ services:
       pihole_net:
         ipv4_address: 10.0.0.2
     volumes:
-    - './dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro'
-    - '/etc/timezone:/etc/timezone:ro'
+    - ./dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
+    - /etc/timezone:/etc/timezone:ro
 
   pihole:
     container_name: pihole
@@ -27,12 +27,15 @@ services:
     image: pihole/pihole:v5.1.2
     restart: unless-stopped
 
+    depends_on:
+    - dnscrypt-proxy
+
     networks:
       pihole_net:
         ipv4_address: 10.0.0.3
     volumes:
-    - './etc_pihole:/etc/pihole:rw'
-    - './etc_dnsmasq.d:/etc/dnsmasq.d:rw'
+    - ./etc_pihole:/etc/pihole:rw
+    - ./etc_dnsmasq.d:/etc/dnsmasq.d:rw
     - '/etc/timezone:/etc/timezone:ro'
 
     cap_add:

@@ -4,10 +4,10 @@ services:
   docker.sock-proxy:
     cpus: '0.1'
     mem_limit: 20M
-    ports:
-    - 1235:9000
+#    ports:
+#    - 1235:9000
   netdata:
     cpus: '0.6'
-    mem_limit: 200M
+    mem_limit: 128M
     ports:
     - 1234:19999

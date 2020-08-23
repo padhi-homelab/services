@@ -1,11 +1,11 @@
 version: '2.4'
 
 volumes:
-  netdatalib:
+  netdata_lib:
     driver_opts:
       type: tmpfs
       device: tmpfs
-  netdatacache:
+  netdata_cache:
     driver_opts:
       type: tmpfs
       device: tmpfs
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
     volumes:
-    - '/etc/timezone:/etc/timezone:ro'
+    - /etc/timezone:/etc/timezone:ro
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
     environment:
@@ -30,15 +30,18 @@ services:
     image: padhihomelab/netdata:1.24.0
     restart: unless-stopped
 
+    depends_on:
+    - docker.sock-proxy
+
     volumes:
-    - netdatalib:/var/lib/netdata:rw
-    - netdatacache:/var/cache/netdata:rw
+    - netdata_lib:/var/lib/netdata:rw
+    - netdata_cache:/var/cache/netdata:rw
     - ./charts.d.conf:/etc/netdata/charts.d.conf:ro
     - ./netdata.conf:/etc/netdata/netdata.conf:ro
     - /etc/group:/host/etc/group:ro
     - /etc/os-release:/host/etc/os-release:ro
     - /etc/passwd:/host/etc/passwd:ro
-    - '/etc/timezone:/etc/timezone:ro'
+    - /etc/timezone:/etc/timezone:ro
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
 

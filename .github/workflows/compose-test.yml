@@ -50,3 +50,24 @@ jobs:
         run: |
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"
           [[ "$REPLY" == "pong" ]] || exit 1
+
+  test--mongodb_unifi:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Docker: Compose prepare"
+        run: |
+          cp -r 'mongodb+unifi'/* .
+          rm -f docker-compose.override.yml
+      -
+        name: "Docker: Compose start"
+        run: |
+          docker-compose up -d
+          sleep 5s
+      -
+        name: "Docker: Compose test"
+        run: |
+          docker-compose exec -T unifi bash /health.sh
