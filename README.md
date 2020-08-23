@@ -93,7 +93,7 @@
     </tr>
     <tr>
       <th>
-        🞅 <br> ✰
+        🞅 <br> 🅧
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mongo'>
@@ -110,12 +110,12 @@
         <code><sub>5.13.32</sub></code>
       </td>
       <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
         :heavy_multiplication_x:
         <br>
         [ :heavy_multiplication_x: :heavy_check_mark: ]
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
