@@ -66,7 +66,7 @@ jobs:
         name: "Docker: Compose start"
         run: |
           docker-compose up -d
-          sleep 5s
+          sleep 30s
       -
         name: "Docker: Compose test"
         run: |
