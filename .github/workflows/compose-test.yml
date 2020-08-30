@@ -7,67 +7,72 @@ on:
     branches: master
 
 jobs:
-  test--dnscrypt-proxy_pihole:
+  test_pihole:
     runs-on: ubuntu-latest
     steps:
       -
         name: "Git: Checkout"
         uses: actions/checkout@v2
       -
-        name: "Docker: Compose prepare"
+        name: "Service: Start"
         run: |
-          cp -r 'dnscrypt-proxy+pihole'/* .
-          rm -f docker-compose.override.yml
-      -
-        name: "Docker: Compose start"
-        run: |
-          docker-compose up -d
+          ./service.sh up pihole
           sleep 30s
       -
-        name: "Docker: Compose test"
+        name: "Service: Test"
         run: |
+          cd pihole
           docker-compose exec -T pihole pihole status
           docker-compose exec -T dnscrypt-proxy dig google.com
 
-  test--docker-sock-proxy_netdata:
+  test_netdata:
     runs-on: ubuntu-latest
     steps:
       -
         name: "Git: Checkout"
         uses: actions/checkout@v2
       -
-        name: "Docker: Compose prepare"
+        name: "Service: Start"
         run: |
-          cp -r 'docker.sock-proxy+netdata'/* .
-          rm -f docker-compose.override.yml
-      -
-        name: "Docker: Compose start"
-        run: |
-          docker-compose up -d
+          ./service.sh up netdata
           sleep 5s
       -
-        name: "Docker: Compose test"
+        name: "Service: Test"
         run: |
+          cd netdata
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"
           [[ "$REPLY" == "pong" ]] || exit 1
 
-  test--mongodb_unifi:
+  test_unifi:
     runs-on: ubuntu-latest
     steps:
       -
         name: "Git: Checkout"
         uses: actions/checkout@v2
       -
-        name: "Docker: Compose prepare"
+        name: "Service: start"
         run: |
-          cp -r 'mongodb+unifi'/* .
-          rm -f docker-compose.override.yml
-      -
-        name: "Docker: Compose start"
-        run: |
-          docker-compose up -d
+          ./service.sh up unifi
           sleep 30s
       -
-        name: "Docker: Compose test"
+        name: "Service: Test"
         run: |
+          cd unifi
           docker-compose exec -T unifi bash /health.sh
+
+  test_unms:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up unms
+          sleep 300s
+      -
+        name: "Service: Test"
+        run: |
+          cd unms
+          docker-compose exec -T unms bash /health.sh

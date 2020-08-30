@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  netflow:
+    ports:
+    - 2055:2055/udp
+
+  nginx:
+    ports:
+    - 80:80
+    - 443:443
+    - 81:81

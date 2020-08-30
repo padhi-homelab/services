@@ -16,6 +16,7 @@ services:
     volumes:
     - mongo_configdb:/data/configdb:rw
     - mongo_db:/data/db:rw
+    - /etc/localtime:/etc/localtime:ro
 
   unifi:
     container_name: unifi
@@ -27,11 +28,12 @@ services:
     - mongo
 
     volumes:
-    - ./data:/unifi/data:rw
-    - ./init:/unifi/init.d:ro
-    - ./log:/unifi/log:rw
     - unifi_cert:/unifi/cert:rw
     - unifi_run:/var/run/unifi:rw
+    - ./data:/unifi/data:rw
+    - ./init:/unifi/init.d:ro
+    - ./logs:/unifi/log:rw
+    - /etc/localtime:/etc/localtime:ro
 
     init: true
     environment:

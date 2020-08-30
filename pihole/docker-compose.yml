@@ -19,6 +19,7 @@ services:
         ipv4_address: 10.0.0.2
     volumes:
     - ./dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
+    - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
 
   pihole:
@@ -36,7 +37,8 @@ services:
     volumes:
     - ./etc_pihole:/etc/pihole:rw
     - ./etc_dnsmasq.d:/etc/dnsmasq.d:rw
-    - '/etc/timezone:/etc/timezone:ro'
+    - /etc/localtime:/etc/localtime:ro
+    - /etc/timezone:/etc/timezone:ro
 
     cap_add:
     - NET_BIND_SERVICE
