@@ -16,7 +16,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up pihole
+          ./service.sh up --no-override pihole
           sleep 30s
       -
         name: "Service: Test"
@@ -34,7 +34,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up netdata
+          ./service.sh up --no-override netdata
           sleep 5s
       -
         name: "Service: Test"
@@ -52,7 +52,7 @@ jobs:
       -
         name: "Service: start"
         run: |
-          ./service.sh up unifi
+          ./service.sh up --no-override unifi
           sleep 30s
       -
         name: "Service: Test"
@@ -69,7 +69,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up unms
+          ./service.sh up --no-override unms
           sleep 300s
       -
         name: "Service: Test"

@@ -203,7 +203,7 @@ services:
     cap_add:
     - NET_ADMIN
     environment:
-      UNMS_USER_ID: 1000
+      UNMS_USER_ID: ${USER_ID:?}
       UNMS_NGINX_HOST: nginx
       UNMS_PG_HOST: postgres
       UNMS_RABBITMQ_HOST: rabbitmq
