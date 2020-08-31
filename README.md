@@ -59,9 +59,9 @@
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
         <br>
-        <small>:heavy_check_mark: :heavy_multiplication_x:</small>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -131,17 +131,17 @@
       <td align='center'>
         :heavy_multiplication_x:
         <br>
-        <small>:heavy_multiplication_x: :heavy_check_mark:</small>
+        :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
         <br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x:</small>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
         <br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x:</small>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -149,7 +149,7 @@
       <td align='center'>
         :heavy_multiplication_x:
         <br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x:</small>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -214,28 +214,88 @@
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br><br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x: <br> :heavy_check_mark: :heavy_check_mark: <br> :heavy_check_mark: :heavy_multiplication_x: <br> :heavy_multiplication_x: :heavy_multiplication_x:</small>
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br><br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x: <br> :heavy_check_mark: :heavy_check_mark: <br> :heavy_check_mark: :heavy_multiplication_x: <br> :heavy_multiplication_x: :heavy_multiplication_x:</small>
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br><br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x: <br> :heavy_check_mark: :heavy_check_mark: <br> :heavy_check_mark: :heavy_multiplication_x: <br> :heavy_multiplication_x: :heavy_multiplication_x:</small>
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br><br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x: <br> :heavy_check_mark: :heavy_check_mark: <br> :heavy_check_mark: :heavy_multiplication_x: <br> :heavy_multiplication_x: :heavy_multiplication_x:</small>
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br><br>
-        <small>:heavy_multiplication_x: :heavy_multiplication_x: <br> :heavy_check_mark: :heavy_check_mark: <br> :heavy_check_mark: :heavy_multiplication_x: <br> :heavy_multiplication_x: :heavy_multiplication_x:</small>
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
     </tr>
   </tbody>
