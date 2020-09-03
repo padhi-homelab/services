@@ -75,4 +75,6 @@ jobs:
         name: "Service: Test"
         run: |
           cd unms
-          docker-compose exec -T unms bash /health.sh
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' unms)"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
+

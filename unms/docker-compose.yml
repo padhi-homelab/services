@@ -9,61 +9,36 @@ services:
   netflow:
     container_name: netflow
     hostname: netflow
-    image: ubnt/unms-netflow:1.2.6
+    image: padhihomelab/unms:netflow-1.2.6
     restart: unless-stopped
+    user: "${USER_ID}"
+
+    networks:
+    - internal
+    - public
 
     depends_on:
     - postgres
     - rabbitmq
     - redis
 
-    networks:
-    - internal
-    - public
-    volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
-
-    environment:
-      UNMS_PG_HOST: postgres
-      UNMS_RABBITMQ_HOST: rabbitmq
-      UNMS_REDISDB_HOST: redis
-      UNMS_NETFLOW_PORT: 2055
-      UNMS_PG_PASSWORD: unms
-      UNMS_PG_USER: unms
-      UNMS_PG_DB: unms
-      UNMS_PG_SCHEMA: unms
-
   nginx:
     container_name: nginx
     hostname: nginx
-    #image: padhihomelab/nginx:1.19
-    image: ubnt/unms-nginx:1.2.6
+    image: padhihomelab/unms:nginx-1.2.6
     restart: unless-stopped
 
     networks:
     - public
     - internal
     volumes:
-    - ./data/unms/cert:/cert:rw
-    - ./data/unms/firmwares:/www/firmwares:rw
+    - ./data/cert:/cert:rw
+    - ./data/firmwares:/www/firmwares:rw
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
 
     environment:
-      SSL_CERT:
-      SSL_CERT_KEY:
-      SSL_CERT_CA:
-      HTTP_PORT: 80
-      HTTPS_PORT: 443
-      SUSPEND_PORT: 81
-      WS_PORT: 443
-      UNMS_HTTP_PORT: 8081
-      UNMS_WS_PORT: 8082
-      UNMS_WS_SHELL_PORT: 8083
-      UNMS_WS_API_PORT: 8084
-      PUBLIC_HTTPS_PORT: 443
-      SECURE_LINK_SECRET: Mi1kYw4y
+      NGINX_UID: ${USER_ID:?}
 
   postgres:
     container_name: postgres
@@ -74,7 +49,7 @@ services:
     networks:
     - internal
     volumes:
-    - ./config/postgres:/docker-entrypoint-initdb.d:ro
+    - ./config/postgres/create-users.sh:/docker-entrypoint-initdb.d/create-users.sh:ro
     - ./data/postgres:/var/lib/postgresql/data/pgdata:rw
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
@@ -126,8 +101,7 @@ services:
 
   siridb:
     container_name: siridb
-    #image: padhihomelab/siridb:2.0.37
-    image: ubnt/unms-siridb:1.2.6
+    image: padhihomelab/unms:siridb-1.2.6
     restart: unless-stopped
 
     networks:
@@ -140,7 +114,7 @@ services:
   ucrm:
     container_name: ucrm
     hostname: ucrm
-    image: ubnt/unms-crm:3.2.7
+    image: padhihomelab/unms:ucrm-1.2.6
     restart: unless-stopped
 
     depends_on:
@@ -158,29 +132,12 @@ services:
 
     command: server_with_migrate
     environment:
-      POSTGRES_HOST: postgres
-      POSTGRES_PASSWORD: ucrm
-      POSTGRES_SCHEMA: ucrm
-      POSTGRES_USER: ucrm
-      POSTGRES_DB: unms
-      MAILER_ADDRESS: 127.0.0.1
-      MAILER_ADDRESS_USERNAME: username
-      MAILER_ADDRESS_PASSWORD: password
-      SECRET: Mi1kYw4y
-      SUSPEND_PORT: 81
-      PUBLIC_HTTPS_PORT: 443
-      UCRM_USER: unms
-      UNMS_VERSION: 1.2.6
-      UNMS_HOST: unms
-      UNMS_PORT: 8081
-      UNMS_TOKEN: Mi1kYw4y
       UNMS_BASE_URL: /v2.1
-      UNMS_POSTGRES_SCHEMA: unms
 
   unms:
     container_name: unms
     hostname: unms
-    image: ubnt/unms:1.2.6
+    image: padhihomelab/unms:1.2.6
     restart: unless-stopped
 
     depends_on:
@@ -195,8 +152,7 @@ services:
     - public
     - internal
     volumes:
-    - ./config/unms/health.sh:/health.sh:ro
-    - ./data/unms:/home/app/unms/data:rw
+    - ./data:/home/app/unms/data:rw
     - /etc/localtime:/etc/localtime:ro
     - /etc/timezone:/etc/timezone:ro
 
@@ -204,36 +160,3 @@ services:
     - NET_ADMIN
     environment:
       UNMS_USER_ID: ${USER_ID:?}
-      UNMS_NGINX_HOST: nginx
-      UNMS_PG_HOST: postgres
-      UNMS_RABBITMQ_HOST: rabbitmq
-      UNMS_REDISDB_HOST: redis
-      UNMS_SIRIDB_HOST: siridb
-      NODE_ENV: production
-      HTTP_PORT: 8081
-      WS_PORT: 8082
-      WS_SHELL_PORT: 8083
-      UNMS_WS_API_PORT: 8084
-      UNMS_NETFLOW_PORT: 2055
-      SSL_CERT:
-      PUBLIC_HTTPS_PORT: 443
-      PUBLIC_WS_PORT: 443
-      NGINX_HTTPS_PORT: 443
-      NGINX_WS_PORT: 443
-      SUSPEND_PORT: 81
-      BRANCH: master
-      SECURE_LINK_SECRET: Mi1kYw4y
-      UNMS_TOKEN: Mi1kYw4y
-      CLUSTER_SIZE: auto
-      UNMS_PG_PASSWORD: unms
-      UNMS_PG_USER: unms
-      UNMS_PG_DB: unms
-      UNMS_PG_SCHEMA: unms
-      USE_LOCAL_DISCOVERY: 'true'
-
-    healthcheck:
-      test: ["CMD", "bash", "/health.sh"]
-      interval: 2m
-      timeout: 5s
-      retries: 3
-      start_period: 5m

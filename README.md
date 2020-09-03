@@ -157,14 +157,14 @@
         <a href='https://unms.com'>UNMS</a>
       </th>
       <th>
-        🅧 <br> 🞉 <br> 🞅 <br> 🞅 <br> 🞅 <br> 🞉 <br> 🅧 <br> 🅧
+        🅧 <br> ❍ <br> 🞅 <br> 🞅 <br> 🞅 <br> ❍ <br> 🅧 <br> 🅧
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/ubnt/unms-netflow'>
+        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
           <sub>netflow</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/ubnt/unms-nginx'>
+        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
           <sub>nginx</sub>
         </a>
         <br>
@@ -180,22 +180,22 @@
           <sub>redis</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/ubnt/unms-siridb'>
+        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
           <sub>siridb</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/ubnt/unms'>
+        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
           <sub>ucrm</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/ubnt/unms'>
+        <a href='https://hub.docker.com/r/padhihomelab/unms'>
           <sub>unms</sub>
         </a>
       </th>
       <td align='center'>
         <code><sub>1.2.6</sub></code>
         <br>
-        <code><sub>1.2.6</sub></code>
+        <code><sub>1.19</sub></code>
         <br>
         <code><sub>9.6</sub></code>
         <br>
@@ -203,7 +203,7 @@
         <br>
         <code><sub>5.0</sub></code>
         <br>
-        <code><sub>1.2.6</sub></code>
+        <code><sub>2.0.38</sub></code>
         <br>
         <code><sub>3.2.7</sub></code>
         <br>
@@ -213,75 +213,19 @@
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
         <br>
@@ -291,11 +235,11 @@
         <br>
         :heavy_check_mark:
         <br>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
         <br>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
         <br>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
       </td>
     </tr>
   </tbody>
