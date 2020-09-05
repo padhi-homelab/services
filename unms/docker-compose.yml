@@ -101,6 +101,7 @@ services:
 
   siridb:
     container_name: siridb
+    hostname: siridb
     image: padhihomelab/unms:siridb-1.2.6
     restart: unless-stopped
 
