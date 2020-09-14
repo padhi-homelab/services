@@ -18,12 +18,11 @@ services:
     restart: unless-stopped
 
     volumes:
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
     environment:
       CONTAINERS: '1'
+      TZ: ${TZ:?}
 
   netdata:
     container_name: netdata
@@ -42,8 +41,6 @@ services:
     - /etc/group:/host/etc/group:ro
     - /etc/os-release:/host/etc/os-release:ro
     - /etc/passwd:/host/etc/passwd:ro
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
 
@@ -52,5 +49,6 @@ services:
     environment:
       DO_NOT_TRACK: '1'
       DOCKER_HOST: docker.sock-proxy:1279
+      TZ: ${TZ:?}
     security_opt:
     - apparmor:unconfined

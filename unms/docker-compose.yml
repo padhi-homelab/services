@@ -13,14 +13,17 @@ services:
     restart: unless-stopped
     user: "${USER_ID}"
 
-    networks:
-    - internal
-    - public
-
     depends_on:
     - postgres
     - rabbitmq
     - redis
+
+    networks:
+      - internal
+      - public
+  
+    environment:
+      TZ: ${TZ:?}
 
   nginx:
     container_name: nginx
@@ -34,11 +37,10 @@ services:
     volumes:
     - ./data/cert:/cert:rw
     - ./data/firmwares:/www/firmwares:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     environment:
       NGINX_UID: ${USER_ID:?}
+      TZ: ${TZ:?}
 
   postgres:
     container_name: postgres
@@ -51,8 +53,6 @@ services:
     volumes:
     - ./config/postgres/create-users.sh:/docker-entrypoint-initdb.d/create-users.sh:ro
     - ./data/postgres:/var/lib/postgresql/data/pgdata:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     command: postgres -c deadlock_timeout=5000 -c max_connections=512
     environment:
@@ -67,6 +67,7 @@ services:
       UCRM_POSTGRES_USER: ucrm
       UCRM_POSTGRES_PASSWORD: ucrm
       PGDATA: /var/lib/postgresql/data/pgdata
+      TZ: ${TZ:?}
 
   rabbitmq:
     container_name: rabbitmq
@@ -78,11 +79,10 @@ services:
     - internal
     volumes:
     - ./data/rabbitmq:/var/lib/rabbitmq:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     environment:
       RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit channel_max 4096'
+      TZ: ${TZ:?}
 
   redis:
     container_name: redis
@@ -94,10 +94,10 @@ services:
     - internal
     volumes:
     - ./data/redis:/data/db:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     command: redis-server --appendonly yes --dir /data/db/
+    environment:
+      TZ: ${TZ:?}
 
   siridb:
     container_name: siridb
@@ -109,8 +109,9 @@ services:
     - internal
     volumes:
     - ./data/siridb:/var/lib/siridb:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
+
+    environment:
+      TZ: ${TZ:?}
 
   ucrm:
     container_name: ucrm
@@ -128,12 +129,11 @@ services:
     - internal
     volumes:
     - ./data/ucrm:/data:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     command: server_with_migrate
     environment:
       UNMS_BASE_URL: /v2.1
+      TZ: ${TZ:?}
 
   unms:
     container_name: unms
@@ -154,10 +154,9 @@ services:
     - internal
     volumes:
     - ./data:/home/app/unms/data:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     cap_add:
     - NET_ADMIN
     environment:
       UNMS_USER_ID: ${USER_ID:?}
+      TZ: ${TZ:?}

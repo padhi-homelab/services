@@ -5,6 +5,5 @@ set -Eumo pipefail
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 cat << EOF > "$SELF_DIR/.env"
-HOST_NAME=$(hostname)
 TZ=$(timedatectl | awk '/Time zone:/ {print $3}')
 EOF

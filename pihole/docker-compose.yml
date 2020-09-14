@@ -19,8 +19,9 @@ services:
         ipv4_address: 10.0.0.2
     volumes:
     - ./dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
+
+    environment:
+      TZ: ${TZ:?}
 
   pihole:
     container_name: pihole
@@ -37,8 +38,6 @@ services:
     volumes:
     - ./etc_pihole:/etc/pihole:rw
     - ./etc_dnsmasq.d:/etc/dnsmasq.d:rw
-    - /etc/localtime:/etc/localtime:ro
-    - /etc/timezone:/etc/timezone:ro
 
     cap_add:
     - NET_BIND_SERVICE
@@ -48,6 +47,9 @@ services:
     environment:
       DNS1: '10.0.0.2#8053'
       DNS2: '10.0.0.2#8053'
-      IPv6: 'false'
+      DNS_BOGUS_PRIV: 'false'
+      DNS_FQDN_REQUIRED: 'true'
       DNSMASQ_LISTENING: all
+      IPv6: 'true'
       WEBPASSWORD: admin
+      TZ: ${TZ:?}
