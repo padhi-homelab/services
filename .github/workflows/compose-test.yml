@@ -17,6 +17,9 @@ jobs:
         name: "Service: Start"
         run: |
           ./service.sh up --no-override pihole
+      -
+        name: "Service: Wait"
+        run: |
           sleep 30s
       -
         name: "Service: Test"
@@ -35,6 +38,9 @@ jobs:
         name: "Service: Start"
         run: |
           ./service.sh up --no-override netdata
+      -
+        name: "Service: Wait"
+        run: |
           sleep 5s
       -
         name: "Service: Test"
@@ -50,9 +56,12 @@ jobs:
         name: "Git: Checkout"
         uses: actions/checkout@v2
       -
-        name: "Service: start"
+        name: "Service: Start"
         run: |
           ./service.sh up --no-override unifi
+      -
+        name: "Service: Wait"
+        run: |
           sleep 30s
       -
         name: "Service: Test"
@@ -70,6 +79,9 @@ jobs:
         name: "Service: Start"
         run: |
           ./service.sh up --no-override unms
+      -
+        name: "Service: Wait"
+        run: |
           sleep 300s
       -
         name: "Service: Test"
