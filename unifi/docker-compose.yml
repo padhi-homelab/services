@@ -23,7 +23,7 @@ services:
   unifi:
     container_name: unifi
     hostname: unifi
-    image: padhihomelab/unifi:5.14.23
+    image: padhihomelab/unifi:6.0.20
     restart: unless-stopped
 
     depends_on:

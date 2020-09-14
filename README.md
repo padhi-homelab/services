@@ -123,7 +123,7 @@
       <td align='center'>
         <code><sub>3.6</sub></code>
         <br>
-        <code><sub>5.13.32</sub></code>
+        <code><sub>6.0.20</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
