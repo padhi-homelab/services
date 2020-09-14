@@ -47,9 +47,9 @@ services:
     environment:
       DNS1: '10.0.0.2#8053'
       DNS2: '10.0.0.2#8053'
-      DNS_BOGUS_PRIV: 'false'
+      DNS_BOGUS_PRIV: 'true'
       DNS_FQDN_REQUIRED: 'true'
       DNSMASQ_LISTENING: all
-      IPv6: 'true'
+      IPv6: 'false'
       WEBPASSWORD: admin
       TZ: ${TZ:?}
