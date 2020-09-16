@@ -7,6 +7,27 @@ on:
     branches: master
 
 jobs:
+  test_hass:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up --no-override hass
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 15s
+      -
+        name: "Service: Test"
+        run: |
+          cd hass
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' hass)"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
+
   test_pihole:
     runs-on: ubuntu-latest
     steps:
@@ -89,4 +110,3 @@ jobs:
           cd unms
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' unms)"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
-

@@ -242,6 +242,40 @@
         :heavy_check_mark:
       </td>
     </tr>
+    <tr>
+      <th>
+        <a href='https://www.home-assistant.io/hassio/'>HAss</a>
+      </th>
+      <th>
+        🞅
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/homeassistant/home-assistant/'>
+          <sub>hass</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.114.4</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
   </tbody>
 </table>
 

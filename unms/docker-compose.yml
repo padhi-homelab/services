@@ -11,7 +11,7 @@ services:
     hostname: netflow
     image: padhihomelab/unms:netflow-1.2.6
     restart: unless-stopped
-    user: "${USER_ID}"
+    user: "${USER_ID:?}"
 
     depends_on:
     - postgres

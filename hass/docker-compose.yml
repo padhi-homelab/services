@@ -1,0 +1,28 @@
+version: '2.4'
+
+services:
+  hass:
+    container_name: hass
+    hostname: hass
+    image: homeassistant/home-assistant:0.114.4
+    restart: unless-stopped
+
+    volumes:
+    - ./config:/config:rw
+    - ./configuration.yaml:/config/configuration.yaml:ro
+    - ./touch-files.sh:/etc/cont-init.d/touch-files.sh:ro
+
+    #devices:
+    #- /dev/ttyUSB0:/dev/ttyUSB0
+    #- /dev/ttyUSB1:/dev/ttyUSB1
+    #- /dev/ttyACM0:/dev/ttyACM0
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:8123"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 3s
