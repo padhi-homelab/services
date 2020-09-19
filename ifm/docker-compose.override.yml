@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  ifm:
+    ports:
+    - 8080:80
+    volumes:
+    - ./auth.htpasswd:/auth.htpasswd:ro
+  
+    environment:
+      IFM_AUTH: 1
+      IFM_AUTH_SOURCE: file;/auth.htpasswd

@@ -276,6 +276,40 @@
         :heavy_multiplication_x:
       </td>
     </tr>
+    <tr>
+      <th>
+        <a href='https://github.com/misterunknown/ifm//'>IFM</a>
+      </th>
+      <th>
+        ✰
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/ifm/'>
+          <sub>hass</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.0-git.829d...</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
   </tbody>
 </table>
 
