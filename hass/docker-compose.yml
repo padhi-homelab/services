@@ -4,7 +4,7 @@ services:
   hass:
     container_name: hass
     hostname: hass
-    image: homeassistant/home-assistant:0.114.4
+    image: homeassistant/home-assistant:0.115.3
     restart: unless-stopped
 
     volumes:

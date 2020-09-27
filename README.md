@@ -285,7 +285,7 @@
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/ifm/'>
-          <sub>hass</sub>
+          <sub>ifm</sub>
         </a>
       </th>
       <td align='center'>

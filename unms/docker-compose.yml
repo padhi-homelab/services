@@ -9,7 +9,7 @@ services:
   netflow:
     container_name: netflow
     hostname: netflow
-    image: padhihomelab/unms:netflow-1.2.6
+    image: padhihomelab/unms:netflow-1.2.7
     restart: unless-stopped
     user: "${USER_ID:?}"
 
@@ -28,7 +28,7 @@ services:
   nginx:
     container_name: nginx
     hostname: nginx
-    image: padhihomelab/unms:nginx-1.2.6
+    image: padhihomelab/unms:nginx-1.2.7
     restart: unless-stopped
 
     networks:
@@ -102,7 +102,7 @@ services:
   siridb:
     container_name: siridb
     hostname: siridb
-    image: padhihomelab/unms:siridb-1.2.6
+    image: padhihomelab/unms:siridb-1.2.7
     restart: unless-stopped
 
     networks:
@@ -116,7 +116,7 @@ services:
   ucrm:
     container_name: ucrm
     hostname: ucrm
-    image: padhihomelab/unms:ucrm-1.2.6
+    image: padhihomelab/unms:ucrm-1.2.7
     restart: unless-stopped
 
     depends_on:
@@ -138,7 +138,7 @@ services:
   unms:
     container_name: unms
     hostname: unms
-    image: padhihomelab/unms:1.2.6
+    image: padhihomelab/unms:1.2.7
     restart: unless-stopped
 
     depends_on:
