@@ -133,6 +133,7 @@ services:
     command: server_with_migrate
     environment:
       UNMS_BASE_URL: /v2.1
+      UNMS_VERSION: 1.2.7
       TZ: ${TZ:?}
 
   unms:
