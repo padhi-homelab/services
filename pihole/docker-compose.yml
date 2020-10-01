@@ -8,6 +8,27 @@ networks:
       - subnet: 10.0.0.0/29
 
 services:
+  caddy:
+    container_name: caddy
+    hostname: caddy
+    image: caddy:2.2.0
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+      - pihole
+  
+    networks:
+      pihole_net:
+        ipv4_address: 10.0.0.2
+    volumes:
+      - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/caddy/data:/data:rw
+      - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
   dnscrypt-proxy:
     container_name: dnscrypt-proxy
     hostname: dnscrypt-proxy
@@ -16,9 +37,9 @@ services:
 
     networks:
       pihole_net:
-        ipv4_address: 10.0.0.2
+        ipv4_address: 10.0.0.3
     volumes:
-    - ./dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
+    - ./config/dnscrypt-proxy/etc__dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
 
     environment:
       TZ: ${TZ:?}
@@ -34,19 +55,19 @@ services:
 
     networks:
       pihole_net:
-        ipv4_address: 10.0.0.3
+        ipv4_address: 10.0.0.4
     volumes:
-    - ./etc_pihole:/etc/pihole:rw
-    - ./etc_dnsmasq.d:/etc/dnsmasq.d:rw
+    - ./data/pihole/etc/pihole:/etc/pihole:rw
+    - ./data/pihole/etc/dnsmasq.d:/etc/dnsmasq.d:rw
 
     cap_add:
     - NET_BIND_SERVICE
     dns:
+    - 10.0.0.4
     - 127.0.0.1
-    - 10.0.0.3
     environment:
-      DNS1: '10.0.0.2#8053'
-      DNS2: '10.0.0.2#8053'
+      DNS1: '10.0.0.3#8053'
+      DNS2: '10.0.0.3#8053'
       DNS_BOGUS_PRIV: 'true'
       DNS_FQDN_REQUIRED: 'true'
       DNSMASQ_LISTENING: all

@@ -1,0 +1,13 @@
+{
+  http_port  4080
+  https_port 4443
+  local_certs
+}
+
+localhost {
+  encode gzip
+
+  rewrite * /admin/{path}
+
+  reverse_proxy pihole:80
+}

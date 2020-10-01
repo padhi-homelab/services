@@ -5,6 +5,7 @@
 }
 
 localhost {
-  reverse_proxy netdata:19999
   encode gzip
+
+  reverse_proxy netdata:19999
 }

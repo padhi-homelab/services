@@ -25,11 +25,17 @@
     <tr>
       <th>
         <a href='https://pi-hole.net'>Pi-hole</a>
+        <br>
+        <small>53, 8443</small>
       </th>
       <th>
-        ✰ <br> 🞅
+        🞅 <br> ✰ <br> 🞅
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
           <sub>dnscrypt-proxy</sub>
         </a>
@@ -39,6 +45,8 @@
         </a>
       </th>
       <td align='center'>
+        <code><sub>2.2.0</sub></code>
+        <br>
         <code><sub>2.0.44</sub></code>
         <br>
         <code><sub>v5.1.2</sub></code>
@@ -67,6 +75,8 @@
     <tr>
       <th>
         <a href='https://www.netdata.cloud'>Netdata</a>
+        <br>
+        <small>1234</small>
       </th>
       <th>
         🞅 <br> ❍ <br> ✰
@@ -117,6 +127,8 @@
     <tr>
       <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
+        <br>
+        <small>3478, 6789, 8080, 8443, 10001</small>
       </th>
       <th>
         🞅 <br> 🅧
@@ -165,6 +177,8 @@
     <tr>
       <th>
         <a href='https://unms.com'>UNMS</a>
+        <br>
+        <small>80, 81, 443, 2055</small>
       </th>
       <th>
         🅧 <br> ❍ <br> 🞅 <br> 🞅 <br> 🞅 <br> ❍ <br> 🅧 <br> 🅧
@@ -255,6 +269,8 @@
     <tr>
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
+        <br>
+        <small>8123</small>
       </th>
       <th>
         🞅
@@ -289,6 +305,8 @@
     <tr>
       <th>
         <a href='https://github.com/misterunknown/ifm//'>IFM</a>
+        <br>
+        <small>8080</small>
       </th>
       <th>
         ✰

@@ -1,8 +1,11 @@
 version: '2.4'
 
 services:
+  caddy:
+    ports:
+    - 4443:4443
+    mem_limit: 32M
   pihole:
     ports:
-    - '80:80/tcp'
     - '53:53/tcp'
     - '53:53/udp'
