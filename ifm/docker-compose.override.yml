@@ -1,11 +1,12 @@
 version: '2.4'
 
 services:
-  ifm:
+  caddy:
     ports:
-    - 8080:80
+    - 10443:10443
+  ifm:
     volumes:
-    - ./auth.htpasswd:/auth.htpasswd:ro
+    - ./config/ifm/auth.htpasswd:/auth.htpasswd:ro    # default password is "password"
   
     environment:
       IFM_AUTH: 1

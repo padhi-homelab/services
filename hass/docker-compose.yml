@@ -8,9 +8,9 @@ services:
     restart: unless-stopped
 
     volumes:
-    - ./config:/config:rw
-    - ./configuration.yaml:/config/configuration.yaml:ro
-    - ./touch-files.sh:/etc/cont-init.d/touch-files.sh:ro
+    - ./data/hass/config:/config:rw
+    - ./config/hass/config__configuration.yaml:/config/configuration.yaml:ro
+    - ./config/hass/etc__cont-init.d__touch-files.sh:/etc/cont-init.d/touch-files.sh:ro
 
     #devices:
     #- /dev/ttyUSB0:/dev/ttyUSB0

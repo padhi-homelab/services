@@ -1,0 +1,11 @@
+{
+  http_port  10080
+  https_port 10443
+  local_certs
+}
+
+localhost {
+  encode gzip
+
+  reverse_proxy ifm:80
+}

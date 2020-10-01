@@ -26,7 +26,7 @@
       <th>
         <a href='https://pi-hole.net'>Pi-hole</a>
         <br>
-        <small>53, 8443</small>
+        <sub>53, 8443</sub>
       </th>
       <th>
         🞅 <br> ✰ <br> 🞅
@@ -55,6 +55,10 @@
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -76,7 +80,7 @@
       <th>
         <a href='https://www.netdata.cloud'>Netdata</a>
         <br>
-        <small>1234</small>
+        <sub>1234</sub>
       </th>
       <th>
         🞅 <br> ❍ <br> ✰
@@ -128,7 +132,7 @@
       <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
-        <small>3478, 6789, 8080, 8443, 10001</small>
+        <sub>3478, 6789, 8080, 8443, 10001</sub>
       </th>
       <th>
         🞅 <br> 🅧
@@ -178,7 +182,7 @@
       <th>
         <a href='https://unms.com'>UNMS</a>
         <br>
-        <small>80, 81, 443, 2055</small>
+        <sub>80, 81, 443, 2055</sub>
       </th>
       <th>
         🅧 <br> ❍ <br> 🞅 <br> 🞅 <br> 🞅 <br> ❍ <br> 🅧 <br> 🅧
@@ -270,7 +274,7 @@
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
-        <small>8123</small>
+        <sub>8123</sub>
       </th>
       <th>
         🞅
@@ -306,23 +310,31 @@
       <th>
         <a href='https://github.com/misterunknown/ifm//'>IFM</a>
         <br>
-        <small>8080</small>
+        <sub>10443</sub>
       </th>
       <th>
-        ✰
+        🞅 <br> ✰
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/ifm/'>
           <sub>ifm</sub>
         </a>
       </th>
       <td align='center'>
+        <code><sub>0.114.4</sub></code>
+        <br>
         <code><sub>0.0-git.829d...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>

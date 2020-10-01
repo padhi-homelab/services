@@ -1,6 +1,24 @@
 version: '2.4'
 
 services:
+  caddy:
+    container_name: caddy
+    hostname: caddy
+    image: caddy:2.2.0
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - ifm
+  
+    volumes:
+    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
   ifm:
     container_name: ifm
     hostname: ifm
@@ -8,7 +26,7 @@ services:
     restart: unless-stopped
 
     volumes:
-    - .:/var/www:ro
+    - ./data/ifm:/var/www:ro
 
     environment:
       IFM_DOCKER_UID: ${USER_ID:?}

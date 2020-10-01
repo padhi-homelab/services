@@ -19,12 +19,12 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-      - netdata
+    - netdata
   
     volumes:
-      - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./data/caddy/data:/data:rw
-      - ./data/caddy/config:/config:rw
+    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
 
     environment:
       TZ: ${TZ:?}

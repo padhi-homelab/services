@@ -16,15 +16,15 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-      - pihole
+    - pihole
   
     networks:
       pihole_net:
         ipv4_address: 10.0.0.2
     volumes:
-      - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./data/caddy/data:/data:rw
-      - ./data/caddy/config:/config:rw
+    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
 
     environment:
       TZ: ${TZ:?}
