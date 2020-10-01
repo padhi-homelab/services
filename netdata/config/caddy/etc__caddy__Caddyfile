@@ -4,7 +4,11 @@
   local_certs
 }
 
-localhost {
+:8443 {
+  tls internal {
+    on_demand
+  }
+
   encode gzip
 
   reverse_proxy netdata:19999

@@ -325,7 +325,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.114.4</sub></code>
+        <code><sub>2.2.0</sub></code>
         <br>
         <code><sub>0.0-git.829d...</sub></code>
       </td>

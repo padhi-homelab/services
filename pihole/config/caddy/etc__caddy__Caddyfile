@@ -4,7 +4,11 @@
   local_certs
 }
 
-localhost {
+:4443 {
+  tls internal {
+    on_demand
+  }
+
   encode gzip
 
   rewrite * /admin/{path}

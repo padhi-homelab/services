@@ -4,7 +4,11 @@
   local_certs
 }
 
-localhost {
+:10443 {
+  tls internal {
+    on_demand
+  }
+
   encode gzip
 
   reverse_proxy ifm:80
