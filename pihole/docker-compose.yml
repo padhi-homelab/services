@@ -9,7 +9,6 @@ networks:
 
 services:
   caddy:
-    container_name: caddy
     hostname: caddy
     image: caddy:2.2.0
     restart: unless-stopped
@@ -30,7 +29,6 @@ services:
       TZ: ${TZ:?}
 
   dnscrypt-proxy:
-    container_name: dnscrypt-proxy
     hostname: dnscrypt-proxy
     image: padhihomelab/dnscrypt-proxy:2.0.44
     restart: unless-stopped
@@ -45,7 +43,6 @@ services:
       TZ: ${TZ:?}
 
   pihole:
-    container_name: pihole
     hostname: pihole
     image: pihole/pihole:v5.1.2
     restart: unless-stopped

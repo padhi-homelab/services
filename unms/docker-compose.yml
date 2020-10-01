@@ -7,7 +7,6 @@ networks:
 
 services:
   netflow:
-    container_name: netflow
     hostname: netflow
     image: padhihomelab/unms:netflow-1.2.7
     restart: unless-stopped
@@ -26,7 +25,6 @@ services:
       TZ: ${TZ:?}
 
   nginx:
-    container_name: nginx
     hostname: nginx
     image: padhihomelab/unms:nginx-1.2.7
     restart: unless-stopped
@@ -43,7 +41,6 @@ services:
       TZ: ${TZ:?}
 
   postgres:
-    container_name: postgres
     hostname: postgres
     image: postgres:9.6-alpine
     restart: unless-stopped
@@ -70,7 +67,6 @@ services:
       TZ: ${TZ:?}
 
   rabbitmq:
-    container_name: rabbitmq
     hostname: rabbitmq
     image: rabbitmq:3.8-alpine
     restart: unless-stopped
@@ -85,7 +81,6 @@ services:
       TZ: ${TZ:?}
 
   redis:
-    container_name: redis
     hostname: redis
     image: redis:5.0-alpine
     restart: unless-stopped
@@ -100,7 +95,6 @@ services:
       TZ: ${TZ:?}
 
   siridb:
-    container_name: siridb
     hostname: siridb
     image: padhihomelab/unms:siridb-1.2.7
     restart: unless-stopped
@@ -114,7 +108,6 @@ services:
       TZ: ${TZ:?}
 
   ucrm:
-    container_name: ucrm
     hostname: ucrm
     image: padhihomelab/unms:ucrm-1.2.7
     restart: unless-stopped
@@ -137,7 +130,6 @@ services:
       TZ: ${TZ:?}
 
   unms:
-    container_name: unms
     hostname: unms
     image: padhihomelab/unms:1.2.7
     restart: unless-stopped

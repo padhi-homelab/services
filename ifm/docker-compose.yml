@@ -2,7 +2,6 @@ version: '2.4'
 
 services:
   caddy:
-    container_name: caddy
     hostname: caddy
     image: caddy:2.2.0
     restart: unless-stopped
@@ -20,7 +19,6 @@ services:
       TZ: ${TZ:?}
 
   ifm:
-    container_name: ifm
     hostname: ifm
     image: padhihomelab/ifm:0.0-git.829d1d46316a392714b044b6089a74ae4ec30300
     restart: unless-stopped

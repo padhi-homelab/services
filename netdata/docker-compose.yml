@@ -12,7 +12,6 @@ volumes:
 
 services:
   caddy:
-    container_name: caddy
     hostname: caddy
     image: caddy:2.2.0
     restart: unless-stopped
@@ -30,7 +29,6 @@ services:
       TZ: ${TZ:?}
 
   docker.sock-proxy:
-    container_name: docker.sock-proxy
     hostname: docker.sock-proxy
     image: padhihomelab/docker.sock-proxy:2.2
     restart: unless-stopped
@@ -43,7 +41,6 @@ services:
       TZ: ${TZ:?}
 
   netdata:
-    container_name: netdata
     hostname: ${HOST_NAME:?}
     image: padhihomelab/netdata:1.25.0
     restart: unless-stopped
