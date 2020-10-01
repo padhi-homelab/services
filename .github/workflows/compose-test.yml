@@ -25,7 +25,7 @@ jobs:
         name: "Service: Test"
         run: |
           cd hass
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' hass)"
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q hass))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
 
   test_ifm:
@@ -46,7 +46,9 @@ jobs:
         name: "Service: Test"
         run: |
           cd ifm
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' ifm)"
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q ifm))"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
 
   test_pihole:
@@ -67,8 +69,10 @@ jobs:
         name: "Service: Test"
         run: |
           cd pihole
-          docker-compose exec -T pihole pihole status
           docker-compose exec -T dnscrypt-proxy dig google.com
+          docker-compose exec -T pihole pihole status
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
 
   test_netdata:
     runs-on: ubuntu-latest
@@ -83,13 +87,15 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 5s
+          sleep 10s
       -
         name: "Service: Test"
         run: |
           cd netdata
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"
           [[ "$REPLY" == "pong" ]] || exit 1
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
 
   test_unifi:
     runs-on: ubuntu-latest
@@ -129,5 +135,5 @@ jobs:
         name: "Service: Test"
         run: |
           cd unms
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' unms)"
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q unms))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1

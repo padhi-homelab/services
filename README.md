@@ -26,7 +26,7 @@
       <th>
         <a href='https://pi-hole.net'>Pi-hole</a>
         <br>
-        <sub>53, 8443</sub>
+        <sub>53, 4443</sub>
       </th>
       <th>
         🞅 <br> ✰ <br> 🞅

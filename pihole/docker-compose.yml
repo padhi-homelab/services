@@ -28,6 +28,13 @@ services:
     environment:
       TZ: ${TZ:?}
 
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
   dnscrypt-proxy:
     hostname: dnscrypt-proxy
     image: padhihomelab/dnscrypt-proxy:2.0.44
