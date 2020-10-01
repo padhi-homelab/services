@@ -1,13 +1,11 @@
 version: '2.4'
 
 services:
-  docker.sock-proxy:
-    cpus: '0.1'
-    mem_limit: 24M
-#    ports:
-#    - 1235:9000
-  netdata:
-    cpus: '0.6'
-    mem_limit: 150M
+  caddy:
     ports:
-    - 1234:19999
+    - 1234:8443
+    mem_limit: 32M
+  docker.sock-proxy:
+    mem_limit: 16M
+  netdata:
+    mem_limit: 160M

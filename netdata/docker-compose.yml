@@ -11,6 +11,24 @@ volumes:
       device: tmpfs
 
 services:
+  caddy:
+    container_name: caddy
+    hostname: caddy
+    image: caddy:2.2.0
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+      - netdata
+  
+    volumes:
+      - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data/caddy/data:/data:rw
+      - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
   docker.sock-proxy:
     container_name: docker.sock-proxy
     hostname: docker.sock-proxy
@@ -36,8 +54,8 @@ services:
     volumes:
     - netdata_lib:/var/lib/netdata:rw
     - netdata_cache:/var/cache/netdata:rw
-    - ./charts.d.conf:/etc/netdata/charts.d.conf:ro
-    - ./netdata.conf:/etc/netdata/netdata.conf:ro
+    - ./config/netdata/etc__netdata__charts.d.conf:/etc/netdata/charts.d.conf:ro
+    - ./config/netdata/etc__netdata__netdata.conf:/etc/netdata/netdata.conf:ro
     - /etc/group:/host/etc/group:ro
     - /etc/os-release:/host/etc/os-release:ro
     - /etc/passwd:/host/etc/passwd:ro

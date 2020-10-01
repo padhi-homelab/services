@@ -20,6 +20,7 @@ Usage: $0 <verb> [flags] <svc_dir_name> [<svc_dir_name> ...]
 Verbs:
   up                        Start a service
   down                      Stop a service
+  clean                     Clean all `data`
 
 Flags:
   [--ignore-failures, -i]   Ignore failing services and continue
@@ -36,7 +37,13 @@ Services:
 VERB="$1"
 shift
 [ "$VERB" == "up" ] || [ "$VERB" == "down" ] || \
+  [ "$VERB" == "clean" ] || \
   usage "Unknown verb: $VERB"
+
+if [ "$VERB" == "clean" ]; then
+  rm -rf "${SELF_DIR}"/*/data
+  exit 0
+fi
 
 IGNORE_FAILURES="no"
 NO_OVERRIDE="no"

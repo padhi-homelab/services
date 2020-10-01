@@ -69,9 +69,13 @@
         <a href='https://www.netdata.cloud'>Netdata</a>
       </th>
       <th>
-        ❍ <br> ✰
+        🞅 <br> ❍ <br> ✰
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
           <sub>docker.sock-proxy</sub>
         </a>
@@ -81,6 +85,8 @@
         </a>
       </th>
       <td align='center'>
+        <code><sub>2.2.0</sub></code>
+        <br>
         <code><sub>2.2</sub></code>
         <br>
         <code><sub>v1.25.0</sub></code>
@@ -89,6 +95,10 @@
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
