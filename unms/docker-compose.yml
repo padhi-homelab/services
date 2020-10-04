@@ -18,8 +18,8 @@ services:
     - redis
 
     networks:
-      - internal
-      - public
+    - internal
+    - public
   
     environment:
       TZ: ${TZ:?}

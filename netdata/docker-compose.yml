@@ -65,6 +65,7 @@ services:
     - /etc/passwd:/host/etc/passwd:ro
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
+    - /var/lib/smartmontools:/var/log/smartd:ro
     - /var/log/fail2ban.log:/var/log/fail2ban.log:ro
 
     cap_add:

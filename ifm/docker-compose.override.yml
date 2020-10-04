@@ -4,7 +4,10 @@ services:
   caddy:
     ports:
     - 10443:10443
+    mem_limit: 32M
   ifm:
+    mem_limit: 64M
+
     volumes:
     - ./config/ifm/auth.htpasswd:/auth.htpasswd:ro    # default password is "password"
   
