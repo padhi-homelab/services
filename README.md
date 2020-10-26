@@ -24,7 +24,7 @@
   <tbody>
     <tr>
       <th>
-        <a href='https://pi-hole.net'>Pi-hole</a>
+        <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>53, 4443</sub>
       </th>
@@ -37,7 +37,7 @@
         </a>
         <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
-          <sub>dnscrypt-proxy</sub>
+          <sub>dnscrypt&#8209;proxy</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/pihole/pihole'>
@@ -91,7 +91,7 @@
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
-          <sub>docker.sock-proxy</sub>
+          <sub>docker.sock&#8209;proxy</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata'>
@@ -327,7 +327,7 @@
       <td align='center'>
         <code><sub>2.2.0</sub></code>
         <br>
-        <code><sub>0.0-git.829d...</sub></code>
+        <code><sub>0.0&#8209;git.829d...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
