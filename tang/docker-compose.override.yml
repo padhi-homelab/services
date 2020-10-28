@@ -1,0 +1,7 @@
+version: '2.4'
+
+services:
+  tang:
+    mem_limit: 32M
+    ports:
+    - 23532:8080

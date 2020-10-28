@@ -1,0 +1,13 @@
+version: '2.4'
+
+services:
+  tang:
+    hostname: tang
+    image: padhihomelab/tang:0.0-git.2ef4acf9d4f2113c6b1789b64a7357af667a3efe
+    restart: unless-stopped
+
+    volumes:
+    - ./data/tang/db:/home/user/db:rw
+
+    environment:
+      UID: ${USER_ID:?}

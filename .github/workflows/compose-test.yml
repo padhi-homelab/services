@@ -51,6 +51,29 @@ jobs:
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
 
+  test_netdata:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up --no-override netdata
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 10s
+      -
+        name: "Service: Test"
+        run: |
+          cd netdata
+          REPLY="$(docker-compose exec -T netdata netdatacli ping)"
+          [[ "$REPLY" == "pong" ]] || exit 1
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || exit 1
+
   test_pihole:
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +97,7 @@ jobs:
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
 
-  test_netdata:
+  test_tang:
     runs-on: ubuntu-latest
     steps:
       -
@@ -83,18 +106,16 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override netdata
+          ./service.sh up --no-override tang
       -
         name: "Service: Wait"
         run: |
-          sleep 10s
+          sleep 60s
       -
         name: "Service: Test"
         run: |
-          cd netdata
-          REPLY="$(docker-compose exec -T netdata netdatacli ping)"
-          [[ "$REPLY" == "pong" ]] || exit 1
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          cd tang
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
           [[ "$REPLY" == '"healthy"' ]] || exit 1
 
   test_unifi:

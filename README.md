@@ -24,12 +24,144 @@
   <tbody>
     <tr>
       <th>
+        <a href='https://www.home-assistant.io/hassio/'>HAss</a>
+        <br>
+        <sub>8123</sub>
+      </th>
+      <th>
+        C
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/homeassistant/home-assistant/'>
+          <sub>hass</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.114.4</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://github.com/misterunknown/ifm//'>IFM</a>
+        <br>
+        <sub>10443</sub>
+      </th>
+      <th>
+        C <br> A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/ifm/'>
+          <sub>ifm</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.2.0</sub></code>
+        <br>
+        <code><sub>0.0&#8209;git.829d...</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.netdata.cloud'>Netdata</a>
+        <br>
+        <sub>1234</sub>
+      </th>
+      <th>
+        C <br> B <br> A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
+          <sub>docker.sock&#8209;proxy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/netdata'>
+          <sub>netdata</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.2.0</sub></code>
+        <br>
+        <code><sub>2.2</sub></code>
+        <br>
+        <code><sub>v1.25.0</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>53, 4443</sub>
       </th>
       <th>
-        🞅 <br> ✰ <br> 🞅
+        C <br> A <br> C
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -78,41 +210,25 @@
     </tr>
     <tr>
       <th>
-        <a href='https://www.netdata.cloud'>Netdata</a>
+        <a href='https://www.home-assistant.io/hassio/'>Tang</a>
         <br>
-        <sub>1234</sub>
+        <sub>23532</sub>
       </th>
       <th>
-        🞅 <br> ❍ <br> ✰
+        A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
-          <sub>docker.sock&#8209;proxy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/netdata'>
-          <sub>netdata</sub>
+        <a href='https://hub.docker.com/r/padhihomelab/tang/'>
+          <sub>tang</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.0</sub></code>
-        <br>
-        <code><sub>2.2</sub></code>
-        <br>
-        <code><sub>v1.25.0</sub></code>
+        <code><sub>0.0&#8209;git.2ef4...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -135,7 +251,7 @@
         <sub>3478, 6789, 8080, 8443, 10001</sub>
       </th>
       <th>
-        🞅 <br> 🅧
+        C <br> X
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mongo'>
@@ -185,7 +301,7 @@
         <sub>80, 81, 443, 2055</sub>
       </th>
       <th>
-        🅧 <br> ❍ <br> 🞅 <br> 🞅 <br> 🞅 <br> ❍ <br> 🅧 <br> 🅧
+        X <br> B <br> C <br> C <br> C <br> B <br> X <br> X
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
@@ -270,86 +386,6 @@
         :heavy_check_mark:
       </td>
     </tr>
-    <tr>
-      <th>
-        <a href='https://www.home-assistant.io/hassio/'>HAss</a>
-        <br>
-        <sub>8123</sub>
-      </th>
-      <th>
-        🞅
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/homeassistant/home-assistant/'>
-          <sub>hass</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>0.114.4</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://github.com/misterunknown/ifm//'>IFM</a>
-        <br>
-        <sub>10443</sub>
-      </th>
-      <th>
-        🞅 <br> ✰
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/ifm/'>
-          <sub>ifm</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.2.0</sub></code>
-        <br>
-        <code><sub>0.0&#8209;git.829d...</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-    </tr>
   </tbody>
 </table>
 
@@ -358,23 +394,23 @@
 <table>
   <tbody>
     <tr>
-      <td>✰</td>
+      <td>A</td>
       <td>Dockerfiles maintained by me using binaries compiled from sources</td>
     </tr>
     <tr>
-      <td>❍</td>
+      <td>B</td>
       <td>Dockerfiles maintained by me, but with pre-compiled binaries from open-source projects</td>
     </tr>
     <tr>
-      <td>🞅</td>
+      <td>C</td>
       <td>Official dockerfiles (and binaries) from open-source projects</td>
     </tr>
     <tr>
-      <td>🞉</td>
+      <td>D</td>
       <td>Third-party dockerfiles devoid of closed-source binaries</td>
     </tr>
     <tr>
-      <td>🅧</td>
+      <td>X</td>
       <td>Dockerfiles containing closed-source binaries (blobs)</td>
     </tr>
   </tbody>
