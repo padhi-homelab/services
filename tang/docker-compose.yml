@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
 
     volumes:
-    - ./data/tang/db:/home/user/db:rw
+    - ./data/tang/data/db:/data/db:rw
 
     environment:
-      UID: ${USER_ID:?}
+      DOCKER_UID: ${USER_ID:?}

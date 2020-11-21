@@ -337,7 +337,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.2.6</sub></code>
+        <code><sub>1.2.7</sub></code>
         <br>
         <code><sub>1.19</sub></code>
         <br>
@@ -351,7 +351,7 @@
         <br>
         <code><sub>3.2.7</sub></code>
         <br>
-        <code><sub>1.2.6</sub></code>
+        <code><sub>1.2.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
