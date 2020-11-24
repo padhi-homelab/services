@@ -12,13 +12,13 @@
 <table>
   <thead>
     <tr>
-      <th colspan='4'>&#x2B9F; Services &nbsp; &nbsp; &nbsp; \ &nbsp; &nbsp; &nbsp; Supported Archs &#x2B9E;</th>
-      <th>amd64</th>
-      <th>i386</th>
-      <th>arm/v6</th>
-      <th>arm/v7</th>
-      <th>arm64</th>
-      <th>ppc64le</th>
+      <th colspan='4' align='center'>╭── &nbsp; Services &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
+      <th align='center'>amd64</th>
+      <th align='center'>386</th>
+      <th align='center'>arm/v6</th>
+      <th align='center'>arm/v7</th>
+      <th align='center'>arm64</th>
+      <th align='center'>ppc64le</th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +29,7 @@
         <sub>8123</sub>
       </th>
       <th>
-        C
+        B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/homeassistant/home-assistant/'>
@@ -65,7 +65,7 @@
         <sub>10443</sub>
       </th>
       <th>
-        C <br> A
+        B <br> A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -77,7 +77,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.0</sub></code>
+        <code><sub>2.2.1</sub></code>
         <br>
         <code><sub>0.0&#8209;git.829d...</sub></code>
       </td>
@@ -109,7 +109,7 @@
         <sub>1234</sub>
       </th>
       <th>
-        C <br> B <br> A
+        B <br> C <br> A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -125,7 +125,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.0</sub></code>
+        <code><sub>2.2.1</sub></code>
         <br>
         <code><sub>2.2</sub></code>
         <br>
@@ -161,7 +161,7 @@
         <sub>53, 4443</sub>
       </th>
       <th>
-        C <br> A <br> C
+        B <br> A <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -177,7 +177,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.0</sub></code>
+        <code><sub>2.2.1</sub></code>
         <br>
         <code><sub>2.0.44</sub></code>
         <br>
@@ -223,7 +223,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.0&#8209;git.2ef4...</sub></code>
+        <code><sub>git.2ef4...d6dc&#8209;p1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -251,7 +251,7 @@
         <sub>3478, 6789, 8080, 8443, 10001</sub>
       </th>
       <th>
-        C <br> X
+        B <br> X
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mongo'>
@@ -265,7 +265,7 @@
       <td align='center'>
         <code><sub>3.6</sub></code>
         <br>
-        <code><sub>6.0.20</sub></code>
+        <code><sub>6.0.23</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -301,7 +301,7 @@
         <sub>80, 81, 443, 2055</sub>
       </th>
       <th>
-        X <br> B <br> C <br> C <br> C <br> B <br> X <br> X
+        X <br> A <br> B <br> B <br> B <br> A <br> X <br> X
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
@@ -395,19 +395,15 @@
   <tbody>
     <tr>
       <td>A</td>
-      <td>Dockerfiles maintained by me using binaries compiled from sources</td>
+      <td>Dockerfiles with application binaries compiled from sources</td>
     </tr>
     <tr>
       <td>B</td>
-      <td>Dockerfiles maintained by me, but with pre-compiled binaries from open-source projects</td>
-    </tr>
-    <tr>
-      <td>C</td>
       <td>Official dockerfiles (and binaries) from open-source projects</td>
     </tr>
     <tr>
-      <td>D</td>
-      <td>Third-party dockerfiles devoid of closed-source binaries</td>
+      <td>C</td>
+      <td>Dockerfiles with pre-compiled binaries from open-source projects</td>
     </tr>
     <tr>
       <td>X</td>
