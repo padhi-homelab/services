@@ -4,7 +4,7 @@ services:
   caddy:
     ports:
     - 1234:8443
-    mem_limit: 32M
+    mem_limit: 50M
   docker.sock-proxy:
     mem_limit: 16M
   netdata:
