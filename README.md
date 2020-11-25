@@ -129,7 +129,7 @@
         <br>
         <code><sub>2.2</sub></code>
         <br>
-        <code><sub>v1.25.0</sub></code>
+        <code><sub>1.26.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
