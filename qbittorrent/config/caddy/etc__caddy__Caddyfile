@@ -1,0 +1,15 @@
+{
+  http_port  8080
+  https_port 8443
+  local_certs
+}
+
+:8443 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  reverse_proxy qbittorrent:8080
+}

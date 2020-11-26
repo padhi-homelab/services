@@ -246,6 +246,58 @@
     </tr>
     <tr>
       <th>
+        <a href='https://www.qbittorrent.org/'>qBittorrent</a>
+        <br>
+        <sub>8443</sub>
+      </th>
+      <th>
+        B <br> A <br> A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
+          <sub>openvpn-client</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/qbittorrent-nox/'>
+          <sub>qbittorrent-nox</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.2.1</sub></code>
+        <br>
+        <code><sub>2.4.9</sub></code>
+        <br>
+        <code><sub>4.3.0.1</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
         <sub>3478, 6789, 8080, 8443, 10001</sub>

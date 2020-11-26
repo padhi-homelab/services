@@ -1,0 +1,57 @@
+version: '2.4'
+
+services:
+  caddy:
+    hostname: caddy
+    image: caddy:2.2.1
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - qbittorrent
+  
+    volumes:
+    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+  openvpn:
+    hostname: openvpn
+    image: padhihomelab/openvpn-client:2.4.9
+
+    volumes:
+    - ./data/openvpn/config:/config:ro
+
+    cap_add:
+    - NET_ADMIN
+    environment:
+      CONFIG_FILE_NAME: 'client.conf'
+      FORWARDED_PORTS: ''
+      TZ: ${TZ:?}
+
+  qbittorrent:
+    #hostname: qbittorrent
+    image: padhihomelab/qbittorrent-nox:4.3.0.1
+    restart: unless-stopped
+
+    depends_on:
+    - openvpn
+
+    network_mode: service:openvpn
+    volumes:
+    - /data/torrents/complete:/data/complete:rw
+    - /data/torrents/incomplete:/data/incomplete:rw
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}

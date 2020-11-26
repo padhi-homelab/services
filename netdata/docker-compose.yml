@@ -33,7 +33,7 @@ services:
       interval: 10s
       timeout: 2s
       retries: 3
-      start_period: 5ss
+      start_period: 5s
 
   docker.sock-proxy:
     hostname: docker.sock-proxy
