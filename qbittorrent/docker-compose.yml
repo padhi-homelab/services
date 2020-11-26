@@ -1,5 +1,8 @@
 version: '2.4'
 
+networks:
+  default:
+
 services:
   caddy:
     hostname: caddy
@@ -9,7 +12,11 @@ services:
 
     depends_on:
     - qbittorrent
+    links:
+    - openvpn:qbittorrent
   
+    networks:
+    - default
     volumes:
     - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
     - ./data/caddy/data:/data:rw
@@ -29,6 +36,8 @@ services:
     hostname: openvpn
     image: padhihomelab/openvpn-client:2.4.9
 
+    networks:
+    - default
     volumes:
     - ./data/openvpn/config:/config:ro
 
@@ -40,7 +49,6 @@ services:
       TZ: ${TZ:?}
 
   qbittorrent:
-    #hostname: qbittorrent
     image: padhihomelab/qbittorrent-nox:4.3.0.1
     restart: unless-stopped
 
@@ -49,6 +57,7 @@ services:
 
     network_mode: service:openvpn
     volumes:
+    - ./data/qbittorrent/config:/config:rw
     - /data/torrents/complete:/data/complete:rw
     - /data/torrents/incomplete:/data/incomplete:rw
 
