@@ -58,8 +58,9 @@ services:
     network_mode: service:openvpn
     volumes:
     - ./data/qbittorrent/config:/config:rw
-    - /data/torrents/complete:/data/complete:rw
-    - /data/torrents/incomplete:/data/incomplete:rw
+    - ./data/qbittorrent/data:/data:rw
+    - /data/torrents/complete:/torrents/complete:rw
+    - /data/torrents/incomplete:/torrents/incomplete:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}
