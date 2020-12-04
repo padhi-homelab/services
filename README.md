@@ -13,12 +13,12 @@
   <thead>
     <tr>
       <th colspan='4' align='center'>╭── &nbsp; Services &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
-      <th align='center'>amd64</th>
-      <th align='center'>386</th>
-      <th align='center'>arm/v6</th>
-      <th align='center'>arm/v7</th>
-      <th align='center'>arm64</th>
-      <th align='center'>ppc64le</th>
+      <th align='center'><sub>amd64</sub></th>
+      <th align='center'><sub>386</sub></th>
+      <th align='center'><sub>arm/v6</sub></th>
+      <th align='center'><sub>arm/v7</sub></th>
+      <th align='center'><sub>arm64</sub></th>
+      <th align='center'><sub>ppc64le</sub></th>
     </tr>
   </thead>
   <tbody>
@@ -27,8 +27,8 @@
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
         <sub>8123</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(HAss)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(HAss)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
@@ -65,8 +65,8 @@
         <a href='https://github.com/misterunknown/ifm//'>IFM</a>
         <br>
         <sub>10443</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28IFM%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(IFM)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28IFM%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(IFM)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B <br> A
@@ -111,8 +111,8 @@
         <a href='https://www.netdata.cloud'>netdata</a>
         <br>
         <sub>1234</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B <br> C <br> A
@@ -165,8 +165,8 @@
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>53, 4443</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(PiHole)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(PiHole)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B <br> A <br> B
@@ -221,8 +221,8 @@
         <a href='https://www.qbittorrent.org/'>qBittorrent</a>
         <br>
         <sub>8443</sub>
-        <br>
-        :warning: <sub>No CI test!</sub> :warning:
+        <hr>
+        :warning: <sub>No CT!</sub> :warning:
       </th>
       <th>
         B <br> A <br> A
@@ -275,8 +275,8 @@
         <a href='https://github.com/latchset/tang'>Tang</a>
         <br>
         <sub>23532</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tang%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tang)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tang%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tang)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         A
@@ -313,8 +313,8 @@
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
         <sub>3478, 6789, 8080, 8443, 10001</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Unifi)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Unifi)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B <br> X
@@ -365,8 +365,8 @@
         <a href='https://unms.com'>UNMS</a>
         <br>
         <sub>80, 81, 443, 2055</sub>
-        <br>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28UNMS%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(UNMS)?logo=github&logoWidth=24&style=flat-square'></img></a>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28UNMS%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(UNMS)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         X <br> A <br> B <br> B <br> B <br> A <br> X <br> X
