@@ -1,4 +1,4 @@
-name: "Docker Compose Test (tang)"
+name: "Docker Compose Test (Tang)"
 
 on:
   pull_request:

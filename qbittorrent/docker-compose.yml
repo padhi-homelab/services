@@ -49,7 +49,7 @@ services:
       TZ: ${TZ:?}
 
   qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.3.0.1
+    image: padhihomelab/qbittorrent-nox:4.3.1
     restart: unless-stopped
 
     depends_on:
@@ -59,8 +59,8 @@ services:
     volumes:
     - ./data/qbittorrent/config:/config:rw
     - ./data/qbittorrent/data:/data:rw
-    - /data/torrents/complete:/torrents/complete:rw
-    - /data/torrents/incomplete:/torrents/incomplete:rw
+    - /torrents/complete:/torrents/complete:rw
+    - /torrents/incomplete:/torrents/incomplete:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}

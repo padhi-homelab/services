@@ -1,4 +1,4 @@
-# Services <a href='https://github.com/padhi-homelab/Services/actions?query=workflow%3A%22Docker+CI+Release%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/Services/Docker%20CI%20Release?logo=github&logoWidth=24&style=flat-square'></img></a>
+# Services
 
 ### Usage
 
@@ -27,6 +27,8 @@
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
         <sub>8123</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(HAss)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         B
@@ -63,6 +65,8 @@
         <a href='https://github.com/misterunknown/ifm//'>IFM</a>
         <br>
         <sub>10443</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28IFM%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(IFM)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         B <br> A
@@ -104,9 +108,11 @@
     </tr>
     <tr>
       <th>
-        <a href='https://www.netdata.cloud'>Netdata</a>
+        <a href='https://www.netdata.cloud'>netdata</a>
         <br>
         <sub>1234</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         B <br> C <br> A
@@ -159,6 +165,8 @@
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>53, 4443</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(PiHole)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         B <br> A <br> B
@@ -181,7 +189,7 @@
         <br>
         <code><sub>2.0.44</sub></code>
         <br>
-        <code><sub>v5.1.2</sub></code>
+        <code><sub>v5.2.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -210,9 +218,65 @@
     </tr>
     <tr>
       <th>
-        <a href='https://www.home-assistant.io/hassio/'>Tang</a>
+        <a href='https://www.qbittorrent.org/'>qBittorrent</a>
+        <br>
+        <sub>8443</sub>
+        <br>
+        :warning: <sub>No CI test!</sub> :warning:
+      </th>
+      <th>
+        B <br> A <br> A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
+          <sub>openvpn-client</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/qbittorrent-nox/'>
+          <sub>qbittorrent-nox</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.2.1</sub></code>
+        <br>
+        <code><sub>2.4.9</sub></code>
+        <br>
+        <code><sub>4.3.1</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://github.com/latchset/tang'>Tang</a>
         <br>
         <sub>23532</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tang%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tang)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         A
@@ -246,61 +310,11 @@
     </tr>
     <tr>
       <th>
-        <a href='https://www.qbittorrent.org/'>qBittorrent</a>
-        <br>
-        <sub>8443</sub>
-      </th>
-      <th>
-        B <br> A <br> A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
-          <sub>openvpn-client</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/qbittorrent-nox/'>
-          <sub>qbittorrent-nox</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.2.1</sub></code>
-        <br>
-        <code><sub>2.4.9</sub></code>
-        <br>
-        <code><sub>4.3.0.1</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
         <sub>3478, 6789, 8080, 8443, 10001</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Unifi)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         B <br> X
@@ -351,6 +365,8 @@
         <a href='https://unms.com'>UNMS</a>
         <br>
         <sub>80, 81, 443, 2055</sub>
+        <br>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28UNMS%29%22'><img align='right' src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(UNMS)?logo=github&logoWidth=24&style=flat-square'></img></a>
       </th>
       <th>
         X <br> A <br> B <br> B <br> B <br> A <br> X <br> X
