@@ -21,7 +21,7 @@ services:
       pihole_net:
         ipv4_address: 10.0.0.2
     volumes:
-    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     - ./data/caddy/data:/data:rw
     - ./data/caddy/config:/config:rw
 
@@ -44,7 +44,7 @@ services:
       pihole_net:
         ipv4_address: 10.0.0.3
     volumes:
-    - ./config/dnscrypt-proxy/etc__dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
+    - ./config/dnscrypt-proxy/etc/dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
 
     environment:
       TZ: ${TZ:?}

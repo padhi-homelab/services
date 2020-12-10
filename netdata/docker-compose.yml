@@ -21,7 +21,7 @@ services:
     - netdata
   
     volumes:
-    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     - ./data/caddy/data:/data:rw
     - ./data/caddy/config:/config:rw
 
@@ -37,7 +37,7 @@ services:
 
   docker.sock-proxy:
     hostname: docker.sock-proxy
-    image: padhihomelab/docker.sock-proxy:2.2
+    image: padhihomelab/docker.sock-proxy:2.3
     restart: unless-stopped
 
     volumes:
@@ -58,8 +58,8 @@ services:
     volumes:
     - netdata_lib:/var/lib/netdata:rw
     - netdata_cache:/var/cache/netdata:rw
-    - ./config/netdata/etc__netdata__charts.d.conf:/etc/netdata/charts.d.conf:ro
-    - ./config/netdata/etc__netdata__netdata.conf:/etc/netdata/netdata.conf:ro
+    - ./config/netdata/etc/netdata/charts.d.conf:/etc/netdata/charts.d.conf:ro
+    - ./config/netdata/etc/netdata/netdata.conf:/etc/netdata/netdata.conf:ro
     - /etc/group:/host/etc/group:ro
     - /etc/os-release:/host/etc/os-release:ro
     - /etc/passwd:/host/etc/passwd:ro

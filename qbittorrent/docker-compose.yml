@@ -18,7 +18,7 @@ services:
     networks:
     - default
     volumes:
-    - ./config/caddy/etc__caddy__Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     - ./data/caddy/data:/data:rw
     - ./data/caddy/config:/config:rw
 

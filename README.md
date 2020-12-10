@@ -133,7 +133,7 @@
       <td align='center'>
         <code><sub>2.2.1</sub></code>
         <br>
-        <code><sub>2.2</sub></code>
+        <code><sub>2.3</sub></code>
         <br>
         <code><sub>1.26.0</sub></code>
       </td>
@@ -457,7 +457,7 @@
   </tbody>
 </table>
 
-### Legend
+#### Legend
 
 <table>
   <tbody>
@@ -479,3 +479,19 @@
     </tr>
   </tbody>
 </table>
+
+### Structure
+
+- directories within `config/`, `data/` and `extra/` should match the service name within `docker-compose.yml`
+- the directory structure within each `config/`, `data/`, `extra/` service subdirectory should match the target root directory hierarchy
+- `config/` contents:
+  - files should be mounted in read-only mode (`:ro`)
+  - should be checked in to this repository
+- `data/` contents:
+  - files should be mounted in read+write mode (`:rw`)
+  - should not be checked in -- present in `.gitignore`
+- `extra/` contents:
+  - files should not be directly used within docker workflow
+  - these are additional files relevant to the services,
+    and the may be requested over internet
+  - should be checked in -- present in `.gitignore`

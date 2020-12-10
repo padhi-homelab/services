@@ -6,5 +6,8 @@ services:
     image: padhihomelab/tang:git.2ef4acf9_git.54bdd6dc-p1
     restart: unless-stopped
 
+    volumes:
+    - ./data/tang/db:/db:rw
+
     environment:
       DOCKER_UID: ${USER_ID:?}
