@@ -3,7 +3,7 @@ version: '2.4'
 services:
   tang:
     hostname: tang
-    image: padhihomelab/tang:git.2ef4acf9_git.54bdd6dc-p1
+    image: padhihomelab/tang:git.75106616_git.54bdd6dc
     restart: unless-stopped
 
     volumes:
