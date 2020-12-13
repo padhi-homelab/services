@@ -4,6 +4,8 @@ volumes:
   mongo_configdb:
   mongo_db:
   unifi_cert:
+  unifi_data:
+  unifi_init:
   unifi_run:
 
 services:
@@ -29,9 +31,9 @@ services:
 
     volumes:
     - unifi_cert:/unifi/cert:rw
-    - unifi_run:/var/run/unifi:rw
     - unifi_data:/unifi/data:rw
     - unifi_init:/unifi/init.d:rw
+    - unifi_run:/var/run/unifi:rw
     - ./data/unifi/unifi/log:/unifi/log:rw
 
     init: true
