@@ -1,0 +1,15 @@
+{
+  http_port  6780
+  https_port 6789
+  local_certs
+}
+
+:6789 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  reverse_proxy nzbget:6789
+}

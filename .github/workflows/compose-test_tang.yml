@@ -22,10 +22,10 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 60s
+          sleep 45s
       -
         name: "Service: Test"
         run: |
           cd tang
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
-          [[ "$REPLY" == '"healthy"' ]] || exit 1
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)

@@ -11,9 +11,9 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - qbittorrent
+    - nzbget
     links:
-    - openvpn:qbittorrent
+    - openvpn:nzbget
   
     networks:
     - default
@@ -48,8 +48,8 @@ services:
       FORWARDED_PORTS: ''
       TZ: ${TZ:?}
 
-  qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.3.1
+  nzbget:
+    image: padhihomelab/nzbget:21.0
     restart: unless-stopped
 
     depends_on:
@@ -57,10 +57,10 @@ services:
 
     network_mode: service:openvpn
     volumes:
-    - ./data/qbittorrent/config:/config:rw
-    - ./data/qbittorrent/data:/data:rw
-    - ./torrents/complete:/torrents/complete:rw
-    - ./torrents/incomplete:/torrents/incomplete:rw
+    - ./data/nzbget/config:/config:rw
+    - ./data/nzbget/data:/data:rw
+    - ./downloads/complete:/downloads/complete:rw
+    - ./downloads/incomplete:/downloads/incomplete:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}

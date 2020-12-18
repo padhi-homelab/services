@@ -28,4 +28,4 @@ jobs:
         run: |
           cd unms
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q unms))"
-          [[ "$REPLY" == '"healthy"' ]] || exit 1
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)

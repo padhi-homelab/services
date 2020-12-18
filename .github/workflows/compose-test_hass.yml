@@ -28,4 +28,4 @@ jobs:
         run: |
           cd hass
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q hass))"
-          [[ "$REPLY" == '"healthy"' ]] || exit 1
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
