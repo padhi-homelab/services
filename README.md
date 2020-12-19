@@ -89,7 +89,7 @@
         <br>
         <code><sub>2.3</sub></code>
         <br>
-        <code><sub>1.26.0</sub></code>
+        <code><sub>1.28.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -494,12 +494,12 @@
 - the directory structure within each `config/`, `data/`, `extra/` service subdirectory should match the target root directory hierarchy
 - `config/` contents:
   - files should be mounted in read-only mode (`:ro`)
-  - should be checked in to this repository
+  - _should_ be checked in
 - `data/` contents:
   - files should be mounted in read+write mode (`:rw`)
-  - should not be checked in -- present in `.gitignore`
+  - should _not_ be checked in -- present in `.gitignore`
 - `extra/` contents:
-  - files should not be directly used within docker workflow
+  - files should _not_ be directly used within docker workflow
   - these are additional files relevant to the services,
-    and the may be requested over internet
-  - should be checked in -- present in `.gitignore`
+    and may be requested over the internet
+  - _should_ be checked in

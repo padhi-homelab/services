@@ -49,7 +49,7 @@ services:
 
   netdata:
     hostname: ${HOST_NAME:?}
-    image: padhihomelab/netdata:1.26.0
+    image: padhihomelab/netdata:1.28.0
     restart: unless-stopped
 
     depends_on:
