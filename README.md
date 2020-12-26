@@ -197,7 +197,7 @@
         <br>
         <code><sub>2.0.44</sub></code>
         <br>
-        <code><sub>v5.2.1</sub></code>
+        <code><sub>v5.2.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -366,100 +366,6 @@
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://unms.com'>UNMS</a>
-        <br>
-        <sub>80, 81, 443, 2055</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28UNMS%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(UNMS)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        X <br> A <br> B <br> B <br> B <br> A <br> X <br> X
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
-          <sub>netflow</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
-          <sub>nginx</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/postgres'>
-          <sub>postgres</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/rabbitmq'>
-          <sub>rabbitmq</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/redis'>
-          <sub>redis</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
-          <sub>siridb</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/unms/tags'>
-          <sub>ucrm</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/unms'>
-          <sub>unms</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>1.2.7</sub></code>
-        <br>
-        <code><sub>1.19</sub></code>
-        <br>
-        <code><sub>9.6</sub></code>
-        <br>
-        <code><sub>3.8</sub></code>
-        <br>
-        <code><sub>5.0</sub></code>
-        <br>
-        <code><sub>2.0.38</sub></code>
-        <br>
-        <code><sub>3.2.7</sub></code>
-        <br>
-        <code><sub>1.2.7</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
       </td>
     </tr>
   </tbody>
