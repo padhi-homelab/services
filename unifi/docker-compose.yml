@@ -23,7 +23,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: padhihomelab/unifi:6.0.41
+    image: padhihomelab/unifi:6.0.43
     restart: unless-stopped
 
     depends_on:
