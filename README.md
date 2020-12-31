@@ -287,14 +287,20 @@
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Radarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Radarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        C
+        B <br> C
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
           <sub>radarr</sub>
         </a>
       </th>
       <td align='center'>
+        <code><sub>2.2.1</sub></code>
+        <br>
         <code><sub>3.0.1.4259</sub></code>
       </td>
       <td align='center'>
@@ -325,14 +331,20 @@
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Sonarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Sonarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        C
+        B <br> C
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/sonarr/'>
           <sub>sonarr</sub>
         </a>
       </th>
       <td align='center'>
+        <code><sub>2.2.1</sub></code>
+        <br>
         <code><sub>3.0.4.1042</sub></code>
       </td>
       <td align='center'>

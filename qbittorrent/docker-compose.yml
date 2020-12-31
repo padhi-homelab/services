@@ -59,8 +59,8 @@ services:
     volumes:
     - ./data/qbittorrent/config:/config:rw
     - ./data/qbittorrent/data:/data:rw
-    - ./torrents/complete:/torrents/complete:rw
-    - ./torrents/incomplete:/torrents/incomplete:rw
+    - ./data/qbittorrent/torrents/complete:/torrents/complete:rw
+    - ./data/qbittorrent/torrents/incomplete:/torrents/incomplete:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}

@@ -22,7 +22,7 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 45s
+          sleep 60s
       -
         name: "Service: Test"
         run: |

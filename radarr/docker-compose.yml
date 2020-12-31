@@ -34,8 +34,8 @@ services:
 
     volumes:
     - ./data/radarr/config:/config:rw
-    - ./downloads:/downloads:rw
-    - ./movies:/movies:rw
+    - ./data/radarr/downloads:/downloads:rw
+    - ./data/radarr/movies:/movies:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}

@@ -34,8 +34,8 @@ services:
 
     volumes:
     - ./data/sonarr/config:/config:rw
-    - ./downloads:/downloads:rw
-    - ./movies:/movies:rw
+    - ./data/sonarr/downloads:/downloads:rw
+    - ./data/sonarr/tv:/tv:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}
