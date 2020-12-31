@@ -1,0 +1,15 @@
+{
+  http_port  7870
+  https_port 7878
+  local_certs
+}
+
+:7878 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  reverse_proxy radarr:7878
+}

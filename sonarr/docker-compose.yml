@@ -1,0 +1,42 @@
+version: '2.4'
+
+networks:
+  default:
+
+services:
+  caddy:
+    hostname: caddy
+    image: caddy:2.2.1
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - sonarr
+  
+    volumes:
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+  sonarr:
+    image: padhihomelab/sonarr:3.0.4.1042
+    restart: unless-stopped
+
+    volumes:
+    - ./data/sonarr/config:/config:rw
+    - ./downloads:/downloads:rw
+    - ./movies:/movies:rw
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}

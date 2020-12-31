@@ -1,0 +1,15 @@
+{
+  http_port  8980
+  https_port 8989
+  local_certs
+}
+
+:8989 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  reverse_proxy sonarr:8989
+}
