@@ -1,0 +1,8 @@
+{
+  "Port": 9117,
+  "AllowExternal": true,
+  "BlackholeDir": "/downloads",
+  "UpdateDisabled": true,
+  "UpdatePrerelease": false,
+  "BasePathOverride": "/jackett"
+}

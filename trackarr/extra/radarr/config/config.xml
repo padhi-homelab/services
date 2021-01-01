@@ -1,0 +1,5 @@
+<Config>
+  <EnableSsl>False</EnableSsl>
+  <Port>7878</Port>
+  <UrlBase>/radarr</UrlBase>
+</Config>

@@ -1,7 +1,0 @@
-version: '2.4'
-
-services:
-  caddy:
-    ports:
-    - 8989:8989
-    mem_limit: 64M

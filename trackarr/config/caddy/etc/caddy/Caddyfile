@@ -1,0 +1,21 @@
+{
+  http_port 8080
+  https_port 8443
+  local_certs
+}
+
+:8443 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  redir /jackett /jackett/ 308
+  redir /radarr  /radarr/  308
+  redir /sonarr  /sonarr/  308
+
+  reverse_proxy /jackett/* jackett:9117
+  reverse_proxy /radarr/*  radarr:7878
+  reverse_proxy /sonarr/*  sonarr:8989
+}

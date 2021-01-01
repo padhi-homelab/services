@@ -1,0 +1,5 @@
+<Config>
+  <EnableSsl>False</EnableSsl>
+  <Port>8989</Port>
+  <UrlBase>/sonarr</UrlBase>
+</Config>

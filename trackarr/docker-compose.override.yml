@@ -3,5 +3,5 @@ version: '2.4'
 services:
   caddy:
     ports:
-    - 7878:7878
-    mem_limit: 64M
+    - 9443:8443
+    mem_limit: 128M
