@@ -10,7 +10,7 @@ networks:
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.2.1
+    image: caddy:2.3.0
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -37,7 +37,7 @@ services:
 
   dnscrypt-proxy:
     hostname: dnscrypt-proxy
-    image: padhihomelab/dnscrypt-proxy:2.0.44
+    image: padhihomelab/dnscrypt-proxy:2.0.45
     restart: unless-stopped
 
     networks:

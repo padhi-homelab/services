@@ -85,7 +85,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.1</sub></code>
+        <code><sub>2.3.0</sub></code>
         <br>
         <code><sub>2.3</sub></code>
         <br>
@@ -139,7 +139,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.1</sub></code>
+        <code><sub>2.3.0</sub></code>
         <br>
         <code><sub>2.4.9</sub></code>
         <br>
@@ -193,11 +193,11 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.1</sub></code>
+        <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.0.44</sub></code>
+        <code><sub>2.0.45</sub></code>
         <br>
-        <code><sub>v5.2.2</sub></code>
+        <code><sub>5.2.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -249,7 +249,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.1</sub></code>
+        <code><sub>2.3.0</sub></code>
         <br>
         <code><sub>2.4.9</sub></code>
         <br>
@@ -307,7 +307,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.2.1</sub></code>
+        <code><sub>2.3.0</sub></code>
         <br>
         <code><sub>0.17.168</sub></code>
         <br>
@@ -317,12 +317,6 @@
       </td>
       <td align='center'>
         :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
@@ -352,12 +346,6 @@
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
