@@ -32,7 +32,7 @@ services:
 
   jackett:
     hostname: jackett
-    image: padhihomelab/jackett:0.17.168
+    image: padhihomelab/jackett:0.17.546
     restart: unless-stopped
 
     volumes:
@@ -45,7 +45,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:3.0.1.4259
+    image: padhihomelab/radarr:3.0.2.4552
     restart: unless-stopped
 
     volumes:
@@ -59,7 +59,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:3.0.4.1042
+    image: padhihomelab/sonarr:3.0.4.1129
     restart: unless-stopped
 
     volumes:

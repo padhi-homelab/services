@@ -120,7 +120,7 @@
         <br>
         <sub>6789</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28qBittorrent%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(qBittorrent)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28nzbget%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(nzbget)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B <br> A <br> A
@@ -141,7 +141,7 @@
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.4.9</sub></code>
+        <code><sub>2.5.0</sub></code>
         <br>
         <code><sub>21.0</sub></code>
       </td>
@@ -197,7 +197,7 @@
         <br>
         <code><sub>2.0.45</sub></code>
         <br>
-        <code><sub>5.2.2</sub></code>
+        <code><sub>5.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -251,9 +251,9 @@
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.4.9</sub></code>
+        <code><sub>2.5.0</sub></code>
         <br>
-        <code><sub>4.3.1</sub></code>
+        <code><sub>4.3.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -309,11 +309,11 @@
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>0.17.168</sub></code>
+        <code><sub>0.17.546</sub></code>
         <br>
-        <code><sub>3.0.1.4259</sub></code>
+        <code><sub>3.0.2.4552</sub></code>
         <br>
-        <code><sub>3.0.4.1042</sub></code>
+        <code><sub>3.0.4.1129</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -419,7 +419,7 @@
       <td align='center'>
         <code><sub>4.2.9</sub></code>
         <br>
-        <code><sub>6.0.43</sub></code>
+        <code><sub>6.0.45</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
