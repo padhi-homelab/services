@@ -253,7 +253,7 @@
         <br>
         <code><sub>2.5.0</sub></code>
         <br>
-        <code><sub>4.3.3</sub></code>
+        <code><sub>4.3.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
