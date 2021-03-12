@@ -89,7 +89,7 @@
         <br>
         <code><sub>2.3</sub></code>
         <br>
-        <code><sub>1.28.0</sub></code>
+        <code><sub>1.29.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -309,11 +309,11 @@
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>0.17.546</sub></code>
+        <code><sub>0.17.671</sub></code>
         <br>
         <code><sub>3.0.2.4552</sub></code>
         <br>
-        <code><sub>3.0.4.1129</sub></code>
+        <code><sub>3.0.4.1141</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -375,7 +375,7 @@
         </a>
       </th>
       <td align='center'>
-        <code><sub>git.7510...</sub></code>
+        <code><sub>git.95d4...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
