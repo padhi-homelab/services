@@ -9,7 +9,7 @@ EXIT_CODE_COMPOSE_NOT_FOUND=-2
 EXIT_CODE_SERVICE_NOT_FOUND=-3
 
 EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=1
-EXIT_CODE_SERVICE_UP_FAILURE=2
+EXIT_CODE_SERVICE_VERB_FAILURE=2
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
 usage() {
@@ -18,9 +18,10 @@ usage() {
 Usage: $0 <verb> [flags] <svc_dir_name> [<svc_dir_name> ...]
 
 Verbs:
-  up                        Start a service
+  clean                     Delete \`service/data\`
   down                      Stop a service
-  clean                     Clean all `data`
+  restart                   Restart a service
+  up                        Start a service
 
 Flags:
   [--ignore-failures, -i]   Ignore failing services and continue
@@ -35,15 +36,12 @@ Services:
 [ $# -gt 0 ] || usage
 
 VERB="$1"
-shift
-[ "$VERB" == "up" ] || [ "$VERB" == "down" ] || \
-  [ "$VERB" == "clean" ] || \
+[ "$VERB" == "clean" ] || \
+[ "$VERB" == "down" ] || \
+[ "$VERB" == "up" ] || \
+[ "$VERB" == "restart" ] || \
   usage "Unknown verb: $VERB"
-
-if [ "$VERB" == "clean" ]; then
-  rm -rf "${SELF_DIR}"/*/data
-  exit 0
-fi
+shift
 
 IGNORE_FAILURES="no"
 NO_OVERRIDE="no"
@@ -67,7 +65,8 @@ while getopts ':ios' OPTION ; do
   case "$OPTION" in
     "i" ) IGNORE_FAILURES="yes" ;;
     "o" ) NO_OVERRIDE="yes"
-          [ "$VERB" == "down" ] && \
+          [ "$VERB" == "up" ] || \
+          [ "$VERB" == "restart" ] || \
             echo "[!] '-$OPTARG' is ignored with '$VERB' verb."
           ;;
     "s" ) NO_HOOK_SCRIPTS="yes" ;;
@@ -82,46 +81,59 @@ if ! command -v docker-compose &> /dev/null; then
     exit $EXIT_CODE_COMPOSE_NOT_FOUND
 fi
 
-for svc in "$@"; do
-  echo -e "\n[+] Executing '$VERB' on $svc ..."
-  if ! [ -d "$SELF_DIR/$svc" ]; then
-    echo "[X] ERROR: "$SELF_DIR/$svc" does not exist!" >&2
-    if [ "$IGNORE_FAILURES" == "yes" ]; then
-      continue
-    else
-      exit $EXIT_CODE_SERVICE_NOT_FOUND
-    fi
-  fi
-  cd "$SELF_DIR/$svc"
-
-  if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
-    if [ -f "docker-compose.$VERB.pre_hook.sh" ]; then
-      ./docker-compose.$VERB.pre_hook.sh
-      if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-        exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+SERVICES="$@"
+do_simple_verb() {
+  local SIMPLE_VERB=$1
+  for svc in "$SERVICES"; do
+    echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
+    if ! [ -d "$SELF_DIR/$svc" ]; then
+      echo "[X] ERROR: "$SELF_DIR/$svc" does not exist!" >&2
+      if [ "$IGNORE_FAILURES" == "yes" ]; then
+        continue
+      else
+        exit $EXIT_CODE_SERVICE_NOT_FOUND
       fi
     fi
-  fi
+    cd "$SELF_DIR/$svc"
 
-  if [ "$VERB" == "up" ]; then
-    if [ "$NO_OVERRIDE" == "yes" ]; then
-      docker-compose -f docker-compose.yml up -d
-    else
-      docker-compose up -d
-    fi
-  else
-    docker-compose $VERB
-  fi
-  if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-    exit $EXIT_CODE_SERVICE_UP_FAILURE
-  fi
-
-  if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
-    if [ -f "docker-compose.$VERB.post_hook.sh" ]; then
-      ./docker-compose.$VERB.post_hook.sh
-      if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-        exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+    if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
+      if [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ]; then
+        ./docker-compose.$SIMPLE_VERB.pre_hook.sh
+        if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
+          exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+        fi
       fi
     fi
-  fi
-done
+
+    if [ "$SIMPLE_VERB" == "up" ]; then
+      if [ "$NO_OVERRIDE" == "yes" ]; then
+        docker-compose -f docker-compose.yml up -d
+      else
+        docker-compose up -d
+      fi
+    elif [ "$SIMPLE_VERB" == "down" ]; then
+      docker-compose down
+    else
+      rm -rf data
+    fi
+    if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
+      exit $EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE
+    fi
+
+    if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
+      if [ -f "docker-compose.$SIMPLE_VERB.post_hook.sh" ]; then
+        ./docker-compose.$SIMPLE_VERB.post_hook.sh
+        if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
+          exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+        fi
+      fi
+    fi
+  done
+}
+
+if [ "$VERB" == "restart" ]; then
+  do_simple_verb down
+  do_simple_verb up
+else
+  do_simple_verb $VERB
+fi

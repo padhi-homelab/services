@@ -2,9 +2,23 @@
 
 ### Usage
 
-```bash
-./service.sh up <svc_dir_name> [<svc_dir_name> ...]
-./service.sh down <svc_dir_name> [<svc_dir_name> ...]
+```console
+$ ./service.sh 
+Usage: ./service.sh <verb> [flags] <svc_dir_name> [<svc_dir_name> ...]
+
+Verbs:
+  clean                     Delete `service/data`
+  down                      Stop a service
+  restart                   Restart a service
+  up                        Start a service
+
+Flags:
+  [--ignore-failures, -i]   Ignore failing services and continue
+  [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
+  [--no-override, -o]       Ignore docker-compose.override.yml file
+
+Services:
+  hass  netdata  nzbget  pihole  qbittorrent  tang	trackarr  unifi
 ```
 
 ### Arch. Support
