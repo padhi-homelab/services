@@ -44,7 +44,7 @@ services:
     cap_add:
     - NET_ADMIN
     environment:
-      CONFIG_FILE_NAME: 'mullvad_ca_all.conf'
+      CONFIG_FILE_NAME: 'client.conf'
       TZ: ${TZ:?}
 
   ytdl:
