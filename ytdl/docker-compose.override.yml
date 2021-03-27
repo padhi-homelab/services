@@ -1,0 +1,7 @@
+version: '2.4'
+
+services:
+  caddy:
+    ports:
+    - 10443:10443
+    mem_limit: 64M

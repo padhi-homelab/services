@@ -1,0 +1,67 @@
+version: '2.4'
+
+networks:
+  default:
+
+services:
+  caddy:
+    hostname: caddy
+    image: caddy:2.3.0
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - ytdl
+    links:
+    - openvpn:ytdl
+  
+    networks:
+    - default
+    volumes:
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+  openvpn:
+    hostname: openvpn
+    image: padhihomelab/openvpn-client:2.4.9
+
+    networks:
+    - default
+    volumes:
+    - ./data/openvpn/config:/config:ro
+
+    cap_add:
+    - NET_ADMIN
+    environment:
+      CONFIG_FILE_NAME: 'mullvad_ca_all.conf'
+      TZ: ${TZ:?}
+
+  ytdl:
+    image: padhihomelab/ytdl:git.addd54fe
+    restart: unless-stopped
+
+    depends_on:
+    - openvpn
+
+    network_mode: service:openvpn
+    volumes:
+    - ./data/ytdl/config:/config:rw
+    - ./data/ytdl/users:/users:rw
+    - /downloads/AUDIO:/audio:rw
+    - /downloads/SUBS:/subs:rw
+    - /downloads/VIDEO:/video:rw
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}

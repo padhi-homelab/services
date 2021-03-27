@@ -81,10 +81,10 @@ if ! command -v docker-compose &> /dev/null; then
     exit $EXIT_CODE_COMPOSE_NOT_FOUND
 fi
 
-SERVICES="$@"
+SERVICES=("$@")
 do_simple_verb() {
   local SIMPLE_VERB=$1
-  for svc in "$SERVICES"; do
+  for svc in "${SERVICES[@]}"; do
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
     if ! [ -d "$SELF_DIR/$svc" ]; then
       echo "[X] ERROR: "$SELF_DIR/$svc" does not exist!" >&2
