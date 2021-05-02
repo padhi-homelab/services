@@ -14,11 +14,13 @@ EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
 usage() {
   if [ $# -gt 0 ]; then echo -e "\nERROR: $1" >&2 ; fi
+  services=$(\ls -Cd */)
+  services=$(echo $services | sed 's/\///g')
   echo -en "
-Usage: $0 <verb> [flags] <svc_dir_name> [<svc_dir_name> ...]
+Usage: $0 <verb> [flags] <svc_dir> [<svc_dir> ...]
 
 Verbs:
-  clean                     Delete \`service/data\`
+  clean                     Delete \`<svc_dir>/data\`
   down                      Stop a service
   restart                   Restart a service
   up                        Start a service
@@ -29,7 +31,7 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  `\\ls -Cd */ | sed 's/\///g'`
+  $services
 " >&2 ; exit $EXIT_CODE_USAGE_ERROR
 }
 
@@ -87,7 +89,7 @@ do_simple_verb() {
   for svc in "${SERVICES[@]}"; do
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
     if ! [ -d "$SELF_DIR/$svc" ]; then
-      echo "[X] ERROR: "$SELF_DIR/$svc" does not exist!" >&2
+      echo "[X] ERROR: "$SELF_DIR/$svc" is not a directory!" >&2
       if [ "$IGNORE_FAILURES" == "yes" ]; then
         continue
       else

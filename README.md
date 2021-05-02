@@ -18,7 +18,7 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  hass  netdata  nzbget  pihole  qbittorrent  tang	trackarr  unifi
+  hass nzbget qbittorrent trackarr ytdl netdata pihole tang unifi
 ```
 
 ### Arch. Support
@@ -103,7 +103,7 @@ Services:
         <br>
         <code><sub>2.3</sub></code>
         <br>
-        <code><sub>1.29.3</sub></code>
+        <code><sub>1.30.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -155,7 +155,7 @@ Services:
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.5.0</sub></code>
+        <code><sub>2.5.1</sub></code>
         <br>
         <code><sub>21.0</sub></code>
       </td>
@@ -211,7 +211,7 @@ Services:
         <br>
         <code><sub>2.0.45</sub></code>
         <br>
-        <code><sub>5.7</sub></code>
+        <code><sub>5.8</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -265,7 +265,7 @@ Services:
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.5.0</sub></code>
+        <code><sub>2.5.1</sub></code>
         <br>
         <code><sub>4.3.1</sub></code>
       </td>
@@ -323,11 +323,11 @@ Services:
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>0.17.790</sub></code>
+        <code><sub>0.17.966</sub></code>
         <br>
         <code><sub>3.0.2.4552</sub></code>
         <br>
-        <code><sub>3.0.5.1143</sub></code>
+        <code><sub>3.0.6.1196</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -489,9 +489,9 @@ Services:
       <td align='center'>
         <code><sub>2.3.0</sub></code>
         <br>
-        <code><sub>2.3</sub></code>
+        <code><sub>2.5.1</sub></code>
         <br>
-        <code><sub>git.addd...</sub></code>
+        <code><sub>git.6d31...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

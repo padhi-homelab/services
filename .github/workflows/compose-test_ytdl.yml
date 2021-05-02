@@ -1,0 +1,41 @@
+name: "Docker Compose Test (ytdl)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Service: Setup"
+        run: |
+          mkdir -p ytdl/data/openvpn/config
+          wget "https://www.vpngate.net/common/openvpn_download.aspx?sid=1609387551919&tcp=1&host=219.100.37.63&port=443&hid=15094317&/vpngate_219.100.37.63_tcp_443.ovpn" \
+               -O ytdl/data/openvpn/config/client.conf
+          echo -e "\nauth-user-pass login.txt" >> ytdl/data/openvpn/config/client.conf
+          echo -e "vpn\nvpn" > ytdl/data/openvpn/config/login.txt
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up --no-override ytdl
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 45s
+      -
+        name: "Service: Test"
+        run: |
+          cd ytdl
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q ytdl))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
