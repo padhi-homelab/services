@@ -211,7 +211,7 @@ Services:
         <br>
         <code><sub>2.0.45</sub></code>
         <br>
-        <code><sub>5.8</sub></code>
+        <code><sub>5.8.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -491,7 +491,7 @@ Services:
         <br>
         <code><sub>2.5.1</sub></code>
         <br>
-        <code><sub>git.6d31...</sub></code>
+        <code><sub>git.addd...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
