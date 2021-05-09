@@ -308,7 +308,7 @@ Services:
           <sub>caddy</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
+        <a href='https://hub.docker.com/r/padhihomelab/jackett/'>
           <sub>jackett</sub>
         </a>
         <br>
@@ -316,7 +316,7 @@ Services:
           <sub>radarr</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
+        <a href='https://hub.docker.com/r/padhihomelab/sonarr/'>
           <sub>sonarr</sub>
         </a>
       </th>
@@ -325,7 +325,7 @@ Services:
         <br>
         <code><sub>0.17.966</sub></code>
         <br>
-        <code><sub>3.0.2.4552</sub></code>
+        <code><sub>3.1.1.4954</sub></code>
         <br>
         <code><sub>3.0.6.1196</sub></code>
       </td>
