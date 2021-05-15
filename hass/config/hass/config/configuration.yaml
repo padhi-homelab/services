@@ -1,24 +1,4 @@
-config:
-frontend:
-history:
-input_boolean:
-input_datetime:
-input_number:
-input_text:
-input_select:
-logbook:
-map:
-mobile_app:
-person:
-ssdp:
-sun:
-system_health:
-zeroconf:
-zone:
-
-# Text to speech
-tts:
-  - platform: google_translate
+default_config:
 
 group: !include groups.yaml
 automation: !include automations.yaml
