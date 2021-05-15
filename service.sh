@@ -12,17 +12,16 @@ EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=1
 EXIT_CODE_SERVICE_VERB_FAILURE=2
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
-usage() {
+usage () {
   if [ $# -gt 0 ]; then echo -e "\nERROR: $1" >&2 ; fi
   services=$(\ls -Cd */)
   services=$(echo $services | sed 's/\///g')
   echo -en "
-Usage: $0 <verb> [flags] <svc_dir> [<svc_dir> ...]
+Usage: $0 <verb>[,<verb>,...] [flags] <svc_dir> [<svc_dir> ...]
 
 Verbs:
   clean                     Delete \`<svc_dir>/data\`
   down                      Stop a service
-  restart                   Restart a service
   up                        Start a service
 
 Flags:
@@ -37,12 +36,15 @@ Services:
 
 [ $# -gt 0 ] || usage
 
-VERB="$1"
-[ "$VERB" == "clean" ] || \
-[ "$VERB" == "down" ] || \
-[ "$VERB" == "up" ] || \
-[ "$VERB" == "restart" ] || \
-  usage "Unknown verb: $VERB"
+VERBS="$1"
+VERBS="${VERBS//,/ }"
+
+for VERB in $VERBS; do
+  [ "$VERB" == "clean" ] || \
+  [ "$VERB" == "down" ] || \
+  [ "$VERB" == "up" ] || \
+    usage "Unknown verb: $VERB"
+done
 shift
 
 IGNORE_FAILURES="no"
@@ -68,7 +70,6 @@ while getopts ':ios' OPTION ; do
     "i" ) IGNORE_FAILURES="yes" ;;
     "o" ) NO_OVERRIDE="yes"
           [ "$VERB" == "up" ] || \
-          [ "$VERB" == "restart" ] || \
             echo "[!] '-$OPTARG' is ignored with '$VERB' verb."
           ;;
     "s" ) NO_HOOK_SCRIPTS="yes" ;;
@@ -84,7 +85,7 @@ if ! command -v docker-compose &> /dev/null; then
 fi
 
 SERVICES=("$@")
-do_simple_verb() {
+perform () {
   local SIMPLE_VERB=$1
   for svc in "${SERVICES[@]}"; do
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
@@ -133,9 +134,9 @@ do_simple_verb() {
   done
 }
 
-if [ "$VERB" == "restart" ]; then
-  do_simple_verb down
-  do_simple_verb up
-else
-  do_simple_verb $VERB
-fi
+printf '%.0s-' {1..80}
+for VERB in $VERBS; do
+  perform $VERB
+  printf '%.0s-' {1..80}
+done
+echo
