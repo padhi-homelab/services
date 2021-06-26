@@ -3,7 +3,7 @@ version: '2.4'
 services:
   hass:
     hostname: hass
-    image: homeassistant/home-assistant:2021.5.4
+    image: homeassistant/home-assistant:2021.6.6
     restart: unless-stopped
 
     volumes:

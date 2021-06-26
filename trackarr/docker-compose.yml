@@ -6,7 +6,7 @@ networks:
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.3.0
+    image: caddy:2.4.3
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -32,7 +32,7 @@ services:
 
   jackett:
     hostname: jackett
-    image: padhihomelab/jackett:0.17.966
+    image: padhihomelab/jackett:0.18.379
     restart: unless-stopped
 
     volumes:
@@ -45,7 +45,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:3.1.1.4954
+    image: padhihomelab/radarr:3.2.2.5080
     restart: unless-stopped
 
     volumes:
@@ -59,7 +59,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:3.0.6.1196
+    image: padhihomelab/sonarr:3.0.6.1266
     restart: unless-stopped
 
     volumes:
