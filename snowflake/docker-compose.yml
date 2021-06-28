@@ -1,0 +1,33 @@
+version: '2.4'
+
+networks:
+  default:
+
+services:
+  openvpn:
+    hostname: openvpn
+    image: padhihomelab/openvpn-client:2.5.2
+
+    networks:
+    - default
+    volumes:
+    - ./data/openvpn/config:/config:ro
+
+    cap_add:
+    - NET_ADMIN
+    environment:
+      CONFIG_FILE_NAME: 'client.conf'
+      TZ: ${TZ:?}
+
+  snowflake:
+    image: padhihomelab/snowflake:1.0.0
+    restart: unless-stopped
+
+    depends_on:
+    - openvpn
+
+    network_mode: service:openvpn
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}
