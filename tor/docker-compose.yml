@@ -32,6 +32,6 @@ services:
       - ./data/tor/var/lib/tor:/var/lib/tor:rw
       - ./data/tor/var/log/tor:/var/log/tor:rw
   
-      environment:
+    environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}

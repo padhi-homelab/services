@@ -1,11 +1,6 @@
 version: '2.4'
 
 services:
-  caddy:
-    ports:
-    - 6789:8443
-    mem_limit: 64M
   openvpn:
     ports:
     - 5432:5432
-  
