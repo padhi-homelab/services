@@ -46,6 +46,8 @@ services:
     environment:
       CONFIG_FILE_NAME: 'client.conf'
       FORWARDED_PORTS: ''
+      PROXY_USERNAME: 'user'
+      PROXY_PASSWORD: 'pass'
       TZ: ${TZ:?}
 
   qbittorrent:

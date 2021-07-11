@@ -17,6 +17,8 @@ services:
     - NET_ADMIN
     environment:
       CONFIG_FILE_NAME: 'client.conf'
+      PROXY_USERNAME: 'user'
+      PROXY_PASSWORD: 'pass'
       TZ: ${TZ:?}
 
   snowflake:
