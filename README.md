@@ -18,7 +18,7 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  hass nzbget qbittorrent trackarr ytdl netdata pihole tang unifi
+  hass nzbget qbittorrent trackarr ytdl netdata pihole snowflake tang tor unifi
 ```
 
 ### Arch. Support
@@ -267,7 +267,7 @@ Services:
         <br>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>4.3.1</sub></code>
+        <code><sub>4.3.6</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -290,6 +290,10 @@ Services:
       </td>
       <td align='center'>
         :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -370,6 +374,44 @@ Services:
     </tr>
     <tr>
       <th>
+        <a href='https://www.torproject.org'>Tor</a>
+        <br>
+        <sub>-</sub>
+        <!--<hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tor%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tor)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>-->
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/tor/'>
+          <sub>tor</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.4.5.9</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
         Trackarr
         <br>
         <sub>9443</sub>
@@ -399,7 +441,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.3</sub></code>
         <br>
-        <code><sub>0.18.379</sub></code>
+        <code><sub>0.18.410</sub></code>
         <br>
         <code><sub>3.2.2.5080</sub></code>
         <br>
@@ -567,11 +609,11 @@ Services:
     </tr>
     <tr>
       <td>B</td>
-      <td>Official dockerfiles (and binaries) from open-source projects</td>
+      <td>Official open-source Dockerfiles / binaries from package managers</td>
     </tr>
     <tr>
       <td>C</td>
-      <td>Dockerfiles with pre-compiled binaries from open-source projects</td>
+      <td>Dockerfiles with third-party binaries who publish full source code</td>
     </tr>
     <tr>
       <td>X</td>
