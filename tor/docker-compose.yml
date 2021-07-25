@@ -35,6 +35,10 @@ services:
 
     network_mode: service:openvpn
     volumes:
+      # In future, we should be able to just do:
+      #- ./config/tor/etc/docker-entrypoint.d/user:/etc/docker-entrypoint.d/user:ro
+      # see: https://github.com/padhi-homelab/docker_alpine-base/issues/17
+      - ./config/tor/etc/docker-entrypoint.d/user/15-wait-for-tunnel.sh:/etc/docker-entrypoint.d/15-wait-for-tunnel.sh:ro
       - ./data/tor/etc/tor:/config:ro
       - ./data/tor/var/lib/tor:/var/lib/tor:rw
       - ./data/tor/var/log/tor:/var/log/tor:rw
