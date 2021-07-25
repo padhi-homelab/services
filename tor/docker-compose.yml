@@ -15,8 +15,12 @@ services:
 
     cap_add:
     - NET_ADMIN
+    sysctls:
+    - net.ipv6.conf.all.disable_ipv6=0
+
     environment:
       CONFIG_FILE_NAME: 'client.conf'
+      ENABLE_IPv6: 1
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
@@ -31,11 +35,12 @@ services:
 
     network_mode: service:openvpn
     volumes:
-      - ./data/tor/etc/tor:/etc/tor:rw
+      - ./data/tor/etc/tor:/config:ro
       - ./data/tor/var/lib/tor:/var/lib/tor:rw
       - ./data/tor/var/log/tor:/var/log/tor:rw
   
     environment:
+      AUTO_IPv6: 1
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}
