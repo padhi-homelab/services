@@ -209,7 +209,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.3</sub></code>
         <br>
-        <code><sub>2.0.45</sub></code>
+        <code><sub>2.1.0</sub></code>
         <br>
         <code><sub>5.8.1</sub></code>
       </td>
@@ -267,7 +267,7 @@ Services:
         <br>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>4.3.6</sub></code>
+        <code><sub>4.3.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -313,7 +313,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.0.0</sub></code>
+        <code><sub>1.1.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -389,7 +389,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.4.5.9</sub></code>
+        <code><sub>0.4.5.10</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -441,7 +441,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.3</sub></code>
         <br>
-        <code><sub>0.18.410</sub></code>
+        <code><sub>0.18.582</sub></code>
         <br>
         <code><sub>3.2.2.5080</sub></code>
         <br>
@@ -571,7 +571,7 @@ Services:
         <br>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>git.addd...</sub></code>
+        <code><sub>git.5321...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

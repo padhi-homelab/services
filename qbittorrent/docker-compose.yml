@@ -51,7 +51,7 @@ services:
       TZ: ${TZ:?}
 
   qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.3.6
+    image: padhihomelab/qbittorrent-nox:4.3.7
     restart: unless-stopped
 
     depends_on:

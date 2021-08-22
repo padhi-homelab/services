@@ -32,7 +32,7 @@ log_file = '/dev/stdout'
 
 cert_refresh_delay = 240
 
-fallback_resolvers = ['9.9.9.9:53', '1.1.1.1:53']
+bootstrap_resolvers = ['9.9.9.9:53', '1.1.1.1:53']
 ignore_system_dns = true
 
 netprobe_timeout = 60

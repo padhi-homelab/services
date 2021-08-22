@@ -27,7 +27,7 @@ services:
       TZ: ${TZ:?}
 
   tor:
-    image: padhihomelab/tor:0.4.5.9
+    image: padhihomelab/tor:0.4.5.10
     restart: unless-stopped
 
     depends_on:
