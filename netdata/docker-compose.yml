@@ -13,7 +13,7 @@ volumes:
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.4.3
+    image: caddy:2.4.5
     restart: unless-stopped
     user: ${USER_ID:?}
 
