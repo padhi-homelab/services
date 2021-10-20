@@ -3,33 +3,35 @@ version: '2.4'
 services:
   mongo:
     hostname: mongo
-    image: mongo:5.0.3
+    image: mongo:4.4.10
     restart: unless-stopped
 
     volumes:
     - ./data/mongo/data/db:/data/db:rw
 
     environment:
+      PUID: ${USER_ID:?}
+      PGID: ${GROUP_ID:?}
       TZ: ${TZ:?}
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:6.4.54
+    image: goofball222/unifi:6.4.54-alpine
     restart: unless-stopped
 
     depends_on:
     - mongo
 
     volumes:
-    - ./data/unifi/unifi/cert:/usr/lib/unifi/cert:rw
-    - ./data/unifi/unifi/data:/usr/lib/unifi/data:rw
-    - ./data/unifi/unifi/logs:/usr/lib/unifi/logs:rw
+    - ./data/unifi/usr/lib/unifi/cert:/usr/lib/unifi/cert:rw
+    - ./data/unifi/usr/lib/unifi/data:/usr/lib/unifi/data:rw
+    - ./data/unifi/usr/lib/unifi/logs:/usr/lib/unifi/logs:rw
 
     environment:
       DB_MONGO_LOCAL: 'false'
       DB_MONGO_URI: mongodb://mongo/unifi
-      DOCKER_UID: ${USER_ID:?}
-      DOCKER_GID: ${GROUP_ID:?}
+      PUID: ${USER_ID:?}
+      PGID: ${GROUP_ID:?}
       STATDB_MONGO_URI: mongodb://mongo/unifi_stat
       UNIFI_DB_NAME: unifi
       TZ: ${TZ:?}
