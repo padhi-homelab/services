@@ -1,44 +1,35 @@
 version: '2.4'
 
-volumes:
-  mongo_configdb:
-  mongo_db:
-  unifi_cert:
-  unifi_data:
-  unifi_init:
-  unifi_run:
-
 services:
   mongo:
     hostname: mongo
-    image: mongo:4.2.9
+    image: mongo:5.0.3
     restart: unless-stopped
 
     volumes:
-    - mongo_configdb:/data/configdb:rw
-    - mongo_db:/data/db:rw
+    - ./data/mongo/data/db:/data/db:rw
 
     environment:
       TZ: ${TZ:?}
 
   unifi:
     hostname: unifi
-    image: padhihomelab/unifi:6.0.45
+    image: goofball222/unifi:6.4.54
     restart: unless-stopped
 
     depends_on:
     - mongo
 
     volumes:
-    - unifi_cert:/unifi/cert:rw
-    - unifi_data:/unifi/data:rw
-    - unifi_init:/unifi/init.d:rw
-    - unifi_run:/var/run/unifi:rw
-    - ./data/unifi/unifi/log:/unifi/log:rw
+    - ./data/unifi/unifi/cert:/usr/lib/unifi/cert:rw
+    - ./data/unifi/unifi/data:/usr/lib/unifi/data:rw
+    - ./data/unifi/unifi/logs:/usr/lib/unifi/logs:rw
 
-    init: true
     environment:
+      DB_MONGO_LOCAL: 'false'
       DB_MONGO_URI: mongodb://mongo/unifi
+      DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
       STATDB_MONGO_URI: mongodb://mongo/unifi_stat
       UNIFI_DB_NAME: unifi
       TZ: ${TZ:?}

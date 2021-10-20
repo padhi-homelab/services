@@ -27,4 +27,5 @@ jobs:
         name: "Service: Test"
         run: |
           cd unifi
-          docker-compose exec -T unifi bash /health.sh
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q unifi))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)

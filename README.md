@@ -155,9 +155,9 @@ Services:
       <td align='center'>
         <code><sub>2.4.5</sub></code>
         <br>
-        <code><sub>2.1.0</sub></code>
+        <code><sub>2.1.1</sub></code>
         <br>
-        <code><sub>5.8.1</sub></code>
+        <code><sub>2021.10</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -179,9 +179,11 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
         <br>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -387,11 +389,11 @@ Services:
       <td align='center'>
         <code><sub>2.4.5</sub></code>
         <br>
-        <code><sub>0.18.582</sub></code>
+        <code><sub>0.18.1025</sub></code>
         <br>
         <code><sub>3.2.2.5080</sub></code>
         <br>
-        <code><sub>3.0.6.1266</sub></code>
+        <code><sub>3.0.6.1342</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -440,7 +442,7 @@ Services:
       <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
-        <sub>3478, 6789, 8080, 8443, 10001</sub>
+        <sub>3478, 8080, 8443, 8880, 8843</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Unifi)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -457,9 +459,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>4.2.9</sub></code>
+        <code><sub>5.0.3</sub></code>
         <br>
-        <code><sub>6.0.45</sub></code>
+        <code><sub>6.4.54</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
