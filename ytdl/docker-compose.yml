@@ -50,7 +50,7 @@ services:
       TZ: ${TZ:?}
 
   ytdl:
-    image: padhihomelab/ytdl:git.53216246
+    image: padhihomelab/ytdl:git.88cc8d0e
     restart: unless-stopped
 
     depends_on:

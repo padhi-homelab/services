@@ -157,7 +157,7 @@ Services:
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
-        <code><sub>2021.10</sub></code>
+        <code><sub>2021.10.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -389,7 +389,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.5</sub></code>
         <br>
-        <code><sub>0.18.1025</sub></code>
+        <code><sub>0.19.50</sub></code>
         <br>
         <code><sub>3.2.2.5080</sub></code>
         <br>
@@ -431,11 +431,11 @@ Services:
       <td align='center'>
         :heavy_check_mark:
         <br>
-        :heavy_check_mark:
+        :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
         <br>
-        :heavy_check_mark:
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -469,17 +469,17 @@ Services:
       <td align='center'>
         :heavy_multiplication_x:
         <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -519,7 +519,7 @@ Services:
         <br>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>git.5321...</sub></code>
+        <code><sub>git.88cc...</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
