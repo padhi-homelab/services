@@ -4,7 +4,7 @@
 
 ```console
 $ ./service.sh 
-Usage: ./service.sh <verb> [flags] <svc_dir_name> [<svc_dir_name> ...]
+Usage: ./service.sh <verb>[,<verb> ...] [flags] <svc_dir_name> [<svc_dir_name> ...]
 
 Verbs:
   clean                     Delete `service/data`
@@ -18,7 +18,7 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  hass qbittorrent trackarr ytdl netdata pihole snowflake tang tor unifi
+  airdcpp hass qbittorrent trackarr ytdl netdata pihole snowflake tang tor unifi
 ```
 
 ### Arch. Support
@@ -36,6 +36,54 @@ Services:
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <th>
+        <a href='https://airdcpp.net/'>AirDC++</a>
+        <br>
+        <sub>5443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28AirDC%2B%2B%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(AirDC%2B%2B)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
+          <sub>openvpn&#8209;client</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/airdcpp/'>
+          <sub>airdcpp</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.5.2</sub></code>
+        <br>
+        <code><sub>2.11.2</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
     <tr>
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
