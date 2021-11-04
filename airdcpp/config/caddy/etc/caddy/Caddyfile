@@ -1,0 +1,22 @@
+{
+  http_port  5080
+  https_port 5443
+}
+
+:5443 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  header -Authorization
+
+  @websockets {
+    header Connection *Upgrade*
+    header Upgrade    websocket
+  }
+  reverse_proxy @websockets ws://airdcpp:5600
+
+  reverse_proxy http://airdcpp:5600
+}

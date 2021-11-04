@@ -64,6 +64,7 @@ services:
     - ./data/qbittorrent/torrents/complete:/torrents/complete:rw
     - ./data/qbittorrent/torrents/incomplete:/torrents/incomplete:rw
 
+    tty: true
     environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
