@@ -48,7 +48,6 @@ services:
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
-      TZ: ${TZ:?}
 
   qbittorrent:
     image: padhihomelab/qbittorrent-nox:4.3.7
@@ -67,4 +66,3 @@ services:
     tty: true
     environment:
       DOCKER_UID: ${USER_ID:?}
-      TZ: ${TZ:?}

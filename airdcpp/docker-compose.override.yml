@@ -8,3 +8,6 @@ services:
   openvpn:
     ports:
     - 5432:5432
+  #airdcpp:
+  #  environment:
+  #    TZ: ${TZ:?}

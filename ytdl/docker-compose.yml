@@ -22,9 +22,6 @@ services:
     - ./data/caddy/data:/data:rw
     - ./data/caddy/config:/config:rw
 
-    environment:
-      TZ: ${TZ:?}
-
     healthcheck:
       test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
       interval: 10s
@@ -47,7 +44,6 @@ services:
       CONFIG_FILE_NAME: 'client.conf'
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
-      TZ: ${TZ:?}
 
   ytdl:
     image: padhihomelab/ytdl:git.88cc8d0e
@@ -66,4 +62,3 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
-      TZ: ${TZ:?}

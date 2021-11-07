@@ -22,9 +22,6 @@ services:
     - ./data/caddy/data:/data:rw
     - ./data/caddy/config:/config:rw
 
-    environment:
-      TZ: ${TZ:?}
-
     healthcheck:
       test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
       interval: 10s
@@ -48,7 +45,6 @@ services:
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
-      TZ: ${TZ:?}
 
   airdcpp:
     image: padhihomelab/airdcpp:2.11.2
@@ -65,4 +61,3 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
-      TZ: ${TZ:?}

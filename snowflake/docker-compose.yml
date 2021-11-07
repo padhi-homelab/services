@@ -19,7 +19,6 @@ services:
       CONFIG_FILE_NAME: 'client.conf'
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
-      TZ: ${TZ:?}
 
   snowflake:
     image: padhihomelab/snowflake:1.1.0
@@ -32,4 +31,3 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
-      TZ: ${TZ:?}

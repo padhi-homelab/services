@@ -15,16 +15,11 @@ services:
 
     cap_add:
     - NET_ADMIN
-    sysctls:
-    - net.ipv6.conf.all.disable_ipv6=0
-
     environment:
       CONFIG_FILE_NAME: 'client.conf'
-      ENABLE_IPv6: 1
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
-      TZ: ${TZ:?}
 
   tor:
     image: padhihomelab/tor:0.4.5.10
@@ -35,16 +30,11 @@ services:
 
     network_mode: service:openvpn
     volumes:
-      # In future, we should be able to just do:
-      #- ./config/tor/etc/docker-entrypoint.d/user:/etc/docker-entrypoint.d/user:ro
-      # see: https://github.com/padhi-homelab/docker_alpine-base/issues/17
-      - ./config/tor/etc/docker-entrypoint.d/user/15-wait-for-tunnel.sh:/etc/docker-entrypoint.d/15-wait-for-tunnel.sh:ro
+      - ./config/tor/etc/docker-entrypoint.d/99-user-scripts:/etc/docker-entrypoint.d/99-user-scripts:ro
       - ./data/tor/etc/tor:/config:ro
       - ./data/tor/var/lib/tor:/var/lib/tor:rw
       - ./data/tor/var/log/tor:/var/log/tor:rw
   
     environment:
-      AUTO_IPv6: 1
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
-      TZ: ${TZ:?}
