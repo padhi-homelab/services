@@ -5,6 +5,7 @@ services:
     hostname: hass
     image: homeassistant/home-assistant:2021.11.5
     restart: unless-stopped
+    user: ${USER_ID:?}
 
     volumes:
     - ./data/hass/config:/config:rw
