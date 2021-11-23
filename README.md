@@ -18,7 +18,7 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  airdcpp hass qbittorrent trackarr ytdl netdata pihole snowflake tang tor unifi
+  airdcpp hass netdata pihole qbittorrent snowflake tang tor trackarr unifi ytdl
 ```
 
 ### Arch. Support
@@ -48,6 +48,10 @@ Services:
         A <br> B
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
           <sub>openvpn&#8209;client</sub>
         </a>
@@ -57,6 +61,8 @@ Services:
         </a>
       </th>
       <td align='center'>
+        <code><sub>2.4.6</sub></code>
+        <br>
         <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>2.11.2</sub></code>
@@ -65,9 +71,15 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -79,6 +91,8 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -101,7 +115,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2021.6.6</sub></code>
+        <code><sub>2021.11.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -147,9 +161,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.5</sub></code>
+        <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>2.3</sub></code>
+        <code><sub>2.4</sub></code>
         <br>
         <code><sub>1.31.0</sub></code>
       </td>
@@ -201,7 +215,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.5</sub></code>
+        <code><sub>2.4.6</sub></code>
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
@@ -259,11 +273,11 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.5</sub></code>
+        <code><sub>2.4.6</sub></code>
         <br>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>4.3.7</sub></code>
+        <code><sub>4.3.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -435,9 +449,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.5</sub></code>
+        <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>0.19.50</sub></code>
+        <code><sub>0.20.53</sub></code>
         <br>
         <code><sub>3.2.2.5080</sub></code>
         <br>
@@ -563,7 +577,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.5</sub></code>
+        <code><sub>2.4.6</sub></code>
         <br>
         <code><sub>2.5.2</sub></code>
         <br>

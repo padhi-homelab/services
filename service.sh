@@ -4,6 +4,8 @@ set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
+DOCKER_COMPOSE_CMD="docker compose"
+
 EXIT_CODE_USAGE_ERROR=-1
 EXIT_CODE_COMPOSE_NOT_FOUND=-2
 EXIT_CODE_SERVICE_NOT_FOUND=-3
@@ -79,9 +81,14 @@ while getopts ':ios' OPTION ; do
 done
 shift $(($OPTIND -1))
 
-if ! command -v docker-compose &> /dev/null; then
+if ! $DOCKER_COMPOSE_CMD &> /dev/null; then
+  echo '`docker compose` could not be found' >&2
+  if ! command -v docker-compose &> /dev/null; then
     echo '`docker-compose` could not be found' >&2
     exit $EXIT_CODE_COMPOSE_NOT_FOUND
+  else
+    DOCKER_COMPOSE_CMD="docker-compose"
+  fi
 fi
 
 SERVICES=("$@")
@@ -110,12 +117,12 @@ perform () {
 
     if [ "$SIMPLE_VERB" == "up" ]; then
       if [ "$NO_OVERRIDE" == "yes" ]; then
-        docker-compose -f docker-compose.yml up -d
+        $DOCKER_COMPOSE_CMD -f docker-compose.yml up -d
       else
-        docker-compose up -d
+        $DOCKER_COMPOSE_CMD up -d
       fi
     elif [ "$SIMPLE_VERB" == "down" ]; then
-      docker-compose down
+      $DOCKER_COMPOSE_CMD down
     else
       rm -rf data
     fi
