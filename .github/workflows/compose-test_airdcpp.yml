@@ -18,11 +18,8 @@ jobs:
       -
         name: "Service: Setup"
         run: |
-          mkdir -p airdcpp/data/openvpn/config
-          wget "https://www.vpngate.net/common/openvpn_download.aspx?sid=1609387551919&tcp=1&host=219.100.37.63&port=443&hid=15094317&/vpngate_219.100.37.63_tcp_443.ovpn" \
-               -O airdcpp/data/openvpn/config/client.conf
-          echo -e "\nauth-user-pass login.txt" >> airdcpp/data/openvpn/config/client.conf
-          echo -e "vpn\nvpn" > airdcpp/data/openvpn/config/login.txt
+          mkdir -p airdcpp/data/openvpn
+          cp -r .github/workflows/config/vpn airdcpp/data/openvpn/config
       -
         name: "Service: Start"
         run: |
