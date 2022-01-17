@@ -51,7 +51,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2021.10.1
+    image: pihole/pihole:2022.01.1
     restart: unless-stopped
 
     depends_on:

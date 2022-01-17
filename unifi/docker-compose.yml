@@ -16,7 +16,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:6.4.54-alpine
+    image: goofball222/unifi:6.5.55-alpine
     restart: unless-stopped
 
     depends_on:

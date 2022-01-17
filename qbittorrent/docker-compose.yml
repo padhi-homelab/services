@@ -34,7 +34,7 @@ services:
 
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.5.2
+    image: padhihomelab/openvpn-client:2.5.4
 
     networks:
     - default
@@ -50,7 +50,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.3.9
+    image: padhihomelab/qbittorrent-nox:4.4.0
     restart: unless-stopped
 
     depends_on:

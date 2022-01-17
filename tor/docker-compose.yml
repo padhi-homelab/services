@@ -6,7 +6,7 @@ networks:
 services:
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.5.2
+    image: padhihomelab/openvpn-client:2.5.4
 
     networks:
     - default
@@ -22,7 +22,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   tor:
-    image: padhihomelab/tor:0.4.5.10
+    image: padhihomelab/tor:0.4.6.9
     restart: unless-stopped
 
     depends_on:
