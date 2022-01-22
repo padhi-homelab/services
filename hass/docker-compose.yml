@@ -3,14 +3,13 @@ version: '2.4'
 services:
   hass:
     hostname: hass
-    image: homeassistant/home-assistant:2021.11.5
+    image: homeassistant/home-assistant:2021.12.9
     restart: unless-stopped
-    user: ${USER_ID:?}
 
     volumes:
     - ./data/hass/config:/config:rw
-    - ./config/hass/config/configuration.yaml:/config/configuration.yaml:ro
-    - ./config/hass/etc/cont-init.d/touch-files.sh:/etc/cont-init.d/touch-files.sh:ro
+    # s6 run script from https://github.com/tribut/homeassistant-docker-venv
+    - ./config/hass/etc/services.d/home-assistant/run:/etc/services.d/home-assistant/run:ro
 
     #devices:
     #- /dev/ttyUSB0:/dev/ttyUSB0
@@ -19,6 +18,8 @@ services:
 
     environment:
       TZ: ${TZ:?}
+      DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
 
     healthcheck:
       test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:8123"]
