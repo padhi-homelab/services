@@ -115,7 +115,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2021.11.5</sub></code>
+        <code><sub>2021.12.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -451,9 +451,9 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>0.20.324</sub></code>
+        <code><sub>0.20.422</sub></code>
         <br>
-        <code><sub>4.0.2.5836</sub></code>
+        <code><sub>4.0.3.5879</sub></code>
         <br>
         <code><sub>3.0.6.1342</sub></code>
       </td>

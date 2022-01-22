@@ -81,14 +81,19 @@ while getopts ':ios' OPTION ; do
 done
 shift $(($OPTIND -1))
 
+echo -n 'Looking for `docker compose` ... ' >&2
 if ! $DOCKER_COMPOSE_CMD &> /dev/null; then
-  echo '`docker compose` could not be found' >&2
+  echo 'NOT FOUND!' >&2
+  echo -n 'Looking for `docker-compose` ... ' >&2
   if ! command -v docker-compose &> /dev/null; then
-    echo '`docker-compose` could not be found' >&2
+    echo 'NOT FOUND!' >&2
     exit $EXIT_CODE_COMPOSE_NOT_FOUND
   else
+    echo 'FOUND' >&2
     DOCKER_COMPOSE_CMD="docker-compose"
   fi
+else
+  echo 'FOUND' >&2
 fi
 
 SERVICES=("$@")
