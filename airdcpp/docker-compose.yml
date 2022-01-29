@@ -55,6 +55,7 @@ services:
 
     network_mode: service:openvpn
     volumes:
+    - ./config/airdcpp/etc/docker-entrypoint.d/99-user-scripts:/etc/docker-entrypoint.d/99-user-scripts:ro
     - ./data/airdcpp/config:/config:rw
     - ./data/airdcpp/downloads:/downloads:rw
     - ./data/airdcpp/shared:/shared:rw
