@@ -50,7 +50,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.4.0
+    image: padhihomelab/qbittorrent-nox:4.3.9
     restart: unless-stopped
 
     depends_on:

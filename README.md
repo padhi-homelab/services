@@ -277,7 +277,7 @@ Services:
         <br>
         <code><sub>2.5.4</sub></code>
         <br>
-        <code><sub>4.4.10</sub></code>
+        <code><sub>4.3.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
