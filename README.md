@@ -165,7 +165,7 @@ Services:
         <br>
         <code><sub>2.4.12</sub></code>
         <br>
-        <code><sub>1.32.1</sub></code>
+        <code><sub>1.33.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -451,9 +451,9 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>0.20.422</sub></code>
+        <code><sub>0.20.504</sub></code>
         <br>
-        <code><sub>4.0.3.5879</sub></code>
+        <code><sub>4.0.4.5922</sub></code>
         <br>
         <code><sub>3.0.6.1342</sub></code>
       </td>

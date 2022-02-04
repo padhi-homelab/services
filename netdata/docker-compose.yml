@@ -49,14 +49,13 @@ services:
 
   netdata:
     hostname: ${HOST_NAME:?}
-    image: padhihomelab/netdata:1.32.1
+    image: padhihomelab/netdata:1.33.0
     restart: unless-stopped
 
     depends_on:
     - docker.sock-proxy
 
     volumes:
-    - netdata_lib:/var/lib/netdata:rw
     - netdata_cache:/var/cache/netdata:rw
     - ./config/netdata/etc/netdata/charts.d.conf:/etc/netdata/charts.d.conf:ro
     - ./config/netdata/etc/netdata/netdata.conf:/etc/netdata/netdata.conf:ro

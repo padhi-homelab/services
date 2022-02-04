@@ -10,5 +10,5 @@
 
   encode gzip
 
-  reverse_proxy netdata:19999
+  reverse_proxy netdata:1234
 }
