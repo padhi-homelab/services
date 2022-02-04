@@ -3,27 +3,17 @@ version: '2.4'
 services:
   hass:
     hostname: hass
-    image: homeassistant/home-assistant:2022.2.1
+    image: padhihomelab/hass:2022.2.1_1.21.0
     restart: unless-stopped
 
     volumes:
     - ./data/hass/config:/config:rw
-    # s6 run script from https://github.com/tribut/homeassistant-docker-venv
-    - ./config/hass/etc/services.d/home-assistant/run:/etc/services.d/home-assistant/run:ro
 
     #devices:
     #- /dev/ttyUSB0:/dev/ttyUSB0
-    #- /dev/ttyUSB1:/dev/ttyUSB1
     #- /dev/ttyACM0:/dev/ttyACM0
 
     environment:
       TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
-
-    healthcheck:
-      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:8123"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
-      start_period: 3s
