@@ -107,15 +107,15 @@ Services:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(HAss)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B
+        A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/homeassistant/home-assistant/'>
+        <a href='https://hub.docker.com/r/padhihomelab/hass'>
           <sub>hass</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2021.12.9</sub></code>
+        <code><sub>2022.2.3_1.22.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
