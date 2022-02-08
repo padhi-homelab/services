@@ -3,6 +3,3 @@ version: '2.4'
 services:
   snowflake:
     mem_limit: 256M
-  openvpn:
-    ports:
-    - 5432:5432

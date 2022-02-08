@@ -1,33 +1,10 @@
 version: '2.4'
 
-networks:
-  default:
-
 services:
-  openvpn:
-    hostname: openvpn
-    image: padhihomelab/openvpn-client:2.5.4
-
-    networks:
-    - default
-    volumes:
-    - ./data/openvpn/config:/config:ro
-
-    cap_add:
-    - NET_ADMIN
-    environment:
-      CONFIG_FILE_NAME: 'client.conf'
-      PROXY_USERNAME: 'user'
-      PROXY_PASSWORD: 'pass'
-
   snowflake:
+    hostname: snowflake
     image: padhihomelab/snowflake:2.0.1
     restart: unless-stopped
-
-    depends_on:
-    - openvpn
-
-    network_mode: service:openvpn
 
     environment:
       DOCKER_UID: ${USER_ID:?}
