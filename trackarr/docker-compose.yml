@@ -12,6 +12,7 @@ services:
 
     depends_on:
     - jackett
+    - lidarr
     - radarr
     - sonarr
   
@@ -51,7 +52,7 @@ services:
     volumes:
     - ./data/lidarr/config:/config:rw
     - ./data/lidarr/downloads:/downloads:rw
-    - ./data/radarr/music:/music:rw
+    - ./data/lidarr/music:/music:rw
 
     environment:
       DOCKER_UID: ${USER_ID:?}
