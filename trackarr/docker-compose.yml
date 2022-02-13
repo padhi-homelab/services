@@ -43,6 +43,20 @@ services:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
 
+  lidarr:
+    hostname: lidarr
+    image: padhihomelab/lidarr:1.0.0.2458
+    restart: unless-stopped
+
+    volumes:
+    - ./data/lidarr/config:/config:rw
+    - ./data/lidarr/downloads:/downloads:rw
+    - ./data/radarr/music:/music:rw
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}
+
   radarr:
     hostname: radarr
     image: padhihomelab/radarr:4.0.4.5922

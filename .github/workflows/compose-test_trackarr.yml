@@ -29,6 +29,8 @@ jobs:
           cd trackarr
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q jackett))"
           [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q lidarr))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q radarr))"
           [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"

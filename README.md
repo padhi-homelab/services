@@ -440,6 +440,10 @@ Services:
           <sub>jackett</sub>
         </a>
         <br>
+        <a href='https://hub.docker.com/r/padhihomelab/lidarr/'>
+          <sub>lidarr</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
           <sub>radarr</sub>
         </a>
@@ -451,7 +455,8 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>0.20.504</sub></code>
+        <br>
+        <code><sub>1.0.0.2458</sub></code>
         <br>
         <code><sub>4.0.4.5922</sub></code>
         <br>
@@ -467,13 +472,6 @@ Services:
         <br>
         :heavy_multiplication_x:
         <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
         <br>
         :heavy_check_mark:
@@ -485,6 +483,8 @@ Services:
         <br>
         :heavy_multiplication_x:
         <br>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -492,6 +492,11 @@ Services:
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
         <br>
