@@ -115,7 +115,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.2.3_1.22.0</sub></code>
+        <code><sub>2022.2.6_1.22.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -219,7 +219,7 @@ Services:
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
-        <code><sub>2021.10.1</sub></code>
+        <code><sub>2022.02</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -455,6 +455,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
+        <code><sub>0.20.555</sub></code>
         <br>
         <code><sub>1.0.0.2458</sub></code>
         <br>
