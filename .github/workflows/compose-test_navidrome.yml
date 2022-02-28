@@ -1,0 +1,33 @@
+name: "Docker Compose Test (navidrome)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v2
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up --no-override navidrome
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 10s
+      -
+        name: "Service: Test"
+        run: |
+          cd navidrome
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q navidrome))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)

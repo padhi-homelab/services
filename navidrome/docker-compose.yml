@@ -1,0 +1,42 @@
+version: '2.4'
+
+services:
+  caddy:
+    hostname: caddy
+    image: caddy:2.4.6
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - netdata
+  
+    volumes:
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 10s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+
+  navidrome:
+    hostname: navidrome
+    image: deluan/navidrome:sha-2ddd3ac
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    volumes:
+    - ./data/navidrome/music:/music:ro
+    - ./data/navidrome/data:/data:rw
+
+    environment:
+      ND_SCANSCHEDULE: 30m
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 8h
+      TZ: ${TZ:?}
