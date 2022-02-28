@@ -33,7 +33,7 @@ services:
 
   jackett:
     hostname: jackett
-    image: padhihomelab/jackett:0.20.555
+    image: padhihomelab/jackett:0.20.639
     restart: unless-stopped
 
     volumes:
@@ -60,7 +60,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.0.4.5922
+    image: padhihomelab/radarr:4.0.5.5977
     restart: unless-stopped
 
     volumes:
