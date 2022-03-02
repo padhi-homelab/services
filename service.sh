@@ -16,9 +16,8 @@ EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
 usage () {
   if [ $# -gt 0 ]; then echo -e "\nERROR: $1" >&2 ; fi
-  services=$(\ls -Cd */)
-  services=$(echo $services | sed 's/\///g')
-  echo -en "
+  services="$(\ls -Cdw100000 */ | sed 's:\/::g; s:[[:space:]]\+: :g' | fmt -64 | column -t)"
+  echo -e "
 Usage: $0 <verb>[,<verb>,...] [flags] <svc_dir> [<svc_dir> ...]
 
 Verbs:
@@ -31,9 +30,11 @@ Flags:
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
-Services:
-  $services
-" >&2 ; exit $EXIT_CODE_USAGE_ERROR
+Services:" >&2
+  while IFS= read -r line ; do
+    echo "  $line"
+  done <<< "$services" >&2
+  exit $EXIT_CODE_USAGE_ERROR
 }
 
 [ $# -gt 0 ] || usage

@@ -8,8 +8,8 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - netdata
-  
+    - navidrome
+
     volumes:
     - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
     - ./data/caddy/data:/data:rw

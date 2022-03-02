@@ -48,11 +48,13 @@ services:
 
     environment:
       TZ: ${TZ:?}
+      DOCKER_UID: ${USER_ID:?}
 
   pihole:
     hostname: pihole
     image: pihole/pihole:2022.02
     restart: unless-stopped
+    # Runs as non-root user, as of 2022.01
 
     depends_on:
     - dnscrypt-proxy

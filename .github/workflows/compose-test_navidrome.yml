@@ -1,4 +1,4 @@
-name: "Docker Compose Test (navidrome)"
+name: "Docker Compose Test (Navidrome)"
 
 on:
   pull_request:
