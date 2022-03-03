@@ -22,12 +22,12 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 10s
+          sleep 30s
       -
         name: "Service: Test"
         run: |
           cd navidrome
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q navidrome))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)

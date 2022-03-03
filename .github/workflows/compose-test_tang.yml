@@ -28,4 +28,4 @@ jobs:
         run: |
           cd tang
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
