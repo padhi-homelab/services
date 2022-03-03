@@ -18,8 +18,8 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  airdcpp  hass  navidrome  netdata  pihole  qbittorrent  snowflake
-  tang     tor   trackarr   unifi
+  airdcpp  hass  i2p       navidrome  netdata  pihole  qbittorrent  snowflake
+  tang     tor   trackarr  unifi
 ```
 
 ### Arch. Support
@@ -129,6 +129,44 @@ Services:
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.navidrome.org/'>I2P</a>
+        <br>
+        <sub>4444, 4445, 6668, 7652, 7653, 7654, 7656, 7657, 7658, 7659, 7660, 12345</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28I2P%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(I2P)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/i2p'>
+          <sub>i2p</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>1.7.0</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
