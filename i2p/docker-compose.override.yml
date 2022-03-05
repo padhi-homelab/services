@@ -17,4 +17,4 @@ services:
     - 12345:12345     # I2NP
     - 12345:12345/udp # I2NP
     environment:
-      JAVA_XMX: 768m
+      JVM_XMX: 768m
