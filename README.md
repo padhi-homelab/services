@@ -116,7 +116,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.2.9_1.23.0</sub></code>
+        <code><sub>2022.3.5_1.23.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -172,6 +172,130 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Trackarr
+        <br>
+        <sub>19443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Indexarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> C
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/jackett/'>
+          <sub>jackett</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.4.6</sub></code>
+        <br>
+        <code><sub>0.20.736</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        Monitarr
+        <br>
+        <sub>9443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Monitarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> C <br> C <br> C
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/lidarr/'>
+          <sub>lidarr</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
+          <sub>radarr</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/sonarr/'>
+          <sub>sonarr</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.4.6</sub></code>
+        <br>
+        <code><sub>1.0.0.2484</sub></code>
+        <br>
+        <code><sub>4.0.5.5981</sub></code>
+        <br>
+        <code><sub>3.0.7.1477</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
         :heavy_multiplication_x:
       </td>
     </tr>
@@ -306,7 +430,7 @@ Services:
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
-        <code><sub>2022.02</sub></code>
+        <code><sub>2022.02.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -509,92 +633,6 @@ Services:
     </tr>
     <tr>
       <th>
-        Trackarr
-        <br>
-        <sub>9443</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Trackarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Trackarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B <br> C <br> C <br> C
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/jackett/'>
-          <sub>jackett</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/lidarr/'>
-          <sub>lidarr</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/radarr/'>
-          <sub>radarr</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/sonarr/'>
-          <sub>sonarr</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.4.6</sub></code>
-        <br>
-        <code><sub>0.20.639</sub></code>
-        <br>
-        <code><sub>1.0.0.2458</sub></code>
-        <br>
-        <code><sub>4.0.5.5977</sub></code>
-        <br>
-        <code><sub>3.0.6.1342</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
         <sub>3478, 8080, 8443, 8880, 8843</sub>
@@ -614,9 +652,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>5.0.3</sub></code>
+        <code><sub>4.4.13</sub></code>
         <br>
-        <code><sub>6.4.54</sub></code>
+        <code><sub>7.0.23</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

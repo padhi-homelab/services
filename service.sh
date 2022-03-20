@@ -11,7 +11,7 @@ EXIT_CODE_COMPOSE_NOT_FOUND=-2
 EXIT_CODE_SERVICE_NOT_FOUND=-3
 
 EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=1
-EXIT_CODE_SERVICE_VERB_FAILURE=2
+EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE=2
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
 usage () {
@@ -130,7 +130,7 @@ perform () {
     elif [ "$SIMPLE_VERB" == "down" ]; then
       $DOCKER_COMPOSE_CMD down
     else
-      rm -rf data
+      rm -rf data .env
     fi
     if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
       exit $EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE

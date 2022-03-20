@@ -1,0 +1,14 @@
+{
+  http_port  19080
+  https_port 19443
+}
+
+:19443 {
+  tls internal {
+    on_demand
+  }
+
+  encode gzip
+
+  reverse_proxy jackett:9117
+}

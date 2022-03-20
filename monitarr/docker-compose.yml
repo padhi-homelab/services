@@ -1,8 +1,5 @@
 version: '2.4'
 
-networks:
-  default:
-
 services:
   caddy:
     hostname: caddy
@@ -11,7 +8,6 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - jackett
     - lidarr
     - radarr
     - sonarr
@@ -31,22 +27,9 @@ services:
       retries: 3
       start_period: 5s
 
-  jackett:
-    hostname: jackett
-    image: padhihomelab/jackett:0.20.639
-    restart: unless-stopped
-
-    volumes:
-    - ./data/jackett/config:/config:rw
-    - ./data/jackett/downloads:/downloads:rw
-
-    environment:
-      DOCKER_UID: ${USER_ID:?}
-      TZ: ${TZ:?}
-
   lidarr:
     hostname: lidarr
-    image: padhihomelab/lidarr:1.0.0.2458
+    image: padhihomelab/lidarr:1.0.0.2484
     restart: unless-stopped
 
     volumes:
@@ -60,7 +43,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.0.5.5977
+    image: padhihomelab/radarr:4.0.5.5981
     restart: unless-stopped
 
     volumes:
@@ -74,7 +57,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:3.0.6.1342
+    image: padhihomelab/sonarr:3.0.7.1477
     restart: unless-stopped
 
     volumes:

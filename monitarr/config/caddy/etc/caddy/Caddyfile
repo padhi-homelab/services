@@ -10,12 +10,10 @@
 
   encode gzip
 
-  redir /jackett /jackett/ 308
   redir /lidarr  /lidarr/  308
   redir /radarr  /radarr/  308
   redir /sonarr  /sonarr/  308
 
-  reverse_proxy /jackett/* jackett:9117
   reverse_proxy /lidarr/*  lidarr:8686
   reverse_proxy /radarr/*  radarr:7878
   reverse_proxy /sonarr/*  sonarr:8989

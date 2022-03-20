@@ -3,6 +3,5 @@
   "AllowExternal": true,
   "BlackholeDir": "/downloads",
   "UpdateDisabled": true,
-  "UpdatePrerelease": false,
-  "BasePathOverride": "/jackett"
+  "UpdatePrerelease": false
 }

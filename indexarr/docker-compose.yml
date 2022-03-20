@@ -11,9 +11,9 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - qbittorrent
+    - jackett
     links:
-    - openvpn:qbittorrent
+    - openvpn:jackett
 
     networks:
     - default
@@ -49,8 +49,8 @@ services:
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
 
-  qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.3.9
+  jackett:
+    image: padhihomelab/jackett:0.20.736
     restart: unless-stopped
 
     depends_on:
@@ -58,11 +58,9 @@ services:
 
     network_mode: service:openvpn
     volumes:
-    - ./data/qbittorrent/config:/config:rw
-    - ./data/qbittorrent/data:/data:rw
-    - ./data/qbittorrent/torrents/complete:/torrents/complete:rw
-    - ./data/qbittorrent/torrents/incomplete:/torrents/incomplete:rw
+    - ./data/jackett/config:/config:rw
+    - ./data/jackett/downloads:/downloads:rw
 
-    tty: true
     environment:
       DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}

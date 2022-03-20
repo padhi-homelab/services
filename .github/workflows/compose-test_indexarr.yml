@@ -1,4 +1,4 @@
-name: "Docker Compose Test (Trackarr)"
+name: "Docker Compose Test (Indexarr)"
 
 on:
   pull_request:
@@ -16,24 +16,23 @@ jobs:
         name: "Git: Checkout"
         uses: actions/checkout@v3
       -
+        name: "Service: Setup"
+        run: |
+          mkdir -p indexarr/data/openvpn
+          cp -r .github/workflows/config/vpn indexarr/data/openvpn/config
+      -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override trackarr
+          ./service.sh up --no-override indexarr
       -
         name: "Service: Wait"
         run: |
-          sleep 60s
+          sleep 30s
       -
         name: "Service: Test"
         run: |
-          cd trackarr
+          cd indexarr
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q jackett))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q lidarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q radarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
