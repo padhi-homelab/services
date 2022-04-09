@@ -3,7 +3,7 @@ version: '2.4'
 services:
   hass:
     hostname: hass
-    image: padhihomelab/hass:2022.3.5_1.23.0
+    image: padhihomelab/hass:2022.4.1_1.24.3
     restart: unless-stopped
 
     volumes:

@@ -34,7 +34,7 @@ services:
 
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.5.4
+    image: padhihomelab/openvpn-client:2.5.6
 
     networks:
     - default
@@ -50,7 +50,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   jackett:
-    image: padhihomelab/jackett:0.20.736
+    image: padhihomelab/jackett:0.20.807
     restart: unless-stopped
 
     depends_on:

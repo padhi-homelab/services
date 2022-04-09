@@ -18,8 +18,8 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  airdcpp  hass  i2p       navidrome  netdata  pihole  qbittorrent  snowflake
-  tang     tor   trackarr  unifi
+  airdcpp      hass       i2p   indexarr  monitarr  navidrome  netdata  pihole
+  qbittorrent  snowflake  tang  tor       unifi                         
 ```
 
 ### Arch. Support
@@ -46,7 +46,7 @@ Services:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28AirDC%2B%2B%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(AirDC%2B%2B)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> B
+        B <br> A <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -64,7 +64,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>2.5.4</sub></code>
+        <code><sub>2.5.6</sub></code>
         <br>
         <code><sub>2.11.2</sub></code>
       </td>
@@ -116,7 +116,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.3.5_1.23.0</sub></code>
+        <code><sub>2022.4.1_1.24.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -177,18 +177,22 @@ Services:
     </tr>
     <tr>
       <th>
-        Trackarr
+        Indexarr
         <br>
         <sub>19443</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Indexarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> C
+        B <br> A <br> C
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
           <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
+          <sub>openvpn&#8209;client</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/jackett/'>
@@ -198,7 +202,9 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>0.20.736</sub></code>
+        <code><sub>2.5.6</sub></code>
+        <br>
+        <code><sub>0.20.807</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -207,9 +213,6 @@ Services:
         :heavy_multiplication_x:
         <br>
         :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
         <br>
         :heavy_check_mark:
       </td>
@@ -220,6 +223,11 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -256,7 +264,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>1.0.0.2484</sub></code>
+        <code><sub>1.0.0.2512</sub></code>
         <br>
         <code><sub>4.0.5.5981</sub></code>
         <br>
@@ -322,7 +330,7 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>sha-2ddd3ac</sub></code>
+        <code><sub>sha-ce0db83</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -430,7 +438,7 @@ Services:
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
-        <code><sub>2022.02.1</sub></code>
+        <code><sub>2022.04.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -452,10 +460,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
     </tr>
@@ -486,9 +490,9 @@ Services:
       <td align='center'>
         <code><sub>2.4.6</sub></code>
         <br>
-        <code><sub>2.5.4</sub></code>
+        <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>4.3.9</sub></code>
+        <code><sub>4.4.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -692,7 +696,7 @@ Services:
   <tbody>
     <tr>
       <td>A</td>
-      <td>Dockerfiles with application binaries compiled from sources</td>
+      <td>Dockerfiles with application binaries from OS repo / compiled from sources</td>
     </tr>
     <tr>
       <td>B</td>
@@ -700,7 +704,7 @@ Services:
     </tr>
     <tr>
       <td>C</td>
-      <td>Dockerfiles with third-party binaries who publish full source code</td>
+      <td>Dockerfiles from third parties who publish full source code</td>
     </tr>
     <tr>
       <td>X</td>

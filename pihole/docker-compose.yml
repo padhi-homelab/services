@@ -52,7 +52,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2022.02.1
+    image: pihole/pihole:2022.04.2
     restart: unless-stopped
     # Runs as non-root user, as of 2022.01
 

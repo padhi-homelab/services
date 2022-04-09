@@ -98,12 +98,13 @@ else
 fi
 
 SERVICES=("$@")
+
 perform () {
   local SIMPLE_VERB=$1
   for svc in "${SERVICES[@]}"; do
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
     if ! [ -d "$SELF_DIR/$svc" ]; then
-      echo "[X] ERROR: "$SELF_DIR/$svc" is not a directory!" >&2
+      echo "[X] ERROR: '$SELF_DIR/$svc' is not a directory!" >&2
       if [ "$IGNORE_FAILURES" == "yes" ]; then
         continue
       else
@@ -111,6 +112,11 @@ perform () {
       fi
     fi
     cd "$SELF_DIR/$svc"
+
+    if [ "$SIMPLE_VERB" == "clean" ]; then
+      rm -rf data .env
+      continue
+    fi
 
     if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
       if [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ]; then
@@ -129,8 +135,6 @@ perform () {
       fi
     elif [ "$SIMPLE_VERB" == "down" ]; then
       $DOCKER_COMPOSE_CMD down
-    else
-      rm -rf data .env
     fi
     if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
       exit $EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE

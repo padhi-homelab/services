@@ -27,7 +27,7 @@ services:
 
   navidrome:
     hostname: navidrome
-    image: deluan/navidrome:sha-2ddd3ac
+    image: deluan/navidrome:sha-ce0db83
     restart: unless-stopped
     user: ${USER_ID:?}
 
