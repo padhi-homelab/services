@@ -52,7 +52,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2022.04.2
+    image: pihole/pihole:2022.04.3
     restart: unless-stopped
     # Runs as non-root user, as of 2022.01
 
@@ -72,11 +72,12 @@ services:
     - 10.0.0.4
     - 127.0.0.1
     environment:
-      DNS1: '10.0.0.3#8053'
-      DNS2: '10.0.0.3#8053'
+      PIHOLE_DNS_: '10.0.0.3#8053'
       DNS_BOGUS_PRIV: 'true'
       DNS_FQDN_REQUIRED: 'true'
       DNSMASQ_LISTENING: all
       IPv6: 'false'
+      SKIPGRAVITYONBOOT: 'true'
+      CUSTOM_CACHE_SIZE: 50000
       WEBPASSWORD: admin
       TZ: ${TZ:?}
