@@ -3,7 +3,7 @@ version: '2.4'
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.4.6
+    image: caddy:2.5.1
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -29,7 +29,7 @@ services:
 
   lidarr:
     hostname: lidarr
-    image: padhihomelab/lidarr:1.0.0.2512
+    image: padhihomelab/lidarr:1.0.1.2578
     restart: unless-stopped
 
     volumes:
@@ -43,7 +43,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.0.5.5981
+    image: padhihomelab/radarr:4.1.0.6175
     restart: unless-stopped
 
     volumes:
@@ -57,7 +57,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:3.0.7.1477
+    image: padhihomelab/sonarr:3.0.8.1507
     restart: unless-stopped
 
     volumes:

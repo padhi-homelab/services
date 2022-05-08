@@ -3,7 +3,7 @@ version: '2.4'
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.4.6
+    image: caddy:2.5.1
     restart: unless-stopped
     user: ${USER_ID:?}
 

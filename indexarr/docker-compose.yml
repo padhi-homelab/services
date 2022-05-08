@@ -6,7 +6,7 @@ networks:
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.4.6
+    image: caddy:2.5.1
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -50,7 +50,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   jackett:
-    image: padhihomelab/jackett:0.20.807
+    image: padhihomelab/jackett:0.20.1027
     restart: unless-stopped
 
     depends_on:

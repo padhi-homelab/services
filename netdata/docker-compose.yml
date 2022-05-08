@@ -13,7 +13,7 @@ volumes:
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.4.6
+    image: caddy:2.5.1
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -37,7 +37,7 @@ services:
 
   docker.sock-proxy:
     hostname: docker.sock-proxy
-    image: padhihomelab/docker.sock-proxy:2.4.12
+    image: padhihomelab/docker.sock-proxy:2.4.16
     restart: unless-stopped
 
     volumes:
@@ -49,7 +49,7 @@ services:
 
   netdata:
     hostname: ${HOST_NAME:?}
-    image: padhihomelab/netdata:1.33.0
+    image: padhihomelab/netdata:1.34.1
     restart: unless-stopped
 
     depends_on:
