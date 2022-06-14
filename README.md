@@ -384,7 +384,7 @@ Services:
         <br>
         <code><sub>2.4.15</sub></code>
         <br>
-        <code><sub>1.34.1</sub></code>
+        <code><sub>1.35.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
