@@ -116,7 +116,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.5.1_1.24.5</sub></code>
+        <code><sub>2022.6.7_1.25.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -154,7 +154,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.7.0</sub></code>
+        <code><sub>1.8.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -204,7 +204,7 @@ Services:
         <br>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.1027</sub></code>
+        <code><sub>0.20.1263</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -264,7 +264,7 @@ Services:
       <td align='center'>
         <code><sub>2.5.1</sub></code>
         <br>
-        <code><sub>1.0.1.2578</sub></code>
+        <code><sub>1.1.0.2602</sub></code>
         <br>
         <code><sub>4.1.0.6175</sub></code>
         <br>
@@ -658,7 +658,7 @@ Services:
       <td align='center'>
         <code><sub>4.4.13</sub></code>
         <br>
-        <code><sub>7.0.23</sub></code>
+        <code><sub>7.1.66</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

@@ -29,7 +29,7 @@ services:
 
   lidarr:
     hostname: lidarr
-    image: padhihomelab/lidarr:1.0.1.2578
+    image: padhihomelab/lidarr:1.1.0.2602
     restart: unless-stopped
 
     volumes:

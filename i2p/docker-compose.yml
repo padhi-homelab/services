@@ -27,7 +27,7 @@ services:
 
   i2p:
     hostname: i2p
-    image: padhihomelab/i2p:1.7.0
+    image: padhihomelab/i2p:1.8.0
     restart: unless-stopped
 
     volumes:
