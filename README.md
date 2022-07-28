@@ -62,7 +62,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>2.5.6</sub></code>
         <br>
@@ -200,11 +200,11 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.1263</sub></code>
+        <code><sub>0.20.1470</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -262,11 +262,11 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>1.1.0.2602</sub></code>
         <br>
-        <code><sub>4.1.0.6175</sub></code>
+        <code><sub>4.2.0.6438</sub></code>
         <br>
         <code><sub>3.0.8.1507</sub></code>
       </td>
@@ -328,7 +328,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>sha-ce0db83</sub></code>
       </td>
@@ -380,9 +380,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>2.4.15</sub></code>
+        <code><sub>2.4.17</sub></code>
         <br>
         <code><sub>1.35.1</sub></code>
       </td>
@@ -434,7 +434,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>2.1.1</sub></code>
         <br>
@@ -488,7 +488,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.1</sub></code>
+        <code><sub>2.5.2</sub></code>
         <br>
         <code><sub>2.5.6</sub></code>
         <br>

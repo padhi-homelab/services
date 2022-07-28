@@ -3,7 +3,7 @@ version: '2.4'
 services:
   caddy:
     hostname: caddy
-    image: caddy:2.5.1
+    image: caddy:2.5.2
     restart: unless-stopped
     user: ${USER_ID:?}
 
@@ -43,7 +43,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.1.0.6175
+    image: padhihomelab/radarr:4.2.0.6438
     restart: unless-stopped
 
     volumes:
