@@ -704,7 +704,7 @@ Services:
     </tr>
     <tr>
       <td>C</td>
-      <td>Dockerfiles from third parties who publish full source code</td>
+      <td>Dockerfiles / binaries from third parties who publish full source code</td>
     </tr>
     <tr>
       <td>X</td>

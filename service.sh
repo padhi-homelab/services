@@ -73,7 +73,7 @@ while getopts ':ios' OPTION ; do
     "i" ) IGNORE_FAILURES="yes" ;;
     "o" ) NO_OVERRIDE="yes"
           [ "$VERB" == "up" ] || \
-            echo "[!] '-$OPTARG' is ignored with '$VERB' verb."
+            echo "[!] '-o/--no-override is ignored with '$VERB' verb."
           ;;
     "s" ) NO_HOOK_SCRIPTS="yes" ;;
 
