@@ -30,8 +30,9 @@ services:
     restart: unless-stopped
     user: ${USER_ID:?}
     
-    command: >
+    command: |-
       --transaction-isolation=READ-COMMITTED
+      --binlog-format=ROW
       --innodb-file-per-table=1
       --skip-innodb-read-only-compressed
     
@@ -40,9 +41,9 @@ services:
 
     environment:
       MYSQL_ROOT_PASSWORD: 'root_password'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'nextcloud_password'
+      MYSQL_DATABASE: 'nextcloud_db'
+      MYSQL_USER: 'nextcloud_user'
       TZ: ${TZ:?}
 
     healthcheck:
@@ -55,11 +56,11 @@ services:
     image: redis:7.0.4
     restart: unless-stopped
 
-    command: >
+    command: |-
       --requirepass "$${{REDIS_HOST_PASSWORD}}"
 
     environment:
-      REDIS_HOST_PASSWORD: 'password'
+      REDIS_HOST_PASSWORD: 'nextcloud_password'
 
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
@@ -83,11 +84,14 @@ services:
 
     environment:
       MYSQL_HOST: 'mariadb'
-      MYSQL_PASSWORD: 'password'
-      MYSQL_DATABASE: 'db'
-      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'nextcloud_password'
+      MYSQL_DATABASE: 'nextcloud_db'
+      MYSQL_USER: 'nextcloud_user'
       REDIS_HOST: 'redis'
-      REDIS_HOST_PASSWORD: 'password'
+      REDIS_HOST_PASSWORD: 'nextcloud_password'
+      # Since we expose HTTPS with Caddy
+      OVERWRITEPROTOCOL: 'https'
+      TRUSTED_PROXIES: 'localhost'
       TZ: ${TZ:?}
 
     healthcheck:
