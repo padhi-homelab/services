@@ -1,0 +1,97 @@
+version: '2.4'
+
+services:
+  caddy:
+    hostname: caddy
+    image: caddy:2.5.2
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - nextcloud
+  
+    volumes:
+    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    - ./data/caddy/data:/data:rw
+    - ./data/caddy/config:/config:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
+      interval: 15s
+      timeout: 5s
+      start_period: 5s
+
+  mariadb:
+    hostname: mariadb
+    image: mariadb:10.8.3
+    restart: unless-stopped
+    user: ${USER_ID:?}
+    
+    command: >
+      --transaction-isolation=READ-COMMITTED
+      --innodb-file-per-table=1
+      --skip-innodb-read-only-compressed
+    
+    volumes:
+    - ./data/mariadb/var/lib/mysql:/var/lib/mysql:rw
+
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root_password'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 15s
+      start_period: 10s
+
+  redis:
+    hostname: redis
+    image: redis:7.0.4
+    restart: unless-stopped
+
+    command: >
+      --requirepass "$${{REDIS_HOST_PASSWORD}}"
+
+    environment:
+      REDIS_HOST_PASSWORD: 'password'
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      start_period: 10s
+
+  nextcloud:
+    hostname: nextcloud
+    image: nextcloud:24.0.3
+    restart: unless-stopped
+    user: ${USER_ID:?}
+
+    depends_on:
+    - mariadb
+    - redis
+
+    volumes:
+    - ./data/nextcloud/var/www/html:/var/www/html:rw
+    # See: https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
+    - ./data/nextcloud/usr/local/etc/php/conf.d/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini:rw
+
+    environment:
+      MYSQL_HOST: 'mariadb'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'user'
+      REDIS_HOST: 'redis'
+      REDIS_HOST_PASSWORD: 'password'
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost:80"]
+      interval: 15s
+      timeout: 3s
+      start_period: 15s

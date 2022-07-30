@@ -1,0 +1,37 @@
+name: "Docker Compose Test (Nextcloud)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v3
+      -
+        name: "Service: Start"
+        run: |
+          ./service.sh up --no-override nextcloud
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 45s
+      -
+        name: "Service: Test"
+        run: |
+          cd nextcloud
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q mariadb))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q redis))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q nextcloud))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)

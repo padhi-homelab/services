@@ -18,8 +18,8 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  airdcpp      hass       i2p   indexarr  monitarr  navidrome  netdata  pihole
-  qbittorrent  snowflake  tang  tor       unifi                         
+  airdcpp  hass         i2p        indexarr  monitarr  navidrome  netdata  nextcloud
+  pihole   qbittorrent  snowflake  tang      tor       unifi                         
 ```
 
 ### Arch. Support
@@ -400,6 +400,80 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://nextcloud.com/'>Nextcloud</a>
+        <br>
+        <sub>4443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Nextcloud)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> B <br> B <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/caddy'>
+          <sub>caddy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/mariadb'>
+          <sub>mariadb</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/redis'>
+          <sub>redis</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/nextcloud'>
+          <sub>nextcloud</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.5.2</sub></code>
+        <br>
+        <code><sub>10.8.3</sub></code>
+        <br>
+        <code><sub>7.0.4</sub></code>
+        <br>
+        <code><sub>24.0.3</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>

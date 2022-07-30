@@ -1,0 +1,6 @@
+version: '2.4'
+
+services:
+  caddy:
+    ports:
+    - 4443:4443
