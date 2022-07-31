@@ -55,9 +55,10 @@ services:
     hostname: redis
     image: redis:7.0.4
     restart: unless-stopped
+    user: ${USER_ID:?}
 
     command: |-
-      --requirepass "$${{REDIS_HOST_PASSWORD}}"
+      sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
 
     environment:
       REDIS_HOST_PASSWORD: 'nextcloud_password'
@@ -92,6 +93,7 @@ services:
       # Since we expose HTTPS with Caddy
       OVERWRITEPROTOCOL: 'https'
       TRUSTED_PROXIES: 'localhost'
+      NEXTCLOUD_TRUSTED_DOMAINS: 'localhost'
       TZ: ${TZ:?}
 
     healthcheck:

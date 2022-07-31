@@ -114,7 +114,7 @@ perform () {
     cd "$SELF_DIR/$svc"
 
     if [ "$SIMPLE_VERB" == "clean" ]; then
-      rm -rf data .env
+      rm -rfv data .env
       continue
     fi
 

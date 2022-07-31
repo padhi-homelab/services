@@ -10,5 +10,8 @@
 
   encode gzip
 
-  reverse_proxy nextcloud:80
+  reverse_proxy nextcloud:80 {
+    trusted_proxies private_ranges
+    header_down Strict-Transport-Security "max-age=15552000;"
+  }
 }
