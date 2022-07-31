@@ -60,6 +60,9 @@ services:
     command: |-
       sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
 
+    volumes:
+    - ./data/redis/data:/data:rw
+
     environment:
       REDIS_HOST_PASSWORD: 'nextcloud_password'
 
@@ -79,6 +82,7 @@ services:
     - redis
 
     volumes:
+    - ./data/nextcloud/data:/data:rw
     - ./data/nextcloud/var/www/html:/var/www/html:rw
     # See: https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
     - ./data/nextcloud/usr/local/etc/php/conf.d/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini:rw
@@ -94,6 +98,7 @@ services:
       OVERWRITEPROTOCOL: 'https'
       TRUSTED_PROXIES: 'localhost'
       NEXTCLOUD_TRUSTED_DOMAINS: 'localhost'
+      NEXTCLOUD_DATA_DIR: '/data'
       TZ: ${TZ:?}
 
     healthcheck:
