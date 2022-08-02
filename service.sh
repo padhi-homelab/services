@@ -127,6 +127,14 @@ perform () {
       fi
     fi
 
+    rm -rf .env
+    if [ -f "../global.env.sh" ]; then
+      ../global.env.sh > .env
+    fi
+    if [ -f "local.env.sh" ]; then
+      ./local.env.sh >> .env
+    fi
+
     if [ "$SIMPLE_VERB" == "up" ]; then
       if [ "$NO_OVERRIDE" == "yes" ]; then
         $DOCKER_COMPOSE_CMD -f docker-compose.yml up -d
