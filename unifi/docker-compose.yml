@@ -3,7 +3,8 @@ version: '2.4'
 services:
   mongo:
     hostname: mongo
-    image: mongo:5.0.10
+    # MongoDB 5.0+ requires ARMv8.2A+
+    image: mongo:4.4.15
     restart: unless-stopped
 
     volumes:
