@@ -1,0 +1,40 @@
+version: '2.4'
+
+services:
+  docker.sock-proxy:
+    hostname: docker.sock-proxy
+    image: padhihomelab/docker.sock-proxy:2.4.17
+    restart: unless-stopped
+
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    environment:
+      CONTAINERS: '1'
+      EVENTS: '1'
+      TZ: ${TZ:?}
+
+  traefik:
+    hostname: traefik
+    image: traefik:v2.8.1
+    restart: unless-stopped
+    user: ${USER_ID:?}
+  
+    depends_on:
+    - docker.sock-proxy
+
+    volumes:
+    - ./config/traefik/dynamic:/dynamic:ro
+    - ./config/traefik/traefik.yml:/traefik.yml:ro
+    - ./data/traefik/cert:/cert:ro
+    - ./data/traefik/etc/traefik:/etc/traefik:rw
+    - ./data/traefik/var/log/traefik:/var/log/traefik:rw
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck"]
+      interval: 15s
+      timeout: 2s
+      start_period: 5s

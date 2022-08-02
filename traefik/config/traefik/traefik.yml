@@ -1,0 +1,32 @@
+api:
+  dashboard: true
+  insecure: false
+
+entryPoints:
+  dashboard:
+    address: ":8080"
+    http:
+      tls: true
+  ping:
+    address: ":9999"
+  websecure:
+    address: ":443"
+
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+
+ping:
+  entryPoint: ping
+
+providers:
+  docker:
+    endpoint: "tcp://docker.sock-proxy:1279"
+    exposedByDefault: false
+    watch: true
+  file:
+    directory: "/dynamic"
+    watch: true
+
+serversTransport:
+  insecureSkipVerify: true

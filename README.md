@@ -19,7 +19,7 @@ Flags:
 
 Services:
   airdcpp  hass         i2p        indexarr  monitarr  navidrome  netdata  nextcloud
-  pihole   qbittorrent  snowflake  tang      tor       unifi                         
+  pihole   qbittorrent  snowflake  tang      tor       traefik    unifi                         
 ```
 
 ### Arch. Support
@@ -364,7 +364,7 @@ Services:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> C <br> A
+        B <br> A <br> A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/caddy'>
@@ -757,6 +757,56 @@ Services:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://traefik.io/'>Traefik</a>
+        <br>
+        <sub>443,8080</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Traefik)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
+          <sub>docker.sock&#8209;proxy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/traefik'>
+          <sub>traefik</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.4.17</sub></code>
+        <br>
+        <code><sub>2.8.1</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
       </td>
