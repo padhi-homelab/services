@@ -14,6 +14,12 @@ services:
       PGID: ${GROUP_ID:?}
       TZ: ${TZ:?}
 
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.runCommand('ping').ok", "localhost:27017/test", "--quiet"]
+      interval: 15s
+      timeout: 5s
+      start_period: 5s
+
   unifi:
     hostname: unifi
     image: goofball222/unifi:7.1.68-alpine
