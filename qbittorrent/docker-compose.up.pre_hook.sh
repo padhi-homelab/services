@@ -8,4 +8,5 @@ mkdir -p $SELF_DIR/data/caddy/config \
          $SELF_DIR/data/caddy/data \
          $SELF_DIR/data/openvpn/config \
          $SELF_DIR/data/qbittorrent/config \
-         $SELF_DIR/data/qbittorrent/data
+         $SELF_DIR/data/qbittorrent/data/torrents/complete \
+         $SELF_DIR/data/qbittorrent/data/torrents/incomplete

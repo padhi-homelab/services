@@ -37,7 +37,7 @@ services:
 
   dnscrypt-proxy:
     hostname: dnscrypt-proxy
-    image: padhihomelab/dnscrypt-proxy:2.1.1
+    image: padhihomelab/dnscrypt-proxy:2.1.2
     restart: unless-stopped
 
     networks:

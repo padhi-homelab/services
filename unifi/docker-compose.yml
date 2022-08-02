@@ -3,7 +3,7 @@ version: '2.4'
 services:
   mongo:
     hostname: mongo
-    image: mongo:4.4.13
+    image: mongo:5.0.10
     restart: unless-stopped
 
     volumes:
@@ -16,7 +16,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:7.1.66-alpine
+    image: goofball222/unifi:7.1.68-alpine
     restart: unless-stopped
 
     depends_on:

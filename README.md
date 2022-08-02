@@ -510,7 +510,7 @@ Services:
       <td align='center'>
         <code><sub>2.5.2</sub></code>
         <br>
-        <code><sub>2.1.1</sub></code>
+        <code><sub>2.1.2</sub></code>
         <br>
         <code><sub>2022.07.1</sub></code>
       </td>
@@ -730,9 +730,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>4.4.13</sub></code>
+        <code><sub>5.0.10</sub></code>
         <br>
-        <code><sub>7.1.66</sub></code>
+        <code><sub>7.1.68</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -824,7 +824,7 @@ Services:
     </tr>
     <tr>
       <td>B</td>
-      <td>Official open-source Dockerfiles / binaries from package managers</td>
+      <td>Official open-source Dockerfiles / binaries from authors</td>
     </tr>
     <tr>
       <td>C</td>
