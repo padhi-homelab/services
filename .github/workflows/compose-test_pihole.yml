@@ -30,4 +30,4 @@ jobs:
           docker-compose exec -T dnscrypt-proxy dig google.com
           docker-compose exec -T pihole pihole status
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)

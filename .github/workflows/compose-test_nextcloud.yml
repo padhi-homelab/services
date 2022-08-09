@@ -28,10 +28,10 @@ jobs:
         run: |
           cd nextcloud
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q mariadb))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q redis))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q nextcloud))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)

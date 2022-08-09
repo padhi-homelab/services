@@ -28,7 +28,7 @@ jobs:
         run: |
           cd tang
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
       -
         name: "Service: Traefik Setup"
         run: |
@@ -48,11 +48,11 @@ jobs:
         run: |
           cd tang
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           cd ../traefik
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:9080/tang/adv \
-            || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate http://localhost:9080/tang/adv \
+            || (docker ps ; docker-compose logs ; cd ../tang ; docker-compose logs ; exit 1)

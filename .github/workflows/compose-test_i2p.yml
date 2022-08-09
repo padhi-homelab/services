@@ -22,4 +22,4 @@ jobs:
         run: |
           cd i2p
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q i2p))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)

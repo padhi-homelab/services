@@ -33,6 +33,6 @@ jobs:
         run: |
           cd indexarr
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q jackett))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
