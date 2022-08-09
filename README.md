@@ -18,8 +18,8 @@ Flags:
   [--no-override, -o]       Ignore docker-compose.override.yml file
 
 Services:
-  airdcpp  hass         i2p        indexarr  monitarr  navidrome  netdata  nextcloud
-  pihole   qbittorrent  snowflake  tang      tor       traefik    unifi                         
+  airdcpp  hass         indexarr  monitarr  navidrome  netdata  nextcloud
+  pihole   qbittorrent  tang      traefik   unifi                         
 ```
 
 ### Arch. Support
@@ -129,44 +129,6 @@ Services:
       </td>
       <td align='center'>
         :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://www.navidrome.org/'>I2P</a>
-        <br>
-        <sub>4444, 4445, 6668, 7652, 7653, 7654, 7656, 7657, 7658, 7659, 7660, 12345</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28I2P%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(I2P)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/i2p'>
-          <sub>i2p</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>1.8.0</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -597,44 +559,6 @@ Services:
     </tr>
     <tr>
       <th>
-        <a href='https://snowflake.torproject.org'>Snowflake</a>
-        <br>
-        <sub>-</sub>
-        <!--<hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Snowflake%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Snowflake)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>-->
-      </th>
-      <th>
-        A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/snowflake/'>
-          <sub>snowflake</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.0.1</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://github.com/latchset/tang'>Tang</a>
         <br>
         <sub>23532</sub>
@@ -651,44 +575,6 @@ Services:
       </th>
       <td align='center'>
         <code><sub>git.e2059...</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://www.torproject.org'>Tor</a>
-        <br>
-        <sub>-</sub>
-        <!--<hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tor%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tor)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>-->
-      </th>
-      <th>
-        A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/tor/'>
-          <sub>tor</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>0.4.6.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

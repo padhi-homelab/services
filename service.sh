@@ -16,7 +16,7 @@ EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
 
 usage () {
   if [ $# -gt 0 ]; then echo -e "\nERROR: $1" >&2 ; fi
-  services="$(\ls -Cdw100000 */ | sed 's:\/::g; s:[[:space:]]\+: :g' | fmt -64 | column -t)"
+  services="$(\ls -Cdw100000 */ | sed 's:[[:space:]]_[^[:space:]]*/::g; s:\/::g; s:[[:space:]]\+: :g' | fmt -64 | column -t)"
   echo -e "
 Usage: $0 <verb>[,<verb>,...] [flags] <svc_dir> [<svc_dir> ...]
 
