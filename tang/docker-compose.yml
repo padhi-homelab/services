@@ -1,11 +1,17 @@
 version: '2.4'
 
+networks:
+  proxy:
+    external: true
+
 services:
   tang:
     hostname: tang
-    image: padhihomelab/tang:git.e2059ee1_git.76924deb
+    image: padhihomelab/tang:git.e2059ee1_git.76924deb-p1
     restart: unless-stopped
 
+    networks:
+    - proxy
     volumes:
     - ./data/tang/db:/db:rw
 
