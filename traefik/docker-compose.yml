@@ -1,11 +1,17 @@
 version: '2.4'
 
+networks:
+  proxy:
+    external: true
+
 services:
   docker.sock-proxy:
     hostname: docker.sock-proxy
     image: padhihomelab/docker.sock-proxy:2.4.17
     restart: unless-stopped
 
+    networks:
+    - default
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -23,6 +29,9 @@ services:
     depends_on:
     - docker.sock-proxy
 
+    networks:
+    - default
+    - proxy
     volumes:
     - ./config/traefik/dynamic:/dynamic:ro
     - ./config/traefik/traefik.yml:/traefik.yml:ro
