@@ -16,6 +16,11 @@ jobs:
         name: "Git: Checkout"
         uses: actions/checkout@v3
       -
+        name: "Service: Setup"
+        run: |
+          mkdir -p traefik/data/traefik
+          cp -r .github/workflows/config/cert traefik/data/traefik/
+      -
         name: "Service: Start"
         run: |
           ./service.sh up --no-override traefik

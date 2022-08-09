@@ -1,5 +1,9 @@
 version: '2.4'
 
+networks:
+  proxy:
+    external: true
+
 volumes:
   netdata_lib:
     driver_opts:
@@ -11,35 +15,13 @@ volumes:
       device: tmpfs
 
 services:
-  caddy:
-    hostname: caddy
-    image: caddy:2.5.2
-    restart: unless-stopped
-    user: ${USER_ID:?}
-
-    depends_on:
-    - netdata
-  
-    volumes:
-    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    - ./data/caddy/data:/data:rw
-    - ./data/caddy/config:/config:rw
-
-    environment:
-      TZ: ${TZ:?}
-
-    healthcheck:
-      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
-      start_period: 5s
-
   docker.sock-proxy:
     hostname: docker.sock-proxy
     image: padhihomelab/docker.sock-proxy:2.4.17
     restart: unless-stopped
 
+    networks:
+    - default
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -55,6 +37,9 @@ services:
     depends_on:
     - docker.sock-proxy
 
+    networks:
+    - default
+    - proxy
     volumes:
     - netdata_cache:/var/cache/netdata:rw
     - ./config/netdata/etc/netdata/charts.d.conf:/etc/netdata/charts.d.conf:ro

@@ -4,5 +4,7 @@ set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
-mkdir -p $SELF_DIR/data/caddy/config \
-         $SELF_DIR/data/caddy/data
+bash "$SELF_DIR/../_scripts/create-proxy-network.sh"
+
+mkdir -p "$SELF_DIR/data/caddy/config" \
+         "$SELF_DIR/data/caddy/data"

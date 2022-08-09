@@ -18,7 +18,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override netdata
+          ./service.sh up netdata
       -
         name: "Service: Wait"
         run: |
@@ -29,5 +29,30 @@ jobs:
           cd netdata
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"
           [[ "$REPLY" == "pong" ]] || (docker ps && docker-compose logs && exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+      -
+        name: "Service: Traefik Setup"
+        run: |
+          mkdir -p traefik/data/traefik
+          cp -r .github/workflows/config/cert traefik/data/traefik/
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./service.sh up --no-override traefik
+          ./service.sh down,up netdata
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 30s
+      -
+        name: "Service: Test"
+        run: |
+          cd netdata
+          REPLY="$(docker-compose exec -T netdata netdatacli ping)"
+          [[ "$REPLY" == "pong" ]] || (docker ps && docker-compose logs && exit 1)
+          cd ../traefik
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/netdata \
+            || (docker ps && docker-compose logs && exit 1)
