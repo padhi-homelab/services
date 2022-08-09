@@ -54,5 +54,5 @@ jobs:
           [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps && docker-compose logs && exit 1)
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/netdata \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:9443/netdata/ \
             || (docker ps && docker-compose logs && exit 1)

@@ -4,10 +4,10 @@ services:
   traefik:
     ports:
     - 443:443
-    - 8080:8080
+    - 9080:9080
+    - 9443:9443
     labels:
       traefik.enable: true
-      traefik.http.routers.dashboard.rule: PathPrefix(`/`)
-      traefik.http.routers.dashboard.entryPoints: dashboard
+      traefik.http.routers.dashboard.rule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+      traefik.http.routers.dashboard.entryPoints: local-secure
       traefik.http.routers.dashboard.service: api@internal
-      traefik.http.routers.dashboard.middlewares: lan-ip-whitelist@file

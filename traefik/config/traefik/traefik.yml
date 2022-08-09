@@ -3,21 +3,30 @@ api:
   insecure: false
 
 entryPoints:
-  dashboard:
+  internal:
     address: ":8080"
+  local:
+    address: ":9080"
+    http:
+      middlewares:
+      - lan-ip-whitelist@file
+  local-secure:
+    address: ":9443"
+    http:
+      middlewares:
+      - lan-ip-whitelist@file
+      tls: true
+  web-secure:
+    address: ":443"
     http:
       tls: true
-  ping:
-    address: ":9999"
-  websecure:
-    address: ":443"
 
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
 
 ping:
-  entryPoint: ping
+  entryPoint: internal
 
 providers:
   docker:

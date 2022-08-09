@@ -5,8 +5,7 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: proxy
-      traefik.http.middlewares.strip-path-prefix.stripprefix.prefixes: "/netdata"
+      traefik.http.middlewares.strip-netdata-prefix.stripprefix.prefixes: "/netdata"
       traefik.http.routers.netdata.rule: PathPrefix(`/netdata`)
-      traefik.http.routers.netdata.tls: true
-      traefik.http.routers.netdata.entryPoints: websecure
-      traefik.http.routers.netdata.middlewares: lan-ip-whitelist@file,strip-path-prefix
+      traefik.http.routers.netdata.entryPoints: local-secure
+      traefik.http.routers.netdata.middlewares: strip-netdata-prefix
