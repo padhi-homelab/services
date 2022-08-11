@@ -99,6 +99,10 @@ fi
 
 SERVICES=("$@")
 
+uses_traefik_proxy () {
+  grep -qE 'traefik\.docker\.network[=:]\s*proxy' *.yml *.yaml
+}
+
 perform () {
   local SIMPLE_VERB=$1
   for svc in "${SERVICES[@]}"; do
@@ -116,6 +120,10 @@ perform () {
     if [ "$SIMPLE_VERB" == "clean" ]; then
       rm -rfv data .env
       continue
+    fi
+
+    if uses_traefik_proxy; then
+      ../_scripts/create-proxy-network.sh
     fi
 
     if [ "$NO_HOOK_SCRIPTS" != "yes" ]; then
