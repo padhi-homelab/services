@@ -5,18 +5,18 @@ api:
 entryPoints:
   internal:
     address: ":8080"
-  local:
+  lan-http:
     address: ":9080"
     http:
       middlewares:
       - lan-ip-whitelist@file
-  local-secure:
+  lan-https:
     address: ":9443"
     http:
       middlewares:
       - lan-ip-whitelist@file
       tls: true
-  web-secure:
+  wan-https:
     address: ":443"
     http:
       tls: true

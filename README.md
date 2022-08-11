@@ -321,18 +321,14 @@ Services:
       <th>
         <a href='https://www.netdata.cloud'>netdata</a>
         <br>
-        <sub>1234</sub>
+        <sub>:9443/netdata</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> A <br> A
+        A <br> A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
           <sub>docker.sock&#8209;proxy</sub>
         </a>
@@ -342,9 +338,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
-        <code><sub>2.4.17</sub></code>
+        <code><sub>2.6.2</sub></code>
         <br>
         <code><sub>1.35.1</sub></code>
       </td>
@@ -352,10 +346,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -449,18 +439,14 @@ Services:
       <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
-        <sub>53, 4443</sub>
+        <sub>:53, :9443/pihole</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28PiHole%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(PiHole)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> A <br> B
+        A <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/dnscrypt-proxy'>
           <sub>dnscrypt&#8209;proxy</sub>
         </a>
@@ -470,8 +456,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>2.1.2</sub></code>
         <br>
         <code><sub>2022.07.1</sub></code>
@@ -480,10 +464,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -561,7 +541,7 @@ Services:
       <th>
         <a href='https://github.com/latchset/tang'>Tang</a>
         <br>
-        <sub>23532</sub>
+        <sub>:9080/tang</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tang%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Tang)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -574,7 +554,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>git.e2059...</sub></code>
+        <code><sub>git.e2...p3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -651,7 +631,7 @@ Services:
       <th>
         <a href='https://traefik.io/'>Traefik</a>
         <br>
-        <sub>443,8080</sub>
+        <sub>:443, :9080, :9443</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Traefik)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -668,9 +648,9 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.17</sub></code>
+        <code><sub>2.6.2</sub></code>
         <br>
-        <code><sub>2.8.1</sub></code>
+        <code><sub>2.8.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
