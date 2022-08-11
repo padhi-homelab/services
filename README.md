@@ -199,7 +199,7 @@ Services:
       <th>
         Monitarr
         <br>
-        <sub>9443</sub>
+        <sub>:443/{lidarr,radarr,sonarr}</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Monitarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>

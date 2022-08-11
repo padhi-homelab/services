@@ -1,5 +1,4 @@
 <Config>
   <EnableSsl>False</EnableSsl>
-  <Port>8686</Port>
   <UrlBase>/lidarr</UrlBase>
 </Config>

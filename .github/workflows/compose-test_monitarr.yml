@@ -33,5 +33,38 @@ jobs:
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+      -
+        name: "Service: Traefik Setup"
+        run: |
+          mkdir -p traefik/data/traefik
+          cp -r .github/workflows/config/cert traefik/data/traefik/
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./service.sh up --no-override traefik
+          ./service.sh down,up monitarr
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 76s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          cd monitarr
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q lidarr))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q radarr))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          cd ../traefik
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/lidarr/ \
+            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/radarr/ \
+            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/sonarr/ \
+            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)

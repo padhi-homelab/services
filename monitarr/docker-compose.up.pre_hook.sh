@@ -4,9 +4,7 @@ set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
-mkdir -p $SELF_DIR/data/caddy/config \
-         $SELF_DIR/data/caddy/data \
-         $SELF_DIR/data/lidarr/config \
+mkdir -p $SELF_DIR/data/lidarr/config \
          $SELF_DIR/data/lidarr/downloads \
          $SELF_DIR/data/lidarr/music \
          $SELF_DIR/data/radarr/config \

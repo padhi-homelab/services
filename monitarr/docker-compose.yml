@@ -1,37 +1,18 @@
 version: '2.4'
 
+networks:
+  proxy:
+    external: true
+
 services:
-  caddy:
-    hostname: caddy
-    image: caddy:2.5.2
-    restart: unless-stopped
-    user: ${USER_ID:?}
-
-    depends_on:
-    - lidarr
-    - radarr
-    - sonarr
-  
-    volumes:
-    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    - ./data/caddy/data:/data:rw
-    - ./data/caddy/config:/config:rw
-
-    environment:
-      TZ: ${TZ:?}
-
-    healthcheck:
-      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
-      start_period: 5s
-
   lidarr:
     hostname: lidarr
     image: padhihomelab/lidarr:1.1.0.2602
     restart: unless-stopped
 
+    networks:
+    - default
+    - proxy
     volumes:
     - ./data/lidarr/config:/config:rw
     - ./data/lidarr/downloads:/downloads:rw
@@ -46,6 +27,9 @@ services:
     image: padhihomelab/radarr:4.2.0.6438
     restart: unless-stopped
 
+    networks:
+    - default
+    - proxy
     volumes:
     - ./data/radarr/config:/config:rw
     - ./data/radarr/downloads:/downloads:rw
@@ -60,6 +44,9 @@ services:
     image: padhihomelab/sonarr:3.0.9.1549
     restart: unless-stopped
 
+    networks:
+    - default
+    - proxy
     volumes:
     - ./data/sonarr/config:/config:rw
     - ./data/sonarr/downloads:/downloads:rw
