@@ -44,7 +44,7 @@ jobs:
         run: |
           sleep 30s
       -
-        name: "Service: Test"
+        name: "Service: Test with Traefik"
         run: |
           cd tang
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q tang))"
@@ -54,5 +54,5 @@ jobs:
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          docker-compose exec -T traefik wget --spider --no-check-certificate http://localhost:9080/tang/adv \
+          docker-compose exec -T traefik wget --spider http://localhost:9080/tang/adv \
             || (docker ps ; docker-compose logs ; cd ../tang ; docker-compose logs ; exit 1)

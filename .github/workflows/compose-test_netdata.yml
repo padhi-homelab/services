@@ -44,7 +44,7 @@ jobs:
         run: |
           sleep 30s
       -
-        name: "Service: Test"
+        name: "Service: Test with Traefik"
         run: |
           cd netdata
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"

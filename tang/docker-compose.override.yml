@@ -5,7 +5,7 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: proxy
-      traefik.http.middlewares.strip-tang-prefix.stripprefix.prefixes: "/tang"
+      traefik.http.middlewares.strip-tang-prefix.stripPrefix.prefixes: "/tang"
       traefik.http.routers.tang.rule: PathPrefix(`/tang`)
       traefik.http.routers.tang.entryPoints: local
       traefik.http.routers.tang.middlewares: strip-tang-prefix
