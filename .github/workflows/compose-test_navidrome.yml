@@ -29,5 +29,30 @@ jobs:
           cd navidrome
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q navidrome))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
+      -
+        name: "Service: Traefik Setup"
+        run: |
+          mkdir -p traefik/data/traefik
+          cp -r .github/workflows/config/cert traefik/data/traefik/
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./service.sh up --no-override traefik
+          ./service.sh down,up navidrome
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 45s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          cd navidrome
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q navidrome))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          cd ../traefik
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/navidrome/ \
+            || (docker ps ; docker-compose logs ; cd ../navidrome ; docker-compose logs ; exit 1)

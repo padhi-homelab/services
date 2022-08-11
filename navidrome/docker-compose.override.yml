@@ -1,7 +1,9 @@
 version: '2.4'
 
 services:
-  caddy:
-    ports:
-    - 5443:5443
-    mem_limit: 64M
+  navidrome:
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.routers.navidrome.rule: PathPrefix(`/navidrome`)
+      traefik.http.routers.navidrome.entryPoints: wan-https
