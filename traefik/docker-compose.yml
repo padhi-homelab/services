@@ -22,7 +22,7 @@ services:
 
   traefik:
     hostname: traefik
-    image: traefik:v2.8.1
+    image: traefik:v2.8.2
     restart: unless-stopped
     user: ${USER_ID:?}
   

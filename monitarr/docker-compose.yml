@@ -57,7 +57,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:3.0.8.1507
+    image: padhihomelab/sonarr:3.0.9.1549
     restart: unless-stopped
 
     volumes:
