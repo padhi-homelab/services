@@ -40,7 +40,7 @@ jobs:
         name: "Service: Restart with Traefik"
         run: |
           ./service.sh up --no-override traefik
-          ./service.sh down,up pihole
+          ./service.sh down,up --no-override pihole
       -
         name: "Service: Wait"
         run: |

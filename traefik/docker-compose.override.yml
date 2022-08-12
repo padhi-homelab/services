@@ -6,9 +6,3 @@ services:
     - 443:443
     - 9080:9080
     - 9443:9443
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.dashboard.rule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
-      traefik.http.routers.dashboard.entryPoints: lan-https
-      traefik.http.routers.dashboard.service: api@internal

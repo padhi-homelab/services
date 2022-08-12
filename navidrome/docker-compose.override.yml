@@ -1,9 +1,0 @@
-version: '2.4'
-
-services:
-  navidrome:
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.navidrome.rule: PathPrefix(`/navidrome`)
-      traefik.http.routers.navidrome.entryPoints: wan-https

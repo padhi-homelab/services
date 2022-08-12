@@ -17,3 +17,11 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.middlewares.strip-tang-prefix.stripPrefix.prefixes: "/tang"
+      traefik.http.routers.tang.rule: PathPrefix(`/tang`)
+      traefik.http.routers.tang.entryPoints: lan-http
+      traefik.http.routers.tang.middlewares: strip-tang-prefix

@@ -42,6 +42,13 @@ services:
     environment:
       TZ: ${TZ:?}
 
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.routers.dashboard.rule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+      traefik.http.routers.dashboard.entryPoints: lan-https
+      traefik.http.routers.dashboard.service: api@internal
+
     healthcheck:
       test: ["CMD", "traefik", "healthcheck"]
       interval: 15s
