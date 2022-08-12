@@ -473,18 +473,14 @@ Services:
       <th>
         <a href='https://www.qbittorrent.org/'>qBittorrent</a>
         <br>
-        <sub>8443</sub>
+        <sub>:5432, :443/qbittorrent</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28qBittorrent%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(qBittorrent)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> A <br> A
+        A <br> A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
           <sub>openvpn&#8209;client</sub>
         </a>
@@ -494,8 +490,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>2.5.6</sub></code>
         <br>
         <code><sub>4.4.3.1</sub></code>
@@ -504,8 +498,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
         <br>
         :heavy_check_mark:
@@ -520,8 +512,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
