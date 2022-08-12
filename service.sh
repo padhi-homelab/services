@@ -100,7 +100,7 @@ fi
 SERVICES=("$@")
 
 uses_traefik_proxy () {
-  grep -qE 'traefik\.docker\.network[=:]\s*proxy' *.yml *.yaml
+  grep -qE 'traefik\.docker\.network[=:]\s*proxy' *.yml *.yaml &>/dev/null
 }
 
 perform () {

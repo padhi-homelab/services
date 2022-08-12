@@ -1,13 +1,16 @@
 version: '2.4'
 
 services:
-  caddy:
-    ports:
-    - 8443:8443
-    mem_limit: 64M
   openvpn:
     ports:
+    # $PROXY_USERNAME:$PROXY_PASSWORD SOCKS proxy
     - 5432:5432
-  #qbittorrent:
-  #  environment:
-  #    TZ: ${TZ:?}
+  qbittorrent:
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.middlewares.strip-qbittorrent-prefix.stripPrefix.prefixes: "/qbittorrent"
+      traefik.http.routers.qbittorrent.rule: PathPrefix(`/qbittorrent`)
+      traefik.http.services.qbittorrent.loadBalancer.server.port: 8080
+      traefik.http.routers.qbittorrent.entryPoints: wan-https
+      traefik.http.routers.qbittorrent.middlewares: strip-qbittorrent-prefix

@@ -1,43 +1,17 @@
 version: '2.4'
 
 networks:
-  default:
+  proxy:
+    external: true
 
 services:
-  caddy:
-    hostname: caddy
-    image: caddy:2.5.2
-    restart: unless-stopped
-    user: ${USER_ID:?}
-
-    depends_on:
-    - qbittorrent
-    links:
-    - openvpn:qbittorrent
-
-    networks:
-    - default
-    volumes:
-    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    - ./data/caddy/data:/data:rw
-    - ./data/caddy/config:/config:rw
-
-    environment:
-      TZ: ${TZ:?}
-
-    healthcheck:
-      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
-      start_period: 5s
-
   openvpn:
     hostname: openvpn
     image: padhihomelab/openvpn-client:2.5.6
 
     networks:
     - default
+    - proxy
     volumes:
     - ./data/openvpn/config:/config:ro
 
