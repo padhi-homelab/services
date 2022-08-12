@@ -22,16 +22,45 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 45s
+          sleep 60s
       -
         name: "Service: Test"
         run: |
           cd nextcloud
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q caddy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q mariadb))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q redis))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q nextcloud))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+      -
+        name: "Service: Traefik Setup"
+        run: |
+          mkdir -p traefik/data/traefik
+          cp -r .github/workflows/config/cert traefik/data/traefik/
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./service.sh up --no-override traefik
+          ./service.sh down,up nextcloud
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 90s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          cd nextcloud
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q mariadb))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q redis))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q nextcloud))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          cd ../traefik
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/nextcloud/ \
+            || (docker ps ; docker-compose logs ; cd ../nextcloud ; docker-compose logs ; exit 1)
