@@ -1,7 +1,7 @@
 version: '2.4'
 
 services:
-  caddy:
+  openvpn:
     ports:
-    - 19443:19443
-    mem_limit: 32M
+    # $PROXY_USERNAME:$PROXY_PASSWORD SOCKS proxy
+    - 5432:5432
