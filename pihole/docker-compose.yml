@@ -1,7 +1,7 @@
 version: "2.4"
 
 networks:
-  pihole_net:
+  default:
     driver: bridge
     ipam:
       config:
@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
 
     networks:
-      pihole_net:
+      default:
         ipv4_address: 10.0.0.3
     volumes:
     - ./config/dnscrypt-proxy/etc/dnscrypt-proxy.toml:/etc/dnscrypt-proxy.toml:ro
@@ -35,7 +35,7 @@ services:
     - dnscrypt-proxy
 
     networks:
-      pihole_net:
+      default:
         ipv4_address: 10.0.0.4
       proxy:
     volumes:

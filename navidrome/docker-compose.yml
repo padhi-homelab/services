@@ -12,7 +12,6 @@ services:
     user: ${USER_ID:?}
 
     networks:
-    - default
     - proxy
     volumes:
     - ./data/navidrome/music:/music:ro

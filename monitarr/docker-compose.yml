@@ -11,7 +11,6 @@ services:
     restart: unless-stopped
 
     networks:
-    - default
     - proxy
     volumes:
     - ./data/lidarr/config:/config:rw
@@ -34,7 +33,6 @@ services:
     restart: unless-stopped
 
     networks:
-    - default
     - proxy
     volumes:
     - ./data/radarr/config:/config:rw
@@ -57,7 +55,6 @@ services:
     restart: unless-stopped
 
     networks:
-    - default
     - proxy
     volumes:
     - ./data/sonarr/config:/config:rw

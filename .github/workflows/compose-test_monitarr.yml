@@ -46,7 +46,7 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep 76s
+          sleep 90s
       -
         name: "Service: Test with Traefik"
         run: |
