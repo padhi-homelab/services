@@ -9,19 +9,24 @@ entryPoints:
     address: ":9080"
     http:
       middlewares:
+      - compress-response@file
       - lan-ip-whitelist@file
   lan-https:
     address: ":9443"
     http:
       middlewares:
+      - compress-response@file
       - lan-ip-whitelist@file
       - ssl-headers@file
+      - security-headers@file
       tls: true
   wan-https:
     address: ":443"
     http:
       middlewares:
+      - compress-response@file
       - ssl-headers@file
+      - security-headers@file
       tls: true
 
 global:

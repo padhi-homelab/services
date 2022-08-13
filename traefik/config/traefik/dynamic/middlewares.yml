@@ -1,12 +1,26 @@
 http:
   middlewares:
+    compress-response:
+      compress:
+        excludedContentTypes:
+        - 'text/event-stream'
     lan-ip-whitelist:
       ipWhitelist:
         sourceRange:
-        - "10.0.0.0/8"
-        - "172.16.0.0/12"
-        - "192.168.0.0/16"
-        - "127.0.0.1/32"
+        - '10.0.0.0/8'
+        - '172.16.0.0/12'
+        - '192.168.0.0/16'
+        - '127.0.0.1/32'
+    security-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        customResponseHeaders:
+          Server: ''
+          X-Powered-By: ''
+          X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
+        frameDeny: true
+        referrerpolicy: 'same-origin'
     ssl-headers:
       headers:
         customRequestHeaders:
