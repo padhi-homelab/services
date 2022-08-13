@@ -1,13 +1,6 @@
 version: '2.4'
 
 services:
-  caddy:
-    ports:
-    - 5443:5443
-    mem_limit: 64M
   openvpn:
     ports:
-    - 5432:5432
-  #airdcpp:
-  #  environment:
-  #    TZ: ${TZ:?}
+    - 15432:5432

@@ -15,10 +15,13 @@ entryPoints:
     http:
       middlewares:
       - lan-ip-whitelist@file
+      - ssl-headers@file
       tls: true
   wan-https:
     address: ":443"
     http:
+      middlewares:
+      - ssl-headers@file
       tls: true
 
 global:

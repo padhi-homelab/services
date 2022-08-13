@@ -4,4 +4,4 @@ services:
   openvpn:
     ports:
     # $PROXY_USERNAME:$PROXY_PASSWORD SOCKS proxy
-    - 5432:5432
+    - 35432:5432

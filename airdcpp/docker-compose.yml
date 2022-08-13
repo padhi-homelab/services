@@ -1,40 +1,16 @@
 version: '2.4'
 
 networks:
-  default:
+  proxy:
+    external: true
 
 services:
-  caddy:
-    hostname: caddy
-    image: caddy:2.5.2
-    restart: unless-stopped
-    user: ${USER_ID:?}
-
-    depends_on:
-    - airdcpp
-    links:
-    - openvpn:airdcpp
-  
-    networks:
-    - default
-    volumes:
-    - ./config/caddy/etc/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
-    - ./data/caddy/data:/data:rw
-    - ./data/caddy/config:/config:rw
-
-    healthcheck:
-      test: ["CMD", "wget", "-qSO", "/dev/null", "http://localhost:2019/config"]
-      interval: 10s
-      timeout: 2s
-      retries: 3
-      start_period: 5s
-
   openvpn:
     hostname: openvpn
     image: padhihomelab/openvpn-client:2.5.6
 
     networks:
-    - default
+    - proxy
     volumes:
     - ./data/openvpn/config:/config:ro
 
@@ -62,3 +38,13 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/airdcpp"
+      traefik.http.routers.airdcpp.rule: PathPrefix(`/airdcpp`)
+      traefik.http.services.airdcpp.loadBalancer.server.port: 5600
+      traefik.http.routers.airdcpp.entryPoints: wan-https
+      traefik.http.routers.airdcpp.middlewares: strip-airdcpp-prefix
+      
