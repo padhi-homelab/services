@@ -43,7 +43,7 @@ jobs:
         name: "Service: Restart with Traefik"
         run: |
           ./service.sh up --no-override traefik
-          ./service.sh down,up qbittorrent
+          ./service.sh down,up --no-override qbittorrent
       -
         name: "Service: Wait"
         run: |

@@ -41,18 +41,14 @@ Services:
       <th>
         <a href='https://airdcpp.net/'>AirDC++</a>
         <br>
-        <sub>5443</sub>
+        <sub>:443/airdcpp</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28AirDC%2B%2B%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(AirDC%2B%2B)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> A <br> B
+        A <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
           <sub>openvpn&#8209;client</sub>
         </a>
@@ -62,8 +58,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>2.5.6</sub></code>
         <br>
         <code><sub>2.11.2</sub></code>
@@ -72,15 +66,9 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -92,8 +80,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -141,17 +127,14 @@ Services:
       <th>
         Indexarr
         <br>
-        <sub>19443</sub>
+        <sub>:443/jackett</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Indexarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> A <br> C
+        A <br> C
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
           <sub>openvpn&#8209;client</sub>
@@ -162,8 +145,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>2.5.6</sub></code>
         <br>
         <code><sub>0.20.1680</sub></code>
@@ -172,10 +153,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -188,8 +165,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
@@ -199,18 +174,14 @@ Services:
       <th>
         Monitarr
         <br>
-        <sub>:443/{lidarr,radarr,sonarr}</sub>
+        <sub>:443/{lid,rad,son}arr</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Monitarr)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> C <br> C <br> C
+        C <br> C <br> C
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/lidarr/'>
           <sub>lidarr</sub>
         </a>
@@ -224,8 +195,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>1.1.0.2602</sub></code>
         <br>
         <code><sub>4.2.0.6438</sub></code>
@@ -240,13 +209,9 @@ Services:
         <br>
         :heavy_multiplication_x:
         <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
@@ -260,8 +225,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
@@ -355,18 +318,14 @@ Services:
       <th>
         <a href='https://nextcloud.com/'>Nextcloud</a>
         <br>
-        <sub>4443</sub>
+        <sub>:443/nextcloud</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Nextcloud)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B <br> B
+        B <br> B <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/caddy'>
-          <sub>caddy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/_/mariadb'>
           <sub>mariadb</sub>
         </a>
@@ -380,8 +339,6 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.2</sub></code>
-        <br>
         <code><sub>10.8.3</sub></code>
         <br>
         <code><sub>7.0.4</sub></code>
@@ -394,6 +351,11 @@ Services:
       <td align='center'>
         :heavy_multiplication_x:
         <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
         :heavy_multiplication_x:
         <br>
         :heavy_check_mark:
@@ -401,17 +363,6 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
         <br>
         :heavy_check_mark:
