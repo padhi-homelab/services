@@ -32,7 +32,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.2.0.6438
+    image: padhihomelab/radarr:4.2.1.6478
     restart: unless-stopped
 
     security_opt:
