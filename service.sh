@@ -106,9 +106,10 @@ uses_traefik_proxy () {
 perform () {
   local SIMPLE_VERB=$1
   for svc in "${SERVICES[@]}"; do
+    svc="${svc%/}"
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
-    if ! [ -d "$SELF_DIR/$svc" ]; then
-      echo "[X] ERROR: '$SELF_DIR/$svc' is not a directory!" >&2
+    if ! { [ "$svc" = "$(basename "$svc")" ] && [ -d "$SELF_DIR/$svc" ]; }; then
+      echo "[X] ERROR: '$svc' is not a base directory at '$SELF_DIR'!" >&2
       if [ "$IGNORE_FAILURES" == "yes" ]; then
         continue
       else
