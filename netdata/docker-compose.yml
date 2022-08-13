@@ -65,11 +65,3 @@ services:
       DO_NOT_TRACK: '1'
       DOCKER_HOST: docker.sock-proxy:1279
       TZ: ${TZ:?}    
-
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.middlewares.strip-netdata-prefix.stripPrefix.prefixes: "/netdata"
-      traefik.http.routers.netdata.rule: PathPrefix(`/netdata`)
-      traefik.http.routers.netdata.entryPoints: lan-https
-      traefik.http.routers.netdata.middlewares: strip-netdata-prefix

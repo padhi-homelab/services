@@ -18,7 +18,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override nextcloud
+          ./service.sh up --no-labels --no-ports nextcloud
       -
         name: "Service: Wait"
         run: |
@@ -41,8 +41,8 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./service.sh up --no-override traefik
-          ./service.sh down,up nextcloud
+          ./service.sh up --no-ports traefik
+          ./service.sh down,up --no-ports nextcloud
       -
         name: "Service: Wait"
         run: |

@@ -101,14 +101,6 @@ services:
       NEXTCLOUD_DATA_DIR: '/data'
       TZ: ${TZ:?}
 
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.middlewares.strip-nextcloud-prefix.stripPrefix.prefixes: "/nextcloud"
-      traefik.http.routers.nextcloud.rule: PathPrefix(`/nextcloud`)
-      traefik.http.routers.nextcloud.entryPoints: wan-https
-      traefik.http.routers.nextcloud.middlewares: strip-nextcloud-prefix
-
     healthcheck:
       test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost:80"]
       interval: 15s

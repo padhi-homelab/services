@@ -23,7 +23,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override traefik
+          ./service.sh up --no-labels --no-ports traefik
       -
         name: "Service: Wait"
         run: |
@@ -36,3 +36,21 @@ jobs:
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
           REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
           [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+      -
+        name: "Service: Restart with labels"
+        run: |
+          ./service.sh down,up --no-ports traefik
+      -
+        name: "Service: Wait"
+        run: |
+          sleep 45s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          cd traefik
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
+          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:9443/dashboard/ \
+            || (docker ps ; docker-compose logs ; exit 1)

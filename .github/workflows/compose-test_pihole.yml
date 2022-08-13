@@ -18,7 +18,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override pihole
+          ./service.sh up --no-labels --no-ports pihole
       -
         name: "Service: Wait"
         run: |
@@ -39,8 +39,8 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./service.sh up --no-override traefik
-          ./service.sh down,up --no-override pihole
+          ./service.sh up --no-ports traefik
+          ./service.sh down,up --no-ports pihole
       -
         name: "Service: Wait"
         run: |

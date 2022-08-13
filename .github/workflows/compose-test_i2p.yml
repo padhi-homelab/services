@@ -12,7 +12,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override i2p
+          ./service.sh up --no-labels --no-ports i2p
       -
         name: "Service: Wait"
         run: |

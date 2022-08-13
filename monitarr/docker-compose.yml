@@ -24,12 +24,6 @@ services:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
 
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.lidarr.rule: PathPrefix(`/lidarr`)
-      traefik.http.routers.lidarr.entryPoints: wan-https
-
   radarr:
     hostname: radarr
     image: padhihomelab/radarr:4.2.1.6478
@@ -49,12 +43,6 @@ services:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
 
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.radarr.rule: PathPrefix(`/radarr`)
-      traefik.http.routers.radarr.entryPoints: wan-https
-
   sonarr:
     hostname: sonarr
     image: padhihomelab/sonarr:3.0.9.1549
@@ -73,9 +61,3 @@ services:
     environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
-
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.sonarr.rule: PathPrefix(`/sonarr`)
-      traefik.http.routers.sonarr.entryPoints: wan-https

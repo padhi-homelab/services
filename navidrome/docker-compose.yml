@@ -26,9 +26,3 @@ services:
       ND_SCANSCHEDULE: 30m
       ND_SESSIONTIMEOUT: 8h
       TZ: ${TZ:?}
-
-    labels:
-      traefik.enable: true
-      traefik.docker.network: proxy
-      traefik.http.routers.navidrome.rule: PathPrefix(`/navidrome`)
-      traefik.http.routers.navidrome.entryPoints: wan-https

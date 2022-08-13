@@ -1,0 +1,10 @@
+version: '2.4'
+
+services:
+  jackett:
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.routers.jackett.rule: PathPrefix(`/jackett`)
+      traefik.http.services.jackett.loadBalancer.server.port: 9117
+      traefik.http.routers.jackett.entryPoints: wan-https

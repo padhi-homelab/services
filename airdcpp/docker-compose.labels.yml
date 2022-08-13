@@ -1,0 +1,12 @@
+version: '2.4'
+
+services:
+  airdcpp:
+    labels:
+      traefik.enable: true
+      traefik.docker.network: proxy
+      traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/airdcpp"
+      traefik.http.routers.airdcpp.rule: PathPrefix(`/airdcpp`)
+      traefik.http.services.airdcpp.loadBalancer.server.port: 5600
+      traefik.http.routers.airdcpp.entryPoints: wan-https
+      traefik.http.routers.airdcpp.middlewares: strip-airdcpp-prefix

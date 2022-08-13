@@ -18,7 +18,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override unifi
+          ./service.sh up --no-labels --no-ports unifi
       -
         name: "Service: Wait"
         run: |

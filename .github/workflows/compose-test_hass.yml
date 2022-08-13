@@ -18,7 +18,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-override hass
+          ./service.sh up --no-labels --no-ports hass
       -
         name: "Service: Wait"
         run: |

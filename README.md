@@ -3,19 +3,20 @@
 ### Usage
 
 ```console
-$ ./service.sh 
-Usage: ./service.sh <verb>[,<verb> ...] [flags] <svc_dir_name> [<svc_dir_name> ...]
+$ ./service.sh
+Usage: ./service.sh <verb>[,<verb>,...] [flags] <svc_dir> [<svc_dir> ...]
 
 Verbs:
-  clean                     Delete `service/data`
+  clean                     Delete '<svc_dir>/data'
   down                      Stop a service
-  restart                   Restart a service
   up                        Start a service
 
 Flags:
   [--ignore-failures, -i]   Ignore failing services and continue
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
-  [--no-override, -o]       Ignore docker-compose.override.yml file
+  [--no-labels, -l]         Ignore 'docker-compose.labels.yml' files
+  [--no-override, -o]       Ignore 'docker-compose.override.yml' file
+  [--no-port, -p]           Ignore 'docker-compose.ports.yml' file
 
 Services:
   airdcpp  hass         indexarr  monitarr  navidrome  netdata  nextcloud
