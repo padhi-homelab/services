@@ -20,6 +20,9 @@ services:
     image: padhihomelab/docker.sock-proxy:2.6.2
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
     - default
     volumes:
@@ -33,6 +36,12 @@ services:
     hostname: ${HOST_NAME:?}
     image: padhihomelab/netdata:1.36.0
     restart: unless-stopped
+
+    cap_add:
+    - SYS_PTRACE
+    security_opt:
+    - apparmor:unconfined
+    - no-new-privileges:true
 
     depends_on:
     - docker.sock-proxy
@@ -52,14 +61,10 @@ services:
     - /var/lib/smartmontools:/var/log/smartd:ro
     - /var/log/fail2ban.log:/var/log/fail2ban.log:ro
 
-    cap_add:
-    - SYS_PTRACE
     environment:
       DO_NOT_TRACK: '1'
       DOCKER_HOST: docker.sock-proxy:1279
-      TZ: ${TZ:?}
-    security_opt:
-    - apparmor:unconfined
+      TZ: ${TZ:?}    
 
     labels:
       traefik.enable: true

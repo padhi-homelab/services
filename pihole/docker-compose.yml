@@ -15,6 +15,9 @@ services:
     image: padhihomelab/dnscrypt-proxy:2.1.2
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
       default:
         ipv4_address: 10.0.0.3
@@ -29,7 +32,10 @@ services:
     hostname: pihole
     image: pihole/pihole:2022.07.1
     restart: unless-stopped
-    # Runs as non-root user, as of 2022.01
+
+    security_opt:
+    - no-new-privileges:true
+    # no `user:` needed; runs as non-root user since 2022.01
 
     depends_on:
     - dnscrypt-proxy

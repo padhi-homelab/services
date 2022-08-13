@@ -10,6 +10,9 @@ services:
     image: padhihomelab/docker.sock-proxy:2.6.2
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
     - default
     volumes:
@@ -24,6 +27,9 @@ services:
     hostname: traefik
     image: traefik:v2.8.2
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
     user: ${USER_ID:?}
   
     depends_on:

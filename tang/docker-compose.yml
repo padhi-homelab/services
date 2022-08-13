@@ -10,6 +10,9 @@ services:
     image: padhihomelab/tang:git.e2059ee1_git.76924deb-p3
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
     - proxy
     volumes:

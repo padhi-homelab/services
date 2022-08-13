@@ -10,6 +10,9 @@ services:
     image: padhihomelab/lidarr:1.1.0.2602
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
     - proxy
     volumes:
@@ -32,6 +35,9 @@ services:
     image: padhihomelab/radarr:4.2.0.6438
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     networks:
     - proxy
     volumes:
@@ -53,6 +59,9 @@ services:
     hostname: sonarr
     image: padhihomelab/sonarr:3.0.9.1549
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
 
     networks:
     - proxy

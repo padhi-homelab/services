@@ -9,6 +9,9 @@ services:
     hostname: navidrome
     image: deluan/navidrome:sha-e981ee2
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
     user: ${USER_ID:?}
 
     networks:

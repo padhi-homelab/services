@@ -9,6 +9,9 @@ services:
     hostname: mariadb
     image: mariadb:10.8.3
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
     user: ${USER_ID:?}
     
     command: |-
@@ -38,6 +41,9 @@ services:
     hostname: redis
     image: redis:7.0.4
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
     user: ${USER_ID:?}
 
     command: |-
@@ -60,6 +66,9 @@ services:
     hostname: nextcloud
     image: nextcloud:24.0.3
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
     user: ${USER_ID:?}
 
     depends_on:

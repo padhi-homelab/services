@@ -8,6 +8,10 @@ services:
   openvpn:
     hostname: openvpn
     image: padhihomelab/openvpn-client:2.5.6
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
 
     networks:
     - proxy
@@ -25,6 +29,9 @@ services:
   airdcpp:
     image: padhihomelab/airdcpp:2.11.2
     restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
 
     depends_on:
     - openvpn

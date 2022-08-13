@@ -6,6 +6,9 @@ services:
     image: padhihomelab/hass:2022.8.3_1.26.2
     restart: unless-stopped
 
+    security_opt:
+    - no-new-privileges:true
+
     volumes:
     - ./data/hass/config:/config:rw
 
