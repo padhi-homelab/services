@@ -26,3 +26,8 @@ services:
       ND_SCANSCHEDULE: 30m
       ND_SESSIONTIMEOUT: 8h
       TZ: ${TZ:?}
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "2"

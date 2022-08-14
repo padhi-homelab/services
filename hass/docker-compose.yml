@@ -20,3 +20,8 @@ services:
       TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "4"

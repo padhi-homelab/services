@@ -32,6 +32,11 @@ services:
       CONTAINERS: '1'
       TZ: ${TZ:?}
 
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
+
   netdata:
     hostname: ${HOST_NAME:?}
     image: padhihomelab/netdata:1.36.0
@@ -65,3 +70,8 @@ services:
       DO_NOT_TRACK: '1'
       DOCKER_HOST: docker.sock-proxy:1279
       TZ: ${TZ:?}    
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "2"

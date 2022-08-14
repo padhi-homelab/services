@@ -36,6 +36,10 @@ services:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 15s
       start_period: 10s
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
 
   redis:
     hostname: redis
@@ -61,6 +65,10 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 15s
       start_period: 10s
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
 
   nextcloud:
     hostname: nextcloud
@@ -106,3 +114,7 @@ services:
       interval: 15s
       timeout: 3s
       start_period: 15s
+    logging:
+      options:
+        max-size: "16m"
+        max-file: "4"

@@ -1,3 +1,29 @@
+accessLog:
+  bufferingSize: 32
+  fields:
+    defaultMode: drop
+    names:
+      Duration: keep
+      RouterName: keep
+      ServiceName: keep
+      ClientAddr: keep
+      RequestAddr: keep
+      RequestPath: keep
+      RequestProtocol: keep
+      RequestScheme: keep
+      RequestContentSize: keep
+      OriginStatus: keep
+      DownstreamStatus: keep
+      Overhead: keep
+      RetryAttempts: keep
+      TLSVersion: keep
+    headers:
+      defaultMode: drop
+      names:
+        Referer: keep
+        User-Agent: keep
+  format: json
+
 api:
   dashboard: true
   insecure: false
@@ -32,6 +58,10 @@ entryPoints:
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
+
+logs:
+  format: json
+  level: INFO
 
 ping:
   entryPoint: internal

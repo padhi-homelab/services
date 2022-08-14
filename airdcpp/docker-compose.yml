@@ -10,6 +10,8 @@ services:
     image: padhihomelab/openvpn-client:2.5.6
     restart: unless-stopped
 
+    cap_add:
+    - NET_ADMIN
     security_opt:
     - no-new-privileges:true
 
@@ -18,13 +20,16 @@ services:
     volumes:
     - ./data/openvpn/config:/config:ro
 
-    cap_add:
-    - NET_ADMIN
     environment:
       CONFIG_FILE_NAME: 'client.conf'
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
+
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
 
   airdcpp:
     image: padhihomelab/airdcpp:2.11.2
@@ -45,3 +50,8 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "4"

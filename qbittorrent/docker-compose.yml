@@ -9,6 +9,8 @@ services:
     hostname: openvpn
     image: padhihomelab/openvpn-client:2.5.6
 
+    cap_add:
+    - NET_ADMIN
     security_opt:
     - no-new-privileges:true
 
@@ -17,13 +19,16 @@ services:
     volumes:
     - ./data/openvpn/config:/config:ro
 
-    cap_add:
-    - NET_ADMIN
     environment:
       CONFIG_FILE_NAME: 'client.conf'
       FORWARDED_PORTS: ''
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
+
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
 
   qbittorrent:
     image: padhihomelab/qbittorrent-nox:4.4.3.1
@@ -31,6 +36,7 @@ services:
 
     security_opt:
     - no-new-privileges:true
+    tty: true
 
     depends_on:
     - openvpn
@@ -42,6 +48,10 @@ services:
     - ./data/qbittorrent/torrents/complete:/torrents/complete:rw
     - ./data/qbittorrent/torrents/incomplete:/torrents/incomplete:rw
 
-    tty: true
     environment:
       DOCKER_UID: ${USER_ID:?}
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "4"

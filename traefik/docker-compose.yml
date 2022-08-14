@@ -23,6 +23,11 @@ services:
       EVENTS: '1'
       TZ: ${TZ:?}
 
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
+
   traefik:
     hostname: traefik
     image: traefik:v2.8.3
@@ -43,7 +48,6 @@ services:
     - ./config/traefik/traefik.yml:/traefik.yml:ro
     - ./data/traefik/cert:/cert:ro
     - ./data/traefik/etc/traefik:/etc/traefik:rw
-    - ./data/traefik/var/log/traefik:/var/log/traefik:rw
 
     environment:
       TZ: ${TZ:?}
@@ -53,3 +57,7 @@ services:
       interval: 15s
       timeout: 2s
       start_period: 5s
+    logging:
+      options:
+        max-size: "64m"
+        max-file: "8"
