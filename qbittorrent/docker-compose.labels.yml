@@ -4,7 +4,6 @@ services:
   qbittorrent:
     labels:
       traefik.enable: true
-      traefik.docker.network: proxy
       traefik.http.middlewares.strip-qbittorrent-prefix.stripPrefix.prefixes: "/qbittorrent"
       traefik.http.routers.qbittorrent.rule: PathPrefix(`/qbittorrent`)
       traefik.http.services.qbittorrent.loadBalancer.server.port: 8080

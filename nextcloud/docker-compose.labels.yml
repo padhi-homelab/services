@@ -4,7 +4,6 @@ services:
   nextcloud:
     labels:
       traefik.enable: true
-      traefik.docker.network: proxy
       traefik.http.middlewares.strip-nextcloud-prefix.stripPrefix.prefixes: "/nextcloud"
       traefik.http.routers.nextcloud.rule: PathPrefix(`/nextcloud`)
       traefik.http.routers.nextcloud.entryPoints: wan-https

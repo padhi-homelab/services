@@ -84,7 +84,7 @@ do_up_verb () {
 }
 
 does_use_traefik_proxy () {
-  grep -qE 'traefik\.docker\.network[=:]\s*proxy' *.yml *.yaml &>/dev/null
+  grep -qE 'traefik\.enable[=:]\s*true' docker-compose*.y*ml &>/dev/null
 }
 
 usage () {

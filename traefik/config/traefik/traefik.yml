@@ -70,6 +70,7 @@ providers:
   docker:
     endpoint: "tcp://docker.sock-proxy:1279"
     exposedByDefault: false
+    network: proxy
     watch: true
   file:
     directory: "/dynamic"

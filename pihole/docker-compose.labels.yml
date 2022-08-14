@@ -4,7 +4,6 @@ services:
   pihole:
     labels:
       traefik.enable: true
-      traefik.docker.network: proxy
       traefik.http.middlewares.strip-pihole-prefix.stripPrefix.prefixes: "/pihole"
       traefik.http.middlewares.add-admin-prefix.addPrefix.prefix: "/admin"
       traefik.http.routers.pihole.rule: PathPrefix(`/pihole`)
