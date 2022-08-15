@@ -72,7 +72,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: nextcloud:24.0.3
+    image: nextcloud:24.0.4
     restart: unless-stopped
 
     security_opt:

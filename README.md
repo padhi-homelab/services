@@ -90,7 +90,7 @@ Services:
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
-        <sub>8123</sub>
+        <sub>:8123</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(HAss)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -344,7 +344,7 @@ Services:
         <br>
         <code><sub>7.0.4</sub></code>
         <br>
-        <code><sub>24.0.3</sub></code>
+        <code><sub>24.0.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -509,9 +509,59 @@ Services:
     </tr>
     <tr>
       <th>
+        <a href='https://traefik.io/'>Traefik</a>
+        <br>
+        <sub>:443, :9080, :9443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Traefik)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
+          <sub>docker.sock&#8209;proxy</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/traefik'>
+          <sub>traefik</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.6.2</sub></code>
+        <br>
+        <code><sub>2.8.3</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
-        <sub>3478, 8080, 8443, 8880, 8843</sub>
+        <sub>:3478, :8080, :8843, :10001</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Unifi)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -528,7 +578,7 @@ Services:
         </a>
       </th>
       <td align='center'>
-        <code><sub>5.0.10</sub></code>
+        <code><sub>4.4.15</sub></code>
         <br>
         <code><sub>7.1.68</sub></code>
       </td>
@@ -555,56 +605,6 @@ Services:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://traefik.io/'>Traefik</a>
-        <br>
-        <sub>:443, :9080, :9443</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Traefik)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        A <br> B
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
-          <sub>docker.sock&#8209;proxy</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/traefik'>
-          <sub>traefik</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.6.2</sub></code>
-        <br>
-        <code><sub>2.8.2</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
       </td>
