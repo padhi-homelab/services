@@ -27,7 +27,7 @@ NO_PORTS="no"
 # # # #
 
 do_clean_verb () {
-  rm -rfv data .env
+  rm -rfv data generated .env
 }
 
 do_down_verb () {
