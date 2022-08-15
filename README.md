@@ -148,7 +148,7 @@ Services:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.1680</sub></code>
+        <code><sub>0.20.1698</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

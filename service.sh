@@ -70,7 +70,7 @@ do_post_hooks () {
 do_pre_hooks () {
   [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ] || return
 
-  echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
+  echo "[*] Running 'pre' hooks for '$SIMPLE_VERB'"
   ./docker-compose.$SIMPLE_VERB.pre_hook.sh
   if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
     exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR

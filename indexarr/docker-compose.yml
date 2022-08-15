@@ -32,7 +32,7 @@ services:
         max-file: "1"
 
   jackett:
-    image: padhihomelab/jackett:0.20.1680
+    image: padhihomelab/jackett:0.20.1698
     restart: unless-stopped
 
     security_opt:
