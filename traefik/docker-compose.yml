@@ -45,7 +45,7 @@ services:
     - proxy
     volumes:
     - ./config/traefik/dynamic:/dynamic:ro
-    - ./config/traefik/traefik.yml:/traefik.yml:ro
+    - ./generated/traefik/traefik.yml:/traefik.yml:ro
     - ./data/traefik/cert:/cert:ro
     - ./data/traefik/etc/traefik:/etc/traefik:rw
 

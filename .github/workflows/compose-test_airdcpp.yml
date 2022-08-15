@@ -37,6 +37,7 @@ jobs:
       -
         name: "Service: Traefik Setup"
         run: |
+          cp .github/workflows/config/example.server.env ./server.env
           mkdir -p traefik/data/traefik
           cp -r .github/workflows/config/cert traefik/data/traefik/
       -

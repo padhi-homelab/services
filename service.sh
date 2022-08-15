@@ -35,30 +35,45 @@ do_down_verb () {
 }
 
 do_env_gen () {
+  echo "[*] Generating '.env'"
   rm -rf .env
-  if [ -f "../env.default.sh" ]; then
-    ../env.default.sh > .env
-  fi
-  if [ -f "env.sh" ]; then
-    ./env.sh >> .env
-  fi
+  [ ! -f "../server.env" ] || cp "../server.env" .env
+  [ ! -f "../env.default.sh" ] || ../env.default.sh >> .env
+  [ ! -f "env.sh" ] || ./env.sh >> .env
+}
+
+do_template_gen () {
+  [ -d './config' ] || return
+
+  echo "[*] Generating templated config files ..."
+  find ./config -name '*.template.*' -print0 | \
+    while IFS= read -r -d '' template_file ; do
+      generated_file="./generated${template_file#./config}"
+      mkdir -p "$(dirname "$generated_file")"
+      generated_file="${generated_file/.template/}"
+      ../_scripts/generate-and-verify.sh \
+        "$template_file" \
+        "$generated_file"
+    done
 }
 
 do_post_hooks () {
-  if [ -f "docker-compose.$SIMPLE_VERB.post_hook.sh" ]; then
-    ./docker-compose.$SIMPLE_VERB.post_hook.sh
-    if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-      exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
-    fi
+  [ -f "docker-compose.$SIMPLE_VERB.post_hook.sh" ] || return
+
+  echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
+  ./docker-compose.$SIMPLE_VERB.post_hook.sh
+  if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
+    exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   fi
 }
 
 do_pre_hooks () {
-  if [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ]; then
-    ./docker-compose.$SIMPLE_VERB.pre_hook.sh
-    if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-      exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
-    fi
+  [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ] || return
+
+  echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
+  ./docker-compose.$SIMPLE_VERB.pre_hook.sh
+  if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
+    exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
   fi
 }
 
@@ -84,7 +99,7 @@ do_up_verb () {
 }
 
 does_use_traefik_proxy () {
-  grep -qE 'traefik\.enable[=:]\s*true' docker-compose*.y*ml &>/dev/null
+  grep -qE 'traefik\.enable[=:]\s*true' docker-compose*.y*ml
 }
 
 usage () {
@@ -204,17 +219,16 @@ perform () {
     echo -e "\n[+] Executing '$SIMPLE_VERB' on $svc ..."
     if ! { [ "$svc" = "$(basename "$svc")" ] && [ -d "$SELF_DIR/$svc" ]; }; then
       echo "[X] ERROR: '$svc' is not a base directory at '$SELF_DIR'!" >&2
-      if [ "$IGNORE_FAILURES" = "yes" ]; then
-        continue
-      else
-        exit $EXIT_CODE_SERVICE_NOT_FOUND
-      fi
+      [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_SERVICE_NOT_FOUND
+      continue
     fi
     cd "$SELF_DIR/$svc"
 
-    [ "$NO_HOOK_SCRIPTS" = "yes" ] || do_pre_hooks
-
     [ "$SIMPLE_VERB" = "clean" ] || do_env_gen
+
+    [ "$SIMPLE_VERB" != "up" ] || do_template_gen
+
+    [ "$NO_HOOK_SCRIPTS" = "yes" ] || do_pre_hooks
 
     if [ "$SIMPLE_VERB" = "clean" ]; then
       do_clean_verb

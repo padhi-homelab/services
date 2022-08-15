@@ -1,6 +1,8 @@
 .env
-
-data
+server.env
 
 docker-compose.override.yml
 docker-compose.override.yaml
+
+data
+generated

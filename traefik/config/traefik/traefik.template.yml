@@ -28,6 +28,14 @@ api:
   dashboard: true
   insecure: false
 
+certificatesResolvers:
+  lets-encrypt:
+    acme:
+      email: ${SERVER_LETS_ENCRYPT_ACME_EMAIL}
+      storage: "/etc/traefik/lets-encrypt/acme.json"
+      #caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      tlsChallenge: true
+
 entryPoints:
   internal:
     address: ":8080"
@@ -37,6 +45,7 @@ entryPoints:
       middlewares:
       - compress-response@file
       - lan-ip-whitelist@file
+      - security-headers@file
   lan-https:
     address: ":9443"
     http:
@@ -53,13 +62,16 @@ entryPoints:
       - compress-response@file
       - ssl-headers@file
       - security-headers@file
-      tls: true
+      tls:
+        certResolver: lets-encrypt
+        domains:
+        - main: ${SERVER_WAN_FQDN}
 
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
 
-logs:
+log:
   format: json
   level: INFO
 
