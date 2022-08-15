@@ -7,7 +7,7 @@ TARGET_FILE="$2"
 
 ENV_VARS="$(cut -d= -f1 .env | awk '{print "$" $0}')"
 
-echo -n "[~] Generating '$(realpath "$TARGET_FILE")': "
+echo -n "[~] Generating '$TARGET_FILE': "
 
 env -i $(paste .env) \
     envsubst "$ENV_VARS"\

@@ -635,17 +635,31 @@ Services:
   </tbody>
 </table>
 
-### Structure
+### Structure & Conventions
 
-- directories within `config/`, `data/` and `extra/` should match the service name within `docker-compose.yml`
-- the directory structure within each `config/`, `data/`, `extra/` service subdirectory should match the target root directory hierarchy
+- no files under the subdirectories mentioned below should be edited;
+  all changed must appear in `.gitignore`d files:
+  - a `server.env` file may store WAN FQDN, ACME configs etc.
+  - `docker-compose.{up,down,clean}.{pre,post}_hook.user*.sh` scripts
+    may contain additional hooks to be run
+
+#### Subdirectories
+
+- subdirectories under `config/`, `data/`, `extra/`, and `generated/`
+  must match the service names within `docker-compose.yml`
+- the directory structure under each of `config/`, `data/`, `extra/`, and `generated/`
+  must match the root directory hierarchy in the target container
 - `config/` contents:
-  - files should be mounted in read-only mode (`:ro`)
-  - _should_ be checked in
+  - _may_ be mounted in read-only mode (`:ro`)
+    - `*.template.*` files are the only exceptions
+  - _must_ be checked in
 - `data/` contents:
-  - files should be mounted in read+write mode (`:rw`)
-  - should _not_ be checked in -- present in `.gitignore`
+  - _should_ be mounted in read+write mode (`:rw`)
+  - _must not_ be checked in; excluded using `.gitignore`
 - `extra/` contents:
-  - files should _not_ mounted within containers!
-  - these are additional files relevant to various services
+  - _must not_ mounted within containers!
+    - containers may fetch these by other means, e.g. over the network
   - _should_ be checked in
+- `generated/` contents:
+  - _must_ be mounted in read-only mode (`:ro`)
+  - _must not_ be checked in; excluded using `.gitignore`

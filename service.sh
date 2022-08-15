@@ -10,9 +10,10 @@ EXIT_CODE_USAGE_ERROR=-1
 EXIT_CODE_COMPOSE_NOT_FOUND=-2
 EXIT_CODE_SERVICE_NOT_FOUND=-3
 
-EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=1
-EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE=2
-EXIT_CODE_POST_HOOK_SCRIPT_ERROR=3
+EXIT_CODE_ENV_ERROR=1
+EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
+EXIT_CODE_SERVICE_SIMPLE_VERB_FAILURE=3
+EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
 IGNORE_FAILURES="no"
 NO_HOOK_SCRIPTS="no"
@@ -35,11 +36,15 @@ do_down_verb () {
 }
 
 do_env_gen () {
-  echo "[*] Generating '.env'"
   rm -rf .env
+
+  echo "[*] Generating '.env'"
   [ ! -f "../server.env" ] || cp "../server.env" .env
-  [ ! -f "../env.default.sh" ] || ../env.default.sh >> .env
-  [ ! -f "env.sh" ] || ./env.sh >> .env
+
+  [ ! -f "../env.default.sh" ] || ../env.default.sh >> .env || \
+    [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+  [ ! -f "env.sh" ] || ./env.sh >> .env || \
+    [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
 }
 
 do_template_gen () {
@@ -58,23 +63,29 @@ do_template_gen () {
 }
 
 do_post_hooks () {
-  [ -f "docker-compose.$SIMPLE_VERB.post_hook.sh" ] || return
-
+  ls docker-compose.$SIMPLE_VERB.post_hook*.sh &> /dev/null || return
   echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
-  ./docker-compose.$SIMPLE_VERB.post_hook.sh
-  if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-    exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
-  fi
+
+  ./docker-compose.$SIMPLE_VERB.post_hook.sh || \
+    [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+
+  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.post_hook.user*.sh" -print0 | \
+    while IFS= read -r -d '' hook_file ; do
+      "$hook_file" || [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+    done
 }
 
 do_pre_hooks () {
-  [ -f "docker-compose.$SIMPLE_VERB.pre_hook.sh" ] || return
-
+  ls docker-compose.$SIMPLE_VERB.pre_hook*.sh &> /dev/null || return
   echo "[*] Running 'pre' hooks for '$SIMPLE_VERB'"
-  ./docker-compose.$SIMPLE_VERB.pre_hook.sh
-  if [ $? -ne 0 ] && [ "$IGNORE_FAILURES" != "yes" ]; then
-    exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
-  fi
+
+  ./docker-compose.$SIMPLE_VERB.pre_hook.sh || \
+    [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+
+  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.pre_hook.user*.sh" -print0 | \
+    while IFS= read -r -d '' hook_file ; do
+      "$hook_file" || [ "$IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+    done
 }
 
 do_up_verb () {
