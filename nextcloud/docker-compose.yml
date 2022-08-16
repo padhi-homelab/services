@@ -25,15 +25,13 @@ services:
     volumes:
     - ./data/mariadb/var/lib/mysql:/var/lib/mysql:rw
 
+    env_file:
+    - env/mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: 'root_password'
-      MYSQL_PASSWORD: 'nextcloud_password'
-      MYSQL_DATABASE: 'nextcloud_db'
-      MYSQL_USER: 'nextcloud_user'
       TZ: ${TZ:?}
 
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
       interval: 15s
       start_period: 10s
     logging:
@@ -58,11 +56,13 @@ services:
     volumes:
     - ./data/redis/data:/data:rw
 
+    env_file:
+    - env/redis
     environment:
-      REDIS_HOST_PASSWORD: 'nextcloud_password'
+      TZ: ${TZ:?}      
 
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: "redis-cli ping"
       interval: 15s
       start_period: 10s
     logging:
@@ -94,23 +94,15 @@ services:
     # See: https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687
     - ./data/nextcloud/etc/apache2/conf-enabled/remoteip.conf:/etc/apache2/conf-enabled/remoteip.conf:ro
 
+    env_file:
+    - env/mariadb
+    - env/redis
+    - env/nextcloud
     environment:
-      MYSQL_HOST: 'mariadb'
-      MYSQL_PASSWORD: 'nextcloud_password'
-      MYSQL_DATABASE: 'nextcloud_db'
-      MYSQL_USER: 'nextcloud_user'
-      REDIS_HOST: 'redis'
-      REDIS_HOST_PASSWORD: 'nextcloud_password'
-      # Since we expose HTTPS with Traefik
-      OVERWRITEPROTOCOL: 'https'
-      OVERWRITEWEBROOT: '/nextcloud'
-      # Doesn't work on non-root containers. See: https://github.com/nextcloud/docker/issues/1494
-      #APACHE_DISABLE_REWRITE_IP: 1
-      NEXTCLOUD_DATA_DIR: '/data'
       TZ: ${TZ:?}
 
     healthcheck:
-      test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost:80"]
+      test: "curl -fso /dev/null http://localhost:80"
       interval: 15s
       timeout: 3s
       start_period: 15s
@@ -118,3 +110,40 @@ services:
       options:
         max-size: "16m"
         max-file: "4"
+
+  cron:
+    hostname: cron
+    image: nextcloud:24.0.4
+    restart: unless-stopped
+    entrypoint: /cron.sh
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    depends_on:
+    - mariadb
+    - redis
+    - nextcloud
+
+    networks:
+    - default
+    volumes_from:
+    - nextcloud:rw
+
+    env_file:
+    - env/mariadb
+    - env/redis
+    - env/nextcloud
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: "pgrep -a busybox | grep crond"
+      interval: 15s
+      timeout: 3s
+      start_period: 5s
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "2"

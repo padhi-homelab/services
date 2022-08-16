@@ -1,0 +1,8 @@
+MYSQL_HOST: 'mariadb'
+REDIS_HOST: 'redis'
+# Since we expose HTTPS with Traefik
+OVERWRITEPROTOCOL: 'https'
+OVERWRITEWEBROOT: '/nextcloud'
+# Doesn't work on non-root containers. See: https://github.com/nextcloud/docker/issues/1494
+#APACHE_DISABLE_REWRITE_IP: 1
+NEXTCLOUD_DATA_DIR: '/data'

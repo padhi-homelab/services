@@ -637,8 +637,8 @@ Services:
 
 ### Structure & Conventions
 
-- no files under the subdirectories mentioned below should be edited;
-  all changed must appear in `.gitignore`d files:
+- no files under subdirectories other than `env/` should be edited;
+  all other changed must appear in `.gitignore`d files:
   - a `server.env` file may store WAN FQDN, ACME configs etc.
   - `docker-compose.{up,down,clean}.{pre,post}_hook.user*.sh` scripts
     may contain additional hooks to be run
@@ -656,6 +656,10 @@ Services:
 - `data/` contents:
   - _should_ be mounted in read+write mode (`:rw`)
   - _must not_ be checked in; excluded using `.gitignore`
+- `env/` contents:
+  - _must not_ mounted within containers!
+    - _may_ be used as `env_file` for containers
+  - _should_ be checked in
 - `extra/` contents:
   - _must not_ mounted within containers!
     - containers may fetch these by other means, e.g. over the network
