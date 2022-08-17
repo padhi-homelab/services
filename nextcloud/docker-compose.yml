@@ -89,9 +89,9 @@ services:
     volumes:
     - ./data/nextcloud/data:/data:rw
     - ./data/nextcloud/var/www/html:/var/www/html:rw
-    # See: https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
+    # FIXME: See https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
     - ./data/nextcloud/usr/local/etc/php/conf.d/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini:rw
-    # See: https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687
+    # FIXME: See https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687
     - ./data/nextcloud/etc/apache2/conf-enabled/remoteip.conf:/etc/apache2/conf-enabled/remoteip.conf:ro
 
     env_file:

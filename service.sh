@@ -48,7 +48,7 @@ do_env_gen () {
 }
 
 do_template_gen () {
-  find ./config -name '*.template.*' | grep -q . || return
+  find ./config -name '*.template.*' 2>/dev/null | grep -q . || return
   echo "[*] Generating templated config files ..."
 
   find ./config -name '*.template.*' -print0 | \
