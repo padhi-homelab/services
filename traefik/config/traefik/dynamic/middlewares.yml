@@ -19,7 +19,7 @@ http:
           Server: ''
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
-        frameDeny: true
+        customFrameOptionsValue: 'sameorigin'
         referrerpolicy: 'same-origin'
     ssl-headers:
       headers:
