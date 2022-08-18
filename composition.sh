@@ -248,6 +248,8 @@ while getopts ':iloprs' OPTION ; do
 done
 shift $(($OPTIND -1))
 
+[ $# -gt 0 ] || exit 0
+
 # # # #
 #
 # INSTALL DEPS

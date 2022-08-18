@@ -2,7 +2,7 @@
 
 set -Eumo pipefail
 
-# NOTE: This is the inlining of `mysql_note` and `mysql_log` functions
+# NOTE: This is a partial inlining of `mysql_note` and `mysql_log` functions
 # at https://github.com/MariaDB/mariadb-docker/blob/master/docker-entrypoint.sh#L5-L12
 log () {
   printf '%s [%s] [Entrypoint]: %s\n' "$(date --rfc-3339=seconds)" "Note" "$*"
@@ -17,7 +17,7 @@ sql_escape_string_literal () {
 	echo "${escaped//\'/\\\'}"
 }
 
-# NOTE: This is the inlining of `docker_process_sql` and `docker_exec_client` functions
+# NOTE: This is a partial inlining of `docker_process_sql` and `docker_exec_client` functions
 # at https://github.com/MariaDB/mariadb-docker/blob/master/docker-entrypoint.sh#L236-L256
 process_sql () {
   MYSQL_PWD=$MARIADB_ROOT_PASSWORD \

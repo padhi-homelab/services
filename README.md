@@ -253,7 +253,7 @@ Compositions:
     </tr>
     <tr>
       <th>
-        Monitarr
+        <a href='https://wiki.servarr.com/'>Monitarr</a>
         <br>
         <sub>:443/{lid,rad,son}arr</sub>
         <hr>
