@@ -1,6 +1,6 @@
 .env
 server.env
-**/custom
+**/*.custom
 
 docker-compose.override.yml
 docker-compose.override.yaml
