@@ -51,6 +51,7 @@ services:
     - redis
 
     networks:
+    - default
     - shared
     - proxy
     volumes:
@@ -93,6 +94,7 @@ services:
     - nextcloud
 
     networks:
+    - default
     - shared
     volumes_from:
     - nextcloud:rw
