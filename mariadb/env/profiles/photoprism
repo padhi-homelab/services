@@ -1,0 +1,3 @@
+MYSQL_PASSWORD='photoprism_password'
+MYSQL_DATABASE='photoprism_db'
+MYSQL_USER='photoprism_user'

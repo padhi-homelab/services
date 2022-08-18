@@ -3,24 +3,28 @@
 ### Usage
 
 ```console
-$ ./service.sh
-Usage: ./service.sh <verb>[,<verb>,...] [flags] <svc_dir> [<svc_dir> ...]
+$ ./composition.sh
+Usage:
+  ./composition.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
+  check                     Check health of a composition
   clean                     Delete '<svc_dir>/data'
-  down                      Stop a service
-  up                        Start a service
+  down                      Stop a composition
+  up                        Start a composition
 
 Flags:
-  [--ignore-failures, -i]   Ignore failing services and continue
+  [--ignore-failures, -i]   Ignore verb failures and continue
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
   [--no-labels, -l]         Ignore 'docker-compose.labels.yml' files
   [--no-override, -o]       Ignore 'docker-compose.override.yml' file
   [--no-port, -p]           Ignore 'docker-compose.ports.yml' file
+  [--regenerate, -r]        Force generate '.env' and 'generated/'
 
-Services:
-  airdcpp  hass         indexarr  monitarr  navidrome  netdata  nextcloud
-  pihole   qbittorrent  tang      traefik   unifi                         
+Compositions:
+  airdcpp   docker.sock-proxy  hass     indexarr   mariadb
+  monitarr  navidrome          netdata  nextcloud  photoprism
+  pihole    qbittorrent        tang     traefik    unifi
 ```
 
 ### Arch. Support
@@ -28,7 +32,7 @@ Services:
 <table>
   <thead>
     <tr>
-      <th colspan='4' align='center'>╭── &nbsp; Services &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
+      <th colspan='4' align='center'>╭── &nbsp; Compositions &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
       <th align='center'><sub>amd64</sub></th>
       <th align='center'><sub>386</sub></th>
       <th align='center'><sub>arm/v6</sub></th>
@@ -84,6 +88,44 @@ Services:
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://docs.docker.com/engine/security/protect-access/'>docker.sock</a>
+        <br>
+        <sub>-</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28docker.sock%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(docker.sock)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
+          <sub>docker.sock&#8209;proxy</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.6.2</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -169,6 +211,44 @@ Services:
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://mariadb.org/'>MariaDB</a>
+        <br>
+        <sub>-</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28MariaDB%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(MariaDB)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/mariadb'>
+          <sub>mariadb</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>10.8.3</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -280,20 +360,14 @@ Services:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> A
+        A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
-          <sub>docker.sock&#8209;proxy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/netdata'>
           <sub>netdata</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.2</sub></code>
-        <br>
         <code><sub>1.36.0</sub></code>
       </td>
       <td align='center'>
@@ -327,10 +401,6 @@ Services:
         B <br> B <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/mariadb'>
-          <sub>mariadb</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/_/redis'>
           <sub>redis</sub>
         </a>
@@ -338,11 +408,15 @@ Services:
         <a href='https://hub.docker.com/_/nextcloud'>
           <sub>nextcloud</sub>
         </a>
+        <br>
+        <a href='https://hub.docker.com/_/nextcloud'>
+          <sub>cron</sub>
+        </a>
       </th>
       <td align='center'>
-        <code><sub>10.8.3</sub></code>
-        <br>
         <code><sub>7.0.4</sub></code>
+        <br>
+        <code><sub>24.0.4</sub></code>
         <br>
         <code><sub>24.0.4</sub></code>
       </td>
@@ -350,24 +424,12 @@ Services:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -516,44 +578,32 @@ Services:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Traefik)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> B
+        B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/docker.sock-proxy'>
-          <sub>docker.sock&#8209;proxy</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/_/traefik'>
           <sub>traefik</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.2</sub></code>
-        <br>
         <code><sub>2.8.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
     </tr>

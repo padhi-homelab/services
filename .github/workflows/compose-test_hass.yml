@@ -8,6 +8,10 @@ on:
   schedule:
   - cron: "0 8 * * *"
 
+env:
+  TARGET_SERVICE: hass
+  TARGET_TIMEOUT: 30
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,14 +22,16 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-labels --no-ports hass
+          ./composition.sh up --no-labels --no-ports ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
-          sleep 30s
+          sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test"
         run: |
-          cd hass
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q hass))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          if ! ./composition.sh check ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            exit 1
+          fi

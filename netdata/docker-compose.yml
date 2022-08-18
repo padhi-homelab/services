@@ -1,6 +1,8 @@
 version: '2.4'
 
 networks:
+  shared:
+    external: true
   proxy:
     external: true
 
@@ -15,28 +17,6 @@ volumes:
       device: tmpfs
 
 services:
-  docker.sock-proxy:
-    hostname: docker.sock-proxy
-    image: padhihomelab/docker.sock-proxy:2.6.2
-    restart: unless-stopped
-
-    security_opt:
-    - no-new-privileges:true
-
-    networks:
-    - default
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock:ro
-
-    environment:
-      CONTAINERS: '1'
-      TZ: ${TZ:?}
-
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"
-
   netdata:
     hostname: ${HOST_NAME:?}
     image: padhihomelab/netdata:1.36.0
@@ -48,11 +28,8 @@ services:
     - apparmor:unconfined
     - no-new-privileges:true
 
-    depends_on:
-    - docker.sock-proxy
-
     networks:
-    - default
+    - shared
     - proxy
     volumes:
     - netdata_cache:/var/cache/netdata:rw

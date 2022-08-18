@@ -1,10 +1,16 @@
-name: "Docker Compose Test (I2P)"
+name: "Docker Compose Test (docker.sock)"
 
-on: workflow_dispatch
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: i2p
-  TARGET_TIMEOUT: 30
+  TARGET_SERVICE: docker.sock
+  TARGET_TIMEOUT: 15
 
 jobs:
   test:

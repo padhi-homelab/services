@@ -8,6 +8,10 @@ on:
   schedule:
   - cron: "0 8 * * *"
 
+env:
+  TARGET_SERVICE: monitarr
+  TARGET_TIMEOUT: 60
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -18,21 +22,19 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./service.sh up --no-labels --no-ports monitarr
+          ./composition.sh up --no-labels --no-ports ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
-          sleep 60s
+          sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test"
         run: |
-          cd monitarr
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q lidarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q radarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          if ! ./composition.sh check ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            exit 1
+          fi
       -
         name: "Service: Traefik Setup"
         run: |
@@ -42,30 +44,25 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./service.sh up --no-ports traefik
-          ./service.sh down,up --no-ports monitarr
+          ./composition.sh up --no-ports traefik
+          ./composition.sh down,up --no-ports ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
-          sleep 90s
+          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test with Traefik"
         run: |
-          cd monitarr
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q lidarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q radarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q sonarr))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          cd ../traefik
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q traefik))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
-          REPLY="$(docker inspect --format '{{json .State.Health.Status}}' $(docker-compose ps -q docker.sock-proxy))"
-          [[ "$REPLY" == '"healthy"' ]] || (docker ps ; docker-compose logs ; exit 1)
+          if ! ./composition.sh check ${TARGET_SERVICE} traefik; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            cd traefik ; docker-compose logs
+            exit 1
+          fi
+          cd traefik
           docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/lidarr/ \
-            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)
+            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
           docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/radarr/ \
-            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)
+            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
           docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/sonarr/ \
-            || (docker ps ; docker-compose logs ; cd ../monitarr ; docker-compose logs ; exit 1)
+            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)

@@ -12,5 +12,7 @@ docker-compose.down.post_hook.user*.sh
 docker-compose.clean.pre_hook.user*.sh
 docker-compose.clean.post_hook.user*.sh
 
+.lib
+
 data
 generated

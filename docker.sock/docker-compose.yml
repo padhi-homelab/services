@@ -1,0 +1,29 @@
+version: '2.4'
+
+networks:
+  shared:
+    external: true
+
+services:
+  docker.sock-proxy:
+    hostname: docker.sock-proxy
+    image: padhihomelab/docker.sock-proxy:2.6.2
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+
+    networks:
+    - shared
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    environment:
+      CONTAINERS: '1'
+      EVENTS: '1'
+      TZ: ${TZ:?}
+
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"

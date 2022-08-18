@@ -1,4 +1,3 @@
-MYSQL_RANDOM_ROOT_PASSWORD=1
 MYSQL_PASSWORD='nextcloud_password'
 MYSQL_DATABASE='nextcloud_db'
 MYSQL_USER='nextcloud_user'
