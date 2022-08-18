@@ -29,19 +29,24 @@ process_sql () {
 
 find /profiles -maxdepth 1 -type f -name '*' -print0 | \
 while IFS= read -r -d '' profile ; do
-  log "Creating profile $profile"
+  if [ -f "$profile.custom" ]; then
+    log "Ignoring '$profile' in favor of '$profile.custom'"
+    continue
+  fi
+
+  log "Creating profile '$profile'"
   source "$profile"
 
-  log "Adding user $MYSQL_USER"
+  log "Adding user '$MYSQL_USER'"
   userPasswordEscaped=$( sql_escape_string_literal "$MYSQL_PASSWORD" )
   process_sql --binary-mode <<-EOSQL_USER
   SET @@SESSION.SQL_MODE=REPLACE(@@SESSION.SQL_MODE, 'NO_BACKSLASH_ESCAPES', '');
   CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$userPasswordEscaped';
 EOSQL_USER
 
-  log "Creating database $MYSQL_DATABASE"
+  log "Creating database '$MYSQL_DATABASE'"
 	process_sql <<<"CREATE DATABASE IF NOT EXISTS \`$MYSQL_DATABASE\` ;"
 
-  log "Giving user $MYSQL_USER access to schema $MYSQL_DATABASE"
+  log "Giving user '$MYSQL_USER' access to schema '$MYSQL_DATABASE'"
   process_sql <<<"GRANT ALL ON \`${MYSQL_DATABASE//_/\\_}\`.* TO '$MYSQL_USER'@'%' ;"
 done
