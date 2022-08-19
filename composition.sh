@@ -17,6 +17,7 @@ EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
 FLAG_IGNORE_FAILURES="no"
+FLAG_ATTACH_DEVICES="no"
 FLAG_NO_HOOK_SCRIPTS="no"
 FLAG_NO_LABELS="no"
 FLAG_NO_OVERRIDE="no"
@@ -138,6 +139,9 @@ do_up_verb () {
 
   COMPOSE_FILES=" -f docker-compose.yml "
 
+  if [ "$FLAG_ATTACH_DEVICES" = "yes" ] && [ -f "docker-compose.devices.yml" ]; then
+    COMPOSE_FILES=" $COMPOSE_FILES -f docker-compose.devices.yml "
+  fi
   if [ "$FLAG_NO_LABELS" != "yes" ] && [ -f "docker-compose.labels.yml" ]; then
     COMPOSE_FILES=" $COMPOSE_FILES -f docker-compose.labels.yml "
   fi
@@ -175,6 +179,7 @@ Verbs:
 
 Flags:
   [--ignore-failures, -i]   Ignore verb failures and continue
+  [--no-devices, -d]        Ignore 'docker-compose.devices.yml' files
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
   [--no-labels, -l]         Ignore 'docker-compose.labels.yml' files
   [--no-override, -o]       Ignore 'docker-compose.override.yml' files
@@ -212,6 +217,7 @@ for opt in "$@"; do
   shift
   case "$opt" in
     "--ignore-failures")    set -- "$@" "-i" ;;
+    "--attach-devices")     set -- "$@" "-d" ;;
     "--no-hook-scripts")    set -- "$@" "-s" ;;
     "--no-labels")          set -- "$@" "-l" ;;
     "--no-override")        set -- "$@" "-o" ;;
@@ -225,9 +231,13 @@ for opt in "$@"; do
 done
 
 OPTIND=1
-while getopts ':iloprs' OPTION ; do
+while getopts ':idloprs' OPTION ; do
   case "$OPTION" in
     "i" ) FLAG_IGNORE_FAILURES="yes" ;;
+    "d" ) FLAG_ATTACH_DEVICES="yes"
+          [ "$VERB" = "up" ] || \
+            echo "[!] '-d/--attach-devices is redundant with '$VERB'."
+          ;;
     "l" ) FLAG_NO_LABELS="yes"
           [ "$VERB" = "up" ] || \
             echo "[!] '-l/--no-labels is redundant with '$VERB'."

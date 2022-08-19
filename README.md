@@ -22,9 +22,9 @@ Flags:
   [--regenerate, -r]        Force generate '.env' and 'generated/'
 
 Compositions:
-  airdcpp   docker.sock-proxy  hass     indexarr   mariadb
-  monitarr  navidrome          netdata  nextcloud  photoprism
-  pihole    qbittorrent        tang     traefik    unifi
+  airdcpp    docker.sock  hass       indexarr   monitarr
+  navidrome  netdata      nextcloud  pihole     qbittorrent
+  tang       traefik      unifi
 ```
 
 ### Arch. Support
@@ -225,9 +225,6 @@ Compositions:
         B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/mariadb'>
-          <sub>mariadb</sub>
-        </a>
       </th>
       <td align='center'>
         <code><sub>10.8.3</sub></code>
@@ -398,9 +395,12 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Nextcloud)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B
+        B <br> B <br> B <br> B
       </th>
       <th align='right'>
+        <a href='https://hub.docker.com/_/mariadb'>
+          <sub>mariadb</sub>
+        </a>
         <a href='https://hub.docker.com/_/redis'>
           <sub>redis</sub>
         </a>
@@ -414,6 +414,8 @@ Compositions:
         </a>
       </th>
       <td align='center'>
+        <code><sub>10.8.3</sub></code>
+        <br>
         <code><sub>7.0.4</sub></code>
         <br>
         <code><sub>24.0.4</sub></code>
@@ -424,12 +426,30 @@ Compositions:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>

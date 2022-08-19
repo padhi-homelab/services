@@ -12,10 +12,6 @@ services:
     volumes:
     - ./data/hass/config:/config:rw
 
-    #devices:
-    #- /dev/ttyUSB0:/dev/ttyUSB0
-    #- /dev/ttyACM0:/dev/ttyACM0
-
     environment:
       TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}

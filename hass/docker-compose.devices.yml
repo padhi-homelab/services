@@ -1,0 +1,7 @@
+version: '2.4'
+
+services:
+  hass:
+    devices:
+    - /dev/ttyUSB0:/dev/ttyUSB0
+    - /dev/ttyACM0:/dev/ttyACM0

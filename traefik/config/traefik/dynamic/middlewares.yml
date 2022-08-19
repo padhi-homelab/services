@@ -13,14 +13,14 @@ http:
         - '127.0.0.1/32'
     security-headers:
       headers:
-        browserXssFilter: true
-        contentTypeNosniff: true
+        browserXSSFilter: true
+        contentTypeNoSniff: true
         customResponseHeaders:
           Server: ''
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
         customFrameOptionsValue: 'sameorigin'
-        referrerpolicy: 'same-origin'
+        referrerPolicy: 'same-origin'
     ssl-headers:
       headers:
         customRequestHeaders:

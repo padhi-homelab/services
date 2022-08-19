@@ -19,7 +19,9 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
     environment:
+      # For querying labels etc.
       CONTAINERS: '1'
+      # For Traefik network events
       EVENTS: '1'
       TZ: ${TZ:?}
 

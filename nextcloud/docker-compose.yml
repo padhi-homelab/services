@@ -1,12 +1,48 @@
 version: '2.4'
 
 networks:
-  shared:
-    external: true
   proxy:
     external: true
 
 services:
+  mariadb:
+    hostname: mariadb
+    image: mariadb:10.8.3
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+    
+    command: |-
+      --transaction-isolation=READ-COMMITTED
+      --binlog-format=ROW
+      --innodb-file-per-table=1
+      --skip-innodb-read-only-compressed
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+
+    networks:
+    - default
+    volumes:
+    - ./data/mariadb/var/lib/mysql:/var/lib/mysql:rw
+
+    env_file:
+    - env/mariadb
+    environment:
+      MARIADB_AUTO_UPGRADE: 1
+      MYSQL_INITDB_SKIP_TZINFO: 1
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+
+    healthcheck:
+      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 15s
+      start_period: 10s
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
+
   redis:
     hostname: redis
     image: redis:7.0.4
@@ -27,7 +63,7 @@ services:
     env_file:
     - env/redis
     environment:
-      TZ: ${TZ:?}      
+      TZ: ${TZ:?}
 
     healthcheck:
       test: "redis-cli ping"
@@ -52,7 +88,6 @@ services:
 
     networks:
     - default
-    - shared
     - proxy
     volumes:
     - ./data/nextcloud/data:/data:rw
@@ -63,7 +98,7 @@ services:
     - ./data/nextcloud/etc/apache2/conf-enabled/remoteip.conf:/etc/apache2/conf-enabled/remoteip.conf:ro
 
     env_file:
-    - ../mariadb/env/profiles/nextcloud
+    - env/mariadb
     - env/redis
     - env/nextcloud
     environment:
@@ -95,12 +130,11 @@ services:
 
     networks:
     - default
-    - shared
     volumes_from:
     - nextcloud:rw
 
     env_file:
-    - ../mariadb/env/profiles/nextcloud
+    - env/mariadb
     - env/redis
     - env/nextcloud
     environment:
