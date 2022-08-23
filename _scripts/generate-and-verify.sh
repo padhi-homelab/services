@@ -18,6 +18,7 @@ SRC_VARS=$(envsubst -v "$(cat "$SOURCE_FILE")" | paste -sd '|')
 
 if grep -qE "$SRC_VARS" "$TARGET_FILE"; then
   echo FAILED
+  rm "$TARGET_FILE"
   exit 1
 fi
 
