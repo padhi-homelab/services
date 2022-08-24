@@ -309,6 +309,11 @@ perform () {
       [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
       continue
     fi
+    if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ]; then
+      print_error "No 'docker-compose.yml' found under '$comp'!"
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+      continue
+    fi
 
     cd "$SELF_DIR/$comp"
 
