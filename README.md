@@ -145,7 +145,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.8.3_1.26.2</sub></code>
+        <code><sub>2022.8.7_1.27.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -211,41 +211,6 @@ Compositions:
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://mariadb.org/'>MariaDB</a>
-        <br>
-        <sub>-</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28MariaDB%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(MariaDB)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B
-      </th>
-      <th align='right'>
-      </th>
-      <td align='center'>
-        <code><sub>10.8.3</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -532,8 +497,6 @@ Compositions:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
