@@ -63,10 +63,15 @@ do_env_gen () {
   echo "[*] Generating '.env'"
   [ ! -f "$SELF_DIR/server.env" ] || cp "$SELF_DIR/server.env" .env
 
-  [ ! -f "$SELF_DIR/env.default.sh" ] || "$SELF_DIR/env.default.sh" >> .env || \
-    [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
-  [ ! -f "env.sh" ] || ./env.sh >> .env || \
-    [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+  if [ -f "$SELF_DIR/env.default.sh" ]; then
+    ( set -a && source .env && "$SELF_DIR/env.default.sh" ) >> .env || \
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+  fi
+
+  if [ -f "env.sh" ]; then
+    ( set -a && source .env && ./env.sh ) >> .env || \
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+  fi
 }
 
 do_post_hooks () {
@@ -258,7 +263,10 @@ while getopts ':idloprs' OPTION ; do
 done
 shift $(($OPTIND -1))
 
-[ $# -gt 0 ] || exit 0
+if [ $# -le 0 ]; then
+  print_error "No <comp_dir>' provided!"
+  exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+fi
 
 # # # #
 #

@@ -33,7 +33,7 @@ certificatesResolvers:
     acme:
       email: ${SERVER_LETS_ENCRYPT_ACME_EMAIL}
       storage: "/etc/traefik/lets-encrypt/acme.json"
-      #caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caServer: ${SERVER_LETS_ENCRYPT_ACME_CA_SERVER}
       tlsChallenge: true
 
 entryPoints:
@@ -43,25 +43,25 @@ entryPoints:
     address: ":9080"
     http:
       middlewares:
-      - compress-response@file
       - lan-ip-whitelist@file
+      - compress-response@file
       - security-headers@file
   lan-https:
     address: ":9443"
     http:
       middlewares:
-      - compress-response@file
       - lan-ip-whitelist@file
-      - ssl-headers@file
+      - compress-response@file
       - security-headers@file
+      - ssl-headers@file
       tls: true
   wan-https:
     address: ":443"
     http:
       middlewares:
       - compress-response@file
-      - ssl-headers@file
       - security-headers@file
+      - ssl-headers@file
       tls:
         certResolver: lets-encrypt
         domains:
