@@ -447,7 +447,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.2</sub></code>
         <br>
-        <code><sub>2022.07.1</sub></code>
+        <code><sub>2022.09</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -491,7 +491,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>4.4.3.1</sub></code>
+        <code><sub>4.4.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
