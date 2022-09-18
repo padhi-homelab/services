@@ -9,6 +9,11 @@ ENV_VARS="$(cut -d= -f1 .env | awk '{print "$" $0}')"
 
 echo -n "[~] Generating '$TARGET_FILE': "
 
+if [ -e "$TARGET_FILE" ] && [ ! -f "$TARGET_FILE" ]; then
+  echo "CANNOT OVERWRITE!"
+  exit 1
+fi
+
 env -i $(paste .env) \
     envsubst "$ENV_VARS"\
         < "$SOURCE_FILE" \

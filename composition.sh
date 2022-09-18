@@ -4,6 +4,9 @@ set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
+LIB_DIR="$SELF_DIR/.lib"
+SCRIPTS_DIR="$SELF_DIR/_scripts"
+
 DOCKER_COMPOSE_CMD="docker compose"
 YQ_CMD="yq"
 
@@ -11,7 +14,7 @@ EXIT_CODE_USAGE_ERROR=-1
 EXIT_CODE_DEP_INSTALL_FAILURE=-2
 EXIT_CODE_COMPOSITION_NOT_FOUND=-3
 
-EXIT_CODE_ENV_ERROR=1
+EXIT_CODE_GEN_ERROR=1
 EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
 EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
@@ -32,10 +35,10 @@ FLAG_REGENERATE="no"
 #
 # # # #
 
-do_check_verb () {
+do_check () {
   if [ -f depends.on ]; then
     for dep_comp_dir in $(cat depends.on) ; do
-      do_self_composition check "$dep_comp_dir" || return 1
+      do_self check "$dep_comp_dir" || return 1
     done
   fi
 
@@ -48,16 +51,16 @@ do_check_verb () {
   done
 }
 
-do_clean_verb () {
+do_clean () {
   rm -rfv data generated .env
 }
 
-do_down_verb () {
+do_down () {
   $DOCKER_COMPOSE_CMD down
 }
 
 do_env_gen () {
-  [ ! -f .env ] || [ "$FLAG_REGENERATE" = "yes" ] || return
+  [ ! -f .env ] || [ "$FLAG_REGENERATE" = "yes" ] || return 0
   rm -rf .env
 
   echo "[*] Generating '.env'"
@@ -65,17 +68,17 @@ do_env_gen () {
 
   if [ -f "$SELF_DIR/env.default.sh" ]; then
     ( set -a && source .env && "$SELF_DIR/env.default.sh" ) >> .env || \
-      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 
   if [ -f "env.sh" ]; then
     ( set -a && source .env && ./env.sh ) >> .env || \
-      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_ENV_ERROR
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 }
 
 do_post_hooks () {
-  ls docker-compose.$SIMPLE_VERB.post_hook*.sh &> /dev/null || return
+  ls docker-compose.$SIMPLE_VERB.post_hook*.sh &> /dev/null || return 0
   echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
 
   ./docker-compose.$SIMPLE_VERB.post_hook.sh || \
@@ -83,12 +86,12 @@ do_post_hooks () {
 
   find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.post_hook.user*.sh" -print0 | \
     while IFS= read -r -d '' hook_file ; do
-      "$hook_file" || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+      "$hook_file" || return 1
     done
 }
 
 do_pre_hooks () {
-  ls docker-compose.$SIMPLE_VERB.pre_hook*.sh &> /dev/null || return
+  ls docker-compose.$SIMPLE_VERB.pre_hook*.sh &> /dev/null || return 0
   echo "[*] Running 'pre' hooks for '$SIMPLE_VERB'"
 
   ./docker-compose.$SIMPLE_VERB.pre_hook.sh || \
@@ -96,22 +99,22 @@ do_pre_hooks () {
 
   find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.pre_hook.user*.sh" -print0 | \
     while IFS= read -r -d '' hook_file ; do
-      "$hook_file" || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+      "$hook_file" || return 1
     done
 }
 
 do_run_depends () {
-  [ -f depends.on ] || return
+  [ -f depends.on ] || return 0
   echo "[*] Checking dependencies ..."
 
   for dep_comp_dir in $(cat depends.on) ; do
-    if ! do_self_composition check "$dep_comp_dir"; then
-      do_self_composition down,up $dep_comp_dir
+    if ! do_self check "$dep_comp_dir"; then
+      do_self down,up $dep_comp_dir || return 1
     fi
   done
 }
 
-do_self_composition () {
+do_self () {
   local cur_dir="$(pwd)"
   cd "$SELF_DIR"
   SERVICE_INTERNAL_CALL=1 bash "$0" "$@"
@@ -121,7 +124,7 @@ do_self_composition () {
 }
 
 do_template_gen () {
-  find ./config -name '*.template.*' 2>/dev/null | grep -q . || return
+  find ./config -name '*.template.*' 2>/dev/null | grep -q . || return 0
   echo "[*] Checking templated config files "
 
   find ./config -name '*.template.*' -print0 | \
@@ -130,16 +133,15 @@ do_template_gen () {
       mkdir -p "$(dirname "$generated_file")"
       generated_file="${generated_file/.template/}"
       if [ ! -f "$generated_file" ] || [ "$FLAG_REGENERATE" = "yes" ]; then
-        "$SELF_DIR/_scripts/generate-and-verify.sh" \
-          "$template_file" \
-          "$generated_file"
+        "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
+          || return 1
       fi
     done
 }
 
-do_up_verb () {
+do_up () {
   for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' docker-compose.yml); do
-    "$SELF_DIR/_scripts/create-network.sh" $ext_net
+    "$SCRIPTS_DIR/create-network.sh" $ext_net
   done
 
   COMPOSE_FILES=" -f docker-compose.yml "
@@ -276,13 +278,13 @@ fi
 
 if ! $DOCKER_COMPOSE_CMD &> /dev/null; then
   if ! command -v docker-compose &> /dev/null; then
-    if ! [ -x "$SELF_DIR/.lib/compose" ]; then
-      if ! "$SELF_DIR/_scripts/install-compose.sh" "$SELF_DIR/.lib/compose"; then
+    if ! [ -x "$LIB_DIR/compose" ]; then
+      if ! "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose"; then
         print_error 'Failed to locate `docker compose`!'
         exit $EXIT_CODE_DEP_INSTALL_FAILURE
       fi
     else
-      DOCKER_COMPOSE_CMD="$SELF_DIR/.lib/compose"
+      DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
     fi
   else
     DOCKER_COMPOSE_CMD="docker-compose"
@@ -290,13 +292,13 @@ if ! $DOCKER_COMPOSE_CMD &> /dev/null; then
 fi
 
 if ! $YQ_CMD &> /dev/null; then
-  if ! [ -x "$SELF_DIR/.lib/yq" ]; then
-    if ! "$SELF_DIR/_scripts/install-yq.sh" "$SELF_DIR/.lib/yq"; then
+  if ! [ -x "$LIB_DIR/yq" ]; then
+    if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq"; then
       print_error 'Failed to locate `yq`!'
       exit $EXIT_CODE_DEP_INSTALL_FAILURE
     fi
   else
-    YQ_CMD="$SELF_DIR/.lib/yq"
+    YQ_CMD="$LIB_DIR/yq"
   fi
 fi
 
@@ -325,33 +327,31 @@ perform () {
 
     cd "$SELF_DIR/$comp"
 
-    [ "$SIMPLE_VERB" != "up" ] || do_run_depends
+    [ "$SIMPLE_VERB" != "up" ] || do_run_depends \
+      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
-    [ "$SIMPLE_VERB" = "clean" ] || do_env_gen
+    [ "$SIMPLE_VERB" = "clean" ] || do_env_gen \
+      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
-    [ "$SIMPLE_VERB" != "up" ] || do_template_gen
+    [ "$SIMPLE_VERB" != "up" ] || do_template_gen \
+      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
-    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || do_pre_hooks
+    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || do_pre_hooks \
+      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
     local verb_exit=0
-    if [ "$SIMPLE_VERB" = "check" ]; then
-      do_check_verb ; verb_exit=$?
-      if [ $verb_exit -eq 0 ]; then
-        echo "[>] '$comp' is healthy!"
-      fi
-    elif [ "$SIMPLE_VERB" = "clean" ]; then
-      do_clean_verb ; verb_exit=$?
-    elif [ "$SIMPLE_VERB" = "up" ]; then
-      do_up_verb ; verb_exit=$?
-    elif [ "$SIMPLE_VERB" = "down" ]; then
-      do_down_verb ; verb_exit=$?
+    do_${SIMPLE_VERB} ; verb_exit=$?
+
+    if [ "$SIMPLE_VERB" = "check" ] && [ $verb_exit -eq 0 ]; then
+      echo "[>] '$comp' is healthy!"
     fi
 
     if [ $verb_exit -ne 0 ] && [ "$FLAG_IGNORE_FAILURES" != "yes" ]; then
       exit $EXIT_CODE_SIMPLE_VERB_FAILURE
     fi
 
-    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || do_post_hooks
+    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || do_post_hooks \
+      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
 }
 
