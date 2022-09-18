@@ -35,7 +35,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2022.09
+    image: pihole/pihole:2022.09.3
     restart: unless-stopped
 
     security_opt:

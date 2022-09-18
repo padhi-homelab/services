@@ -76,7 +76,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: nextcloud:24.0.4
+    image: nextcloud:24.0.5
     restart: unless-stopped
 
     security_opt:
@@ -116,7 +116,7 @@ services:
 
   cron:
     hostname: cron
-    image: nextcloud:24.0.4
+    image: nextcloud:24.0.5
     restart: unless-stopped
     entrypoint: /cron.sh
 
