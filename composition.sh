@@ -138,7 +138,7 @@ do_template_gen () {
 }
 
 do_up_verb () {
-  for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external = true)) | keys | .[]' docker-compose.yml); do
+  for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' docker-compose.yml); do
     "$SELF_DIR/_scripts/create-network.sh" $ext_net
   done
 
