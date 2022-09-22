@@ -64,7 +64,8 @@ do_env_gen () {
   rm -rf .env
 
   echo "[*] Generating '.env'"
-  [ ! -f "$SELF_DIR/server.env" ] || cp "$SELF_DIR/server.env" .env
+  [ ! -f "$SELF_DIR/server.default.env" ] || cp "$SELF_DIR/server.default.env" .env
+  [ ! -f "$SELF_DIR/server.env" ] || cat "$SELF_DIR/server.env" >> .env
 
   if [ -f "$SELF_DIR/env.default.sh" ]; then
     ( set -a && source .env && "$SELF_DIR/env.default.sh" ) >> .env || \
