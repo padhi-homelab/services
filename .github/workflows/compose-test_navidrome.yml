@@ -36,11 +36,6 @@ jobs:
             exit 1
           fi
       -
-        name: "Service: Traefik Setup"
-        run: |
-          mkdir -p traefik/data/traefik
-          cp -r .github/workflows/config/cert traefik/data/traefik/
-      -
         name: "Service: Restart with Traefik"
         run: |
           ./composition.sh up --no-ports traefik

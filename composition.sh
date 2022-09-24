@@ -82,7 +82,7 @@ do_post_hooks () {
   ls docker-compose.$SIMPLE_VERB.post_hook*.sh &> /dev/null || return 0
   echo "[*] Running 'post' hooks for '$SIMPLE_VERB'"
 
-  ./docker-compose.$SIMPLE_VERB.post_hook.sh || \
+  ( set -a && source .env && "./docker-compose.$SIMPLE_VERB.post_hook.sh" ) || \
     [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
 
   find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.post_hook.user*.sh" -print0 | \
@@ -95,7 +95,7 @@ do_pre_hooks () {
   ls docker-compose.$SIMPLE_VERB.pre_hook*.sh &> /dev/null || return 0
   echo "[*] Running 'pre' hooks for '$SIMPLE_VERB'"
 
-  ./docker-compose.$SIMPLE_VERB.pre_hook.sh || \
+  ( set -a && source .env && "./docker-compose.$SIMPLE_VERB.pre_hook.sh" ) || \
     [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
   find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.pre_hook.user*.sh" -print0 | \

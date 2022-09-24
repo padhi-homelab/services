@@ -39,11 +39,6 @@ jobs:
           REPLY="$(docker-compose exec -T netdata netdatacli ping)"
           [[ "$REPLY" == "pong" ]] || (docker ps ; docker-compose logs ; exit 1)
       -
-        name: "Service: Traefik Setup"
-        run: |
-          mkdir -p traefik/data/traefik
-          cp -r .github/workflows/config/cert traefik/data/traefik/
-      -
         name: "Service: Restart with Traefik"
         run: |
           ./composition.sh up --no-ports traefik
