@@ -142,7 +142,9 @@ do_template_gen () {
 
 do_up () {
   for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' docker-compose.yml); do
-    "$SCRIPTS_DIR/create-network.sh" $ext_net
+    # NOTE: `echo ... | xargs` to get rid of quotes around network name,
+    # possible during extraction via `yq`.
+    "$SCRIPTS_DIR/create-network.sh" $(echo $ext_net | xargs)
   done
 
   COMPOSE_FILES=" -f docker-compose.yml "
