@@ -59,7 +59,7 @@ cache_neg_max_ttl = 600
   [sources.'fast-public-resolvers']
     urls = ['https://raw.githubusercontent.com/padhi-homelab/services/master/pihole/extra/dnscrypt-proxy/resolvers.md']
     cache_file = 'fast-public-resolvers.md'
-    minisign_key = 'RWQl3IVwr9SBWW5G0sqzYLkyLq4bhTeQOocdEtC+V/7N4HWlDzvr5+4q'
+    minisign_key = 'RWTlA9afb9LeoqUvzxWmOE2NOOLngZFDsegzVhadYhfX7GtxVo2ZlUK3'
     prefix = 'fast-'
 
   ## Default source list from https://github.com/DNSCrypt/dnscrypt-resolvers
