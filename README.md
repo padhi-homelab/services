@@ -381,7 +381,7 @@ Compositions:
       <td align='center'>
         <code><sub>10.8.3</sub></code>
         <br>
-        <code><sub>7.0.4</sub></code>
+        <code><sub>7.0.5</sub></code>
         <br>
         <code><sub>24.0.5</sub></code>
         <br>
@@ -569,7 +569,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.8.5</sub></code>
+        <code><sub>2.8.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
