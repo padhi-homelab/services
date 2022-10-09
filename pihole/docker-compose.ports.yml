@@ -3,5 +3,8 @@ version: '2.4'
 services:
   pihole:
     ports:
-    - '53:53/tcp'
-    - '53:53/udp'
+    # FIXME: For DNS resolution from other containers on the SAME machine,
+    # SERVER_IP needs to be explicitly specified.
+    # see https://stackoverflow.com/a/69994721/554436
+    - ${SERVER_IP:?}:53:53/tcp
+    - ${SERVER_IP:?}:53:53/udp
