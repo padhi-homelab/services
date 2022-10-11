@@ -3,7 +3,7 @@ version: '2.4'
 services:
   hass:
     hostname: hass
-    image: padhihomelab/hass:2022.9.4_1.27.2
+    image: padhihomelab/hass:2022.10.3_1.28.0
     restart: unless-stopped
 
     security_opt:
