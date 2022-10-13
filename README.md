@@ -190,7 +190,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.2086</sub></code>
+        <code><sub>0.20.2098</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -238,7 +238,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.1.0.2602</sub></code>
+        <code><sub>1.1.0.2649</sub></code>
         <br>
         <code><sub>4.2.4.6635</sub></code>
         <br>
@@ -292,7 +292,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>sha-e981ee2</sub></code>
+        <code><sub>sha-af5c2b5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
