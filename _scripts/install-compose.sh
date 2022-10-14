@@ -5,7 +5,7 @@ set -Eumo pipefail
 [ ! -e "$1" ] || exit 1
 [ "$(uname)" = 'Linux' ] || exit 1
 
-VERSION=2.9.0
+VERSION=2.11.2
 OUTPUT="$1"
 
 case "$(uname -m)" in
@@ -20,5 +20,5 @@ esac
 mkdir -p "$(dirname "$OUTPUT")"
 rm -f "$OUTPUT"
 
-wget -qO "$OUTPUT" "https://github.com/docker/compose/releases/download/v${VERSION}/docker-compose-linux-{$ARCH}"
+wget -qO "$OUTPUT" "https://github.com/docker/compose/releases/download/v${VERSION}/docker-compose-linux-${ARCH}"
 chmod +x "$OUTPUT"
