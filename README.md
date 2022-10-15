@@ -22,9 +22,9 @@ Flags:
   [--regenerate, -r]        Force generate '.env' and 'generated/'
 
 Compositions:
-  airdcpp    docker.sock  hass       indexarr   monitarr
-  navidrome  netdata      nextcloud  pihole     qbittorrent
-  tang       traefik      unifi
+  airdcpp      certbot    docker.sock  hass       indexarr
+  monitarr     navidrome  netdata      nextcloud  pihole
+  qbittorrent  tang       traefik      unifi
 ```
 
 ### Arch. Support
@@ -88,6 +88,44 @@ Compositions:
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://certbot.eff.org/'>Certbot</a>
+        <br>
+        <sub>:80</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Certbot%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Certbot)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/certbot/'>
+          <sub>certbot</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>1.31.0</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>
