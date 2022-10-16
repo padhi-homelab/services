@@ -40,14 +40,14 @@ entryPoints:
   internal:
     address: ":8080"
   lan-http:
-    address: ":9080"
+    address: ":${SERVER_LAN_HTTP_PORT}"
     http:
       middlewares:
       - lan-ip-whitelist@file
       - compress-response@file
       - security-headers@file
   lan-https:
-    address: ":9443"
+    address: ":${SERVER_LAN_HTTPS_PORT}"
     http:
       middlewares:
       - lan-ip-whitelist@file
@@ -56,7 +56,7 @@ entryPoints:
       - ssl-headers@file
       tls: true
   wan-https:
-    address: ":443"
+    address: ":${SERVER_WAN_HTTPS_PORT}"
     http:
       middlewares:
       - compress-response@file
