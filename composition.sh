@@ -64,16 +64,21 @@ do_env_gen () {
   rm -rf .env
 
   echo "[*] Generating '.env'"
-  [ ! -f "$SELF_DIR/server.default.env" ] || cp "$SELF_DIR/server.default.env" .env
-  [ ! -f "$SELF_DIR/server.env" ] || cat "$SELF_DIR/server.env" >> .env
+  [ ! -f "$SELF_DIR/static.default.env" ] || cp "$SELF_DIR/static.default.env" .env
+  [ ! -f "$SELF_DIR/static.custom.env" ] || cat "$SELF_DIR/static.custom.env" >> .env
 
-  if [ -f "$SELF_DIR/env.default.sh" ]; then
-    ( set -a && source .env && "$SELF_DIR/env.default.sh" ) >> .env || \
+  if [ -f "$SELF_DIR/dynamic.default.env.sh" ]; then
+    ( set -a && source .env && "$SELF_DIR/dynamic.default.env.sh" ) >> .env || \
       [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 
-  if [ -f "env.sh" ]; then
-    ( set -a && source .env && ./env.sh ) >> .env || \
+  if [ -f "dynamic.env.sh" ]; then
+    ( set -a && source .env && ./dynamic.env.sh ) >> .env || \
+      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+  fi
+
+  if [ -f "dynamic.custom.env.sh" ]; then
+    ( set -a && source .env && ./dynamic.custom.env.sh ) >> .env || \
       [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 }
