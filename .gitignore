@@ -1,15 +1,5 @@
 .env
-**/*.custom.*
-
-docker-compose.override.yml
-docker-compose.override.yaml
-
-docker-compose.up.pre_hook.user*.sh
-docker-compose.up.post_hook.user*.sh
-docker-compose.down.pre_hook.user*.sh
-docker-compose.down.post_hook.user*.sh
-docker-compose.clean.pre_hook.user*.sh
-docker-compose.clean.post_hook.user*.sh
+**/*.override.*
 
 .lib
 

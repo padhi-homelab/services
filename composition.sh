@@ -65,7 +65,7 @@ do_env_gen () {
 
   echo "[*] Generating '.env'"
   [ ! -f "$SELF_DIR/static.default.env" ] || cp "$SELF_DIR/static.default.env" .env
-  [ ! -f "$SELF_DIR/static.custom.env" ] || cat "$SELF_DIR/static.custom.env" >> .env
+  [ ! -f "$SELF_DIR/static.override.env" ] || cat "$SELF_DIR/static.override.env" >> .env
 
   if [ -f "$SELF_DIR/dynamic.default.env.sh" ]; then
     ( set -a && source .env && "$SELF_DIR/dynamic.default.env.sh" ) >> .env || \
@@ -77,8 +77,8 @@ do_env_gen () {
       [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 
-  if [ -f "dynamic.custom.env.sh" ]; then
-    ( set -a && source .env && ./dynamic.custom.env.sh ) >> .env || \
+  if [ -f "dynamic.override.env.sh" ]; then
+    ( set -a && source .env && ./dynamic.override.env.sh ) >> .env || \
       [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
   fi
 }
@@ -90,7 +90,7 @@ do_post_hooks () {
   ( set -a && source .env && "./docker-compose.$SIMPLE_VERB.post_hook.sh" ) || \
     [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
 
-  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.post_hook.user*.sh" -print0 | \
+  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.post_hook.override*.sh" -print0 | \
     while IFS= read -r -d '' hook_file ; do
       "$hook_file" || return 1
     done
@@ -103,7 +103,7 @@ do_pre_hooks () {
   ( set -a && source .env && "./docker-compose.$SIMPLE_VERB.pre_hook.sh" ) || \
     [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
-  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.pre_hook.user*.sh" -print0 | \
+  find . -maxdepth 1 -name "docker-compose.$SIMPLE_VERB.pre_hook.override*.sh" -print0 | \
     while IFS= read -r -d '' hook_file ; do
       "$hook_file" || return 1
     done
