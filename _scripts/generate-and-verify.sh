@@ -22,7 +22,9 @@ env -i $(paste .env) \
 SRC_VARS=$(envsubst -v "$(cat "$SOURCE_FILE")" | paste -sd '|')
 
 if grep -qE "$SRC_VARS" "$TARGET_FILE"; then
-  echo FAILED
+  LINE="$(grep -E "$SRC_VARS" "$TARGET_FILE")"
+  LEFTOVER_VAR="$(envsubst -v "$LINE" | paste -sd '|')"
+  echo "\`$LEFTOVER_VAR\` NOT DEFINED!"
   rm "$TARGET_FILE"
   exit 1
 fi

@@ -9,7 +9,7 @@ mkdir -p $SELF_DIR/data/lidarr/config \
          $SELF_DIR/data/lidarr/music \
          $SELF_DIR/data/radarr/config \
          $SELF_DIR/data/radarr/downloads \
-         $SELF_DIR/data/lidarr/movies \
+         $SELF_DIR/data/radarr/movies \
          $SELF_DIR/data/sonarr/config \
          $SELF_DIR/data/sonarr/downloads \
          $SELF_DIR/data/sonarr/tv

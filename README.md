@@ -708,10 +708,18 @@ Compositions:
 
 ### Structure & Conventions
 
-- no files under subdirectories other than `env/` should be edited;
-  all other changed must appear in `.gitignore`d files:
-  - a `server.env` file may store WAN FQDN, ACME configs etc.
-  - `docker-compose.{up,down,clean}.{pre,post}_hook.user*.sh` scripts
+When deploying, all changes MUST appear in `.gitignore`d files:
+
+- at the repo root:
+  - a `static.global.override.env` file may store fixed global environment variables,
+    such as WAN FQDN, ACME configs etc.
+  - a `dynamic.global.override.env.sh` script may generate additional server-specific
+    dynamic global evironment variables such as public IP, UID of calling user etc.
+
+- within each composition:
+  - a `dynamic.override.env.sh` script may generate additional service-specific evironment variables
+  - `docker-compose.override.{yml|yaml}` file may contain the usual override stuff for docker compose
+  - `docker-compose.{up,down,clean}.{pre,post}_hook.override*.sh` scripts
     may contain additional hooks to be run
 
 #### Subdirectories
@@ -722,18 +730,18 @@ Compositions:
   must match the root directory hierarchy in the target container
 - `config/` contents:
   - _may_ be mounted in read-only mode (`:ro`)
-    - `*.template.*` files are the only exceptions
   - _must_ be checked in
 - `data/` contents:
   - _should_ be mounted in read+write mode (`:rw`)
   - _must not_ be checked in; excluded using `.gitignore`
 - `env/` contents:
-  - _must not_ mounted within containers!
+  - _must not_ be mounted within containers!
     - _may_ be used as `env_file` for containers
   - _should_ be checked in
 - `extra/` contents:
-  - _must not_ mounted within containers!
-    - containers may fetch these by other means, e.g. over the network
+  - _must not_ be mounted within containers!
+    - containers may fetch these by other means,
+      e.g. over the network, or from `generated/`
   - _should_ be checked in
 - `generated/` contents:
   - _must_ be mounted in read-only mode (`:ro`)
