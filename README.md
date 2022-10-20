@@ -9,17 +9,18 @@ Usage:
 
 Verbs:
   check                     Check health of a composition
-  clean                     Delete '<svc_dir>/data'
+  clean                     Delete '<comp_dir>/data'
   down                      Stop a composition
   up                        Start a composition
 
 Flags:
-  [--ignore-failures, -i]   Ignore verb failures and continue
+  [--ignore-failures, -I]   Ignore verb failures and continue
+  [--attach-devices, -D]    Attach devices as specified in 'docker-compose.devices.yml'
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
-  [--no-labels, -l]         Ignore 'docker-compose.labels.yml' files
+  [--no-labels, -l]         Ignore 'docker-compose.labels.yml' file
   [--no-override, -o]       Ignore 'docker-compose.override.yml' file
-  [--no-port, -p]           Ignore 'docker-compose.ports.yml' file
-  [--regenerate, -r]        Force generate '.env' and 'generated/'
+  [--expose-ports, -P]      Expose ports as specified in 'docker-compose.ports.yml'
+  [--regenerate, -R]        Force generate '.env' and 'generated/'
 
 Compositions:
   airdcpp      certbot    docker.sock  hass       indexarr

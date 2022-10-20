@@ -22,4 +22,4 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --no-labels --no-ports ${TARGET_SERVICE}
+          ./composition.sh up --no-labels ${TARGET_SERVICE}

@@ -27,7 +27,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --no-labels --no-ports ${TARGET_SERVICE}
+          ./composition.sh up --no-labels ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
@@ -43,8 +43,8 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./composition.sh up --no-ports traefik
-          ./composition.sh down,up --no-ports ${TARGET_SERVICE}
+          ./composition.sh up traefik
+          ./composition.sh down,up ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

@@ -19,13 +19,29 @@ EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
 EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
-FLAG_IGNORE_FAILURES="no"
-FLAG_ATTACH_DEVICES="no"
-FLAG_NO_HOOK_SCRIPTS="no"
-FLAG_NO_LABELS="no"
-FLAG_NO_OVERRIDE="no"
-FLAG_NO_PORTS="no"
-FLAG_REGENERATE="no"
+DEFAULT_FLAG_IGNORE_FAILURES="no"
+DEFAULT_FLAG_ATTACH_DEVICES="no"
+DEFAULT_FLAG_NO_HOOK_SCRIPTS="no"
+DEFAULT_FLAG_NO_LABELS="no"
+DEFAULT_FLAG_NO_OVERRIDE="no"
+DEFAULT_FLAG_EXPOSE_PORTS="no"
+DEFAULT_FLAG_REGENERATE="no"
+
+FLAG_IGNORE_FAILURES=""
+FLAG_ATTACH_DEVICES=""
+FLAG_NO_HOOK_SCRIPTS=""
+FLAG_NO_LABELS=""
+FLAG_NO_OVERRIDE=""
+FLAG_EXPOSE_PORTS=""
+FLAG_REGENERATE=""
+
+ARG_IGNORE_FAILURES=""
+ARG_ATTACH_DEVICES=""
+ARG_NO_HOOK_SCRIPTS=""
+ARG_NO_LABELS=""
+ARG_NO_OVERRIDE=""
+ARG_EXPOSE_PORTS=""
+ARG_REGENERATE=""
 
 : "${SERVICE_INTERNAL_CALL:=}"
 
@@ -104,6 +120,36 @@ __gen_templates () {
           || return 1
       fi
     done
+}
+
+__read_flag () {
+  local FLAG="FLAG_$1"
+
+  local ARG="ARG_$1"
+  if ! [ -z "${!ARG}" ] ; then
+    printf -v "$FLAG" "%s" "${!ARG}"
+    return 0
+  fi
+  
+  local COMP_FLAG="$(cat flags.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
+  if ! [ -z "$COMP_FLAG" ] ; then
+    echo "[!] Overriden flag [$1] = $COMP_FLAG"
+    printf -v "$FLAG" "%s" "$COMP_FLAG"
+    return 0
+  fi
+  
+  local DEFAULT_FLAG="DEFAULT_FLAG_$1"
+  printf -v "$FLAG" "%s" "${!DEFAULT_FLAG}"
+}
+
+__reset_flags () {
+  __read_flag IGNORE_FAILURES
+  __read_flag ATTACH_DEVICES
+  __read_flag NO_HOOK_SCRIPTS
+  __read_flag NO_LABELS
+  __read_flag NO_OVERRIDE
+  __read_flag EXPOSE_PORTS
+  __read_flag REGENERATE
 }
 
 __run_hooks () {
@@ -195,7 +241,7 @@ do_up () {
   if [ "$FLAG_NO_LABELS" != "yes" ] && [ -f "docker-compose.labels.yml" ] ; then
     COMPOSE_FILES+=( "docker-compose.labels.yml" )
   fi
-  if [ "$FLAG_NO_PORTS" != "yes" ] && [ -f "docker-compose.ports.yml" ] ; then
+  if [ "$FLAG_EXPOSE_PORTS" = "yes" ] && [ -f "docker-compose.ports.yml" ] ; then
     COMPOSE_FILES+=( "docker-compose.ports.yml" )
   fi
 
@@ -223,13 +269,13 @@ Verbs:
   up                        Start a composition
 
 Flags:
-  [--ignore-failures, -i]   Ignore verb failures and continue
-  [--no-devices, -d]        Ignore 'docker-compose.devices.yml' files
+  [--ignore-failures, -I]   Ignore verb failures and continue
+  [--attach-devices, -D]    Attach devices as specified in 'docker-compose.devices.yml'
   [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
-  [--no-labels, -l]         Ignore 'docker-compose.labels.yml' files
-  [--no-override, -o]       Ignore 'docker-compose.override.yml' files
-  [--no-ports, -p]          Ignore 'docker-compose.ports.yml' files
-  [--regenerate, -r]        Force generate '.env' and 'generated/'
+  [--no-labels, -l]         Ignore 'docker-compose.labels.yml' file
+  [--no-override, -o]       Ignore 'docker-compose.override.yml' file
+  [--expose-ports, -P]      Expose ports as specified in 'docker-compose.ports.yml'
+  [--regenerate, -R]        Force generate '.env' and 'generated/'
 
 Compositions:" >&2
   while IFS= read -r line ; do
@@ -261,13 +307,13 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--ignore-failures")    set -- "$@" "-i" ;;
-    "--attach-devices")     set -- "$@" "-d" ;;
+    "--attach-devices")     set -- "$@" "-D" ;;
+    "--expose-ports")       set -- "$@" "-P" ;;
+    "--ignore-failures")    set -- "$@" "-I" ;;
     "--no-hook-scripts")    set -- "$@" "-s" ;;
     "--no-labels")          set -- "$@" "-l" ;;
     "--no-override")        set -- "$@" "-o" ;;
-    "--no-ports")           set -- "$@" "-p" ;;
-    "--regenerate")         set -- "$@" "-r" ;;
+    "--regenerate")         set -- "$@" "-R" ;;
 
     "--")                   set -- "$@" "--" ;;
     "--"*)                  usage "Unrecognized option: $opt." ;;
@@ -276,27 +322,27 @@ for opt in "$@" ; do
 done
 
 OPTIND=1
-while getopts ':idloprs' OPTION ; do
+while getopts ':DPIsloR' OPTION ; do
   case "$OPTION" in
-    "i" ) FLAG_IGNORE_FAILURES="yes" ;;
-    "d" ) FLAG_ATTACH_DEVICES="yes"
+    "I" ) ARG_IGNORE_FAILURES="yes" ;;
+    "D" ) ARG_ATTACH_DEVICES="yes"
           [ "$VERB" = "up" ] || \
-            echo "[!] '-d/--attach-devices is redundant with '$VERB'."
+            echo "[!] '-D/--attach-devices is redundant with '$VERB'."
           ;;
-    "l" ) FLAG_NO_LABELS="yes"
+    "l" ) ARG_NO_LABELS="yes"
           [ "$VERB" = "up" ] || \
             echo "[!] '-l/--no-labels is redundant with '$VERB'."
           ;;
-    "o" ) FLAG_NO_OVERRIDE="yes"
+    "o" ) ARG_NO_OVERRIDE="yes"
           [ "$VERB" = "up" ] || \
             echo "[!] '-o/--no-override is redundant with '$VERB'."
           ;;
-    "p" ) FLAG_NO_PORTS="yes"
+    "P" ) ARG_EXPOSE_PORTS="yes"
           [ "$VERB" = "up" ] || \
-            echo "[!] '-p/--no-ports is redundant with '$VERB'."
+            echo "[!] '-P/--expose-ports is redundant with '$VERB'."
           ;;
-    "r" ) FLAG_REGENERATE="yes" ;;
-    "s" ) FLAG_NO_HOOK_SCRIPTS="yes" ;;
+    "R" ) ARG_REGENERATE="yes" ;;
+    "s" ) ARG_NO_HOOK_SCRIPTS="yes" ;;
 
       * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
@@ -367,6 +413,8 @@ perform () {
 
     [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
       || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+
+    __reset_flags
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
       || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
