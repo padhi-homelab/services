@@ -16,11 +16,17 @@ http:
         browserXSSFilter: true
         contentTypeNoSniff: true
         customResponseHeaders:
+          Permissions-Policy: 'geolocation(self), microphone=(), camera=(), fullscreen=*'
           Server: ''
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
         customFrameOptionsValue: 'sameorigin'
+        forceSTSHeader: true
+        isDevelopment: false
         referrerPolicy: 'same-origin'
+        stsIncludeSubdomains: false
+        stsPreload: true
+        stsSeconds: 31536000
     ssl-headers:
       headers:
         customRequestHeaders:
