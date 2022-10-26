@@ -1,29 +1,3 @@
-accessLog:
-  bufferingSize: 32
-  fields:
-    defaultMode: drop
-    names:
-      Duration: keep
-      RouterName: keep
-      ServiceName: keep
-      ClientAddr: keep
-      RequestAddr: keep
-      RequestPath: keep
-      RequestProtocol: keep
-      RequestScheme: keep
-      RequestContentSize: keep
-      OriginStatus: keep
-      DownstreamStatus: keep
-      Overhead: keep
-      RetryAttempts: keep
-      TLSVersion: keep
-    headers:
-      defaultMode: drop
-      names:
-        Referer: keep
-        User-Agent: keep
-  format: json
-
 api:
   dashboard: true
   insecure: false
@@ -43,25 +17,23 @@ entryPoints:
     address: ":${SERVER_LAN_HTTP_PORT}"
     http:
       middlewares:
-      - lan-ip-whitelist@file
-      - compress-response@file
-      - security-headers@file
+      - restrict-to-lan-ip@file
+      - default@file
   lan-https:
     address: ":${SERVER_LAN_HTTPS_PORT}"
     http:
       middlewares:
-      - lan-ip-whitelist@file
-      - compress-response@file
-      - security-headers@file
-      - ssl-headers@file
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
       tls: true
   wan-https:
     address: ":${SERVER_WAN_HTTPS_PORT}"
     http:
       middlewares:
-      - compress-response@file
-      - security-headers@file
-      - ssl-headers@file
+      - block-ddos-attacks@file
+      - default@file
+      - add-ssl-headers@file
       tls:
         certResolver: lets-encrypt
         domains:

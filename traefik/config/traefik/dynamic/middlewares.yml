@@ -1,17 +1,29 @@
 http:
   middlewares:
-    compress-response:
-      compress:
-        excludedContentTypes:
-        - 'text/event-stream'
-    lan-ip-whitelist:
+    add-ssl-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: 'https,wss'
+        forceSTSHeader: true
+        isDevelopment: false
+        stsIncludeSubdomains: false
+        stsPreload: true
+        stsSeconds: 31536000
+
+    restrict-to-lan-ip:
       ipWhitelist:
         sourceRange:
         - '10.0.0.0/8'
         - '172.16.0.0/12'
         - '192.168.0.0/16'
         - '127.0.0.1/32'
-    security-headers:
+
+    default:
+      chain:
+        middlewares:
+        - add-security-headers
+        - compress-response
+    add-security-headers:
       headers:
         browserXSSFilter: true
         contentTypeNoSniff: true
@@ -21,13 +33,21 @@ http:
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
         customFrameOptionsValue: 'sameorigin'
-        forceSTSHeader: true
-        isDevelopment: false
         referrerPolicy: 'same-origin'
-        stsIncludeSubdomains: false
-        stsPreload: true
-        stsSeconds: 31536000
-    ssl-headers:
-      headers:
-        customRequestHeaders:
-          X-Forwarded-Proto: 'https,wss'
+    compress-response:
+      compress:
+        excludedContentTypes:
+        - 'text/event-stream'
+
+    block-ddos-attacks:
+      chain:
+        middlewares:
+        - limit-in-flight-requests
+        - limit-rate
+    limit-in-flight-requests:
+      inFlightReq:
+        amount: 128
+    limit-rate:
+      rateLimit:
+        average: 64
+        burst: 32
