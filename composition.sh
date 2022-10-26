@@ -94,14 +94,17 @@ __gen_env () {
 
   echo -n "[*] Generating '.env': "
   cp "$SELF_DIR/static.global.env" .env
-  [ ! -f "$SELF_DIR/static.global.override.env" ] || \
+  if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
     cat "$SELF_DIR/static.global.override.env" >> .env
+  fi
 
   __append_env_from "$SELF_DIR/dynamic.global.env.sh" || return 1
-  __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
+  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+    __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
 
   __append_env_from "./dynamic.env.sh" || return 1
-  __append_env_from "./dynamic.override.env.sh" || return 1
+  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+    __append_env_from "./dynamic.override.env.sh" || return 1
 
   echo OK
 }
@@ -160,12 +163,14 @@ __run_hooks () {
     __error "HOOK 'docker-compose.$1.$2_hook.sh' FAILED!" ; return 1
   fi
 
-  find . -maxdepth 1 -type f -name "docker-compose.$1.$2_hook.override*.sh" -print0 | \
-    while IFS= read -r -d '' hook_file ; do
-      if ! ( set -a && source .env && "$hook_file" ) ; then
-        __error "HOOK '${hook_file#./}' FAILED!" ; return 1
-      fi
-    done
+  if [ "$FLAG_NO_OVERRIDE" != "yes" ] ; then
+    find . -maxdepth 1 -type f -name "docker-compose.$1.$2_hook.override*.sh" -print0 | \
+      while IFS= read -r -d '' hook_file ; do
+        if ! ( set -a && source .env && "$hook_file" ) ; then
+          __error "HOOK '${hook_file#./}' FAILED!" ; return 1
+        fi
+      done
+  fi
 }
 
 __sep_line () {
@@ -235,14 +240,31 @@ do_down () {
 do_up () {
   local COMPOSE_FILES=( "docker-compose.yml" )
 
-  if [ "$FLAG_ATTACH_DEVICES" = "yes" ] && [ -f "docker-compose.devices.yml" ] ; then
-    COMPOSE_FILES+=( "docker-compose.devices.yml" )
+  if [ "$FLAG_ATTACH_DEVICES" = "yes" ] ; then
+    if [ -f "docker-compose.devices.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.devices.yml" )
+    fi
+    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.devices.override.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.devices.override.yml" )
+    fi
   fi
-  if [ "$FLAG_NO_LABELS" != "yes" ] && [ -f "docker-compose.labels.yml" ] ; then
-    COMPOSE_FILES+=( "docker-compose.labels.yml" )
+
+  if [ "$FLAG_NO_LABELS" != "yes" ] ; then
+    if [ -f "docker-compose.labels.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.labels.yml" )
+    fi
+    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.labels.override.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.labels.override.yml" )
+    fi
   fi
-  if [ "$FLAG_EXPOSE_PORTS" = "yes" ] && [ -f "docker-compose.ports.yml" ] ; then
-    COMPOSE_FILES+=( "docker-compose.ports.yml" )
+
+  if [ "$FLAG_EXPOSE_PORTS" = "yes" ] ; then
+    if [ -f "docker-compose.ports.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.ports.yml" )
+    fi
+    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.ports.override.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.ports.override.yml" )
+    fi
   fi
 
   if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
