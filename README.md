@@ -184,7 +184,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.10.5_1.28.3</sub></code>
+        <code><sub>2022.11.0_1.28.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
