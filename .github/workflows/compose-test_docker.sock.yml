@@ -22,7 +22,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --no-labels ${TARGET_SERVICE}
+          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

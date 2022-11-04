@@ -24,10 +24,12 @@ jobs:
         run: |
           mkdir -p "${TARGET_SERVICE}/data/openvpn"
           cp -r .github/workflows/config/vpn "${TARGET_SERVICE}/data/openvpn/config"
+          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+          cp .github/workflows/config/options.conf "traefik/options.override.conf"
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --no-labels ${TARGET_SERVICE}
+          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

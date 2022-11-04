@@ -20,9 +20,13 @@ jobs:
         name: "Git: Checkout"
         uses: actions/checkout@v3
       -
+        name: "Service: Setup"
+        run: |
+          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+      -
         name: "Service: Start"
         run: |
-          ./composition.sh up --no-labels ${TARGET_SERVICE}
+          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

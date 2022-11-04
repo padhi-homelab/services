@@ -19,29 +19,19 @@ EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
 EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
-DEFAULT_FLAG_IGNORE_FAILURES="no"
-DEFAULT_FLAG_ATTACH_DEVICES="no"
-DEFAULT_FLAG_NO_HOOK_SCRIPTS="no"
-DEFAULT_FLAG_NO_LABELS="no"
-DEFAULT_FLAG_NO_OVERRIDE="no"
-DEFAULT_FLAG_EXPOSE_PORTS="no"
-DEFAULT_FLAG_REGENERATE="no"
-
-FLAG_IGNORE_FAILURES=""
-FLAG_ATTACH_DEVICES=""
-FLAG_NO_HOOK_SCRIPTS=""
-FLAG_NO_LABELS=""
-FLAG_NO_OVERRIDE=""
-FLAG_EXPOSE_PORTS=""
+FLAG_SKIP_FAILS=""
 FLAG_REGENERATE=""
+FLAG_NO_OVERRIDE=""
 
-ARG_IGNORE_FAILURES=""
-ARG_ATTACH_DEVICES=""
-ARG_NO_HOOK_SCRIPTS=""
-ARG_NO_LABELS=""
-ARG_NO_OVERRIDE=""
-ARG_EXPOSE_PORTS=""
-ARG_REGENERATE=""
+OPTION_DEVICES=""
+OPTION_HOOKS=""
+OPTION_LABELS=""
+OPTION_PORTS=""
+
+ARG_DEVICES="auto"
+ARG_HOOKS="auto"
+ARG_LABELS="auto"
+ARG_PORTS="auto"
 
 : "${SERVICE_INTERNAL_CALL:=}"
 
@@ -125,34 +115,41 @@ __gen_templates () {
     done
 }
 
-__read_flag () {
-  local FLAG="FLAG_$1"
+__read_option () {
+  local OPTION="OPTION_$1"
 
   local ARG="ARG_$1"
-  if ! [ -z "${!ARG}" ] ; then
-    printf -v "$FLAG" "%s" "${!ARG}"
+  case "${!ARG}" in
+    ALWAYS ) printf -v "$OPTION" "%s" "yes"
+             return 0 ;;
+     NEVER ) printf -v "$OPTION" "%s" "no"
+             return 0 ;;
+  esac
+
+  if [ "$FLAG_NO_OVERRIDE" != "yes" ]; then
+    local OVERRIDE_COMP_OPTION="$(cat options.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
+    if ! [ -z "$OVERRIDE_COMP_OPTION" ] ; then
+      echo "[!] Overriden option [$1] = $OVERRIDE_COMP_OPTION"
+      printf -v "$OPTION" "%s" "$OVERRIDE_COMP_OPTION"
+      return 0
+    fi
+  fi
+  
+  local COMP_OPTION="$(cat options.conf 2>/dev/null | grep $1 | cut -d= -f2)"
+  if ! [ -z "$COMP_OPTION" ] ; then
+    echo "[!] Composition-specific option [$1] = $COMP_OPTION"
+    printf -v "$OPTION" "%s" "$COMP_OPTION"
     return 0
   fi
   
-  local COMP_FLAG="$(cat flags.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
-  if ! [ -z "$COMP_FLAG" ] ; then
-    echo "[!] Overriden flag [$1] = $COMP_FLAG"
-    printf -v "$FLAG" "%s" "$COMP_FLAG"
-    return 0
-  fi
-  
-  local DEFAULT_FLAG="DEFAULT_FLAG_$1"
-  printf -v "$FLAG" "%s" "${!DEFAULT_FLAG}"
+  printf -v "$OPTION" "%s" "yes"
 }
 
-__reset_flags () {
-  __read_flag IGNORE_FAILURES
-  __read_flag ATTACH_DEVICES
-  __read_flag NO_HOOK_SCRIPTS
-  __read_flag NO_LABELS
-  __read_flag NO_OVERRIDE
-  __read_flag EXPOSE_PORTS
-  __read_flag REGENERATE
+__reset_options () {
+  __read_option DEVICES
+  __read_option HOOKS
+  __read_option LABELS
+  __read_option PORTS
 }
 
 __run_hooks () {
@@ -225,7 +222,7 @@ do_check () {
       continue
     fi
     __error "'$svc' is not healthy."
-    [ "$FLAG_IGNORE_FAILURES" = "yes" ] || return 1
+    [ "$FLAG_SKIP_FAILS" = "yes" ] || return 1
   done
 }
 
@@ -240,7 +237,7 @@ do_down () {
 do_up () {
   local COMPOSE_FILES=( "docker-compose.yml" )
 
-  if [ "$FLAG_ATTACH_DEVICES" = "yes" ] ; then
+  if [ "$OPTION_DEVICES" = "yes" ] ; then
     if [ -f "docker-compose.devices.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.devices.yml" )
     fi
@@ -249,7 +246,7 @@ do_up () {
     fi
   fi
 
-  if [ "$FLAG_NO_LABELS" != "yes" ] ; then
+  if [ "$OPTION_LABELS" = "yes" ] ; then
     if [ -f "docker-compose.labels.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.labels.yml" )
     fi
@@ -258,7 +255,7 @@ do_up () {
     fi
   fi
 
-  if [ "$FLAG_EXPOSE_PORTS" = "yes" ] ; then
+  if [ "$OPTION_PORTS" = "yes" ] ; then
     if [ -f "docker-compose.ports.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.ports.yml" )
     fi
@@ -285,19 +282,25 @@ Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check                      Check health of a composition
-  clean                      Delete '<comp_dir>/data'
-  down                       Stop a composition
-  up                         Start a composition
+  check                 Check health of a composition
+  clean                 Delete '<comp_dir>/data'
+  down                  Stop a composition
+  up                    Start a composition
 
 Flags:
-  [-I | --ignore-failures]   Ignore verb failures and continue
-  [-D | --attach-devices]    Attach devices listed in 'docker-compose.devices.yml'
-  [-s | --no-hook-scripts]   Ignore all pre and post hook scripts
-  [-l | --no-labels]         Ignore 'docker-compose.labels.yml' file
-  [-o | --no-override]       Ignore 'docker-compose.override.yml' file
-  [-P | --expose-ports]      Expose ports listed in 'docker-compose.ports.yml'
-  [-R | --regenerate]        Force generate '.env' and 'generated/'
+  [-F | --skip-fails]   Ignore verb failures and continue
+  [-O | --no-override]  Ignore overrides in scripts, environments, flags etc.
+  [-R | --regenerate]   Force generate '.env' and 'generated/'
+
+Options:                { NEVER | auto (default) | ALWAYS }
+  [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
+  [-h | --hooks]        Run pre and post hook scripts
+  [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
+  [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
+
+     NEVER = Never activate the option
+      auto = Activate unless overriden in options.*.conf
+    ALWAYS = Always activate the option
 
 Compositions:" >&2
   while IFS= read -r line ; do
@@ -329,13 +332,14 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--attach-devices")     set -- "$@" "-D" ;;
-    "--expose-ports")       set -- "$@" "-P" ;;
-    "--ignore-failures")    set -- "$@" "-I" ;;
-    "--no-hook-scripts")    set -- "$@" "-s" ;;
-    "--no-labels")          set -- "$@" "-l" ;;
-    "--no-override")        set -- "$@" "-o" ;;
-    "--regenerate")         set -- "$@" "-R" ;;
+    "--no-override")  set -- "$@" "-O" ;;
+    "--regenerate")   set -- "$@" "-R" ;;
+    "--skip-fails")   set -- "$@" "-F" ;;
+
+    "--devices")      set -- "$@" "-d" ;;
+    "--hooks")        set -- "$@" "-h" ;;
+    "--labels")       set -- "$@" "-l" ;;
+    "--ports")        set -- "$@" "-p" ;;
 
     "--")                   set -- "$@" "--" ;;
     "--"*)                  usage "Unrecognized option: $opt." ;;
@@ -343,28 +347,24 @@ for opt in "$@" ; do
   esac
 done
 
+check_optarg () {
+  case "$1" in
+    ALWAYS | auto | NEVER ) return 0 ;;
+  esac
+  usage "Unknown option argument: '$1'"
+}
+
 OPTIND=1
-while getopts ':DPIsloR' OPTION ; do
+while getopts ':FORd:h:l:p:' OPTION ; do
   case "$OPTION" in
-    "I" ) ARG_IGNORE_FAILURES="yes" ;;
-    "D" ) ARG_ATTACH_DEVICES="yes"
-          [ "$VERB" = "up" ] || \
-            echo "[!] '-D/--attach-devices is redundant with '$VERB'."
-          ;;
-    "l" ) ARG_NO_LABELS="yes"
-          [ "$VERB" = "up" ] || \
-            echo "[!] '-l/--no-labels is redundant with '$VERB'."
-          ;;
-    "o" ) ARG_NO_OVERRIDE="yes"
-          [ "$VERB" = "up" ] || \
-            echo "[!] '-o/--no-override is redundant with '$VERB'."
-          ;;
-    "P" ) ARG_EXPOSE_PORTS="yes"
-          [ "$VERB" = "up" ] || \
-            echo "[!] '-P/--expose-ports is redundant with '$VERB'."
-          ;;
-    "R" ) ARG_REGENERATE="yes" ;;
-    "s" ) ARG_NO_HOOK_SCRIPTS="yes" ;;
+    "F" ) FLAG_SKIP_FAILS="yes" ;;
+    "R" ) FLAG_REGENERATE="yes" ;;
+    "O" ) FLAG_NO_OVERRIDE="yes" ;;
+
+    "d" ) check_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
+    "h" ) check_optarg "$OPTARG" && ARG_HOOKS="$OPTARG" ;;
+    "l" ) check_optarg "$OPTARG" && ARG_LABELS="$OPTARG" ;;
+    "p" ) check_optarg "$OPTARG" && ARG_PORTS="$OPTARG" ;;
 
       * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
@@ -422,30 +422,31 @@ perform () {
     echo -e "\n[+] Executing '$SIMPLE_VERB' on '$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
-      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+      [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
       continue
     fi
     if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
       __error "No 'docker-compose.yml' found under '$comp'!"
-      [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+      [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
       continue
     fi
 
     cd "$SELF_DIR/$comp"
 
-    [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
-      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+    __reset_options
+    echo "[.] DEVICES = $OPTION_DEVICES ; HOOKS = $OPTION_HOOKS ; LABELS = $OPTION_LABELS ; PORTS = $OPTION_PORTS"
 
-    __reset_flags
+    [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
-      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
-      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
-    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || __run_hooks $SIMPLE_VERB pre \
-      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?
@@ -454,12 +455,12 @@ perform () {
       echo "[>] '$comp' is healthy!"
     fi
 
-    if [ $verb_exit -ne 0 ] && [ "$FLAG_IGNORE_FAILURES" != "yes" ] ; then
+    if [ $verb_exit -ne 0 ] && [ "$FLAG_SKIP_FAILS" != "yes" ] ; then
       exit $EXIT_CODE_SIMPLE_VERB_FAILURE
     fi
 
-    [ "$FLAG_NO_HOOK_SCRIPTS" = "yes" ] || __run_hooks $SIMPLE_VERB post \
-      || [ "$FLAG_IGNORE_FAILURES" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB post \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
 }
 

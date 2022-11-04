@@ -8,19 +8,25 @@ Usage:
   ./composition.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check                      Check health of a composition
-  clean                      Delete '<comp_dir>/data'
-  down                       Stop a composition
-  up                         Start a composition
+  check                 Check health of a composition
+  clean                 Delete '<comp_dir>/data'
+  down                  Stop a composition
+  up                    Start a composition
 
 Flags:
-  [-I | --ignore-failures]   Ignore verb failures and continue
-  [-D | --attach-devices]    Attach devices listed in 'docker-compose.devices.yml'
-  [-s | --no-hook-scripts]   Ignore all pre and post hook scripts
-  [-l | --no-labels]         Ignore 'docker-compose.labels.yml' file
-  [-o | --no-override]       Ignore 'docker-compose.override.yml' file
-  [-P | --expose-ports]      Expose ports listed in 'docker-compose.ports.yml'
-  [-R | --regenerate]        Force generate '.env' and 'generated/'
+  [-F | --skip-fails]   Ignore verb failures and continue
+  [-O | --no-override]  Ignore overrides in scripts, environments, flags etc.
+  [-R | --regenerate]   Force generate '.env' and 'generated/'
+
+Options:                { NEVER | auto (default) | ALWAYS }
+  [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
+  [-h | --hooks]        Run pre and post hook scripts
+  [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
+  [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
+
+     NEVER = Never activate the option
+      auto = Activate unless overriden in options.*.conf
+    ALWAYS = Always activate the option
 
 Compositions:
   airdcpp      certbot    docker.sock  hass       indexarr
