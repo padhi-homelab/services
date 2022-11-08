@@ -84,12 +84,14 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
+    - mariadb
     - redis
 
     networks:
     - default
     - proxy
     volumes:
+    - ./config/nextcloud/cron.sh:/cron.sh:ro
     - ./data/nextcloud/data:/data:rw
     - ./data/nextcloud/var/www/html:/var/www/html:rw
     # FIXME: See https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
@@ -122,7 +124,7 @@ services:
 
     security_opt:
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    #NOTE: `crond` needs to run as `root` user.
 
     depends_on:
     - redis
@@ -139,6 +141,8 @@ services:
     - env/nextcloud
     environment:
       TZ: ${TZ:?}
+      # FIXME: See note in config/nextcloud/cron.sh
+      DOCKER_UID: ${USER_ID:?}
 
     healthcheck:
       test: "pgrep -a busybox | grep crond"
