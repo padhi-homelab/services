@@ -28,11 +28,12 @@ http:
         browserXSSFilter: true
         contentTypeNoSniff: true
         customResponseHeaders:
-          Permissions-Policy: 'geolocation(self), microphone=(), camera=(), fullscreen=*'
+          Permissions-Policy: 'geolocation=(self), microphone=(), camera=(), fullscreen=*'
           Server: ''
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
         customFrameOptionsValue: 'sameorigin'
+        featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
         referrerPolicy: 'same-origin'
     compress-response:
       compress:
