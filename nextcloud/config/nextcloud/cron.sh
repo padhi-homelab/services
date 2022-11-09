@@ -14,7 +14,11 @@ adduser --disabled-password \
         --uid "$DOCKER_UID" \
         user
 
-mv /var/spool/cron/crontabs/www-data \
-   /var/spool/cron/crontabs/user
+if ! [ -f '/crontabs/user' ]; then
+  cp /var/spool/cron/crontabs/www-data \
+     /crontabs/user
+fi
 
-exec busybox crond -f -l 0 -L /dev/stdout
+exec busybox crond -f -l 0 \
+                   -L /dev/stdout \
+                   -c /crontabs
