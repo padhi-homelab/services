@@ -299,7 +299,7 @@ Options:                { NEVER | auto (default) | ALWAYS }
   [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
 
      NEVER = Never activate the option
-      auto = Activate unless overriden in options.*.conf
+      auto = Activate unless overridden in options.*.conf
     ALWAYS = Always activate the option
 
 Compositions:" >&2

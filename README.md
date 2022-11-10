@@ -1,5 +1,36 @@
 # Services
 
+### Why `composition.sh`?
+
+The multi-staged nature and repetitive commands for setting up
+compositions with non-standard configuration
+(e.g., non-root containers, networking across compositions etc.)
+is the raison d'être for `compositions.sh`.
+
+For running non-root containers with the host users UID:GID,
+so as to avoid permission issues with mounted volumes,
+one must at least create a `.env` file
+with variables pointing to their UID:GID,
+for `docker compose` to pick them up and replace them in YAML files.
+But, that's just the start!
+
+One might want to attach some "hooks" when starting and/or stopping services.
+For instance, since Traefik [can't simultaneously accept][traefik config]
+a static configuration file _and_ some command-line configuration arguments,
+I have a "start" hook to _generate_ a static configuration file with server-specific
+details (server's FQDN, ACME email and server etc.).
+
+One might also want to attach containers to [externally-created Docker networks],
+for sharing data across multiple compositions without exposing anything to host.
+In that case, a separate `docker` command must be executed before starting services.
+`composition.sh` automatically detects external networks in YAML files,
+and creates them if they do not already exist.
+
+Finally, I also added several safeguards that `docker compose` doesn't provide.
+For instance, missing host directories that are required to be mounted to containers
+are automatically created by Docker (and are owned by `root`!),
+but `composition.sh` errors out in such cases requesting the user for explicit action.
+
 ### Usage
 
 ```console
@@ -25,7 +56,7 @@ Options:                { NEVER | auto (default) | ALWAYS }
   [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
 
      NEVER = Never activate the option
-      auto = Activate unless overriden in options.*.conf
+      auto = Activate unless overridden in options.*.conf
     ALWAYS = Always activate the option
 
 Compositions:
@@ -753,3 +784,8 @@ When deploying, all changes MUST appear in `.gitignore`d files:
 - `generated/` contents:
   - _must_ be mounted in read-only mode (`:ro`)
   - _must not_ be checked in; excluded using `.gitignore`
+
+
+
+[externally-created docker networks]: https://docs.docker.com/compose/networking/#use-a-pre-existing-network
+[traefik config]:                     https://doc.traefik.io/traefik/getting-started/configuration-overview/#the-static-configuration
