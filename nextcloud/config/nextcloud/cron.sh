@@ -17,6 +17,10 @@ adduser --disabled-password \
 if ! [ -f '/crontabs/user' ]; then
   cp /var/spool/cron/crontabs/www-data \
      /crontabs/user
+  # NOTE: crontab must be "own"ed by root,
+  # but we make it g+w to allow a non-root host user to edit it.
+  chown "root:$DOCKER_GID" /crontabs/user
+  chmod g+w /crontabs/user
 fi
 
 exec busybox crond -f -l 0 \

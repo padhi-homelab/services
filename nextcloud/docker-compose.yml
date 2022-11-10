@@ -145,6 +145,7 @@ services:
       TZ: ${TZ:?}
       # FIXME: See note in config/nextcloud/cron.sh
       DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
 
     healthcheck:
       test: "pgrep -a busybox | grep crond"
