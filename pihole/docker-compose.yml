@@ -35,7 +35,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2022.10
+    image: pihole/pihole:2022.11
     restart: unless-stopped
 
     # FIXME: cannot use `no-new-privileges` yet,

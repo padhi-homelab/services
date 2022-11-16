@@ -31,6 +31,10 @@ For instance, missing host directories that are required to be mounted to contai
 are automatically created by Docker (and are owned by `root`!),
 but `composition.sh` errors out in such cases requesting the user for explicit action.
 
+#### Why not use Ansible?
+
+Seemed like an overkill, when I initially wrote `composition.sh`.
+
 ### Usage
 
 ```console
@@ -221,7 +225,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.11.2_1.28.3</sub></code>
+        <code><sub>2022.11.3_1.28.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -314,7 +318,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.1.0.2649</sub></code>
+        <code><sub>1.1.1.2762</sub></code>
         <br>
         <code><sub>4.3.0.6671</sub></code>
         <br>
@@ -523,7 +527,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.2</sub></code>
         <br>
-        <code><sub>2022.10</sub></code>
+        <code><sub>2022.11</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
