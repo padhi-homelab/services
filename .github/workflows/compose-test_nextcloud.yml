@@ -59,7 +59,7 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/nextcloud/ \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/nextcloud/ \
             || (docker ps ; docker-compose logs ; cd ../nextcloud ; docker-compose logs ; exit 1)
           docker-compose exec -T traefik wget -S --spider --no-check-certificate \
                                               https://localhost:443/nextcloud/.well-known/caldav 2>&1 \

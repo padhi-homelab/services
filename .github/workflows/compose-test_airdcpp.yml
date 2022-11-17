@@ -61,5 +61,5 @@ jobs:
             exit 1
           fi
           #TODO: websocket test
-          #docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/airdcpp/ \
+          #docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/airdcpp/ \
           #  || (docker ps ; docker-compose logs ; cd ../airdcpp ; docker-compose logs ; exit 1)

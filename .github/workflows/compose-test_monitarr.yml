@@ -59,9 +59,9 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/lidarr/ \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/lidarr/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/radarr/ \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/radarr/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:443/sonarr/ \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/sonarr/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
