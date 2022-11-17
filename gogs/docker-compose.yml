@@ -1,0 +1,35 @@
+version: '2.4'
+
+networks:
+  proxy:
+    external: true
+
+services:
+
+  # TODO: May be add a MariaDB service,
+  # if we need to scale.
+
+  gogs:
+    hostname: gogs
+    image: gogs/gogs:0.12.10
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+
+    networks:
+    - proxy
+    volumes:
+    - ./data/gogs/data:/data
+
+    environment:
+      PUID: ${USER_ID:?}
+      PGID: ${GROUP_ID:?}
+      RUN_CROND: true
+      BACKUP_INTERNAL: 7d
+      BACKUP_RETENTION: 30d
+
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "4"

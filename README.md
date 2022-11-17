@@ -64,7 +64,7 @@ Options:                { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always activate the option
 
 Compositions:
-  airdcpp      certbot    docker.sock  hass       indexarr
+  airdcpp      certbot    docker.sock  gogs       hass    indexarr
   monitarr     navidrome  netdata      nextcloud  pihole
   qbittorrent  tang       traefik      unifi
 ```
@@ -206,6 +206,44 @@ Compositions:
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://gogs.io/'>Gogs</a>
+        <br>
+        <sub>-</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Gogs%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Gogs)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/gogs/gogs'>
+          <sub>gogs</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.12.10</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>

@@ -1,0 +1,63 @@
+name: "Docker Compose Test (Gogs)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: gogs
+  TARGET_TIMEOUT: 30
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v3
+      -
+        name: "Service: Setup"
+        run: |
+          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+          cp .github/workflows/config/options.conf "traefik/options.override.conf"
+      -
+        name: "Service: Start"
+        run: |
+          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test"
+        run: |
+          if ! ./composition.sh check ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            exit 1
+          fi
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./composition.sh up traefik
+          ./composition.sh down,up ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          if ! ./composition.sh check ${TARGET_SERVICE} traefik; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            cd traefik ; docker-compose logs
+            exit 1
+          fi
+          cd traefik
+          docker-compose exec -T traefik wget --spider  --no-check-certificate https://localhost/gogs/ \
+            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
