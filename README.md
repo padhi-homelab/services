@@ -372,7 +372,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>sha-3a462c7</sub></code>
+        <code><sub>sha-5f3f7af</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

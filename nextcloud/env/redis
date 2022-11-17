@@ -1,1 +1,1 @@
-REDIS_HOST_PASSWORD='nextcloud_password'
+REDIS_HOST_PASSWORD: 'nextcloud_password'

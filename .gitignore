@@ -2,6 +2,7 @@
 **/*.override.*
 
 .lib
+.draft
 
 data
 generated
