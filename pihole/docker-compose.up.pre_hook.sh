@@ -3,6 +3,7 @@
 set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+DATA_DIR="$SELF_DIR/data"
 
-mkdir -p "$SELF_DIR/data/pihole/etc/pihole" \
-         "$SELF_DIR/data/pihole/etc/dnsmasq.d"
+mkdir -p "$DATA_DIR/pihole/etc/pihole" \
+         "$DATA_DIR/pihole/etc/dnsmasq.d"

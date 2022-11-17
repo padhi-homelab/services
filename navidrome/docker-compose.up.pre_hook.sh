@@ -3,6 +3,7 @@
 set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+DATA_DIR="$SELF_DIR/data"
 
-mkdir -p $SELF_DIR/data/navidrome/data \
-         $SELF_DIR/data/navidrome/music
+mkdir -p $DATA_DIR/navidrome/data \
+         $DATA_DIR/navidrome/music

@@ -103,15 +103,15 @@
 
 ## Bug Fixes
 
-### 1. [GitHub Issue][redis issue] Redis session handler doesn't work on non-root Nextcloud container
+### 1. [(Issue)][redis issue] Redis session handler doesn't work on non-root Nextcloud container
 
 Implemented solution proposed in [comment-1007447212](https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212).
 
-### 2. [GitHub Issue][apache issue] Setting `APACHE_DISABLE_REWRITE_IP` doesn't work on non-root Nextcloud container
+### 2. [(Issue)][apache issue] Setting `APACHE_DISABLE_REWRITE_IP` doesn't work on non-root Nextcloud container
 
 Implemented solution proposed in [comment-1213540687](https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687).
 
-### 3. [GitHub Issue][cron issue] Cron jobs do not run with non-root Nextcloud container
+### 3. [(Issue)][cron issue] Cron jobs do not run with non-root Nextcloud container
 
 Implemented solution proposed in [comment-1308141561](https://github.com/nextcloud/docker/issues/1740#issuecomment-1308141561).
 
@@ -136,7 +136,7 @@ Implemented solution proposed in [comment-1308141561](https://github.com/nextclo
 
 ## Known Issues
 
-### 1. [GitHub Issue][cron uid issue] The `cron` container runs as root user
+### 1. [(Issue)][cron uid issue] The `cron` container runs as root user
 
 `crond` in Alpine Linux is available via [BusyBox].
 Its implementation [calls `change_identity`](https://github.com/mirror/busybox/blob/master/miscutils/crond.c#L686),

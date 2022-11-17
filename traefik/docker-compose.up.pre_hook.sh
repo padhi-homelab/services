@@ -3,12 +3,13 @@
 set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+DATA_DIR="$SELF_DIR/data"
 
-mkdir -p "$SELF_DIR/data/traefik/cert" \
-         "$SELF_DIR/data/traefik/etc/traefik/lets-encrypt"
+mkdir -p "$DATA_DIR/traefik/cert" \
+         "$DATA_DIR/traefik/etc/traefik/lets-encrypt"
 
 echo -n "[~] Checking for default certificates: "
-cd "$SELF_DIR/data/traefik/cert"
+cd "$DATA_DIR/traefik/cert"
 
 [ -f "default.crt" ] && [ -f "default.key" ] && \
     echo 'EXIST' && exit 0

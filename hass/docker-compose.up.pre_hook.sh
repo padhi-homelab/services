@@ -3,6 +3,7 @@
 set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+DATA_DIR="$SELF_DIR/data"
 
-mkdir -p $SELF_DIR/data/hass/config \
-         $SELF_DIR/data/hass/media
+mkdir -p $DATA_DIR/hass/config \
+         $DATA_DIR/hass/media
