@@ -29,6 +29,11 @@ services:
       BACKUP_INTERNAL: 7d
       BACKUP_RETENTION: 30d
 
+    healthcheck:
+      test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:3000/healthcheck"]
+      interval: 15s
+      timeout: 2s
+      start_period: 5s
     logging:
       options:
         max-size: "8m"
