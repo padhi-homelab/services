@@ -25,7 +25,7 @@ services:
     environment:
       PUID: ${USER_ID:?}
       PGID: ${GROUP_ID:?}
-      RUN_CROND: true
+      RUN_CROND: 1
       BACKUP_INTERNAL: 7d
       BACKUP_RETENTION: 30d
 
