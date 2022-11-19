@@ -1,4 +1,4 @@
 <Config>
   <EnableSsl>False</EnableSsl>
-  <UrlBase>/lidarr</UrlBase>
+  <UrlBase>/${SONARR_BASE_PATH}</UrlBase>
 </Config>

@@ -1,4 +1,4 @@
 <Config>
   <EnableSsl>False</EnableSsl>
-  <UrlBase>/sonarr</UrlBase>
+  <UrlBase>/${LIDARR_BASE_PATH}</UrlBase>
 </Config>

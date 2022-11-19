@@ -10,6 +10,6 @@ mkdir -p $DATA_DIR/jackett/config \
          $DATA_DIR/openvpn/config
 
 if ! [ -f "$DATA_DIR/jackett/config/ServerConfig.json" ]; then
-  cp "$SELF_DIR/extra/jackett/config/ServerConfig.json" \
+  cp "$SELF_DIR/generated/jackett/config/ServerConfig.json" \
      "$DATA_DIR/jackett/config/ServerConfig.json"
 fi

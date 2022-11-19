@@ -16,16 +16,16 @@ mkdir -p $DATA_DIR/lidarr/config \
          $DATA_DIR/sonarr/tv
 
 if ! [ -f "$DATA_DIR/radarr/config/config.xml" ]; then
-  cp "$SELF_DIR/extra/radarr/config/config.xml" \
+  cp "$SELF_DIR/generated/radarr/config/config.xml" \
      "$DATA_DIR/radarr/config/config.xml"
 fi
 
 if ! [ -f "$DATA_DIR/lidarr/config/config.xml" ]; then
-  cp "$SELF_DIR/extra/lidarr/config/config.xml" \
+  cp "$SELF_DIR/generated/lidarr/config/config.xml" \
      "$DATA_DIR/lidarr/config/config.xml"
 fi
 
 if ! [ -f "$DATA_DIR/sonarr/config/config.xml" ]; then
-  cp "$SELF_DIR/extra/sonarr/config/config.xml" \
+  cp "$SELF_DIR/generated/sonarr/config/config.xml" \
      "$DATA_DIR/sonarr/config/config.xml"
 fi

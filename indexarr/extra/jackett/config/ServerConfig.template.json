@@ -1,6 +1,6 @@
 {
   "AllowExternal": true,
-  "BasePathOverride": "/jackett/",
+  "BasePathOverride": "/${JACKETT_BASE_PATH}/",
   "BlackholeDir": "/downloads",
   "UpdateDisabled": true,
   "UpdatePrerelease": false

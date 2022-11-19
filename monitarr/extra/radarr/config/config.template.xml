@@ -1,4 +1,4 @@
 <Config>
   <EnableSsl>False</EnableSsl>
-  <UrlBase>/radarr</UrlBase>
+  <UrlBase>/${RADARR_BASE_PATH}</UrlBase>
 </Config>
