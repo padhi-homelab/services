@@ -5,29 +5,26 @@ networks:
     external: true
 
 services:
-
-  # TODO: May be add a MariaDB service,
-  # if we need to scale.
-
-  gogs:
-    hostname: gogs
-    image: gogs/gogs:0.12.10
+  gitea:
+    hostname: gitea
+    image: gitea/gitea:1.17.3-rootless
     restart: unless-stopped
 
     security_opt:
     - no-new-privileges:true
+    user: ${USER_ID:?}
 
     networks:
     - proxy
     volumes:
-    - ./data/gogs/data:/data
+    - ./data/gitea/var/lib/gitea:/var/lib/gitea:rw
+    - ./data/gitea/etc/gitea:/etc/gitea:rw
 
     environment:
-      PUID: ${USER_ID:?}
-      PGID: ${GROUP_ID:?}
       RUN_CROND: 1
       BACKUP_INTERNAL: 7d
       BACKUP_RETENTION: 30d
+      TZ: ${TZ:?}
 
     healthcheck:
       test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:3000/healthcheck"]

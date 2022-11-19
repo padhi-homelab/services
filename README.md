@@ -64,7 +64,7 @@ Options:                { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always activate the option
 
 Compositions:
-  airdcpp      certbot    docker.sock  gogs       hass    indexarr
+  airdcpp      certbot    docker.sock  gitea      hass    indexarr
   monitarr     navidrome  netdata      nextcloud  pihole
   qbittorrent  tang       traefik      unifi
 ```
@@ -210,22 +210,22 @@ Compositions:
     </tr>
     <tr>
       <th>
-        <a href='https://gogs.io/'>Gogs</a>
+        <a href='https://gitea.io/'>Gitea</a>
         <br>
         <sub>-</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Gogs%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Gogs)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Gitea%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Gitea)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/gogs/gogs'>
-          <sub>gogs</sub>
+        <a href='https://hub.docker.com/r/gitea/gitea'>
+          <sub>gitea</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.12.10</sub></code>
+        <code><sub>1.17.3...ss</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -237,7 +237,7 @@ Compositions:
         :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_check_mark:
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:

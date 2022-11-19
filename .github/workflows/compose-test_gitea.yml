@@ -1,4 +1,4 @@
-name: "Docker Compose Test (Gogs)"
+name: "Docker Compose Test (Gitea)"
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: gogs
-  TARGET_TIMEOUT: 30
+  TARGET_SERVICE: gitea
+  TARGET_TIMEOUT: 45
 
 jobs:
   test:
@@ -59,5 +59,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider  --no-check-certificate https://localhost/gogs/ \
+          docker-compose exec -T traefik wget --spider  --no-check-certificate https://localhost/gitea/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
