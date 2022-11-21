@@ -66,7 +66,7 @@ Options:                { NEVER | auto (default) | ALWAYS }
 Compositions:
   airdcpp      certbot    docker.sock  gitea      hass    indexarr
   monitarr     navidrome  netdata      nextcloud  pihole
-  qbittorrent  tang       traefik      unifi
+  qbittorrent  tang       tick         traefik    unifi
 ```
 
 ### Arch. Support
