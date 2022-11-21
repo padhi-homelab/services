@@ -212,7 +212,7 @@ Compositions:
       <th>
         <a href='https://gitea.io/'>Gitea</a>
         <br>
-        <sub>-</sub>
+        <sub>:443/gitea</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Gitea%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Gitea)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -225,7 +225,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.17.3...ss</sub></code>
+        <code><sub>1.17.3-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -484,6 +484,7 @@ Compositions:
         <a href='https://hub.docker.com/_/mariadb'>
           <sub>mariadb</sub>
         </a>
+        <br>
         <a href='https://hub.docker.com/_/redis'>
           <sub>redis</sub>
         </a>
@@ -668,6 +669,86 @@ Compositions:
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.influxdata.com/time-series-platform//'>TICK</a>
+        <br>
+        <sub>:9443/tick</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28TICK%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(TICK)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> B <br> B <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/telegraf'>
+          <sub>telegraf</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/influxdb'>
+          <sub>influxdb</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/chronograf'>
+          <sub>chronograf</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/kapacitor'>
+          <sub>kapacitor</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>1.24.3</sub></code>
+        <br>
+        <code><sub>2.5.1-a...e</sub></code>
+        <br>
+        <code><sub>nightly</sub></code>
+        <br>
+        <code><sub>1.6.5</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>

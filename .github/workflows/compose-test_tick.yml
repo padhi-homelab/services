@@ -1,4 +1,4 @@
-name: "Docker Compose Test (Nextcloud)"
+name: "Docker Compose Test (TICK)"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: nextcloud
+  TARGET_SERVICE: tick
   TARGET_TIMEOUT: 60
 
 jobs:
@@ -59,9 +59,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/nextcloud/ \
-            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
-          docker-compose exec -T traefik wget -S --spider --no-check-certificate \
-                                              https://localhost:443/nextcloud/.well-known/caldav 2>&1 \
-             | grep "Location: " | grep -q "/nextcloud/remote.php/dav" \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost:9443/tick/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
