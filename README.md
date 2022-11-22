@@ -296,7 +296,6 @@ Compositions:
         A <br> C
       </th>
       <th align='right'>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
           <sub>openvpn&#8209;client</sub>
         </a>

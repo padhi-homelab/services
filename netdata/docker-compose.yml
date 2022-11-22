@@ -18,7 +18,7 @@ volumes:
 
 services:
   netdata:
-    hostname: ${HOST_NAME:?}
+    hostname: netdata
     image: padhihomelab/netdata:1.36.0
     restart: unless-stopped
 
@@ -34,7 +34,7 @@ services:
     volumes:
     - netdata_cache:/var/cache/netdata:rw
     - ./config/netdata/etc/netdata/charts.d.conf:/etc/netdata/charts.d.conf:ro
-    - ./config/netdata/etc/netdata/netdata.conf:/etc/netdata/netdata.conf:ro
+    - ./generated/netdata/etc/netdata/netdata.conf:/etc/netdata/netdata.conf:ro
     - /etc/group:/host/etc/group:ro
     - /etc/os-release:/host/etc/os-release:ro
     - /etc/passwd:/host/etc/passwd:ro
