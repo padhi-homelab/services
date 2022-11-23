@@ -7,5 +7,4 @@ DATA_DIR="$SELF_DIR/data"
 
 mkdir -p "$DATA_DIR/influxdb/etc/influxdb2" \
          "$DATA_DIR/influxdb/var/lib/influxdb2" \
-         "$DATA_DIR/telegraf/etc/telegraf" \
-         "$DATA_DIR/telegraf/etc/telegraf/telegraf.conf.d"
+         "$DATA_DIR/telegraf/etc/telegraf"

@@ -53,8 +53,7 @@ services:
     networks:
     - default
     volumes:
-    - ./config/telegraf/etc/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
-    - ./data/telegraf/etc/telegraf/telegraf.conf.d:/etc/telegraf/telegraf.conf.d
+    - ./config/telegraf/etc/telegraf:/etc/telegraf:ro
 
     env_file:
     - env/influxdb
