@@ -1,0 +1,41 @@
+name: "Docker Compose Test (InfluxDB)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: influxdb
+  TARGET_TIMEOUT: 60
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v3
+      -
+        name: "Service: Setup"
+        run: |
+          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+      -
+        name: "Service: Start"
+        run: |
+          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test"
+        run: |
+          if ! ./composition.sh check ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            exit 1
+          fi

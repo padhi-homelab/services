@@ -1,0 +1,76 @@
+version: '2.4'
+
+networks:
+  proxy:
+    external: true
+
+services:
+  influxdb:
+    hostname: influxdb
+    image: influxdb:2.5.1-alpine
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - default
+    volumes:
+    - ./data/influxdb/etc/influxdb2:/etc/influxdb2
+    - ./data/influxdb/var/lib/influxdb2:/var/lib/influxdb2
+
+    env_file:
+    - env/influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      INFLUXD_FLUX_LOG_ENABLED: 'true'
+      INFLUXD_REPORTING_DISABLED: 'true'
+
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 15s
+      timeout: 2s
+      start_period: 5s
+    logging:
+      options:
+        max-size: "8m"
+        max-file: "4"
+
+  telegraf:
+    hostname: telegraf
+    image: telegraf:1.24.3
+    restart: unless-stopped
+    command: telegraf --config-directory /etc/telegraf/telegraf.conf.d
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    depends_on:
+    - influxdb
+
+    networks:
+    - default
+    volumes:
+    - ./config/telegraf/etc/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+    - ./data/telegraf/etc/telegraf/telegraf.conf.d:/etc/telegraf/telegraf.conf.d
+
+    env_file:
+    - env/influxdb
+    environment:
+      HOST_NAME: ${HOST_NAME:?}
+      SERVER_LAN_FQDN: ${SERVER_LAN_FQDN:?}
+      SERVER_LAN_HTTPS_PORT: ${SERVER_LAN_HTTPS_PORT:?}
+      TELEGRAF_LOGGING_FILE: STDOUT
+      TELEGRAF_REPORTING_ENABLED: 'false'
+
+    healthcheck:
+      test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:8080/"]
+      interval: 15s
+      timeout: 2s
+      start_period: 5s
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "2"

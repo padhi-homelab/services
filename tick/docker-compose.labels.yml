@@ -1,8 +1,0 @@
-version: '2.4'
-
-services:
-  chronograf:
-    labels:
-      traefik.enable: true
-      traefik.http.routers.tick.rule: PathPrefix(`/tick`)
-      traefik.http.routers.tick.entryPoints: lan-https
