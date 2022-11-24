@@ -1,0 +1,49 @@
+version: '2.4'
+
+networks:
+  shared:
+    external: true
+
+services:
+  telegraf:
+    hostname: telegraf
+    image: telegraf:1.24.3
+    restart: unless-stopped
+    # FIXME: Workaround for issue:
+    # https://github.com/influxdata/influxdata-docker/issues/568
+    command: --config-directory /etc/telegraf/telegraf.conf.d
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - shared
+    volumes:
+    - ./config/telegraf/etc/telegraf:/etc/telegraf:ro
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+
+    environment:
+      HOST_NAME: ${HOST_NAME:?}
+      HOST_PROC: /host/proc
+      HOST_SYS: /host/sys
+      HOST_MOUNT_PREFIX: /host
+      SERVER_LAN_FQDN: ${SERVER_LAN_FQDN:?}
+      SERVER_LAN_HTTPS_PORT: ${SERVER_LAN_HTTPS_PORT:?}
+      TELEGRAF_LOGGING_FILE: STDOUT
+      TELEGRAF_REPORTING_ENABLED: 'false'
+      INFLUXDB_URL: http://${SERVER_LAN_FQDN:?}:8086
+      INFLUXDB_ORG: default
+      INFLUXDB_BUCKET: default
+      INFLUXDB_ADMIN_TOKEN: 'admin_token'
+
+    healthcheck:
+      test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:8080/"]
+      interval: 15s
+      timeout: 2s
+      start_period: 5s
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "2"

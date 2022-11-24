@@ -65,8 +65,8 @@ Options:                { NEVER | auto (default) | ALWAYS }
 
 Compositions:
   airdcpp      certbot      docker.sock  gitea      hass       indexarr
-  influxdb     monitarr     navidrome    netdata    nextcloud
-  pihole       qbittorrent  tang         traefik    unifi
+  influxdb     monitarr     navidrome    nextcloud  pihole
+  qbittorrent  tang         telegraf     traefik    unifi
 ```
 
 ### Arch. Support
@@ -327,6 +327,44 @@ Compositions:
       <td align='center'>
         :heavy_check_mark:
         <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.influxdata.com/'>InfluxDB</a>
+        <br>
+        <sub>:8086</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28InfluxDB%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(InfluxDB)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/influxdb'>
+          <sub>influxdb</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.5.1-a...e</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
         :heavy_multiplication_x:
       </td>
     </tr>
@@ -672,53 +710,39 @@ Compositions:
     </tr>
     <tr>
       <th>
-        <a href='https://www.influxdata.com/'>InfluxDB</a>
+        <a href='https://www.influxdata.com/time-series-platform/telegraf/'>Telegraf</a>
         <br>
-        <sub>:8086</sub>
+        <sub>-</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28InfluxDB%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(InfluxDB)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Telegraf%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Telegraf)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B
+        B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/telegraf'>
           <sub>telegraf</sub>
         </a>
-        <br>
-        <a href='https://hub.docker.com/_/influxdb'>
-          <sub>influxdb</sub>
-        </a>
       </th>
       <td align='center'>
         <code><sub>1.24.3</sub></code>
-        <br>
-        <code><sub>2.5.1-a...e</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
-        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
         :heavy_multiplication_x:
       </td>
     </tr>
