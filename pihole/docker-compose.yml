@@ -28,11 +28,6 @@ services:
       TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}
 
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"
-
   pihole:
     hostname: pihole
     image: pihole/pihole:2022.11.2
@@ -68,8 +63,3 @@ services:
       CUSTOM_CACHE_SIZE: 50000
       WEBPASSWORD: admin
       TZ: ${TZ:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "4"

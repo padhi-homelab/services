@@ -1,0 +1,18 @@
+version: '2.4'
+
+services:
+  lidarr:
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
+  radarr:
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"
+  sonarr:
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"

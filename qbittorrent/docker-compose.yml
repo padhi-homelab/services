@@ -25,11 +25,6 @@ services:
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
 
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"
-
   qbittorrent:
     image: padhihomelab/qbittorrent-nox:4.4.5
     restart: unless-stopped
@@ -50,8 +45,3 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "4"

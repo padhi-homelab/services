@@ -1,0 +1,13 @@
+version: '2.4'
+
+services:
+  dnscrypt-proxy:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  pihole:
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"

@@ -1,0 +1,23 @@
+version: '2.4'
+
+services:
+  mariadb:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  redis:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  nextcloud:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"
+  cron:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"

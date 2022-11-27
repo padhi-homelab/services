@@ -26,4 +26,4 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
+          ./compositions.sh up --labels NEVER ${TARGET_SERVICE}

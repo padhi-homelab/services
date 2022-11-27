@@ -29,7 +29,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./composition.sh up --labels NEVER ${TARGET_SERVICE}
+          ./compositions.sh up --labels NEVER ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
@@ -37,7 +37,7 @@ jobs:
       -
         name: "Service: Test"
         run: |
-          if ! ./composition.sh check ${TARGET_SERVICE}; then
+          if ! ./compositions.sh check ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker-compose logs
             exit 1
@@ -45,8 +45,8 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./composition.sh up traefik
-          ./composition.sh down,up ${TARGET_SERVICE}
+          ./compositions.sh up traefik
+          ./compositions.sh down,up ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
@@ -54,7 +54,7 @@ jobs:
       -
         name: "Service: Test with Traefik"
         run: |
-          if ! ./composition.sh check ${TARGET_SERVICE} traefik; then
+          if ! ./compositions.sh check ${TARGET_SERVICE} traefik; then
             docker ps
             cd ${TARGET_SERVICE} ; docker-compose logs
             cd traefik ; docker-compose logs

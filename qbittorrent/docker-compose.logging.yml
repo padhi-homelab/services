@@ -1,0 +1,13 @@
+version: '2.4'
+
+services:
+  openvpn:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  qbittorrent:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"

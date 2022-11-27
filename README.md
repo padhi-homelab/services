@@ -1,6 +1,6 @@
 # Services
 
-### Why `composition.sh`?
+### Why `compositions.sh`?
 
 The multi-staged nature and repetitive commands for setting up
 compositions with non-standard configuration
@@ -23,24 +23,24 @@ details (server's FQDN, ACME email and server etc.).
 One might also want to attach containers to [externally-created Docker networks],
 for sharing data across multiple compositions without exposing anything to host.
 In that case, a separate `docker` command must be executed before starting services.
-`composition.sh` automatically detects external networks in YAML files,
+`compositions.sh` automatically detects external networks in YAML files,
 and creates them if they do not already exist.
 
 Finally, I also added several safeguards that `docker compose` doesn't provide.
 For instance, missing host directories that are required to be mounted to containers
 are automatically created by Docker (and are owned by `root`!),
-but `composition.sh` errors out in such cases requesting the user for explicit action.
+but `compositions.sh` errors out in such cases requesting the user for explicit action.
 
 #### Why not use Ansible?
 
-Seemed like an overkill, when I initially wrote `composition.sh`.
+Seemed like an overkill, when I initially wrote `compositions.sh`.
 
 ### Usage
 
 ```console
-$ ./composition.sh
+$ ./compositions.sh
 Usage:
-  ./composition.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
+  ./compositions.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
   check                 Check health of a composition
@@ -55,13 +55,14 @@ Flags:
 
 Options:                { NEVER | auto (default) | ALWAYS }
   [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
+  [-g | --logging]      Configure logging as specified in 'docker-compose.logging.yml'
   [-h | --hooks]        Run pre and post hook scripts
   [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never activate the option
-      auto = Activate unless overridden in options.*.conf
-    ALWAYS = Always activate the option
+     NEVER = Never configure the option (and use docker default instead)
+      auto = Configure the option unless overridden in options.*.conf
+    ALWAYS = Always configure the option as per 'docker-compose.*.{sh,yml}' files
 
 Compositions:
   airdcpp      certbot      docker.sock  gitea      hass       indexarr

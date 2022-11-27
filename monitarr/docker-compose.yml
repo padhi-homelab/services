@@ -24,11 +24,6 @@ services:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
 
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "2"
-
   radarr:
     hostname: radarr
     image: padhihomelab/radarr:4.3.0.6671
@@ -48,11 +43,6 @@ services:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
 
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "2"
-
   sonarr:
     hostname: sonarr
     image: padhihomelab/sonarr:3.0.9.1549
@@ -71,8 +61,3 @@ services:
     environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "2"

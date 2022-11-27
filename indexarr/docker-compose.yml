@@ -26,11 +26,6 @@ services:
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
 
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"
-
   jackett:
     image: padhihomelab/jackett:0.20.2291
     restart: unless-stopped
@@ -49,8 +44,3 @@ services:
     environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "2"

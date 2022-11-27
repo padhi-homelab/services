@@ -1,0 +1,8 @@
+version: '2.4'
+
+services:
+  gitea:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"

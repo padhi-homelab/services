@@ -23,10 +23,6 @@ services:
       interval: 15s
       timeout: 5s
       start_period: 5s
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"
 
   unifi:
     hostname: unifi
@@ -52,8 +48,3 @@ services:
       STATDB_MONGO_URI: mongodb://mongo/unifi_stat
       UNIFI_DB_NAME: unifi
       TZ: ${TZ:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "4"

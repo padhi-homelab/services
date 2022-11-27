@@ -26,18 +26,21 @@ FLAG_NO_OVERRIDE=""
 OPTION_DEVICES=""
 OPTION_HOOKS=""
 OPTION_LABELS=""
+OPTION_LOGGING=""
 OPTION_PORTS=""
 
 ARG_DEVICES="auto"
 ARG_HOOKS="auto"
 ARG_LABELS="auto"
+ARG_LOGGING="auto"
 ARG_PORTS="auto"
 
-: "${SERVICE_INTERNAL_CALL:=}"
+: "${COMPOSITIONS_INTERNAL_CALL:=}"
 
 # # # #
 #
 # HELPER FUNCTIONS
+# (assume that we are inside a composition directory)
 #
 # # # #
 
@@ -53,7 +56,7 @@ __append_env_from () {
 __CALL_SELF__ () {
   local cur_dir="$(pwd)"
   cd "$SELF_DIR"
-  SERVICE_INTERNAL_CALL=1 bash "$0" "$@"
+  COMPOSITIONS_INTERNAL_CALL=1 bash "$0" "$@"
   local exit_code=$?
   cd "$cur_dir"
   return $exit_code
@@ -63,8 +66,7 @@ __create_external_networks () {
   local EXTERNAL_NETWORKS=( )
   for yml in "$@" ; do
     for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' $yml) ; do
-      # NOTE: `echo ... | xargs` to get rid of quotes around network name,
-      # possible during extraction via `yq`.
+      # NOTE: `echo ... | xargs` to get rid of quotes around network name during extraction via `yq`.
       EXTERNAL_NETWORKS+=( $(echo $ext_net | xargs) )
     done
   done
@@ -149,6 +151,7 @@ __reset_options () {
   __read_option DEVICES
   __read_option HOOKS
   __read_option LABELS
+  __read_option LOGGING
   __read_option PORTS
 }
 
@@ -168,10 +171,6 @@ __run_hooks () {
         fi
       done
   fi
-}
-
-__sep_line () {
-  [ -n "$SERVICE_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
 }
 
 __verify_dependencies () {
@@ -237,32 +236,17 @@ do_down () {
 do_up () {
   local COMPOSE_FILES=( "docker-compose.yml" )
 
-  if [ "$OPTION_DEVICES" = "yes" ] ; then
-    if [ -f "docker-compose.devices.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.devices.yml" )
-    fi
-    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.devices.override.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.devices.override.yml" )
-    fi
-  fi
+  for fragment in DEVICES LABELS LOGGING PORTS ; do
+    local OPTION="OPTION_${fragment}"
+    if [ "${!OPTION}" != "yes" ] ; then continue ; fi
 
-  if [ "$OPTION_LABELS" = "yes" ] ; then
-    if [ -f "docker-compose.labels.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.labels.yml" )
+    if [ -f "docker-compose.${fragment,,}.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.${fragment,,}.yml" )
     fi
-    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.labels.override.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.labels.override.yml" )
+    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.${fragment,,}.override.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.${fragment,,}.override.yml" )
     fi
-  fi
-
-  if [ "$OPTION_PORTS" = "yes" ] ; then
-    if [ -f "docker-compose.ports.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.ports.yml" )
-    fi
-    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.ports.override.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.ports.override.yml" )
-    fi
-  fi
+  done
 
   if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
     COMPOSE_FILES+=( "docker-compose.override.yml")
@@ -294,13 +278,14 @@ Flags:
 
 Options:                { NEVER | auto (default) | ALWAYS }
   [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
-  [-h | --hooks]        Run pre and post hook scripts
+  [-g | --logging]      Configure logging as specified in 'docker-compose.logging.yml'
+  [-h | --hooks]        Run pre and post hook 'docker-compose.*.yml' scripts
   [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never activate the option
-      auto = Activate unless overridden in options.*.conf
-    ALWAYS = Always activate the option
+     NEVER = Never configure the option (and use docker default instead)
+      auto = Configure the option unless overridden in options.*.conf
+    ALWAYS = Always configure the option as per 'docker-compose.*.{sh,yml}' files
 
 Compositions:" >&2
   while IFS= read -r line ; do
@@ -339,6 +324,7 @@ for opt in "$@" ; do
     "--devices")      set -- "$@" "-d" ;;
     "--hooks")        set -- "$@" "-h" ;;
     "--labels")       set -- "$@" "-l" ;;
+    "--logging")      set -- "$@" "-g" ;;
     "--ports")        set -- "$@" "-p" ;;
 
     "--")                   set -- "$@" "--" ;;
@@ -355,13 +341,14 @@ check_optarg () {
 }
 
 OPTIND=1
-while getopts ':FORd:h:l:p:' OPTION ; do
+while getopts ':FORd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
     "F" ) FLAG_SKIP_FAILS="yes" ;;
-    "R" ) FLAG_REGENERATE="yes" ;;
     "O" ) FLAG_NO_OVERRIDE="yes" ;;
+    "R" ) FLAG_REGENERATE="yes" ;;
 
     "d" ) check_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
+    "g" ) check_optarg "$OPTARG" && ARG_LOGGING="$OPTARG" ;;
     "h" ) check_optarg "$OPTARG" && ARG_HOOKS="$OPTARG" ;;
     "l" ) check_optarg "$OPTARG" && ARG_LABELS="$OPTARG" ;;
     "p" ) check_optarg "$OPTARG" && ARG_PORTS="$OPTARG" ;;
@@ -434,7 +421,7 @@ perform () {
     cd "$SELF_DIR/$comp"
 
     __reset_options
-    echo "[.] DEVICES = $OPTION_DEVICES ; HOOKS = $OPTION_HOOKS ; LABELS = $OPTION_LABELS ; PORTS = $OPTION_PORTS"
+    echo "[.] devices = $OPTION_DEVICES ; logging = $OPTION_LOGGING ; hooks = $OPTION_HOOKS ; labels = $OPTION_LABELS ; ports = $OPTION_PORTS"
 
     [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
@@ -464,9 +451,13 @@ perform () {
   done
 }
 
-__sep_line
+print_sepator_line () {
+  [ -n "$COMPOSITIONS_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
+}
+
+print_sepator_line
 for VERB in $VERBS ; do
   perform $VERB
-  __sep_line
+  print_sepator_line
 done
 echo

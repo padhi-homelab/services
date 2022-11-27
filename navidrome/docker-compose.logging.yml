@@ -1,0 +1,8 @@
+version: '2.4'
+
+services:
+  navidrome:
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "1"

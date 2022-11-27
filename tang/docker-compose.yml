@@ -20,8 +20,3 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
-
-    logging:
-      options:
-        max-size: "8m"
-        max-file: "4"
