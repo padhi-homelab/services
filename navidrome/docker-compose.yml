@@ -7,7 +7,7 @@ networks:
 services:
   navidrome:
     hostname: navidrome
-    image: deluan/navidrome:sha-5f3f7af
+    image: deluan/navidrome:sha-13bb6c9
     restart: unless-stopped
 
     security_opt:

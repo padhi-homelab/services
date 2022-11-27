@@ -263,7 +263,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.11.3_1.28.3</sub></code>
+        <code><sub>2022.11.4_1.28.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -307,7 +307,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.2225</sub></code>
+        <code><sub>0.20.2291</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -447,7 +447,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>sha-5f3f7af</sub></code>
+        <code><sub>sha-13bb6c9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -466,44 +466,6 @@ Compositions:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://www.netdata.cloud'>netdata</a>
-        <br>
-        <sub>:9443/netdata</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28netdata%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(netdata)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/netdata'>
-          <sub>netdata</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>1.36.0</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -603,7 +565,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.2</sub></code>
         <br>
-        <code><sub>2022.11</sub></code>
+        <code><sub>2022.11.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
