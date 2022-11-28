@@ -3,7 +3,7 @@ accessLog:
     statusCodes:
     - "400-499"
     - "500-599"
-    minDuration: "1s"
+    minDuration: "5s"
   fields:
     defaultMode: drop
     names:
