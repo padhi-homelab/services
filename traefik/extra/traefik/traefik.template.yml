@@ -1,4 +1,5 @@
 accessLog:
+  format: json
   filters:
     statusCodes:
     - "400-499"
