@@ -33,4 +33,6 @@ for IFACE in $(ls "$HOST_SYS/class/net" | grep -E "$GREP_PATTERN") ; do
   done
 
   echo "host_net,interface=$IFACE tx_bytes=${TX_BYTES}u,rx_bytes=${RX_BYTES}u,tx_packets=${TX_PACKETS}u,rx_packets=${RX_PACKETS}u,tx_errors=${TX_ERRORS}u,rx_errors=${RX_ERRORS}u,tx_dropped=${TX_DROPPED}u,rx_dropped=${RX_DROPPED}u"
+
+  unset TX_BYTES RX_BYTES TX_PACKETS RX_PACKETS TX_ERRORS RX_ERRORS TX_DROPPED RX_DROPPED
 done
