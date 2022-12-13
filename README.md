@@ -108,7 +108,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>2.11.2</sub></code>
+        <code><sub>2.11.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -150,7 +150,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.32.0</sub></code>
+        <code><sub>2.1.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -264,7 +264,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2022.11.4_1.28.4</sub></code>
+        <code><sub>2022.12.4_1.28.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -396,7 +396,7 @@ Compositions:
       <td align='center'>
         <code><sub>1.1.1.2762</sub></code>
         <br>
-        <code><sub>4.3.0.6671</sub></code>
+        <code><sub>4.3.1.6822</sub></code>
         <br>
         <code><sub>3.0.9.1549</sub></code>
       </td>
@@ -500,11 +500,11 @@ Compositions:
       <td align='center'>
         <code><sub>10.9.3</sub></code>
         <br>
-        <code><sub>7.0.5</sub></code>
+        <code><sub>7.0.6</sub></code>
         <br>
-        <code><sub>25.0.1</sub></code>
+        <code><sub>25.0.2</sub></code>
         <br>
-        <code><sub>25.0.1</sub></code>
+        <code><sub>25.0.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -610,7 +610,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>4.4.5</sub></code>
+        <code><sub>4.5.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -688,7 +688,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.24.4</sub></code>
+        <code><sub>1.25.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -726,7 +726,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.9.5</sub></code>
+        <code><sub>2.9.6</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
