@@ -26,6 +26,7 @@ jobs:
       -
         name: "Service: Wait"
         run: |
+          cd ${TARGET_SERVICE} ; cat .env
           sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test"
