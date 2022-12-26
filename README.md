@@ -489,11 +489,11 @@ Compositions:
           <sub>redis</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/nextcloud'>
+        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
           <sub>nextcloud</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/nextcloud'>
+        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
           <sub>cron</sub>
         </a>
       </th>
@@ -502,9 +502,9 @@ Compositions:
         <br>
         <code><sub>7.0.7</sub></code>
         <br>
-        <code><sub>25.0.2</sub></code>
+        <code><sub>25.0.2_1...2</sub></code>
         <br>
-        <code><sub>25.0.2</sub></code>
+        <code><sub>25.0.2_1...2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

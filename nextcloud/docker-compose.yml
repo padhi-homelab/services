@@ -68,7 +68,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: nextcloud:25.0.2
+    image: padhihomelab/nextcloud:25.0.2_19.24_1.0.2
     restart: unless-stopped
 
     security_opt:
@@ -108,7 +108,7 @@ services:
 
   cron:
     hostname: cron
-    image: nextcloud:25.0.2
+    image: padhihomelab/nextcloud:25.0.2_19.24_1.0.2
     restart: unless-stopped
     entrypoint: /cron.sh
 
