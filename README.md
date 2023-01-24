@@ -226,7 +226,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.18.0-r...s</sub></code>
+        <code><sub>1.18.3-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -264,7 +264,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2023.1.4_1.29.1</sub></code>
+        <code><sub>2023.1.7_1.30.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -308,7 +308,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.6</sub></code>
         <br>
-        <code><sub>0.20.2291</sub></code>
+        <code><sub>0.20.2687</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -394,9 +394,9 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.1.1.2762</sub></code>
+        <code><sub>1.1.2.2935</sub></code>
         <br>
-        <code><sub>4.3.2.6857</sub></code>
+        <code><sub>4.4.0.6882</sub></code>
         <br>
         <code><sub>3.0.9.1549</sub></code>
       </td>
@@ -500,7 +500,7 @@ Compositions:
       <td align='center'>
         <code><sub>10.9.4</sub></code>
         <br>
-        <code><sub>7.0.7</sub></code>
+        <code><sub>7.0.8</sub></code>
         <br>
         <code><sub>25.0.2_1...2</sub></code>
         <br>
@@ -566,7 +566,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.2</sub></code>
         <br>
-        <code><sub>2022.12.1</sub></code>
+        <code><sub>2023.01.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
