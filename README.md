@@ -106,7 +106,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.6</sub></code>
+        <code><sub>2.5.8</sub></code>
         <br>
         <code><sub>2.11.3</sub></code>
       </td>
@@ -306,7 +306,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.6</sub></code>
+        <code><sub>2.5.8</sub></code>
         <br>
         <code><sub>0.20.2687</sub></code>
       </td>
@@ -608,7 +608,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.5.6</sub></code>
+        <code><sub>2.5.8</sub></code>
         <br>
         <code><sub>4.5.0</sub></code>
       </td>
