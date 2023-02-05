@@ -26,7 +26,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:4.4.0.6882
+    image: padhihomelab/radarr:4.4.1.6926
     restart: unless-stopped
 
     security_opt:

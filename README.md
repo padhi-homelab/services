@@ -264,7 +264,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2023.1.7_1.30.0</sub></code>
+        <code><sub>2023.2.2_1.30.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -396,7 +396,7 @@ Compositions:
       <td align='center'>
         <code><sub>1.1.2.2935</sub></code>
         <br>
-        <code><sub>4.4.0.6882</sub></code>
+        <code><sub>4.4.1.6926</sub></code>
         <br>
         <code><sub>3.0.9.1549</sub></code>
       </td>
@@ -564,9 +564,9 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.1.2</sub></code>
+        <code><sub>2.1.3</sub></code>
         <br>
-        <code><sub>2023.01.9</sub></code>
+        <code><sub>2023.01.10</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
