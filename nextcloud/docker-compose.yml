@@ -83,6 +83,7 @@ services:
     - default
     - proxy
     volumes:
+    - ./config/nextcloud/docker-entrypoint.d:/docker-entrypoint.d:ro
     - ./config/nextcloud/cron.sh:/cron.sh:ro
     # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
     - ./data/nextcloud/crontabs:/crontabs:rw
