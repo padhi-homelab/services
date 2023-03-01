@@ -7,7 +7,7 @@ networks:
 services:
   mariadb:
     hostname: mariadb
-    image: mariadb:10.9.4
+    image: mariadb:10.9.5
     restart: unless-stopped
 
     security_opt:
@@ -41,7 +41,7 @@ services:
 
   redis:
     hostname: redis
-    image: redis:7.0.8
+    image: redis:7.0.9
     restart: unless-stopped
 
     security_opt:
