@@ -9,9 +9,6 @@ services:
     hostname: telegraf
     image: telegraf:1.26.0
     restart: unless-stopped
-    # FIXME: Workaround for issue:
-    # https://github.com/influxdata/influxdata-docker/issues/568
-    command: --config-directory /etc/telegraf/telegraf.conf.d
 
     security_opt:
     - no-new-privileges:true
@@ -20,7 +17,9 @@ services:
     networks:
     - shared
     volumes:
-    - ./config/telegraf/etc/telegraf:/etc/telegraf:ro
+    - ./config/telegraf/etc/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    - ./config/telegraf/etc/telegraf/scripts:/etc/telegraf/scripts:ro
+    - ./config/telegraf/etc/telegraf/telegraf.conf.d:/etc/telegraf/telegraf.conf.d:ro
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
 
