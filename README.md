@@ -502,9 +502,9 @@ Compositions:
         <br>
         <code><sub>7.0.10</sub></code>
         <br>
-        <code><sub>26.0.0...2</sub></code>
+        <code><sub>26.0.0...0</sub></code>
         <br>
-        <code><sub>26.0.0...2</sub></code>
+        <code><sub>26.0.0...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
