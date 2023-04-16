@@ -19,7 +19,7 @@ services:
     volumes:
     - ./config/telegraf/etc/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     - ./config/telegraf/etc/telegraf/scripts:/etc/telegraf/scripts:ro
-    - ./config/telegraf/etc/telegraf/telegraf.conf.d:/etc/telegraf/telegraf.conf.d:ro
+    - ./config/telegraf/etc/telegraf/telegraf.d:/etc/telegraf/telegraf.d:ro
     - /proc:/host/proc:ro
     - /sys:/host/sys:ro
 
