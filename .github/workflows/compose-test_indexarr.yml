@@ -23,7 +23,7 @@ jobs:
         name: "Service: Setup"
         run: |
           mkdir -p "${TARGET_SERVICE}/data/openvpn"
-          cp -r .github/workflows/config/vpn "${TARGET_SERVICE}/data/openvpn/config"
+          cp -r .github/workflows/config/vpn_alt "${TARGET_SERVICE}/data/openvpn/config"
           cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
           cp .github/workflows/config/options.conf "traefik/options.override.conf"
       -
