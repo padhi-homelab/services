@@ -264,7 +264,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2023.4.4_1.32.1</sub></code>
+        <code><sub>2023.4.6_1.32.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -308,7 +308,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.5.8</sub></code>
         <br>
-        <code><sub>0.20.3671</sub></code>
+        <code><sub>0.20.3985</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -394,9 +394,9 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.1.3.2982</sub></code>
+        <code><sub>1.1.4.3027</sub></code>
         <br>
-        <code><sub>4.4.3.7030</sub></code>
+        <code><sub>4.5.0.7106</sub></code>
         <br>
         <code><sub>3.0.10.1567</sub></code>
       </td>
@@ -498,13 +498,13 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>10.9.5</sub></code>
+        <code><sub>10.11.2</sub></code>
         <br>
-        <code><sub>7.0.10</sub></code>
+        <code><sub>7.0.11</sub></code>
         <br>
-        <code><sub>26.0.0...0</sub></code>
+        <code><sub>26.0.1...0</sub></code>
         <br>
-        <code><sub>26.0.0...0</sub></code>
+        <code><sub>26.0.1...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -650,7 +650,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>git.3d...72</sub></code>
+        <code><sub>git.7c...13</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -688,7 +688,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.26.1</sub></code>
+        <code><sub>1.26.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -726,7 +726,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.9.10</sub></code>
+        <code><sub>2.10.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
