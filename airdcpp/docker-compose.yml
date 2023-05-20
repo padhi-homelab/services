@@ -7,7 +7,7 @@ networks:
 services:
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.5.8
+    image: padhihomelab/openvpn-client:2.6.4
     restart: unless-stopped
 
     cap_add:

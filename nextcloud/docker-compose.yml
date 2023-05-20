@@ -7,7 +7,7 @@ networks:
 services:
   mariadb:
     hostname: mariadb
-    image: mariadb:10.11.2
+    image: mariadb:10.11.3
     restart: unless-stopped
 
     security_opt:
