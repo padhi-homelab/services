@@ -27,7 +27,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   jackett:
-    image: padhihomelab/jackett:0.21.241
+    image: padhihomelab/jackett:0.21.245
     restart: unless-stopped
 
     security_opt:
