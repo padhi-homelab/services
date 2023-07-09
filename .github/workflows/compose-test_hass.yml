@@ -10,7 +10,7 @@ on:
 
 env:
   TARGET_SERVICE: hass
-  TARGET_TIMEOUT: 30
+  TARGET_TIMEOUT: 60
 
 jobs:
   test:
@@ -38,5 +38,23 @@ jobs:
           if ! ./compositions.sh check ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker-compose logs
+            exit 1
+          fi
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./compositions.sh up traefik
+          ./compositions.sh down,up ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          if ! ./compositions.sh check ${TARGET_SERVICE} traefik; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker-compose logs
+            cd traefik ; docker-compose logs
             exit 1
           fi

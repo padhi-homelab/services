@@ -1,5 +1,9 @@
 version: '2.4'
 
+networks:
+  proxy:
+    external: true
+
 services:
   hass:
     hostname: hass
@@ -9,9 +13,13 @@ services:
     security_opt:
     - no-new-privileges:true
 
+    networks:
+    - proxy
     volumes:
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw
+    # NOTE: Necessary for bluetooth integration
+    - /run/dbus:/run/dbus:ro
 
     environment:
       TZ: ${TZ:?}
