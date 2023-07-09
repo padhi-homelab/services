@@ -807,19 +807,19 @@ Compositions:
 <table>
   <tbody>
     <tr>
-      <td>A</td>
+      <th>A</th>
       <td>Dockerfiles with application binaries from OS repo / compiled from sources</td>
     </tr>
     <tr>
-      <td>B</td>
+      <th>B</th>
       <td>Official open-source Dockerfiles / binaries from authors</td>
     </tr>
     <tr>
-      <td>C</td>
+      <th>C</th>
       <td>Dockerfiles / binaries from third parties who publish full source code</td>
     </tr>
     <tr>
-      <td>X</td>
+      <th>X</th>
       <td>Dockerfiles containing closed-source binaries (blobs)</td>
     </tr>
   </tbody>
@@ -845,26 +845,51 @@ When deploying, all changes MUST appear in `.gitignore`d files:
 
 - subdirectories under `config/`, `data/`, `extra/`, and `generated/`
   must match the service names within `docker-compose.yml`
-- the directory structure under each of `config/`, `data/`, `extra/`, and `generated/`
-  must match the root directory hierarchy in the target container
-- `config/` contents:
-  - _may_ be mounted in read-only mode (`:ro`)
-  - _must_ be checked in
-- `data/` contents:
-  - _should_ be mounted in read+write mode (`:rw`)
-  - _must not_ be checked in; excluded using `.gitignore`
-- `env/` contents:
-  - _must not_ be mounted within containers!
-    - _may_ be used as `env_file` for containers
-  - _should_ be checked in
-- `extra/` contents:
-  - _must not_ be mounted within containers!
-    - containers may fetch these by other means,
-      e.g. over the network, or from `generated/`
-  - _should_ be checked in
-- `generated/` contents:
-  - _must_ be mounted in read-only mode (`:ro`)
-  - _must not_ be checked in; excluded using `.gitignore`
+- the directory structure at each of `config/X/Y...`, `data/X/Y...`, `extra/X/Y...`, and `generated/X/Y...`
+  must match the root directory hierarchy `/Y/...` in the target container `X`
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Mount mode</th>
+      <th>Git commit</th>
+      <th>Comments</th>
+    <tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>config/</th>
+      <td><code>:ro</code> or -</td>
+      <td>:heavy_check_mark:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>data/</th>
+      <td><code>:rw</code></td>
+      <td>:heavy_multiplication_x:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>env/</th>
+      <td>-</td>
+      <td>:heavy_check_mark:</td>
+      <td>May contain <code>env_file</code>s</td>
+    </tr>
+    <tr>
+      <th>extra/</th>
+      <td>-</td>
+      <td>:heavy_check_mark:</td>
+      <td>Only indirect access, e.g. via <code>generated/</code></td>
+    </tr>
+    <tr>
+      <th>generated/</th>
+      <td><code>:ro</code></td>
+      <td>:heavy_multiplication_x:</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
 
 
 
