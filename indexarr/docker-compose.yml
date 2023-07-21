@@ -7,7 +7,7 @@ networks:
 services:
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.6.4
+    image: padhihomelab/openvpn-client:2.6.5
     restart: unless-stopped
 
     cap_add:
@@ -27,7 +27,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   jackett:
-    image: padhihomelab/jackett:0.21.439
+    image: padhihomelab/jackett:0.21.505
     restart: unless-stopped
 
     security_opt:

@@ -7,7 +7,7 @@ networks:
 services:
   gitea:
     hostname: gitea
-    image: gitea/gitea:1.19.4-rootless
+    image: gitea/gitea:1.20.0-rootless
     restart: unless-stopped
 
     security_opt:
