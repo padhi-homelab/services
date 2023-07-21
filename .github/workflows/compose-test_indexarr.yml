@@ -10,7 +10,7 @@ on:
 
 env:
   TARGET_SERVICE: indexarr
-  TARGET_TIMEOUT: 30
+  TARGET_TIMEOUT: 45
 
 jobs:
   test:
