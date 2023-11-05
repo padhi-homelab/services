@@ -9,7 +9,7 @@ networks:
 services:
   traefik:
     hostname: traefik
-    image: traefik:v2.10.3
+    image: traefik:v2.10.5
     restart: unless-stopped
 
     security_opt:
