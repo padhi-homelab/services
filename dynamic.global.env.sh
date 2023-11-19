@@ -3,6 +3,7 @@
 set -Eumo pipefail
 
 cat << EOF
+ARCHITECTURE=$(uname -m)
 GROUP_ID=$(id -g)
 HOST_NAME=$(hostname)
 USER_ID=$(id -u)

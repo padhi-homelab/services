@@ -118,7 +118,7 @@ services:
     user: ${USER_ID:?}
 
     entrypoint: |-
-      /var/www/html/custom_apps/notify_push/bin/x86_64/notify_push /var/www/html/config/config.php
+      /var/www/html/custom_apps/notify_push/bin/${ARCHITECTURE:?}/notify_push /var/www/html/config/config.php
 
     depends_on:
     - nextcloud
