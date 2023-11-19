@@ -6,3 +6,4 @@ OVERWRITEWEBROOT: '/nextcloud'
 # FIXME: See https://github.com/nextcloud/docker/issues/1494
 #APACHE_DISABLE_REWRITE_IP: 1
 NEXTCLOUD_DATA_DIR: '/data'
+TRUSTED_PROXIES: 172.33.0.0/16 172.22.0.0/16

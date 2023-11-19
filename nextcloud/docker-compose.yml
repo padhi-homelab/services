@@ -100,12 +100,49 @@ services:
     - env/nextcloud
     environment:
       TZ: ${TZ:?}
+      NEXTCLOUD_TRUSTED_DOMAINS: ${SERVER_WAN_FQDN:?} ${SERVER_LAN_FQDN:?} nextcloud
 
     healthcheck:
       test: "curl -fso /dev/null http://localhost:80"
       interval: 15s
       timeout: 3s
       start_period: 15s
+
+  push:
+    hostname: push
+    image: padhihomelab/nextcloud:27.1.3_19.24.2_1.1.0
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    entrypoint: |-
+      /var/www/html/custom_apps/notify_push/bin/x86_64/notify_push /var/www/html/config/config.php
+
+    depends_on:
+    - nextcloud
+
+    networks:
+    - default
+    - proxy
+    volumes_from:
+    - nextcloud:rw
+
+    env_file:
+    - env/mariadb
+    - env/redis
+    - env/nextcloud
+    environment:
+      TZ: ${TZ:?}
+      PORT: 7867
+      NEXTCLOUD_URL: http://nextcloud/
+    
+    healthcheck:
+      test: "pgrep notify_push"
+      interval: 15s
+      timeout: 3s
+      start_period: 5s
 
   cron:
     hostname: cron
@@ -118,7 +155,6 @@ services:
     #NOTE: `crond` needs to run as `root` user.
 
     depends_on:
-    - redis
     - nextcloud
 
     networks:

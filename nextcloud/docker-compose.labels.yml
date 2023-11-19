@@ -4,6 +4,7 @@ services:
   nextcloud:
     labels:
       traefik.enable: true
+      traefik.http.routers.push.priority: 1
       traefik.http.middlewares.strip-nextcloud-prefix.stripPrefix.prefixes: "/nextcloud"
       traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.permanent: true
       traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.regex: "^https://(.+)/nextcloud/.well-known/(card|cal)dav"
@@ -12,3 +13,12 @@ services:
       traefik.http.routers.nextcloud.entryPoints: wan-https
       # NOTE: Order of middlewares matters: redirect must be performed before stripping
       traefik.http.routers.nextcloud.middlewares: nextcloud-caldav-redirect@docker,strip-nextcloud-prefix
+  push:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.push.priority: 2
+      traefik.http.services.push.loadBalancer.server.port: 7867
+      traefik.http.middlewares.strip-push-prefix.stripPrefix.prefixes: "/push"
+      traefik.http.routers.push.rule: PathPrefix(`/nextcloud/push`)
+      traefik.http.routers.push.entryPoints: wan-https
+      traefik.http.routers.push.middlewares: strip-push-prefix
