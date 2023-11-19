@@ -478,7 +478,7 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nextcloud.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B <br> B
+        B <br> B <br> B <br> B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mariadb'>
@@ -496,6 +496,10 @@ Compositions:
         <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
           <sub>cron</sub>
         </a>
+        <br>
+        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
+          <sub>cron</sub>
+        </a>
       </th>
       <td align='center'>
         <code><sub>10.11.5</sub></code>
@@ -505,6 +509,8 @@ Compositions:
         <code><sub>27.1.3...0</sub></code>
         <br>
         <code><sub>27.1.3...0</sub></code>
+        <br>
+        <code><sub>27.1.3...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -517,18 +523,24 @@ Compositions:
         :heavy_check_mark:
         <br>
         :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
         <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
         <br>
         :heavy_check_mark:
         <br>
