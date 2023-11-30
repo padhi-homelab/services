@@ -578,7 +578,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.5</sub></code>
         <br>
-        <code><sub>2023.10.0</sub></code>
+        <code><sub>2023.11.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
