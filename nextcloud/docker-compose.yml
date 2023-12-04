@@ -7,7 +7,7 @@ networks:
 services:
   mariadb:
     hostname: mariadb
-    image: mariadb:10.11.5
+    image: mariadb:10.11.6
     restart: unless-stopped
 
     security_opt:
@@ -68,7 +68,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: padhihomelab/nextcloud:27.1.3_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
     restart: unless-stopped
 
     security_opt:
@@ -110,7 +110,7 @@ services:
 
   push:
     hostname: push
-    image: padhihomelab/nextcloud:27.1.3_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
     restart: unless-stopped
 
     security_opt:
@@ -147,7 +147,7 @@ services:
 
   cron:
     hostname: cron
-    image: padhihomelab/nextcloud:27.1.3_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
     restart: unless-stopped
     entrypoint: /cron.sh
 

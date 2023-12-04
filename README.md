@@ -502,15 +502,15 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>10.11.5</sub></code>
+        <code><sub>10.11.6</sub></code>
         <br>
         <code><sub>7.2.3</sub></code>
         <br>
-        <code><sub>27.1.3...0</sub></code>
+        <code><sub>27.1.4...0</sub></code>
         <br>
-        <code><sub>27.1.3...0</sub></code>
+        <code><sub>27.1.4...0</sub></code>
         <br>
-        <code><sub>27.1.3...0</sub></code>
+        <code><sub>27.1.4...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -780,9 +780,9 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>4.4.18</sub></code>
+        <code><sub>4.4.26</sub></code>
         <br>
-        <code><sub>7.4.162</sub></code>
+        <code><sub>8.0.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
