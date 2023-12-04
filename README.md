@@ -780,7 +780,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>4.4.26</sub></code>
+        <code><sub>4.4.18</sub></code>
         <br>
         <code><sub>8.0.7</sub></code>
       </td>
