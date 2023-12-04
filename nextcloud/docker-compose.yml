@@ -66,6 +66,32 @@ services:
       interval: 15s
       start_period: 10s
 
+  imaginary:
+    hostname: imaginary
+    image: nextcloud/aio-imaginary:20231130_081302-latest
+    restart: unless-stopped
+
+    cap_add:
+    - SYS_NICE
+    security_opt:
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    command: -cpus 3 -concurrency 16 -enable-url-source
+
+    networks:
+    - default
+
+    environment:
+      PORT: 9000
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: "pgrep imaginary"
+      interval: 15s
+      timeout: 3s
+      start_period: 5s
+
   nextcloud:
     hostname: nextcloud
     image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
