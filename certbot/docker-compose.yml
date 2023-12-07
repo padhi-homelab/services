@@ -3,7 +3,7 @@ version: '2.4'
 services:
   certbot:
     hostname: certbot
-    image: padhihomelab/certbot:2.7.4
+    image: padhihomelab/certbot:2.8.0
     restart: unless-stopped
 
     security_opt:
