@@ -7,7 +7,7 @@ networks:
 services:
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.6.5
+    image: padhihomelab/openvpn-client:2.6.8
 
     cap_add:
     - NET_ADMIN

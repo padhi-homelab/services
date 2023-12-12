@@ -7,7 +7,7 @@ networks:
 services:
   hass:
     hostname: hass
-    image: padhihomelab/hass:2023.12.0_1.33.0
+    image: padhihomelab/hass:2023.12.1_1.33.0
     restart: unless-stopped
 
     security_opt:
