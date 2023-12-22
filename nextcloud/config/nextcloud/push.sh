@@ -2,7 +2,7 @@
 
 set -eu
 
-NOTIFY_PUSH=/var/www/html/custom_apps/notify_push/bin/$ARCHITECTURE/notify_push
+NOTIFY_PUSH=/var/www/html/custom_apps/notify_push/bin/$(uname -m)/notify_push
 
 if ! [ -f $NOTIFY_PUSH ]; then
   exec tail -f /dev/null
