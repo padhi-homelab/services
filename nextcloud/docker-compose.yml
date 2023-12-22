@@ -68,7 +68,7 @@ services:
 
   imaginary:
     hostname: imaginary
-    image: nextcloud/aio-imaginary:20231130_081302-latest
+    image: nextcloud/aio-imaginary:20231220_153200-latest
     restart: unless-stopped
 
     cap_add:
@@ -94,7 +94,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:28.0.1_19.24.2_1.1.0
     restart: unless-stopped
 
     security_opt:
@@ -111,6 +111,7 @@ services:
     volumes:
     - ./config/nextcloud/docker-entrypoint.d:/docker-entrypoint.d:ro
     - ./config/nextcloud/cron.sh:/cron.sh:ro
+    - ./config/nextcloud/push.sh:/push.sh:ro
     # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
     - ./data/nextcloud/crontabs:/crontabs:rw
     - ./data/nextcloud/data:/data:rw
@@ -136,17 +137,14 @@ services:
 
   push:
     hostname: push
-    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:28.0.1_19.24.2_1.1.0
     restart: unless-stopped
 
     security_opt:
     - no-new-privileges:true
     user: ${USER_ID:?}
 
-    entrypoint: |-
-      /var/www/html/custom_apps/notify_push/bin/${ARCHITECTURE:?}/notify_push
-        --port 80
-        /var/www/html/config/config.php
+    entrypoint: /push.sh
 
     depends_on:
     - nextcloud
@@ -173,7 +171,7 @@ services:
 
   cron:
     hostname: cron
-    image: padhihomelab/nextcloud:27.1.4_19.24.2_1.1.0
+    image: padhihomelab/nextcloud:28.0.1_19.24.2_1.1.0
     restart: unless-stopped
     entrypoint: /cron.sh
 

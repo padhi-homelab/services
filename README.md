@@ -226,7 +226,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.21.2-r...s</sub></code>
+        <code><sub>1.21.3-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -489,6 +489,10 @@ Compositions:
           <sub>redis</sub>
         </a>
         <br>
+        <a href='https://hub.docker.com/repository/docker/nextcloud/aio-imaginary'>
+          <sub>nextcloud</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
           <sub>nextcloud</sub>
         </a>
@@ -506,11 +510,13 @@ Compositions:
         <br>
         <code><sub>7.2.3</sub></code>
         <br>
-        <code><sub>27.1.4...0</sub></code>
+        <code><sub>20231220...t</sub></code>
         <br>
-        <code><sub>27.1.4...0</sub></code>
+        <code><sub>28.0.1...0</sub></code>
         <br>
-        <code><sub>27.1.4...0</sub></code>
+        <code><sub>28.0.1...0</sub></code>
+        <br>
+        <code><sub>28.0.1...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -520,16 +526,7 @@ Compositions:
         <br>
         :heavy_check_mark:
         <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
         :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
         <br>
         :heavy_check_mark:
         <br>
@@ -542,6 +539,21 @@ Compositions:
         <br>
         :heavy_check_mark:
         <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
         <br>
         :heavy_check_mark:
@@ -552,7 +564,17 @@ Compositions:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -700,7 +722,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.28.5</sub></code>
+        <code><sub>1.29.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
