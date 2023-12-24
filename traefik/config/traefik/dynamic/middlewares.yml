@@ -31,7 +31,7 @@ http:
           Permissions-Policy: 'geolocation=(self), microphone=(), camera=(), fullscreen=*'
           Server: ''
           X-Powered-By: ''
-          X-Robots-Tag: 'none,noarchive,nosnippet,notranslate,noimageindex'
+          X-Robots-Tag: 'none,noarchive,nofollow,noimageindex,noindex,nosnippet,notranslate'
         customFrameOptionsValue: 'sameorigin'
         featurePolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
         referrerPolicy: 'same-origin'
