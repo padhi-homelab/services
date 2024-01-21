@@ -30,7 +30,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2023.11.0
+    image: pihole/pihole:2024.01.0
     restart: unless-stopped
 
     # FIXME: cannot use `no-new-privileges` yet,

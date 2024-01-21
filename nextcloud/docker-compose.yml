@@ -41,7 +41,7 @@ services:
 
   redis:
     hostname: redis
-    image: redis:7.2.3
+    image: redis:7.2.5
     restart: unless-stopped
 
     security_opt:
