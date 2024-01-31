@@ -2,6 +2,7 @@
   "AllowExternal": true,
   "BasePathOverride": "/${JACKETT_BASE_PATH}/",
   "BlackholeDir": "/downloads",
+  "FlareSolverrUrl": "http://localhost:8191",
   "UpdateDisabled": true,
   "UpdatePrerelease": false
 }

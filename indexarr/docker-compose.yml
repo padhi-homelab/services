@@ -26,6 +26,22 @@ services:
       PROXY_USERNAME: 'user'
       PROXY_PASSWORD: 'pass'
 
+  solvarr:
+    image: flaresolverr/flaresolverr:v3.3.13
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges:true
+
+    depends_on:
+    - openvpn
+
+    network_mode: service:openvpn
+
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      TZ: ${TZ:?}
+
   jackett:
     image: padhihomelab/jackett:0.21.1585
     restart: unless-stopped
@@ -35,6 +51,7 @@ services:
 
     depends_on:
     - openvpn
+    - solvarr
 
     network_mode: service:openvpn
     volumes:

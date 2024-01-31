@@ -308,6 +308,8 @@ Compositions:
       <td align='center'>
         <code><sub>2.6.8</sub></code>
         <br>
+        <code><sub>v3.3.13</sub></code>
+        <br>
         <code><sub>0.21.1585</sub></code>
       </td>
       <td align='center'>
@@ -318,8 +320,9 @@ Compositions:
       </td>
       <td align='center'>
         :heavy_check_mark:
-      </td>
-      <td align='center'>
+        <br>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
       </td>
       <td align='center'>
@@ -327,6 +330,14 @@ Compositions:
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
       </td>
