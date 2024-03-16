@@ -27,7 +27,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   solvarr:
-    image: flaresolverr/flaresolverr:v3.3.13
+    image: flaresolverr/flaresolverr:v3.3.16
     restart: unless-stopped
 
     security_opt:
@@ -43,7 +43,7 @@ services:
       TZ: ${TZ:?}
 
   jackett:
-    image: padhihomelab/jackett:0.21.1585
+    image: padhihomelab/jackett:0.21.2042
     restart: unless-stopped
 
     security_opt:

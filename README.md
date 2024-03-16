@@ -226,7 +226,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.21.5-r...s</sub></code>
+        <code><sub>1.21.8-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -264,7 +264,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2024.2.1_1.34.0</sub></code>
+        <code><sub>2024.3.1_1.34.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -301,6 +301,10 @@ Compositions:
           <sub>openvpn&#8209;client</sub>
         </a>
         <br>
+        <a href='https://hub.docker.com/r/flaresolverr/flaresolverr/'>
+          <sub>solvarr</sub>
+        </a>
+        <br>
         <a href='https://hub.docker.com/r/padhihomelab/jackett/'>
           <sub>jackett</sub>
         </a>
@@ -308,25 +312,26 @@ Compositions:
       <td align='center'>
         <code><sub>2.6.8</sub></code>
         <br>
-        <code><sub>v3.3.13</sub></code>
+        <code><sub>v3.3.16</sub></code>
         <br>
-        <code><sub>0.21.1585</sub></code>
+        <code><sub>0.21.2042</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
       </td>
       <td align='center'>
         :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
         <br>
         :heavy_multiplication_x:
         <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -405,11 +410,11 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.1.6.3993</sub></code>
+        <code><sub>2.2.2.4090</sub></code>
         <br>
-        <code><sub>5.3.5.8592</sub></code>
+        <code><sub>5.4.2.8667</sub></code>
         <br>
-        <code><sub>4.0.1.1114</sub></code>
+        <code><sub>4.0.2.1341</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -513,7 +518,7 @@ Compositions:
         </a>
         <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
-          <sub>cron</sub>
+          <sub>push</sub>
         </a>
       </th>
       <td align='center'>
@@ -521,13 +526,13 @@ Compositions:
         <br>
         <code><sub>7.2.4</sub></code>
         <br>
-        <code><sub>20240201...t</sub></code>
+        <code><sub>20240228...t</sub></code>
         <br>
-        <code><sub>28.0.2...0</sub></code>
+        <code><sub>28.0.3...0</sub></code>
         <br>
-        <code><sub>28.0.2...0</sub></code>
+        <code><sub>28.0.3...0</sub></code>
         <br>
-        <code><sub>28.0.2...0</sub></code>
+        <code><sub>28.0.3...0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -611,7 +616,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.1.5</sub></code>
         <br>
-        <code><sub>2024.01.0</sub></code>
+        <code><sub>2024.02.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -733,7 +738,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.29.4</sub></code>
+        <code><sub>1.30.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -815,7 +820,7 @@ Compositions:
       <td align='center'>
         <code><sub>4.4.18</sub></code>
         <br>
-        <code><sub>8.0.26</sub></code>
+        <code><sub>8.0.28</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
