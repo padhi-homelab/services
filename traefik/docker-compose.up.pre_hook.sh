@@ -15,8 +15,8 @@ cd "$DATA_DIR/traefik/cert"
     echo 'EXIST' && exit 0
 
 openssl req -x509 -newkey rsa:4096 -sha512 -days 3650 -nodes \
-            -subj "/CN=${SERVER_WAN_FQDN}" \
-            -addext "subjectAltName=DNS:${SERVER_WAN_FQDN}" \
+            -subj "/CN=${SERVER_LAN_FQDN}" \
+            -addext "subjectAltName=DNS:${SERVER_LAN_FQDN}" \
             -keyout default.key -out default.crt \
             2> /dev/null
 echo 'GENERATED!'
