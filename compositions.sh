@@ -117,6 +117,24 @@ __gen_templates () {
     done
 }
 
+__pull_dependencies () {
+  [ -f depends.on ] || return 0
+  echo "[*] Pulling dependencies ..."
+
+  for dep_comp_dir in $(cat depends.on) ; do
+    __CALL_SELF__ pull $dep_comp_dir || return 1
+  done
+}
+
+__show_dependency_overrides () {
+  [ -f depends.on ] || return 0
+  echo "[*] Searching dependencies for overrides ..."
+
+  for dep_comp_dir in $(cat depends.on) ; do
+    __CALL_SELF__ overrides $dep_comp_dir || return 1
+    done
+}
+
 __read_option () {
   local OPTION="OPTION_$1"
 
@@ -233,6 +251,21 @@ do_down () {
   $DOCKER_COMPOSE_CMD down
 }
 
+do_overrides () {
+  local any_override=''
+  for ofile in $(find . -iname '*override*') ; do
+    any_override='YES'
+    echo -n '[*] '
+    realpath -s --relative-to="$(pwd)/.." $ofile
+  done
+  
+  [ -z $any_override ] && echo '[*] No override files.'
+}
+
+do_pull () {
+  $DOCKER_COMPOSE_CMD pull
+}
+
 do_up () {
   local COMPOSE_FILES=( "docker-compose.yml" )
 
@@ -269,6 +302,8 @@ Verbs:
   check                 Check health of a composition
   clean                 Delete '<comp_dir>/data'
   down                  Stop a composition
+  overrides             List all override files in a composition
+  pull                  Pull all images for a composition
   up                    Start a composition
 
 Flags:
@@ -309,6 +344,8 @@ for VERB in $VERBS ; do
   [ "$VERB" = "check" ] || \
   [ "$VERB" = "clean" ] || \
   [ "$VERB" = "down" ] || \
+  [ "$VERB" = "overrides" ] || \
+  [ "$VERB" = "pull" ] || \
   [ "$VERB" = "up" ] || \
     usage "Unknown verb: $VERB"
 done
@@ -423,11 +460,17 @@ perform () {
     __reset_options
     echo "[.] devices = $OPTION_DEVICES ; logging = $OPTION_LOGGING ; hooks = $OPTION_HOOKS ; labels = $OPTION_LABELS ; ports = $OPTION_PORTS"
 
-    [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
-
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+
+    [ "$SIMPLE_VERB" != "overrides" ] || __show_dependency_overrides \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+
+    [ "$SIMPLE_VERB" != "pull" ] || __pull_dependencies \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+
+    [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
+      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
