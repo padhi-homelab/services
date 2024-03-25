@@ -409,11 +409,11 @@ fi
 
 if ! $DOCKER_CMD version &> /dev/null ; then
   if ! docker version &> /dev/null ; then
-    DOCKER_CMD="docker"
-    DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
-  else
     __error 'Failed to locate: `docker` or `podman`!'
     exit $EXIT_CODE_DEP_INSTALL_FAILURE
+  else
+    DOCKER_CMD="docker"
+    DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
   fi
 fi
 
