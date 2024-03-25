@@ -1,0 +1,11 @@
+version: '2.4'
+
+services:
+  nocodb:
+    labels:
+      traefik.enable: true
+      traefik.http.middlewares.strip-nocodb-prefix.stripPrefix.prefixes: "/nocodb"
+      traefik.http.routers.nocodb.rule: PathPrefix(`/nocodb`)
+      traefik.http.services.nocodb.loadBalancer.server.port: 8080
+      traefik.http.routers.nocodb.entryPoints: wan-https
+      traefik.http.routers.nocodb.middlewares: strip-nocodb-prefix

@@ -294,7 +294,7 @@ do_up () {
 
 usage () {
   if [ $# -gt 0 ] ; then echo -e "\nERROR: $1" >&2 ; fi
-  compositions="$(\ls -Cdw100000 */ | sed 's:[[:space:]]_[^[:space:]]*/::g; s:\/::g; s:[[:space:]]\+: :g' | fmt -48 | column -t)"
+  compositions="$(\ls -Cdw100000 */ | sed 's:[[:space:]]_[^[:space:]]*/::g; s:\/::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
   echo -e "
 Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
