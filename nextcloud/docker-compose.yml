@@ -7,6 +7,8 @@ networks:
 services:
   mariadb:
     hostname: mariadb
+    # FIXME: Nextcloud doesn't work with MariaDB 11+ yet
+    # See https://help.nextcloud.com/t/nexcloud-27-with-mariadb-11-0-2-stopped-working/165988
     image: mariadb:10.11.6
     restart: unless-stopped
 

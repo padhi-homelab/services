@@ -46,6 +46,8 @@ Verbs:
   check                 Check health of a composition
   clean                 Delete '<comp_dir>/data'
   down                  Stop a composition
+  overrides             List all override files in a composition
+  pull                  Pull all images for a composition
   up                    Start a composition
 
 Flags:
@@ -56,7 +58,7 @@ Flags:
 Options:                { NEVER | auto (default) | ALWAYS }
   [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
   [-g | --logging]      Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]        Run pre and post hook scripts
+  [-h | --hooks]        Run pre and post hook 'docker-compose.*.yml' scripts
   [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
 
@@ -65,9 +67,9 @@ Options:                { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always configure the option as per 'docker-compose.*.{sh,yml}' files
 
 Compositions:
-  airdcpp      certbot      docker.sock  gitea      hass       indexarr
-  influxdb     monitarr     navidrome    nextcloud  pihole
-  qbittorrent  tang         telegraf     traefik    unifi
+  airdcpp   certbot      docker.sock  gitea      hass       indexarr
+  influxdb  kodi.db      monitarr     navidrome  nextcloud  
+  pihole    qbittorrent  tang         telegraf   traefik    unifi
 ```
 
 ### Arch. Support
