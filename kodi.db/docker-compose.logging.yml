@@ -1,0 +1,8 @@
+version: '2.4'
+
+services:
+  mariadb:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
