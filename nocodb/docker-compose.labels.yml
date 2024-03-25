@@ -6,6 +6,9 @@ services:
       traefik.enable: true
       traefik.http.middlewares.strip-nocodb-prefix.stripPrefix.prefixes: "/nocodb"
       traefik.http.routers.nocodb.rule: PathPrefix(`/nocodb`)
-      traefik.http.services.nocodb.loadBalancer.server.port: 8080
       traefik.http.routers.nocodb.entryPoints: wan-https
       traefik.http.routers.nocodb.middlewares: strip-nocodb-prefix
+      # FIXME: workaround for NocoDB served under a subdirectory
+      # see https://github.com/nocodb/nocodb/issues/1033
+      traefik.http.routers.nocodb-dashboard.rule: PathPrefix(`/nocodb/dashboard`)
+      traefik.http.routers.nocodb-dashboard.entryPoints: wan-https
