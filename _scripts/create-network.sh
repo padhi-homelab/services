@@ -7,11 +7,11 @@ DOCKER_NETWORK_FLAGS=""
 
 if ! $DOCKER_CMD version &> /dev/null ; then
   if ! docker version &> /dev/null ; then
-    DOCKER_CMD="docker"
-    DOCKER_NETWORK_FLAGS="--attachable"
-  else
     echo 'Failed to locate: `docker` or `podman`!'
     exit 1
+  else
+    DOCKER_CMD="docker"
+    DOCKER_NETWORK_FLAGS="--attachable"
   fi
 fi
 
