@@ -7,7 +7,7 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 LIB_DIR="$SELF_DIR/.lib"
 SCRIPTS_DIR="$SELF_DIR/_scripts"
 
-DOCKER_CMD="podman"
+DOCKER_CMD="docker"
 DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
 YQ_CMD="yq"
 
@@ -412,7 +412,7 @@ if ! $DOCKER_CMD version &> /dev/null ; then
     __error 'Failed to locate: `docker` or `podman`!'
     exit $EXIT_CODE_DEP_INSTALL_FAILURE
   else
-    DOCKER_CMD="docker"
+    DOCKER_CMD="podman"
     DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
   fi
 fi
