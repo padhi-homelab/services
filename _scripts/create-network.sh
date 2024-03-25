@@ -2,11 +2,24 @@
 
 set -Eumo pipefail
 
+DOCKER_CMD="podman"
+DOCKER_NETWORK_FLAGS=""
+
+if ! $DOCKER_CMD version &> /dev/null ; then
+  if ! docker version &> /dev/null ; then
+    DOCKER_CMD="docker"
+    DOCKER_NETWORK_FLAGS="--attachable"
+  else
+    echo 'Failed to locate: `docker` or `podman`!'
+    exit 1
+  fi
+fi
+
 NAME=$1
 
-if ! docker network inspect $NAME &> /dev/null; then
-  echo -n "[~] Creating external docker network '$NAME': "
-  docker network create \
-                 --attachable \
-                 $NAME
+if ! $DOCKER_CMD network inspect $NAME &> /dev/null; then
+  echo -n "[~] Creating external $DOCKER_CMD network '$NAME': "
+  $DOCKER_CMD network create \
+                      $DOCKER_NETWORK_FLAGS \
+                      $NAME
 fi

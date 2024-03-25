@@ -7,7 +7,8 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 LIB_DIR="$SELF_DIR/.lib"
 SCRIPTS_DIR="$SELF_DIR/_scripts"
 
-DOCKER_COMPOSE_CMD="docker compose"
+DOCKER_CMD="podman"
+DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
 YQ_CMD="yq"
 
 EXIT_CODE_USAGE_ERROR=-1
@@ -132,7 +133,7 @@ __show_dependency_overrides () {
 
   for dep_comp_dir in $(cat depends.on) ; do
     __CALL_SELF__ overrides $dep_comp_dir || return 1
-    done
+  done
 }
 
 __read_option () {
@@ -406,25 +407,35 @@ fi
 #
 # # # #
 
-if ! $DOCKER_COMPOSE_CMD &> /dev/null ; then
-  if ! command -v docker-compose &> /dev/null ; then
+if ! $DOCKER_CMD version &> /dev/null ; then
+  if ! docker version &> /dev/null ; then
+    DOCKER_CMD="docker"
+    DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
+  else
+    __error 'Failed to locate: `docker` or `podman`!'
+    exit $EXIT_CODE_DEP_INSTALL_FAILURE
+  fi
+fi
+
+if ! $DOCKER_COMPOSE_CMD version &> /dev/null ; then
+  if ! command -v $DOCKER_CMD-compose &> /dev/null ; then
     if ! [ -x "$LIB_DIR/compose" ] ; then
       if ! "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose" ; then
-        __error 'Failed to locate `docker compose`!'
+        __error 'Failed to locate: `'"$DOCKER_COMPOSE_CMD"'` or `'"$DOCKER_CMD"'-compose`!'
         exit $EXIT_CODE_DEP_INSTALL_FAILURE
       fi
     else
       DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
     fi
   else
-    DOCKER_COMPOSE_CMD="docker-compose"
+    DOCKER_COMPOSE_CMD="$DOCKER_CMD-compose"
   fi
 fi
 
 if ! $YQ_CMD &> /dev/null ; then
   if ! [ -x "$LIB_DIR/yq" ] ; then
     if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" ; then
-      __error 'Failed to locate `yq`!'
+      __error 'Failed to locate: `yq`!'
       exit $EXIT_CODE_DEP_INSTALL_FAILURE
     fi
   else
