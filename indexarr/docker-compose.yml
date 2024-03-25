@@ -37,10 +37,18 @@ services:
     - openvpn
 
     network_mode: service:openvpn
+    volumes:
+    - ./config/solvarr/healthcheck.sh:/healthcheck.sh:ro
 
     environment:
       DOCKER_UID: ${USER_ID:?}
       TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "sh", "/healthcheck.sh"]
+      interval: 60s
+      timeout: 10s
+      start_period: 15s
 
   jackett:
     image: padhihomelab/jackett:0.21.2042

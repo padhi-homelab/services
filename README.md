@@ -620,7 +620,7 @@ Compositions:
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
         <br>
         :heavy_check_mark:
         <br>
@@ -700,7 +700,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.6.8</sub></code>
         <br>
-        <code><sub>4.6.2</sub></code>
+        <code><sub>4.6.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -816,7 +816,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.10.7</sub></code>
+        <code><sub>2.11.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
