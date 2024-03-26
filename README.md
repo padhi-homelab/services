@@ -228,7 +228,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.21.9-r...s</sub></code>
+        <code><sub>1.21.10-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -546,7 +546,7 @@ Compositions:
         </a>
         <br>
         <a href='https://hub.docker.com/repository/docker/nextcloud/aio-imaginary'>
-          <sub>nextcloud</sub>
+          <sub>imaginary</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
@@ -650,7 +650,7 @@ Compositions:
         </a>
         <br>
         <a href='https://hub.docker.com/r/nocodb/nocodb'>
-          <sub>nextcloud</sub>
+          <sub>nocodb</sub>
         </a>
       </th>
       <td align='center'>
@@ -910,7 +910,7 @@ Compositions:
       <td align='center'>
         <code><sub>4.4.18</sub></code>
         <br>
-        <code><sub>8.0.28</sub></code>
+        <code><sub>8.1.113</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
