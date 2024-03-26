@@ -11,6 +11,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     networks:
@@ -30,6 +31,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     networks:
@@ -49,6 +51,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     networks:

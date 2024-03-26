@@ -13,6 +13,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: ${USER_ID:?}
 
@@ -47,6 +48,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: ${USER_ID:?}
 
@@ -76,6 +78,7 @@ services:
     cap_add:
     - SYS_NICE
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: ${USER_ID:?}
 
@@ -100,6 +103,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: ${USER_ID:?}
 
@@ -143,6 +147,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: ${USER_ID:?}
 
@@ -178,6 +183,7 @@ services:
     entrypoint: /cron.sh
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     #NOTE: `crond` needs to run as `root` user.
 

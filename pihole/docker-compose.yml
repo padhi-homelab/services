@@ -16,6 +16,7 @@ services:
     restart: unless-stopped
 
     security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     networks:
@@ -36,6 +37,7 @@ services:
     # FIXME: cannot use `no-new-privileges` yet,
     # see https://discourse.pi-hole.net/t/sudo-suid-problems/20590
     # security_opt:
+    # # NOTE: Do NOT add a [space] before `true` below.
     # - no-new-privileges:true
     # NOTE: no `user:` needed; runs as non-root user since 2022.01
 
