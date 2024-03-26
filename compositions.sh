@@ -216,7 +216,7 @@ __verify_volumes () {
 
   for vol in $(printf "%s\n" "${MOUNTED_VOLUMES[@]}" | sort -u) ; do
     local vol="$(echo "$vol" | cut -d: -f1)"
-    if ! [ -e $vol ] ; then
+    if ! [ -e "$vol" ] ; then
       __error "VOLUME PATH '${vol/#./$comp}' NOT FOUND!" ; return 1
     fi
   done
@@ -256,11 +256,11 @@ do_overrides () {
   local any_override=''
   for ofile in $(find . -iname '*override*') ; do
     any_override='YES'
-    echo -n '[*] '
+    echo -n '[>] '
     realpath -s --relative-to="$(pwd)/.." $ofile
   done
   
-  [ -z $any_override ] && echo '[*] No override files.'
+  [ -z "$any_override" ] && echo '[>] No override files.'
 }
 
 do_pull () {
