@@ -185,7 +185,8 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    #NOTE: `crond` needs to run as `root` user.
+    # FIXME: `crond` needs to run as `root` user.
+    # user: ${USER_ID:?}
 
     depends_on:
     - nextcloud

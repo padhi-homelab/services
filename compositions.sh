@@ -86,14 +86,18 @@ __gen_env () {
   rm -rf .env
 
   echo -n "[*] Generating '.env': "
-  cp "$SELF_DIR/static.global.env" .env
+  cp "$SELF_DIR/static.global.env" .env || return 1
   if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
-    cat "$SELF_DIR/static.global.override.env" >> .env
+    cat "$SELF_DIR/static.global.override.env" >> .env || return 1
   fi
 
   __append_env_from "$SELF_DIR/dynamic.global.env.sh" || return 1
   [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
     __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
+
+  [ ! -f "./static.env" ] || cat "./static.env" >> .env || return 1
+  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+    [ ! -f "./static.override.env" ] || cat "./static.override.env" >> .env || return 1
 
   __append_env_from "./dynamic.env.sh" || return 1
   [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
