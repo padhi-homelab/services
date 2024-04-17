@@ -7,7 +7,7 @@ networks:
 services:
   tang:
     hostname: tang
-    image: padhihomelab/tang:git.100265e3_git.55b11f5b
+    image: padhihomelab/tang:git.02105756_git.76ec70ba
     restart: unless-stopped
 
     security_opt:
