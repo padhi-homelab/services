@@ -7,7 +7,7 @@ networks:
 services:
   lidarr:
     hostname: lidarr
-    image: padhihomelab/lidarr:2.2.5.4141
+    image: padhihomelab/lidarr:2.3.3.4204
     restart: unless-stopped
 
     security_opt:
@@ -27,7 +27,7 @@ services:
 
   radarr:
     hostname: radarr
-    image: padhihomelab/radarr:5.4.6.8723
+    image: padhihomelab/radarr:5.6.0.8846
     restart: unless-stopped
 
     security_opt:
@@ -47,7 +47,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:4.0.4.1515
+    image: padhihomelab/sonarr:4.0.5.1710
     restart: unless-stopped
 
     security_opt:

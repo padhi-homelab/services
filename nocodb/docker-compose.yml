@@ -7,7 +7,7 @@ networks:
 services:
   redis:
     hostname: redis
-    image: redis:7.2.4
+    image: redis:7.2.5
     restart: unless-stopped
 
     security_opt:
@@ -34,7 +34,7 @@ services:
 
   nocodb:
     hostname: nocodb
-    image: nocodb/nocodb:0.204.9
+    image: nocodb/nocodb:0.207.3
     restart: unless-stopped
 
     security_opt:
