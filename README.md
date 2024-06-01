@@ -316,7 +316,7 @@ Compositions:
         <br>
         <code><sub>v3.3.19</sub></code>
         <br>
-        <code><sub>0.21.2855</sub></code>
+        <code><sub>0.21.2899</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
