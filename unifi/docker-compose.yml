@@ -27,7 +27,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:8.1.127-alpine
+    image: goofball222/unifi:8.2.93-alpine
     restart: unless-stopped
 
     security_opt:
