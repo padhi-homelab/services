@@ -69,7 +69,8 @@ Options:                { NEVER | auto (default) | ALWAYS }
 Compositions:
   airdcpp   certbot      docker.sock  gitea      hass       indexarr
   influxdb  kodi.db      monitarr     navidrome  nextcloud  nocodb
-  pihole    qbittorrent  tang         telegraf   traefik    unifi
+  pihole    qbittorrent  tang         telegraf   teslamate  traefik
+  unifi
 ```
 
 ### Arch. Support
@@ -846,6 +847,69 @@ Compositions:
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://github.com/teslamate-org/teslamate'>Teslamate</a>
+        <br>
+        <sub>:1883, :9443/teslamate</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> B <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/postgres'>
+          <sub>db</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/_/eclipse-mosquitto'>
+          <sub>mqtt</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/teslamate/teslamate'>
+          <sub>teslamate</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>16.3</sub></code>
+        <br>
+        <code><sub>2.0.18</sub></code>
+        <br>
+        <code><sub>1.29.1</sub></code>
+        <br>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
         :heavy_multiplication_x:
       </td>
     </tr>

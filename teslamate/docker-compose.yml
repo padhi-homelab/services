@@ -1,0 +1,93 @@
+version: '2.4'
+
+networks:
+  proxy:
+    external: true
+
+services:
+  mqtt:
+    hostname: mqtt
+    image: eclipse-mosquitto:2.0.18
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - default
+    volumes:
+    - ./config/mqtt/mosquitto/config:/mosquitto/config:ro
+    - ./data/mqtt/mosquitto/data:/mosquitto/data:rw
+
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "2"]
+      interval: 15s
+      timeout: 3s
+      retries: 2
+      start_period: 15s
+
+  db:
+    hostname: db
+    image: postgres:16.3
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - default
+    volumes:
+    - ./data/db/var/lib/postgresql/data:/var/lib/postgresql/data:rw
+
+    environment:
+      POSTGRES_USER: tmate
+      POSTGRES_PASSWORD: 'db~pass'
+      POSTGRES_DB: teslamate
+
+    healthcheck:
+      test: "psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c 'SELECT 1'"
+      interval: 15s
+      timeout: 3s
+      start_period: 30s
+
+  teslamate:
+    hostname: teslamate
+    image: teslamate/teslamate:1.29.1
+    restart: unless-stopped
+
+    cap_drop:
+    - all
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    depends_on:
+    - db
+    - mqtt
+
+    networks:
+    - default
+    - proxy
+    volumes:
+    - ./data/teslamate/opt/app/import:/opt/app/import:rw
+
+    environment:
+      ENCRYPTION_KEY: 'enc_key!'
+      DATABASE_USER: tmate
+      DATABASE_PASS: 'db~pass'
+      DATABASE_NAME: teslamate
+      DATABASE_HOST: db
+      MQTT_HOST: mqtt
+      URL_PATH: '/teslamate'
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: "curl -fso /dev/null http://localhost:4000"
+      interval: 15s
+      timeout: 2s
+      start_period: 60s

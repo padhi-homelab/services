@@ -1,0 +1,6 @@
+version: '2.4'
+
+services:
+  mqtt:
+    ports:
+    - ${SERVER_IP:?}:1883:1883
