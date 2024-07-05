@@ -72,7 +72,7 @@ services:
 
   imaginary:
     hostname: imaginary
-    image: nextcloud/aio-imaginary:20240502_104630-latest
+    image: nextcloud/aio-imaginary:20240701_074701-latest
     restart: unless-stopped
 
     cap_add:
@@ -99,7 +99,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: padhihomelab/nextcloud:29.0.2_19.24.4_1.1.0
+    image: padhihomelab/nextcloud:29.0.3_19.24.4_1.1.0
     restart: unless-stopped
 
     security_opt:
@@ -143,7 +143,7 @@ services:
 
   push:
     hostname: push
-    image: padhihomelab/nextcloud:29.0.2_19.24.4_1.1.0
+    image: padhihomelab/nextcloud:29.0.3_19.24.4_1.1.0
     restart: unless-stopped
 
     security_opt:
@@ -178,7 +178,7 @@ services:
 
   cron:
     hostname: cron
-    image: padhihomelab/nextcloud:29.0.2_19.24.4_1.1.0
+    image: padhihomelab/nextcloud:29.0.3_19.24.4_1.1.0
     restart: unless-stopped
     entrypoint: /cron.sh
 
