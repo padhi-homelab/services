@@ -258,13 +258,20 @@ do_down () {
 
 do_overrides () {
   local any_override=''
-  for ofile in $(find . -iname '*override*') ; do
+  for ofile in $(find .. -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
-    echo -n '[>] '
+    echo -n '[G] '
     realpath -s --relative-to="$(pwd)/.." $ofile
   done
-  
-  [ -z "$any_override" ] && echo '[>] No override files.'
+  [ -z "$any_override" ] && echo '[>] No global override files.'
+
+  any_override=''
+  for ofile in $(find . -maxdepth 1 -type f -iname '*override*') ; do
+    any_override='YES'
+    echo -n '[L] '
+    realpath -s --relative-to="$(pwd)/.." $ofile
+  done
+  [ -z "$any_override" ] && echo '[>] No local override files.'
 }
 
 do_pull () {
@@ -411,8 +418,10 @@ fi
 #
 # # # #
 
+# FIXME: Improve `podman` support and make it default.
+
 if ! $DOCKER_CMD version &> /dev/null ; then
-  if ! docker version &> /dev/null ; then
+  if ! podman version &> /dev/null ; then
     __error 'Failed to locate: `docker` or `podman`!'
     exit $EXIT_CODE_DEP_INSTALL_FAILURE
   else
