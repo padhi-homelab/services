@@ -5,7 +5,7 @@ services:
     labels:
       traefik.enable: true
       traefik.http.middlewares.strip-traefik-prefix.stripPrefix.prefixes: "/traefik"
-      traefik.http.routers.dashboard.rule: PathPrefix(`/traefik`)
+      traefik.http.routers.dashboard.rule: PathPrefix(`/traefik`) || HeadersRegexp(`Referer`, `.*/traefik/.*`)
       traefik.http.routers.dashboard.entryPoints: lan-https
       traefik.http.routers.dashboard.service: api@internal
       traefik.http.routers.dashboard.middlewares: strip-traefik-prefix
