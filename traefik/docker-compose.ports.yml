@@ -3,7 +3,7 @@ version: '2.4'
 services:
   traefik:
     ports:
-    - 8443:8443
+    - 34443:34443
     - ${SERVER_WAN_HTTPS_PORT:?}:${SERVER_WAN_HTTPS_PORT:?}
     - ${SERVER_LAN_HTTP_PORT:?}:${SERVER_LAN_HTTP_PORT:?}
     - ${SERVER_LAN_HTTPS_PORT:?}:${SERVER_LAN_HTTPS_PORT:?}

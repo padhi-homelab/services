@@ -44,7 +44,7 @@ entryPoints:
   internal:
     address: ":8080"
   lan-internal:
-    address: ":8443"
+    address: ":34443"
     http:
       middlewares:
       - restrict-to-lan-ip@file
