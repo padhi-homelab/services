@@ -43,6 +43,14 @@ certificatesResolvers:
 entryPoints:
   internal:
     address: ":8080"
+  lan-internal:
+    address: ":8443"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
   lan-http:
     address: ":${SERVER_LAN_HTTP_PORT}"
     http:

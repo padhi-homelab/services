@@ -917,7 +917,7 @@ Compositions:
       <th>
         <a href='https://traefik.io/'>Traefik</a>
         <br>
-        <sub>:443, :9080, :9443</sub>
+        <sub>:443, :8443, :9080, :9443</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_traefik.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
