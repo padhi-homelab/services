@@ -4,8 +4,9 @@ services:
   gitea:
     labels:
       traefik.enable: true
+      traefik.http.middlewares.only-https-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: https
       traefik.http.middlewares.strip-gitea-prefix.stripPrefix.prefixes: "/${GITEA_BASE_PATH:?}"
       traefik.http.routers.gitea.rule: PathPrefix(`/${GITEA_BASE_PATH:?}`)
       traefik.http.services.gitea.loadBalancer.server.port: 3000
       traefik.http.routers.gitea.entryPoints: wan-https
-      traefik.http.routers.gitea.middlewares: strip-gitea-prefix
+      traefik.http.routers.gitea.middlewares: only-https-forwarded-proto, strip-gitea-prefix
