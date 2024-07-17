@@ -1,0 +1,9 @@
+version: '2.4'
+
+services:
+  pihole:
+    labels:
+      traefik.enable: true
+      traefik.http.routers.pihole.rule: PathPrefix(`/docker.sock`)
+      traefik.http.services.pihole.loadBalancer.server.port: 9000
+      traefik.http.routers.pihole.entryPoints: lan-https

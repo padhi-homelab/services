@@ -191,7 +191,7 @@ Compositions:
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.14</sub></code>
+        <code><sub>2.8.10</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
