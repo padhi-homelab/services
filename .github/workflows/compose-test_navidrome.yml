@@ -60,5 +60,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/navidrome/ \
+          docker-compose exec -T traefik wget --spider --no-check-certificate https://127.0.0.1/navidrome/ \
             || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
