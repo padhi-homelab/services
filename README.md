@@ -1,6 +1,7 @@
 # Services
 
-### Why `compositions.sh`?
+<details>
+<summary><h3>Why <code>compositions.sh</code>?</h3></summary>
 
 The multi-staged nature and repetitive commands for setting up
 compositions with non-standard configuration
@@ -34,8 +35,14 @@ but `compositions.sh` errors out in such cases requesting the user for explicit 
 #### Why not use Ansible?
 
 Seemed like an overkill, when I initially wrote `compositions.sh`.
+</details>
 
 ### Usage
+
+Typically, something like: `./compositions.sh down,up -R tang`.
+
+<details>
+<summary><h4>Full List of Flags and Options</h4></summary>
 
 ```console
 $ ./compositions.sh
@@ -72,6 +79,7 @@ Compositions:
   pihole    qbittorrent  tang         telegraf   teslamate  traefik
   unifi
 ```
+</details>
 
 ### Arch. Support
 
