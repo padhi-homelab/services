@@ -50,34 +50,38 @@ Usage:
   ./compositions.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check                 Check health of a composition
-  clean                 Delete '<comp_dir>/data'
-  down                  Stop a composition
-  overrides             List all override files in a composition
-  pull                  Pull all images for a composition
-  up                    Start a composition
+  check        Check health of a composition
+  clean        Delete '<comp_dir>/data'
+  down         Stop a composition
+  overrides    List all override files in a composition
+  pull         Pull all images for a composition
+  up           Start a composition
 
 Flags:
-  [-F | --skip-fails]   Ignore verb failures and continue
-  [-O | --no-override]  Ignore overrides in scripts, environments, flags etc.
-  [-R | --regenerate]   Force generate '.env' and 'generated/'
+  [-P | --skip-prereqs]      Ignore checking/starting prerequisite compositions
+  [-F | --skip-fails]        Ignore verb failures and continue
+  [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
+  [-R | --regenerate]        Force generate '.env' and 'generated/'
 
-Options:                { NEVER | auto (default) | ALWAYS }
-  [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
-  [-g | --logging]      Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]        Run pre and post hook 'docker-compose.*.yml' scripts
-  [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
-  [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
+Options:              { NEVER | auto (default) | ALWAYS }
+  [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
+  [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
+  [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
+  [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
+  [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never configure the option (and use docker default instead)
-      auto = Configure the option unless overridden in options.*.conf
-    ALWAYS = Always configure the option as per 'docker-compose.*.{sh,yml}' files
+     NEVER = Never configure the option (and use docker default instead):
+             ignores 'docker-compose.*.{sh,yml}' files.
+      auto = Configure the option unless overridden in options*.conf:
+             use 'docker-compose.*.{sh,yml}' unless overridenin options*.conf.
+    ALWAYS = Always configure the option as specified:
+             ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions:
   airdcpp   certbot      docker.sock  gitea      hass       indexarr
   influxdb  kodi.db      monitarr     navidrome  nextcloud  nocodb
   pihole    qbittorrent  tang         telegraf   teslamate  traefik
-  unifi
+  unifi                                                     
 ```
 </details>
 

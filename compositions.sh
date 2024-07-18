@@ -6,6 +6,7 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 LIB_DIR="$SELF_DIR/.lib"
 SCRIPTS_DIR="$SELF_DIR/_scripts"
+PREREQS_FILENAME="pre.reqs"
 
 DOCKER_CMD="docker"
 DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
@@ -20,9 +21,10 @@ EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
 EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
-FLAG_SKIP_FAILS=""
 FLAG_REGENERATE=""
-FLAG_NO_OVERRIDE=""
+FLAG_SKIP_PREREQS=""
+FLAG_SKIP_FAILS=""
+FLAG_SKIP_OVERRIDES=""
 
 OPTION_DEVICES=""
 OPTION_HOOKS=""
@@ -87,20 +89,20 @@ __gen_env () {
 
   echo -n "[*] Generating '.env': "
   cp "$SELF_DIR/static.global.env" .env || return 1
-  if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
+  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
     cat "$SELF_DIR/static.global.override.env" >> .env || return 1
   fi
 
   __append_env_from "$SELF_DIR/dynamic.global.env.sh" || return 1
-  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
     __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
 
   [ ! -f "./static.env" ] || cat "./static.env" >> .env || return 1
-  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
     [ ! -f "./static.override.env" ] || cat "./static.override.env" >> .env || return 1
 
   __append_env_from "./dynamic.env.sh" || return 1
-  [ "$FLAG_NO_OVERRIDE" = "yes" ] || \
+  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
     __append_env_from "./dynamic.override.env.sh" || return 1
 
   echo OK
@@ -122,21 +124,25 @@ __gen_templates () {
     done
 }
 
-__pull_dependencies () {
-  [ -f depends.on ] || return 0
-  echo "[*] Pulling dependencies ..."
+__pull_prereqs () {
+  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
 
-  for dep_comp_dir in $(cat depends.on) ; do
-    __CALL_SELF__ pull $dep_comp_dir || return 1
+  [ -f "$PREREQS_FILENAME" ] || return 0
+  echo "[*] Pulling prerequisites ..."
+
+  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
+    __CALL_SELF__ pull "$prereq_comp_dir" || return 1
   done
 }
 
-__show_dependency_overrides () {
-  [ -f depends.on ] || return 0
-  echo "[*] Searching dependencies for overrides ..."
+__show_prereq_overrides () {
+  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
 
-  for dep_comp_dir in $(cat depends.on) ; do
-    __CALL_SELF__ overrides $dep_comp_dir || return 1
+  [ -f "$PREREQS_FILENAME" ] || return 0
+  echo "[*] Searching prereqs for overrides ..."
+
+  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
+    __CALL_SELF__ overrides "$prereq_comp_dir" || return 1
   done
 }
 
@@ -151,7 +157,7 @@ __read_option () {
              return 0 ;;
   esac
 
-  if [ "$FLAG_NO_OVERRIDE" != "yes" ]; then
+  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
     local OVERRIDE_COMP_OPTION="$(cat options.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
     if ! [ -z "$OVERRIDE_COMP_OPTION" ] ; then
       echo "[!] Overriden option [$1] = $OVERRIDE_COMP_OPTION"
@@ -186,7 +192,7 @@ __run_hooks () {
     __error "HOOK 'docker-compose.$1.$2_hook.sh' FAILED!" ; return 1
   fi
 
-  if [ "$FLAG_NO_OVERRIDE" != "yes" ] ; then
+  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] ; then
     find . -maxdepth 1 -type f -name "docker-compose.$1.$2_hook.override*.sh" -print0 | \
       while IFS= read -r -d '' hook_file ; do
         if ! ( set -a && source .env && "$hook_file" ) ; then
@@ -196,29 +202,33 @@ __run_hooks () {
   fi
 }
 
-__verify_dependencies () {
-  [ -f depends.on ] || return 0
-  echo "[*] Checking dependencies ..."
+__verify_prereqs () {
+  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
 
-  for dep_comp_dir in $(cat depends.on) ; do
-    if ! __CALL_SELF__ check "$dep_comp_dir" ; then
-      __CALL_SELF__ down,up $dep_comp_dir || return 1
+  [ -f "$PREREQS_FILENAME" ] || return 0
+  echo "[*] Checking prerequisites ..."
+
+  local ensure_running="$1"
+  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
+    if ! __CALL_SELF__ check "$prereq_comp_dir" ; then
+      [ "$ensure_running" = "yes" ] || return 1
+      __CALL_SELF__ down,up "$prereq_comp_dir" || return 1
     fi
   done
 }
 
 __verify_volumes () {
-  local MOUNTED_VOLUMES=( )
+  local mounted_volumes=( )
   for yml in "$@" ; do
     for vol in $($YQ_CMD -M '.services.[] | with_entries(select(.key == "volumes")) | .[] | .[] as $v | $v' $yml) ; do
       case $vol in
-        ./* | /* ) MOUNTED_VOLUMES+=( $vol ) ;;
+        ./* | /* ) mounted_volumes+=( $vol ) ;;
                * ) ;;
       esac
     done
   done
 
-  for vol in $(printf "%s\n" "${MOUNTED_VOLUMES[@]}" | sort -u) ; do
+  for vol in $(printf "%s\n" "${mounted_volumes[@]}" | sort -u) ; do
     local vol="$(echo "$vol" | cut -d: -f1)"
     if ! [ -e "$vol" ] ; then
       __error "VOLUME PATH '${vol/#./$comp}' NOT FOUND!" ; return 1
@@ -233,11 +243,7 @@ __verify_volumes () {
 # # # #
 
 do_check () {
-  if [ -f depends.on ] ; then
-    for dep_comp_dir in $(cat depends.on) ; do
-      __CALL_SELF__ check "$dep_comp_dir" || return 1
-    done
-  fi
+  __verify_prereqs
 
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     if $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ; then
@@ -249,6 +255,7 @@ do_check () {
 }
 
 do_clean () {
+  do_down || return 1
   rm -rfv data generated .env
 }
 
@@ -288,12 +295,12 @@ do_up () {
     if [ -f "docker-compose.${fragment,,}.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.${fragment,,}.yml" )
     fi
-    if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.${fragment,,}.override.yml" ] ; then
+    if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${fragment,,}.override.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.${fragment,,}.override.yml" )
     fi
   done
 
-  if [ "$FLAG_NO_OVERRIDE" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
+  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
     COMPOSE_FILES+=( "docker-compose.override.yml")
   fi
 
@@ -311,28 +318,32 @@ Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check                 Check health of a composition
-  clean                 Delete '<comp_dir>/data'
-  down                  Stop a composition
-  overrides             List all override files in a composition
-  pull                  Pull all images for a composition
-  up                    Start a composition
+  check        Check health of a composition
+  clean        Delete '<comp_dir>/data'
+  down         Stop a composition
+  overrides    List all override files in a composition
+  pull         Pull all images for a composition
+  up           Start a composition
 
 Flags:
-  [-F | --skip-fails]   Ignore verb failures and continue
-  [-O | --no-override]  Ignore overrides in scripts, environments, flags etc.
-  [-R | --regenerate]   Force generate '.env' and 'generated/'
+  [-P | --skip-prereqs]      Ignore checking/starting prerequisite compositions
+  [-F | --skip-fails]        Ignore verb failures and continue
+  [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
+  [-R | --regenerate]        Force generate '.env' and 'generated/'
 
-Options:                { NEVER | auto (default) | ALWAYS }
-  [-d | --devices]      Attach devices listed in 'docker-compose.devices.yml'
-  [-g | --logging]      Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]        Run pre and post hook 'docker-compose.*.yml' scripts
-  [-l | --labels]       Use labels specified in 'docker-compose.labels.yml'
-  [-p | --ports]        Expose ports listed in 'docker-compose.ports.yml'
+Options:              { NEVER | auto (default) | ALWAYS }
+  [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
+  [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
+  [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
+  [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
+  [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never configure the option (and use docker default instead)
-      auto = Configure the option unless overridden in options.*.conf
-    ALWAYS = Always configure the option as per 'docker-compose.*.{sh,yml}' files
+     NEVER = Never configure the option (and use docker default instead):
+             ignores 'docker-compose.*.{sh,yml}' files.
+      auto = Configure the option unless overridden in options*.conf:
+             use 'docker-compose.*.{sh,yml}' unless overridenin options*.conf.
+    ALWAYS = Always configure the option as specified:
+             ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions:" >&2
   while IFS= read -r line ; do
@@ -366,19 +377,20 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--no-override")  set -- "$@" "-O" ;;
-    "--regenerate")   set -- "$@" "-R" ;;
-    "--skip-fails")   set -- "$@" "-F" ;;
+    "--regenerate")      set -- "$@" "-R" ;;
+    "--skip-prereqs")    set -- "$@" "-P" ;;
+    "--skip-fails")      set -- "$@" "-F" ;;
+    "--skip-overrides")  set -- "$@" "-O" ;;
 
-    "--devices")      set -- "$@" "-d" ;;
-    "--hooks")        set -- "$@" "-h" ;;
-    "--labels")       set -- "$@" "-l" ;;
-    "--logging")      set -- "$@" "-g" ;;
-    "--ports")        set -- "$@" "-p" ;;
+    "--devices")         set -- "$@" "-d" ;;
+    "--hooks")           set -- "$@" "-h" ;;
+    "--labels")          set -- "$@" "-l" ;;
+    "--logging")         set -- "$@" "-g" ;;
+    "--ports")           set -- "$@" "-p" ;;
 
-    "--")                   set -- "$@" "--" ;;
-    "--"*)                  usage "Unrecognized option: $opt." ;;
-    *)                      set -- "$@" "$opt"
+    "--")                set -- "$@" "--" ;;
+    "--"*)               usage "Unrecognized option: $opt." ;;
+    *)                   set -- "$@" "$opt"
   esac
 done
 
@@ -390,10 +402,11 @@ check_optarg () {
 }
 
 OPTIND=1
-while getopts ':FORd:g:h:l:p:' OPTION ; do
+while getopts ':FOPRd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
     "F" ) FLAG_SKIP_FAILS="yes" ;;
-    "O" ) FLAG_NO_OVERRIDE="yes" ;;
+    "O" ) FLAG_SKIP_OVERRIDES="yes" ;;
+    "P" ) FLAG_SKIP_PREREQS="yes" ;;
     "R" ) FLAG_REGENERATE="yes" ;;
 
     "d" ) check_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
@@ -487,13 +500,13 @@ perform () {
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
-    [ "$SIMPLE_VERB" != "overrides" ] || __show_dependency_overrides \
+    [ "$SIMPLE_VERB" != "overrides" ] || __show_prereq_overrides \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
-    [ "$SIMPLE_VERB" != "pull" ] || __pull_dependencies \
+    [ "$SIMPLE_VERB" != "pull" ] || __pull_prereqs \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
-    [ "$SIMPLE_VERB" != "up" ] || __verify_dependencies \
+    [ "$SIMPLE_VERB" != "up" ] || __verify_prereqs "yes" \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \

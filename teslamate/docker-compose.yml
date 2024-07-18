@@ -56,7 +56,7 @@ services:
 
   teslamate:
     hostname: teslamate
-    image: teslamate/teslamate:1.29.1
+    image: teslamate/teslamate:1.30.0
     restart: unless-stopped
 
     cap_drop:

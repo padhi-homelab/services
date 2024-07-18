@@ -1,26 +1,3 @@
-# Services
-
-### Usage
-
-```console
-$ ./service.sh 
-Usage: ./service.sh <verb>[,<verb> ...] [flags] <svc_dir_name> [<svc_dir_name> ...]
-
-Verbs:
-  clean                     Delete `service/data`
-  down                      Stop a service
-  restart                   Restart a service
-  up                        Start a service
-
-Flags:
-  [--ignore-failures, -i]   Ignore failing services and continue
-  [--no-hook-scripts, -s]   Ignore all pre and post hook scripts
-  [--no-override, -o]       Ignore docker-compose.override.yml file
-
-Services:
-  i2p  snowflake  tor
-```
-
 ### Arch. Support
 
 <table>
@@ -152,41 +129,3 @@ Services:
     </tr>
   </tbody>
 </table>
-
-#### Legend
-
-<table>
-  <tbody>
-    <tr>
-      <td>A</td>
-      <td>Dockerfiles with application binaries from OS repo / compiled from sources</td>
-    </tr>
-    <tr>
-      <td>B</td>
-      <td>Official open-source Dockerfiles / binaries from authors</td>
-    </tr>
-    <tr>
-      <td>C</td>
-      <td>Dockerfiles / binaries from third parties who publish full source code</td>
-    </tr>
-    <tr>
-      <td>X</td>
-      <td>Dockerfiles containing closed-source binaries (blobs)</td>
-    </tr>
-  </tbody>
-</table>
-
-### Structure
-
-- directories within `config/`, `data/` and `extra/` should match the service name within `docker-compose.yml`
-- the directory structure within each `config/`, `data/`, `extra/` service subdirectory should match the target root directory hierarchy
-- `config/` contents:
-  - files should be mounted in read-only mode (`:ro`)
-  - _should_ be checked in
-- `data/` contents:
-  - files should be mounted in read+write mode (`:rw`)
-  - should _not_ be checked in -- present in `.gitignore`
-- `extra/` contents:
-  - files should _not_ mounted within containers!
-  - these are additional files relevant to various services
-  - _should_ be checked in
