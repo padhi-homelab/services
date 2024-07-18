@@ -28,7 +28,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   airdcpp:
-    image: padhihomelab/airdcpp:2.12.1
+    image: padhihomelab/airdcpp:2.12.2
     restart: unless-stopped
 
     security_opt:

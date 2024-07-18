@@ -208,7 +208,7 @@ __verify_prereqs () {
   [ -f "$PREREQS_FILENAME" ] || return 0
   echo "[*] Checking prerequisites ..."
 
-  local ensure_running="$1"
+  local ensure_running="${1:-no}"
   for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
     if ! __CALL_SELF__ check "$prereq_comp_dir" ; then
       [ "$ensure_running" = "yes" ] || return 1

@@ -29,7 +29,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --labels NEVER ${TARGET_SERVICE}
+          ./compositions.sh up --skip-prereqs --labels NEVER ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
@@ -46,7 +46,6 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
-          ./compositions.sh up traefik
           ./compositions.sh down,up ${TARGET_SERVICE}
       -
         name: "Service: Wait"
@@ -61,6 +60,5 @@ jobs:
             cd traefik ; docker-compose logs
             exit 1
           fi
-          #TODO: websocket test
-          #docker-compose exec -T traefik wget --spider --no-check-certificate https://localhost/airdcpp/ \
-          #  || (docker ps ; docker-compose logs ; cd ../airdcpp ; docker-compose logs ; exit 1)
+          docker-compose exec -T traefik wget --spider --no-check-certificate --header "Accept: text/html" https://127.0.0.1/airdcpp/ \
+            || (docker ps ; docker-compose logs ; cd ../airdcpp ; docker-compose logs ; exit 1)

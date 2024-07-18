@@ -123,7 +123,7 @@ Compositions:
       <td align='center'>
         <code><sub>2.6.8</sub></code>
         <br>
-        <code><sub>2.12.1</sub></code>
+        <code><sub>2.12.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -891,7 +891,7 @@ Compositions:
         <br>
         <code><sub>2.0.18</sub></code>
         <br>
-        <code><sub>1.29.1</sub></code>
+        <code><sub>1.30.0</sub></code>
         <br>
       </td>
       <td align='center'>
