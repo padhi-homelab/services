@@ -17,6 +17,7 @@ services:
     networks:
     - shared
     volumes:
+    - ./data/docker.sock-proxy/haproxy:/haproxy:rw
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
     environment:
