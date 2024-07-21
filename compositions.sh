@@ -312,7 +312,8 @@ do_up () {
 
 usage () {
   if [ $# -gt 0 ] ; then echo -e "\nERROR: $1" >&2 ; fi
-  compositions="$(\ls -Cdw100000 */ | sed 's:[[:space:]]_[^[:space:]]*/::g; s:\/::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
+  num_comps="$(\ls -1 */docker-compose.yml | wc -l)"
+  compositions="$(\ls -Cdw100000 */docker-compose.yml | sed 's:\/[^[:space:]]*::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
   echo -e "
 Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
@@ -345,7 +346,7 @@ Options:              { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
-Compositions:" >&2
+Compositions Found ($num_comps):" >&2
   while IFS= read -r line ; do
     echo "  $line"
   done <<< "$compositions" >&2

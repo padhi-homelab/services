@@ -39,7 +39,31 @@ Seemed like an overkill, when I initially wrote `compositions.sh`.
 
 ### Usage
 
-Typically, something like: `./compositions.sh down,up -R tang`.
+Initial setup:
+
+1. Override the global env generators as necessary, e.g.:
+   ```
+   echo "MY_GLOBAL_ENV_VAR=10" >> static.global.override.env
+   ```
+2. For each desired composition, override the:
+    - static and/or dynamic env generators in a similar manner
+    - docker service configuration: `docker-compose.override.yml`
+    - docker service hooks: `docker-compose.up.pre_hook.override_01.sh` etc.
+
+See [Structure & Conventions](#structure--conventions)
+for more details on these overrides.
+
+Typical workflows:
+
+- (Re)start a composition:
+  ```
+  ./compositions.sh down,up tang
+  ```
+
+- Update repo & restart a composition:
+  ```
+  git pull && ./compositions.sh pull,down,up -R tang
+  ```
 
 <details>
 <summary><h4>Full List of Flags and Options</h4></summary>
@@ -77,7 +101,7 @@ Options:              { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
-Compositions:
+Compositions Found (19):
   airdcpp   certbot      docker.sock  gitea      hass       indexarr
   influxdb  kodi.db      monitarr     navidrome  nextcloud  nocodb
   pihole    qbittorrent  tang         telegraf   teslamate  traefik
@@ -271,7 +295,7 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_hass.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A
+        B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/hass'>
@@ -309,7 +333,7 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_indexarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> C
+        A <br> B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
@@ -402,7 +426,7 @@ Compositions:
     </tr>
     <tr>
       <th>
-        <a href='https://www.influxdata.com/'>Kodi.DB</a>
+        <a href='https://kodi.wiki/view/MySQL/Setting_up_MySQL'>Kodi.DB</a>
         <br>
         <sub>:3306</sub>
         <hr>
@@ -447,7 +471,7 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_monitarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        C <br> C <br> C
+        B <br> B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/lidarr/'>
@@ -655,7 +679,7 @@ Compositions:
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28NocoDB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nocodb.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B
+        B <br> C
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/redis'>
@@ -1020,23 +1044,30 @@ Compositions:
 
 #### Legend
 
+Below, we say that a container image is a _non-root image_,
+if it allows running the target service as a non-root user,
+e.g. using `--user` with docker run.
+
+Note that this is different from (less secure compared to)
+running the image with a rooless docker daemon.
+
 <table>
   <tbody>
     <tr>
       <th>A</th>
-      <td>Dockerfiles with application binaries from OS repo / compiled from sources</td>
+      <td><i>Trustworthy:</i> Non-root images with binaries compiled during build, or from OS repos</td>
     </tr>
     <tr>
       <th>B</th>
-      <td>Official open-source Dockerfiles / binaries from authors</td>
+      <td><i>Secure:</i> Non-root images with open-source binaries only</td>
     </tr>
     <tr>
       <th>C</th>
-      <td>Dockerfiles / binaries from third parties who publish full source code</td>
+      <td><i>Open:</i> Root-ed Images with open-source binaries only</td>
     </tr>
     <tr>
       <th>X</th>
-      <td>Dockerfiles containing closed-source binaries (blobs)</td>
+      <td><i>Untrusted:</i> Images with closed-source binaries</td>
     </tr>
   </tbody>
 </table>
@@ -1046,12 +1077,13 @@ Compositions:
 When deploying, all changes MUST appear in `.gitignore`d files:
 
 - at the repo root:
-  - a `static.global.override.env` file may store fixed global environment variables,
+  - a `static.global.override.env` file may store global fixed environment variables,
     such as WAN FQDN, ACME configs etc.
   - a `dynamic.global.override.env.sh` script may generate additional server-specific
     dynamic global evironment variables such as public IP, UID of calling user etc.
 
 - within each composition:
+  - a `static.override.env` file may store additional service-specific fixed evironment variables
   - a `dynamic.override.env.sh` script may generate additional service-specific evironment variables
   - `docker-compose.override.{yml|yaml}` file may contain the usual override stuff for docker compose
   - `docker-compose.{up,down,clean}.{pre,post}_hook.override*.sh` scripts
