@@ -48,7 +48,7 @@ Initial setup:
 2. For each desired composition, override the:
     - static and/or dynamic env generators in a similar manner
     - docker service configuration: `docker-compose.override.yml`
-    - docker service hooks: `docker-compose.up.pre_hook.override_01.sh` etc.
+    - docker service hooks: `docker-compose.up.pre_hook.override.01.sh` etc.
 
 See [Structure & Conventions](#structure--conventions)
 for more details on these overrides.
@@ -1077,21 +1077,32 @@ running the image with a rooless docker daemon.
 When deploying, all changes MUST appear in `.gitignore`d files:
 
 - at the repo root:
-  - a `static.global.override.env` file may store global fixed environment variables,
-    such as WAN FQDN, ACME configs etc.
-  - a `dynamic.global.override.env.sh` script may generate additional server-specific
-    dynamic global evironment variables such as public IP, UID of calling user etc.
+  - a `static.global.override.env` file may store global constants
+    - e.g. ACME configs, ports to be open etc.
+    - these are exposed as-is to docker compose
+    - see [`static.global.env`](static.global.env) for the default
+  - a `dynamic.global.override.env.sh` script may generate additional dynamic variables
+    - e.g. as public IP, UID of calling user etc.
+    - these are (re)computed just before running each a composition
+    - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
-  - a `static.override.env` file may store additional service-specific fixed evironment variables
+  - a `static.override.env` file may store additional service-specific constants
+    - similar idea as its global counterpart `static.global.env`
+    - see [`nocodb/static.env`](nocodb/static.env) for an example
   - a `dynamic.override.env.sh` script may generate additional service-specific evironment variables
-  - `docker-compose.override.{yml|yaml}` file may contain the usual override stuff for docker compose
-  - `docker-compose.{up,down,clean}.{pre,post}_hook.override*.sh` scripts
-    may contain additional hooks to be run
+    - similar idea as its global counterpart `dynamic.global.env.sh`
+    - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
+  - `docker-compose.override.{yml|yaml}` file may contain overrides for docker compose
+    - modular overrides may also be specified for individual YAML fragment files:  
+      `docker-compose.{devices|labels|logging|ports}.override.{yml|yaml}`
+  - `docker-compose.{up,down,clean}.{pre,post}_hook.override.*.sh` scripts
+    may define additional hooks to be run
+    - see [`monitarr/docker-compose.up.pre_hook.sh`](monitarr/docker-compose.up.pre_hook.sh) for an example
 
 #### Subdirectories
 
-- subdirectories under `config/`, `data/`, `extra/`, and `generated/`
+- immediate subdirectories under `config/`, `data/`, `extra/`, and `generated/`
   must match the service names within `docker-compose.yml`
 - the directory structure at each of `config/X/Y...`, `data/X/Y...`, `extra/X/Y...`, and `generated/X/Y...`
   must match the root directory hierarchy `/Y/...` in the target container `X`
