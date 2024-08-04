@@ -37,6 +37,6 @@ jobs:
         run: |
           if ! ./compositions.sh check ${TARGET_SERVICE}; then
             docker ps
-            cd ${TARGET_SERVICE} ; docker-compose logs
+            cd ${TARGET_SERVICE} ; docker compose logs
             exit 1
           fi

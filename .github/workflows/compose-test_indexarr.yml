@@ -40,7 +40,7 @@ jobs:
         run: |
           if ! ./compositions.sh check ${TARGET_SERVICE}; then
             docker ps
-            cd ${TARGET_SERVICE} ; docker-compose logs
+            cd ${TARGET_SERVICE} ; docker compose logs
             exit 1
           fi
       -
@@ -56,10 +56,10 @@ jobs:
         run: |
           if ! ./compositions.sh check ${TARGET_SERVICE} ; then
             docker ps
-            cd ${TARGET_SERVICE} ; docker-compose logs
-            cd traefik ; docker-compose logs
+            cd ${TARGET_SERVICE} ; docker compose logs
+            cd traefik ; docker compose logs
             exit 1
           fi
           cd traefik
-          docker-compose exec -T traefik wget --spider --no-check-certificate https://127.0.0.1/jackett/UI/Login \
-            || (docker ps ; docker-compose logs ; cd ../${TARGET_SERVICE} ; docker-compose logs ; exit 1)
+          docker compose exec -T traefik wget --spider --no-check-certificate https://127.0.0.1/jackett/UI/Login \
+            || (docker ps ; docker compose logs ; cd ../${TARGET_SERVICE} ; docker compose logs ; exit 1)
