@@ -7,7 +7,7 @@ networks:
 services:
   telegraf:
     hostname: telegraf
-    image: telegraf:1.31.2
+    image: telegraf:1.31.3
     restart: unless-stopped
 
     security_opt:

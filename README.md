@@ -303,7 +303,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2024.7.2_1.34.0</sub></code>
+        <code><sub>2024.8.3_2.0.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -403,7 +403,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.7.8-a...e</sub></code>
+        <code><sub>2.7.10-a...e</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -441,7 +441,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>11.3.2</sub></code>
+        <code><sub>11.5.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -487,11 +487,11 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.3.4248</sub></code>
+        <code><sub>2.5.2.4316</sub></code>
         <br>
-        <code><sub>5.8.3.8933</sub></code>
+        <code><sub>5.9.1.9070</sub></code>
         <br>
-        <code><sub>4.0.8.1874</sub></code>
+        <code><sub>4.0.9.2244</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -571,7 +571,7 @@ Compositions Found (18):
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nextcloud.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B <br> B <br> B
+        B <br> B <br> B <br> C <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mariadb'>
@@ -586,15 +586,15 @@ Compositions Found (18):
           <sub>imaginary</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
+        <a href='https://hub.docker.com/_/nextcloud/'>
           <sub>nextcloud</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
+        <a href='https://hub.docker.com/_/nextcloud/'>
           <sub>cron</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/repository/docker/padhihomelab/nextcloud'>
+        <a href='https://hub.docker.com/_/nextcloud/'>
           <sub>push</sub>
         </a>
       </th>
@@ -603,13 +603,13 @@ Compositions Found (18):
         <br>
         <code><sub>7.4.0</sub></code>
         <br>
-        <code><sub>20240701...t</sub></code>
+        <code><sub>20240808...48</sub></code>
         <br>
-        <code><sub>29.0.3...0</sub></code>
+        <code><sub>29.0.5</sub></code>
         <br>
-        <code><sub>29.0.3...0</sub></code>
+        <code><sub>29.0.5</sub></code>
         <br>
-        <code><sub>29.0.3...0</sub></code>
+        <code><sub>29.0.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -815,7 +815,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.31.2</sub></code>
+        <code><sub>1.31.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -916,7 +916,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.11.7</sub></code>
+        <code><sub>2.11.8</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -994,30 +994,30 @@ Compositions Found (18):
 
 #### Legend
 
-Below, we say that a container image is a _non-root image_,
+Below, we say that a container is a _non-root container_,
 if it allows running the target service as a non-root user,
 e.g. using `--user` with docker run.
 
 Note that this is different from (less secure compared to)
-running the image with a rooless docker daemon.
+running the container with a rootless docker daemon.
 
 <table>
   <tbody>
     <tr>
       <th>A</th>
-      <td><i>Trustworthy:</i> Non-root images with binaries compiled during build, or from OS repos</td>
+      <td><i>Trustworthy:</i> Non-root containers with binaries compiled during build, or from OS repos</td>
     </tr>
     <tr>
       <th>B</th>
-      <td><i>Secure:</i> Non-root images with open-source binaries only</td>
+      <td><i>Secure:</i> Non-root containers with open-source binaries only</td>
     </tr>
     <tr>
       <th>C</th>
-      <td><i>Open:</i> Root-ed Images with open-source binaries only</td>
+      <td><i>Open:</i> Root-ed containers with open-source binaries only</td>
     </tr>
     <tr>
       <th>X</th>
-      <td><i>Untrusted:</i> Images with closed-source binaries</td>
+      <td><i>Untrusted:</i> Containers with closed-source binaries</td>
     </tr>
   </tbody>
 </table>
