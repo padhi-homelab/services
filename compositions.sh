@@ -79,6 +79,25 @@ __create_external_networks () {
   done
 }
 
+__do_prereqs () {
+  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
+
+  [ -f "$PREREQS_FILENAME" ] || return 0
+
+  local verb="$1"
+  local ensure_running="${2:-no}"
+  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
+    if [ "$verb" = "status" ] ; then
+      if ! __CALL_SELF__ status "$prereq_comp_dir" ; then
+        [ "$ensure_running" = "yes" ] || return 1
+        __CALL_SELF__ down,up "$prereq_comp_dir" || return 1
+      fi
+    else
+      __CALL_SELF__ $1 "$prereq_comp_dir" || return 1
+    fi
+  done
+}
+
 __error () {
   echo "[X] ERROR:" $1 >&2
 }
@@ -110,7 +129,7 @@ __gen_env () {
 
 __gen_templates () {
   find ./extra -name '*.template.*' 2>/dev/null | grep -q . || return 0
-  echo "[*] Checking templated files ..."
+  echo "[*] Verifying templated files ..."
 
   find ./extra -name '*.template.*' -print0 | \
     while IFS= read -r -d '' template_file ; do
@@ -122,28 +141,6 @@ __gen_templates () {
           || return 1
       fi
     done
-}
-
-__pull_prereqs () {
-  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
-
-  [ -f "$PREREQS_FILENAME" ] || return 0
-  echo "[*] Pulling prerequisites ..."
-
-  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
-    __CALL_SELF__ pull "$prereq_comp_dir" || return 1
-  done
-}
-
-__show_prereq_overrides () {
-  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
-
-  [ -f "$PREREQS_FILENAME" ] || return 0
-  echo "[*] Searching prereqs for overrides ..."
-
-  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
-    __CALL_SELF__ overrides "$prereq_comp_dir" || return 1
-  done
 }
 
 __read_option () {
@@ -165,7 +162,7 @@ __read_option () {
       return 0
     fi
   fi
-  
+
   local COMP_OPTION="$(cat options.conf 2>/dev/null | grep $1 | cut -d= -f2)"
   if ! [ -z "$COMP_OPTION" ] ; then
     echo "[!] Composition-specific option [$1] = $COMP_OPTION"
@@ -202,21 +199,6 @@ __run_hooks () {
   fi
 }
 
-__verify_prereqs () {
-  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
-
-  [ -f "$PREREQS_FILENAME" ] || return 0
-  echo "[*] Checking prerequisites ..."
-
-  local ensure_running="${1:-no}"
-  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
-    if ! __CALL_SELF__ check "$prereq_comp_dir" ; then
-      [ "$ensure_running" = "yes" ] || return 1
-      __CALL_SELF__ down,up "$prereq_comp_dir" || return 1
-    fi
-  done
-}
-
 __verify_volumes () {
   local mounted_volumes=( )
   for yml in "$@" ; do
@@ -243,14 +225,16 @@ __verify_volumes () {
 # # # #
 
 do_check () {
-  __verify_prereqs
+  __do_prereqs check || return 1
 
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
-    if $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ; then
-      continue
-    fi
-    __error "'$svc' is not healthy."
-    [ "$FLAG_SKIP_FAILS" = "yes" ] || return 1
+    local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
+    for bad_attr in devices labels logging ports ; do
+      if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
+        __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
+        [ "$FLAG_SKIP_FAILS" = "yes" ] && return 0 || return 1
+      fi
+    done
   done
 }
 
@@ -283,6 +267,18 @@ do_overrides () {
 
 do_pull () {
   $DOCKER_COMPOSE_CMD pull
+}
+
+do_status () {
+  __do_prereqs status || return 1
+
+  for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
+    if $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ; then
+      continue
+    fi
+    __error "'$svc' is not healthy."
+    [ "$FLAG_SKIP_FAILS" = "yes" ] && return 0 || return 1
+  done
 }
 
 do_up () {
@@ -319,15 +315,16 @@ Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check        Check health of a composition
+  check        Validate a composition
   clean        Delete '<comp_dir>/data'
   down         Stop a composition
   overrides    List all override files in a composition
   pull         Pull all images for a composition
+  status       Display health / status of a composition
   up           Start a composition
 
 Flags:
-  [-P | --skip-prereqs]      Ignore checking/starting prerequisite compositions
+  [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
   [-F | --skip-fails]        Ignore verb failures and continue
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --regenerate]        Force generate '.env' and 'generated/'
@@ -370,6 +367,7 @@ for VERB in $VERBS ; do
   [ "$VERB" = "down" ] || \
   [ "$VERB" = "overrides" ] || \
   [ "$VERB" = "pull" ] || \
+  [ "$VERB" = "status" ] || \
   [ "$VERB" = "up" ] || \
     usage "Unknown verb: $VERB"
 done
@@ -395,7 +393,7 @@ for opt in "$@" ; do
   esac
 done
 
-check_optarg () {
+validate_optarg () {
   case "$1" in
     ALWAYS | auto | NEVER ) return 0 ;;
   esac
@@ -410,11 +408,11 @@ while getopts ':FOPRd:g:h:l:p:' OPTION ; do
     "P" ) FLAG_SKIP_PREREQS="yes" ;;
     "R" ) FLAG_REGENERATE="yes" ;;
 
-    "d" ) check_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
-    "g" ) check_optarg "$OPTARG" && ARG_LOGGING="$OPTARG" ;;
-    "h" ) check_optarg "$OPTARG" && ARG_HOOKS="$OPTARG" ;;
-    "l" ) check_optarg "$OPTARG" && ARG_LABELS="$OPTARG" ;;
-    "p" ) check_optarg "$OPTARG" && ARG_PORTS="$OPTARG" ;;
+    "d" ) validate_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
+    "g" ) validate_optarg "$OPTARG" && ARG_LOGGING="$OPTARG" ;;
+    "h" ) validate_optarg "$OPTARG" && ARG_HOOKS="$OPTARG" ;;
+    "l" ) validate_optarg "$OPTARG" && ARG_LABELS="$OPTARG" ;;
+    "p" ) validate_optarg "$OPTARG" && ARG_PORTS="$OPTARG" ;;
 
       * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
@@ -478,10 +476,12 @@ fi
 
 COMPOSITIONS=( "$@" )
 perform () {
-  local SIMPLE_VERB=$1
+  local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
-    echo -e "\n[+] Executing '$SIMPLE_VERB' on '$comp' ... "
+    echo -ne "\n[+] Executing '$SIMPLE_VERB' on "
+    [ -z "$COMPOSITIONS_INTERNAL_CALL" ] || printf 'pre-req '
+    echo "'$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
       [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
@@ -501,13 +501,13 @@ perform () {
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
-    [ "$SIMPLE_VERB" != "overrides" ] || __show_prereq_overrides \
+    [ "$SIMPLE_VERB" != "overrides" ] || __do_prereqs overrides \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
-    [ "$SIMPLE_VERB" != "pull" ] || __pull_prereqs \
+    [ "$SIMPLE_VERB" != "pull" ] || __do_prereqs pull \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
-    [ "$SIMPLE_VERB" != "up" ] || __verify_prereqs "yes" \
+    [ "$SIMPLE_VERB" != "up" ] || __do_prereqs status "yes" \
       || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
@@ -520,6 +520,10 @@ perform () {
     do_${SIMPLE_VERB} ; verb_exit=$?
 
     if [ "$SIMPLE_VERB" = "check" ] && [ $verb_exit -eq 0 ] ; then
+      echo "[>] '$comp' is valid!"
+    fi
+
+    if [ "$SIMPLE_VERB" = "status" ] && [ $verb_exit -eq 0 ] ; then
       echo "[>] '$comp' is healthy!"
     fi
 

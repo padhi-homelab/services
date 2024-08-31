@@ -35,7 +35,7 @@ jobs:
       -
         name: "Service: Test"
         run: |
-          if ! ./compositions.sh check ${TARGET_SERVICE}; then
+          if ! ./compositions.sh status ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker compose logs
             exit 1

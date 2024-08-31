@@ -23,7 +23,7 @@ details (server's FQDN, ACME email and server etc.).
 
 One might also want to attach containers to [externally-created Docker networks],
 for sharing data across multiple compositions without exposing anything to host.
-In that case, a separate `docker` command must be executed before starting services.
+In that case, a separate `docker network` command must be executed before starting services.
 `compositions.sh` automatically detects external networks in YAML files,
 and creates them if they do not already exist.
 
@@ -74,15 +74,16 @@ Usage:
   ./compositions.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs:
-  check        Check health of a composition
+  check        Validate a composition
   clean        Delete '<comp_dir>/data'
   down         Stop a composition
   overrides    List all override files in a composition
   pull         Pull all images for a composition
+  status       Display health / status of a composition
   up           Start a composition
 
 Flags:
-  [-P | --skip-prereqs]      Ignore checking/starting prerequisite compositions
+  [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
   [-F | --skip-fails]        Ignore verb failures and continue
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --regenerate]        Force generate '.env' and 'generated/'
@@ -1026,26 +1027,26 @@ running the image with a rooless docker daemon.
 When deploying, all changes MUST appear in `.gitignore`d files:
 
 - at the repo root:
-  - a `static.global.override.env` file may store global constants
+  - `static.global.override.env` may store global constants
     - e.g. ACME configs, ports to be open etc.
     - these are exposed as-is to docker compose
     - see [`static.global.env`](static.global.env) for the default
-  - a `dynamic.global.override.env.sh` script may generate additional dynamic variables
+  - `dynamic.global.override.env.sh` may generate additional dynamic variables
     - e.g. as public IP, UID of calling user etc.
     - these are (re)computed just before running each a composition
     - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
-  - a `static.override.env` file may store additional service-specific constants
+  - `static.override.env` may store additional service-specific constants
     - similar idea as its global counterpart `static.global.env`
     - see [`.archive/nocodb/static.env`](.archive/nocodb/static.env) for an example
-  - a `dynamic.override.env.sh` script may generate additional service-specific evironment variables
+  - `dynamic.override.env.sh` may generate additional service-specific evironment variables
     - similar idea as its global counterpart `dynamic.global.env.sh`
     - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
-  - `docker-compose.override.{yml|yaml}` file may contain overrides for docker compose
+  - `docker-compose.override.{yml|yaml}` may contain overrides for docker compose
     - modular overrides may also be specified for individual YAML fragment files:  
       `docker-compose.{devices|labels|logging|ports}.override.{yml|yaml}`
-  - `docker-compose.{up,down,clean}.{pre,post}_hook.override.*.sh` scripts
+  - `docker-compose.{up,down,clean}.{pre,post}_hook.override.*.sh`
     may define additional hooks to be run
     - see [`monitarr/docker-compose.up.pre_hook.sh`](monitarr/docker-compose.up.pre_hook.sh) for an example
 
