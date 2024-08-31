@@ -40,12 +40,7 @@ ARG_PORTS="auto"
 
 : "${COMPOSITIONS_INTERNAL_CALL:=}"
 
-# # # #
-#
-# HELPER FUNCTIONS
-# (assume that we are inside a composition directory)
-#
-# # # #
+# # # # # # # # # # # # # # # # # # #     HELPER ROUTINES     # # # # # # # # # # # # # # # # # # #
 
 __append_env_from () {
   if [ -f "$1" ] ; then
@@ -211,21 +206,17 @@ __verify_volumes () {
   done
 }
 
-# # # #
-#
-# TOP-LEVEL FUNCTIONS
-#
-# # # #
+# # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
 
-do_check () {
-  __do_prereqs check || return 1
+do_validate () {
+  __do_prereqs validate || return 1
 
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    for bad_attr in devices labels logging ports ; do
+    for bad_attr in devices labels logging ports image ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
         __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
-        [ "$FLAG_FAIL_ON_ERROR" != "yes" ] && return 0 || return 1
+        return 1
       fi
     done
   done
@@ -244,16 +235,14 @@ do_overrides () {
   local any_override=''
   for ofile in $(find .. -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
-    echo -n '[G] '
-    realpath -s --relative-to="$(pwd)/.." $ofile
+    echo -n '[G] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
   done
   [ -z "$any_override" ] && echo '[>] No global override files.'
 
   any_override=''
   for ofile in $(find . -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
-    echo -n '[L] '
-    realpath -s --relative-to="$(pwd)/.." $ofile
+    echo -n '[L] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
   done
   [ -z "$any_override" ] && echo '[>] No local override files.'
 }
@@ -269,8 +258,7 @@ do_status () {
     if $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ; then
       continue
     fi
-    __error "'$svc' is not healthy."
-    [ "$FLAG_FAIL_ON_ERROR" != "yes" ] && return 0 || return 1
+    __error "'$svc' is not healthy." && return 1
   done
 }
 
@@ -299,6 +287,8 @@ do_up () {
   $DOCKER_COMPOSE_CMD ${COMPOSE_FILES[@]/#/-f } up -d
 }
 
+# # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
+
 usage () {
   if [ $# -gt 0 ] ; then echo -e "\nERROR: $1" >&2 ; fi
   num_comps="$(\ls -1 */docker-compose.yml | wc -l)"
@@ -307,14 +297,14 @@ usage () {
 Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
-Verbs:
-  check        Validate a composition
-  clean        Delete '<comp_dir>/data'
-  down         Stop a composition
-  overrides    List all override files in a composition
-  pull         Pull all images for a composition
-  status       Display health / status of a composition
-  up           Start a composition
+Verbs: (short forms within [])
+  [c]lean        Delete '<comp_dir>/data'
+  [d]own         Stop a composition
+  [o]verrides    List all override files in a composition
+  [p]ull         Pull all images for a composition
+  [s]tatus       Display health / status of a composition
+  [u]p           Start a composition
+  [v]alidate     Validate a composition
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
@@ -343,25 +333,37 @@ Compositions Found ($num_comps):" >&2
   exit $EXIT_CODE_USAGE_ERROR
 }
 
-# # # #
-#
-# OPTIONS PARSING
-#
-# # # #
-
 [ $# -gt 0 ] || usage
 
 VERBS="$1"
 VERBS="${VERBS//,/ }"
 
+expand_verbs () {
+  local expanded=""
+  while read -n1 char; do
+    case "$char" in
+      "c" | "C")  expanded="$expanded clean" ;;
+      "d" | "D")  expanded="$expanded down" ;;
+      "o" | "O")  expanded="$expanded overrides" ;;
+      "p" | "P")  expanded="$expanded pull" ;;
+      "s" | "S")  expanded="$expanded status" ;;
+      "u" | "U")  expanded="$expanded up" ;;
+      "v" | "V")  expanded="$expanded validate" ;;
+              *)  return 1
+    esac
+  done < <(echo -n "$1")
+  VERBS="$expanded"
+}
+
 for VERB in $VERBS ; do
-  [ "$VERB" = "check" ] || \
   [ "$VERB" = "clean" ] || \
   [ "$VERB" = "down" ] || \
   [ "$VERB" = "overrides" ] || \
   [ "$VERB" = "pull" ] || \
   [ "$VERB" = "status" ] || \
   [ "$VERB" = "up" ] || \
+  [ "$VERB" = "validate" ] || \
+    expand_verbs "$VERBS" || \
     usage "Unknown verb: $VERB"
 done
 shift
@@ -417,11 +419,7 @@ if [ $# -le 0 ] ; then
   exit $EXIT_CODE_COMPOSITION_NOT_FOUND
 fi
 
-# # # #
-#
-# INSTALL DEPS
-#
-# # # #
+# # # # # # # # # # # # # # # # # # #       DEPENDENCIES      # # # # # # # # # # # # # # # # # # #
 
 # FIXME: Improve `podman` support and make it default.
 
@@ -461,11 +459,7 @@ if ! $YQ_CMD &> /dev/null ; then
   fi
 fi
 
-# # # #
-#
-# VERB HANDLING
-#
-# # # #
+# # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
 
 COMPOSITIONS=( "$@" )
 perform () {
@@ -512,7 +506,7 @@ perform () {
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?
 
-    if [ "$SIMPLE_VERB" = "check" ] && [ $verb_exit -eq 0 ] ; then
+    if [ "$SIMPLE_VERB" = "validate" ] && [ $verb_exit -eq 0 ] ; then
       echo "[>] '$comp' is valid!"
     fi
 

@@ -55,14 +55,20 @@ for more details on these overrides.
 
 Typical workflows:
 
-- (Re)start a composition:
+- (Re)start compositions:
   ```
-  ./compositions.sh down,up tang
+  ./compositions.sh down,up tang pihole
   ```
 
 - Update repo & restart a composition:
   ```
-  git pull && ./compositions.sh pull,down,up -R tang
+  git pull && ./compositions.sh pdu pihole
+  ```
+  Note how we specify verbs `pull,down,up` using just their first characters.
+
+- Checking the status of compositions:
+  ```
+  ./compositions.sh status tang pihole
   ```
 
 <details>
@@ -73,20 +79,20 @@ $ ./compositions.sh
 Usage:
   ./compositions.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
-Verbs:
-  check        Validate a composition
-  clean        Delete '<comp_dir>/data'
-  down         Stop a composition
-  overrides    List all override files in a composition
-  pull         Pull all images for a composition
-  status       Display health / status of a composition
-  up           Start a composition
+Verbs: (short forms within [])
+  [c]lean        Delete '<comp_dir>/data'
+  [d]own         Stop a composition
+  [o]verrides    List all override files in a composition
+  [p]ull         Pull all images for a composition
+  [s]tatus       Display health / status of a composition
+  [u]p           Start a composition
+  [v]alidate     Validate a composition
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --skip-fails]        Ignore verb failures and continue
+  [-F | --fail-on-error]     Fail on the first verb failures
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
-  [-R | --regenerate]        Force generate '.env' and 'generated/'
+  [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
 Options:              { NEVER | auto (default) | ALWAYS }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
@@ -97,8 +103,8 @@ Options:              { NEVER | auto (default) | ALWAYS }
 
      NEVER = Never configure the option (and use docker default instead):
              ignores 'docker-compose.*.{sh,yml}' files.
-      auto = Configure the option unless overridden in options*.conf:
-             use 'docker-compose.*.{sh,yml}' unless overridenin options*.conf.
+      auto = Configure the option unless overridden in options.override.conf:
+             use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
     ALWAYS = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
