@@ -21,9 +21,9 @@ EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
 EXIT_CODE_SIMPLE_VERB_FAILURE=3
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
 
-FLAG_REGENERATE=""
+FLAG_SKIP_REGENERATE=""
 FLAG_SKIP_PREREQS=""
-FLAG_SKIP_FAILS=""
+FLAG_FAIL_ON_ERROR=""
 FLAG_SKIP_OVERRIDES=""
 
 OPTION_DEVICES=""
@@ -103,7 +103,7 @@ __error () {
 }
 
 __gen_env () {
-  [ ! -f .env ] || [ "$FLAG_REGENERATE" = "yes" ] || return 0
+  [ ! -f .env ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] || return 0
   rm -rf .env
 
   echo -n "[*] Generating '.env': "
@@ -136,7 +136,7 @@ __gen_templates () {
       local generated_file="./generated${template_file#./extra}"
       mkdir -p "$(dirname "$generated_file")"
       generated_file="${generated_file/.template/}"
-      if [ ! -f "$generated_file" ] || [ "$FLAG_REGENERATE" = "yes" ] ; then
+      if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] ; then
         "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
           || return 1
       fi
@@ -161,13 +161,6 @@ __read_option () {
       printf -v "$OPTION" "%s" "$OVERRIDE_COMP_OPTION"
       return 0
     fi
-  fi
-
-  local COMP_OPTION="$(cat options.conf 2>/dev/null | grep $1 | cut -d= -f2)"
-  if ! [ -z "$COMP_OPTION" ] ; then
-    echo "[!] Composition-specific option [$1] = $COMP_OPTION"
-    printf -v "$OPTION" "%s" "$COMP_OPTION"
-    return 0
   fi
   
   printf -v "$OPTION" "%s" "yes"
@@ -232,7 +225,7 @@ do_check () {
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
         __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
-        [ "$FLAG_SKIP_FAILS" = "yes" ] && return 0 || return 1
+        [ "$FLAG_FAIL_ON_ERROR" != "yes" ] && return 0 || return 1
       fi
     done
   done
@@ -277,7 +270,7 @@ do_status () {
       continue
     fi
     __error "'$svc' is not healthy."
-    [ "$FLAG_SKIP_FAILS" = "yes" ] && return 0 || return 1
+    [ "$FLAG_FAIL_ON_ERROR" != "yes" ] && return 0 || return 1
   done
 }
 
@@ -325,9 +318,9 @@ Verbs:
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --skip-fails]        Ignore verb failures and continue
+  [-F | --fail-on-error]     Fail on the first verb failures
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
-  [-R | --regenerate]        Force generate '.env' and 'generated/'
+  [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
 Options:              { NEVER | auto (default) | ALWAYS }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
@@ -338,8 +331,8 @@ Options:              { NEVER | auto (default) | ALWAYS }
 
      NEVER = Never configure the option (and use docker default instead):
              ignores 'docker-compose.*.{sh,yml}' files.
-      auto = Configure the option unless overridden in options*.conf:
-             use 'docker-compose.*.{sh,yml}' unless overridenin options*.conf.
+      auto = Configure the option unless overridden in options.override.conf:
+             use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
     ALWAYS = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
@@ -376,10 +369,10 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--regenerate")      set -- "$@" "-R" ;;
+    "--fail-on-error")   set -- "$@" "-F" ;;
     "--skip-prereqs")    set -- "$@" "-P" ;;
-    "--skip-fails")      set -- "$@" "-F" ;;
     "--skip-overrides")  set -- "$@" "-O" ;;
+    "--skip-regenerate") set -- "$@" "-R" ;;
 
     "--devices")         set -- "$@" "-d" ;;
     "--hooks")           set -- "$@" "-h" ;;
@@ -403,10 +396,10 @@ validate_optarg () {
 OPTIND=1
 while getopts ':FOPRd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
-    "F" ) FLAG_SKIP_FAILS="yes" ;;
+    "F" ) FLAG_FAIL_ON_ERROR="yes" ;;
     "O" ) FLAG_SKIP_OVERRIDES="yes" ;;
     "P" ) FLAG_SKIP_PREREQS="yes" ;;
-    "R" ) FLAG_REGENERATE="yes" ;;
+    "R" ) FLAG_SKIP_REGENERATE="yes" ;;
 
     "d" ) validate_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
     "g" ) validate_optarg "$OPTARG" && ARG_LOGGING="$OPTARG" ;;
@@ -484,12 +477,12 @@ perform () {
     echo "'$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
-      [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+      [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
       continue
     fi
     if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
       __error "No 'docker-compose.yml' found under '$comp'!"
-      [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
+      [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
       continue
     fi
 
@@ -499,22 +492,22 @@ perform () {
     echo "[.] devices = $OPTION_DEVICES ; logging = $OPTION_LOGGING ; hooks = $OPTION_HOOKS ; labels = $OPTION_LABELS ; ports = $OPTION_PORTS"
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
     [ "$SIMPLE_VERB" != "overrides" ] || __do_prereqs overrides \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "pull" ] || __do_prereqs pull \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __do_prereqs status "yes" \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_GEN_ERROR
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?
@@ -527,12 +520,12 @@ perform () {
       echo "[>] '$comp' is healthy!"
     fi
 
-    if [ $verb_exit -ne 0 ] && [ "$FLAG_SKIP_FAILS" != "yes" ] ; then
+    if [ $verb_exit -ne 0 ] && [ "$FLAG_FAIL_ON_ERROR" = "yes" ] ; then
       exit $EXIT_CODE_SIMPLE_VERB_FAILURE
     fi
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB post \
-      || [ "$FLAG_SKIP_FAILS" = "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
 }
 

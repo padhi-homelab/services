@@ -1037,6 +1037,10 @@ When deploying, all changes MUST appear in `.gitignore`d files:
     - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
+  - `options.override.env` may contain overrides for default values of the `{devices|labels|logging|ports}`
+    options
+    - options provided on the command-line may still override `options.override.conf`
+    - see [`.github/workflows/config/options.conf`](.github/workflows/config/options.conf) for an example
   - `static.override.env` may store additional service-specific constants
     - similar idea as its global counterpart `static.global.env`
     - see [`.archive/nocodb/static.env`](.archive/nocodb/static.env) for an example
