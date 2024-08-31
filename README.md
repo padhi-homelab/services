@@ -101,11 +101,10 @@ Options:              { NEVER | auto (default) | ALWAYS }
     ALWAYS = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
-Compositions Found (19):
-  airdcpp   certbot      docker.sock  gitea      hass       indexarr
-  influxdb  kodi.db      monitarr     navidrome  nextcloud  nocodb
-  pihole    qbittorrent  tang         telegraf   teslamate  traefik
-  unifi                                                     
+Compositions Found (18):
+  airdcpp      certbot  docker.sock  gitea      hass       indexarr
+  influxdb     kodi.db  monitarr     navidrome  nextcloud  pihole
+  qbittorrent  tang     telegraf     teslamate  traefik    unifi
 ```
 </details>
 
@@ -672,56 +671,6 @@ Compositions Found (19):
     </tr>
     <tr>
       <th>
-        <a href='https://www.nocodb.com/'>NocoDB</a>
-        <br>
-        <sub>:443/nocodb</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28NocoDB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nocodb.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B <br> C
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/redis'>
-          <sub>redis</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/nocodb/nocodb'>
-          <sub>nocodb</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>7.4.0</sub></code>
-        <br>
-        <code><sub>0.204.9</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>:53, :9443/pihole</sub>
@@ -1089,7 +1038,7 @@ When deploying, all changes MUST appear in `.gitignore`d files:
 - within each composition:
   - a `static.override.env` file may store additional service-specific constants
     - similar idea as its global counterpart `static.global.env`
-    - see [`nocodb/static.env`](nocodb/static.env) for an example
+    - see [`.archive/nocodb/static.env`](.archive/nocodb/static.env) for an example
   - a `dynamic.override.env.sh` script may generate additional service-specific evironment variables
     - similar idea as its global counterpart `dynamic.global.env.sh`
     - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
