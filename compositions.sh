@@ -83,12 +83,12 @@ __do_prereqs () {
   local ensure_running="${2:-no}"
   for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
     if [ "$verb" = "status" ] ; then
-      if ! __CALL_SELF__ status "$prereq_comp_dir" ; then
+      if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
         [ "$ensure_running" = "yes" ] || return 1
-        __CALL_SELF__ down,up "$prereq_comp_dir" || return 1
+        __CALL_SELF__ down,up -F "$prereq_comp_dir" || return 1
       fi
     else
-      __CALL_SELF__ $1 "$prereq_comp_dir" || return 1
+      __CALL_SELF__ $verb -F "$prereq_comp_dir" || return 1
     fi
   done
 }
@@ -255,10 +255,10 @@ do_status () {
   __do_prereqs status || return 1
 
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
-    if $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ; then
-      continue
+    if ! ( $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ) ; then
+      __error "'$svc' is not healthy."
+      return 1
     fi
-    __error "'$svc' is not healthy." && return 1
   done
 }
 
