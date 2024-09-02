@@ -2,20 +2,6 @@
 
 set -eu
 
-# FIXME: disable apache's access logs
-# https://github.com/nextcloud/docker/issues/1667
-#
-# Apache may not run under `www-data` in non-root containers,
-# which leads to permission errors in the usual entrypoint hooks
-# that run as the $DOCKER_UID_USER.
-#
-# Ugly solution for now is to store such scripts in a "deferred"
-# directory, and just run them as root here.
-#
-# (╯°□°)╯ ┻━┻
-
-bash /docker-entrypoint-hooks.d/deferred/disable-access-logs.sh
-
 # FIXME: cron jobs are hardcoded for `www-data` user
 # https://github.com/nextcloud/docker/issues/1740
 #

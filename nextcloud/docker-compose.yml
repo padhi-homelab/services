@@ -115,13 +115,15 @@ services:
     - default
     - proxy
     volumes:
-    - ./config/nextcloud/docker-entrypoint-hooks.d/deferred/disable-access-logs.sh:/docker-entrypoint-hooks.d/deferred/disable-access-logs.sh:ro
     - ./config/nextcloud/cron.sh:/cron.sh:ro
     - ./config/nextcloud/push.sh:/push.sh:ro
-    # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
-    - ./data/nextcloud/crontabs:/crontabs:rw
     - ./data/nextcloud/data:/data:rw
     - ./data/nextcloud/var/www/html:/var/www/html:rw
+    # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
+    - ./data/nextcloud/crontabs:/crontabs:rw
+    # FIXME: See https://github.com/nextcloud/docker/issues/1667
+    - /dev/null:/var/log/apache2/access.log:rw
+    - /dev/null:/var/log/apache2/other_vhosts_access.log:rw
     # FIXME: See https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
     - ./data/nextcloud/usr/local/etc/php/conf.d/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini:rw
     # FIXME: See https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687
