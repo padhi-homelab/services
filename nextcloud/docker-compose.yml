@@ -115,7 +115,7 @@ services:
     - default
     - proxy
     volumes:
-    - ./config/nextcloud/docker-entrypoint-hooks.d/before-starting/disable-access-logs.sh:/docker-entrypoint-hooks.d/before-starting/disable-access-logs.sh:ro
+    - ./config/nextcloud/docker-entrypoint-hooks.d/deferred/disable-access-logs.sh:/docker-entrypoint-hooks.d/deferred/disable-access-logs.sh:ro
     - ./config/nextcloud/cron.sh:/cron.sh:ro
     - ./config/nextcloud/push.sh:/push.sh:ro
     # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
