@@ -151,7 +151,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.8</sub></code>
+        <code><sub>2.6.11</sub></code>
         <br>
         <code><sub>2.12.2</sub></code>
       </td>
@@ -355,11 +355,11 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.8</sub></code>
+        <code><sub>2.6.11</sub></code>
         <br>
         <code><sub>v3.3.21</sub></code>
         <br>
-        <code><sub>0.22.277</sub></code>
+        <code><sub>0.22.554</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -493,7 +493,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.4.3.4248</sub></code>
+        <code><sub>2.5.3.4341</sub></code>
         <br>
         <code><sub>5.9.1.9070</sub></code>
         <br>
@@ -741,7 +741,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.8</sub></code>
+        <code><sub>2.6.11</sub></code>
         <br>
         <code><sub>4.6.5</sub></code>
       </td>
@@ -966,7 +966,7 @@ Compositions Found (18):
       <td align='center'>
         <code><sub>4.4.18</sub></code>
         <br>
-        <code><sub>8.3.32</sub></code>
+        <code><sub>8.4.59</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
