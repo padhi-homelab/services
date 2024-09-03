@@ -94,18 +94,18 @@ Flags:
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
-Options:              { NEVER | auto (default) | ALWAYS }
+Options:              { yes | no }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
   [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
   [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
   [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never configure the option (and use docker default instead):
-             ignores 'docker-compose.*.{sh,yml}' files.
-      auto = Configure the option unless overridden in options.override.conf:
+ <omitted> = Configure the option unless overridden in options.override.conf:
              use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
-    ALWAYS = Always configure the option as specified:
+        no = Never configure the option (and use docker default instead):
+             ignores 'docker-compose.*.{sh,yml}' files.
+       yes = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions Found (18):

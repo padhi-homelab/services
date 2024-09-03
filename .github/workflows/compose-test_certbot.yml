@@ -26,5 +26,5 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --labels NEVER ${TARGET_SERVICE}
+          ./compositions.sh up --labels no ${TARGET_SERVICE}
           cd ${TARGET_SERVICE} ; cat .env

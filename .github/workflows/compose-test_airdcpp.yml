@@ -29,7 +29,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --skip-prereqs --labels NEVER ${TARGET_SERVICE}
+          ./compositions.sh up --skip-prereqs --labels no ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

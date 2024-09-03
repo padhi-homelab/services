@@ -143,30 +143,27 @@ __read_option () {
 
   local ARG="ARG_$1"
   case "${!ARG}" in
-    ALWAYS ) printf -v "$OPTION" "%s" "yes"
+       yes ) printf -v "$OPTION" "%s" "yes"
              return 0 ;;
-     NEVER ) printf -v "$OPTION" "%s" "no"
+        no ) printf -v "$OPTION" "%s" "no"
+             echo -n "$opt_line_head: $1 (arg) "
+             opt_line_head=''
              return 0 ;;
   esac
 
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
     local OVERRIDE_COMP_OPTION="$(cat options.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
     if ! [ -z "$OVERRIDE_COMP_OPTION" ] ; then
-      echo "[!] Overriden option [$1] = $OVERRIDE_COMP_OPTION"
       printf -v "$OPTION" "%s" "$OVERRIDE_COMP_OPTION"
+      if [ "$OVERRIDE_COMP_OPTION" != "yes" ]; then
+        echo -n "$opt_line_head: $1 (conf) "
+        opt_line_head=''
+      fi
       return 0
     fi
   fi
   
   printf -v "$OPTION" "%s" "yes"
-}
-
-__reset_options () {
-  __read_option DEVICES
-  __read_option HOOKS
-  __read_option LABELS
-  __read_option LOGGING
-  __read_option PORTS
 }
 
 __run_hooks () {
@@ -211,15 +208,18 @@ __verify_volumes () {
 do_validate () {
   __do_prereqs validate || return 1
 
+  echo -n '[v] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    for bad_attr in devices labels logging ports image ; do
+    echo -n " $svc"
+    for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
-        __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
+        echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
         return 1
       fi
     done
   done
+  echo
 }
 
 do_clean () {
@@ -254,12 +254,15 @@ do_pull () {
 do_status () {
   __do_prereqs status || return 1
 
+  echo -n '[s] Querying service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
+    echo -n " $svc"
     if ! ( $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ) ; then
-      __error "'$svc' is not healthy."
+      echo ; __error "'$svc' is not healthy."
       return 1
     fi
   done
+  echo
 }
 
 do_up () {
@@ -312,18 +315,18 @@ Flags:
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
-Options:              { NEVER | auto (default) | ALWAYS }
+Options:              { yes | no }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
   [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
   [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
   [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
 
-     NEVER = Never configure the option (and use docker default instead):
-             ignores 'docker-compose.*.{sh,yml}' files.
-      auto = Configure the option unless overridden in options.override.conf:
+ <omitted> = Configure the option unless overridden in options.override.conf:
              use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
-    ALWAYS = Always configure the option as specified:
+        no = Never configure the option (and use docker default instead):
+             ignores 'docker-compose.*.{sh,yml}' files.
+       yes = Always configure the option as specified:
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions Found ($num_comps):" >&2
@@ -390,7 +393,7 @@ done
 
 validate_optarg () {
   case "$1" in
-    ALWAYS | auto | NEVER ) return 0 ;;
+    yes | no ) return 0 ;;
   esac
   usage "Unknown option argument: '$1'"
 }
@@ -482,8 +485,11 @@ perform () {
 
     cd "$SELF_DIR/$comp"
 
-    __reset_options
-    echo "[.] devices = $OPTION_DEVICES ; logging = $OPTION_LOGGING ; hooks = $OPTION_HOOKS ; labels = $OPTION_LABELS ; ports = $OPTION_PORTS"
+    opt_line_head='[o] Disabled options'
+    for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
+      __read_option $opt
+    done
+    [ -n "$opt_line_head" ] || echo
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
       || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_GEN_ERROR

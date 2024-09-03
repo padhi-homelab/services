@@ -26,7 +26,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --labels NEVER traefik
+          ./compositions.sh up --labels no traefik
       -
         name: "Service: Wait"
         run: |
