@@ -90,7 +90,7 @@ Verbs: (short forms within [])
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --fail-on-error]     Fail on the first verb failures
+  [-F | --fail-fast]         Fail on the first verb failures
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 

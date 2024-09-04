@@ -19,6 +19,7 @@ if [ -z "$RUNNER_CMD" ] ; then
   fi
 fi
 
+NETWORK_FLAGS=''
 if [ "${RUNNER_CMD}" = "${DOCKER_CMD}" ] ; then
   NETWORK_FLAGS="--attachable"
 fi

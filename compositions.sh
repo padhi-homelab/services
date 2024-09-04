@@ -12,19 +12,22 @@ DOCKER_CMD="docker"
 DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
 YQ_CMD="yq"
 
-EXIT_CODE_USAGE_ERROR=-1
-EXIT_CODE_DEP_INSTALL_FAILURE=-2
-EXIT_CODE_COMPOSITION_NOT_FOUND=-3
+FINAL_EXIT_CODE=0
+EXIT_CODE_GENERIC_ERROR=1
 
-EXIT_CODE_GEN_ERROR=1
-EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=2
-EXIT_CODE_SIMPLE_VERB_FAILURE=3
-EXIT_CODE_POST_HOOK_SCRIPT_ERROR=4
+EXIT_CODE_USAGE_ERROR=-10
+EXIT_CODE_DEP_INSTALL_FAILURE=-20
+EXIT_CODE_COMPOSITION_NOT_FOUND=-30
 
-FLAG_SKIP_REGENERATE=""
-FLAG_SKIP_PREREQS=""
-FLAG_FAIL_ON_ERROR=""
+EXIT_CODE_GEN_ERROR=10
+EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=20
+EXIT_CODE_SIMPLE_VERB_FAILURE=30
+EXIT_CODE_POST_HOOK_SCRIPT_ERROR=40
+
+FLAG_FAIL_FAST=""
 FLAG_SKIP_OVERRIDES=""
+FLAG_SKIP_PREREQS=""
+FLAG_SKIP_REGENERATE=""
 
 OPTION_DEVICES=""
 OPTION_HOOKS=""
@@ -101,7 +104,7 @@ __gen_env () {
   [ ! -f .env ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] || return 0
   rm -rf .env
 
-  echo -n "[*] Generating '.env': "
+  printf "[*] Generating '.env': "
   cp "$SELF_DIR/static.global.env" .env || return 1
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
     cat "$SELF_DIR/static.global.override.env" >> .env || return 1
@@ -138,6 +141,16 @@ __gen_templates () {
     done
 }
 
+__maybe_fail_fast () {
+  [ "$FLAG_FAIL_FAST" != "yes" ] || exit $1
+
+  if [ $FINAL_EXIT_CODE -eq 0 ] ; then
+    FINAL_EXIT_CODE=$1
+  elif [ $FINAL_EXIT_CODE -ne $1 ] ; then
+    FINAL_EXIT_CODE=$EXIT_CODE_GENERIC_ERROR
+  fi
+}
+
 __read_option () {
   local OPTION="OPTION_$1"
 
@@ -146,7 +159,7 @@ __read_option () {
        yes ) printf -v "$OPTION" "%s" "yes"
              return 0 ;;
         no ) printf -v "$OPTION" "%s" "no"
-             echo -n "$opt_line_head: $1 (arg) "
+             printf "$opt_line_head: $1 (arg) "
              opt_line_head=''
              return 0 ;;
   esac
@@ -156,7 +169,7 @@ __read_option () {
     if ! [ -z "$OVERRIDE_COMP_OPTION" ] ; then
       printf -v "$OPTION" "%s" "$OVERRIDE_COMP_OPTION"
       if [ "$OVERRIDE_COMP_OPTION" != "yes" ]; then
-        echo -n "$opt_line_head: $1 (conf) "
+        printf "$opt_line_head: $1 (conf) "
         opt_line_head=''
       fi
       return 0
@@ -208,10 +221,10 @@ __verify_volumes () {
 do_validate () {
   __do_prereqs validate || return 1
 
-  echo -n '[v] Validating service:'
+  printf '[v] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    echo -n " $svc"
+    printf " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
         echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
@@ -235,14 +248,14 @@ do_overrides () {
   local any_override=''
   for ofile in $(find .. -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
-    echo -n '[G] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
+    printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
   done
   [ -z "$any_override" ] && echo '[>] No global override files.'
 
   any_override=''
   for ofile in $(find . -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
-    echo -n '[L] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
+    printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
   done
   [ -z "$any_override" ] && echo '[>] No local override files.'
 }
@@ -254,9 +267,9 @@ do_pull () {
 do_status () {
   __do_prereqs status || return 1
 
-  echo -n '[s] Querying service:'
+  printf '[s] Querying service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
-    echo -n " $svc"
+    printf " $svc"
     if ! ( $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ) ; then
       echo ; __error "'$svc' is not healthy."
       return 1
@@ -311,7 +324,7 @@ Verbs: (short forms within [])
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --fail-on-error]     Fail on the first verb failures
+  [-F | --fail-fast]         Fail on the first verb failures
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
@@ -354,7 +367,7 @@ expand_verbs () {
       "v" | "V")  expanded="$expanded validate" ;;
               *)  return 1
     esac
-  done < <(echo -n "$1")
+  done < <(printf "$1")
   VERBS="$expanded"
 }
 
@@ -374,7 +387,7 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--fail-on-error")   set -- "$@" "-F" ;;
+    "--fail-fast")       set -- "$@" "-F" ;;
     "--skip-prereqs")    set -- "$@" "-P" ;;
     "--skip-overrides")  set -- "$@" "-O" ;;
     "--skip-regenerate") set -- "$@" "-R" ;;
@@ -401,7 +414,7 @@ validate_optarg () {
 OPTIND=1
 while getopts ':FOPRd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
-    "F" ) FLAG_FAIL_ON_ERROR="yes" ;;
+    "F" ) FLAG_FAIL_FAST="yes" ;;
     "O" ) FLAG_SKIP_OVERRIDES="yes" ;;
     "P" ) FLAG_SKIP_PREREQS="yes" ;;
     "R" ) FLAG_SKIP_REGENERATE="yes" ;;
@@ -469,18 +482,16 @@ perform () {
   local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
-    echo -ne "\n[+] Executing '$SIMPLE_VERB' on "
+    printf "\n[+] Executing '$SIMPLE_VERB' on "
     [ -z "$COMPOSITIONS_INTERNAL_CALL" ] || printf 'pre-req '
     echo "'$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
-      [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
-      continue
+      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND ; continue
     fi
     if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
       __error "No 'docker-compose.yml' found under '$comp'!"
-      [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_COMPOSITION_NOT_FOUND
-      continue
+      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND ; continue
     fi
 
     cd "$SELF_DIR/$comp"
@@ -492,22 +503,22 @@ perform () {
     [ -n "$opt_line_head" ] || echo
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR
 
     [ "$SIMPLE_VERB" != "overrides" ] || __do_prereqs overrides \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "pull" ] || __do_prereqs pull \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __do_prereqs status "yes" \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_GEN_ERROR
+      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+      || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
 
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?
@@ -520,12 +531,10 @@ perform () {
       echo "[>] '$comp' is healthy!"
     fi
 
-    if [ $verb_exit -ne 0 ] && [ "$FLAG_FAIL_ON_ERROR" = "yes" ] ; then
-      exit $EXIT_CODE_SIMPLE_VERB_FAILURE
-    fi
+    [ $verb_exit -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB post \
-      || [ "$FLAG_FAIL_ON_ERROR" != "yes" ] || exit $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
+      || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
 }
 
@@ -538,4 +547,4 @@ for VERB in $VERBS ; do
   perform $VERB
   print_sepator_line
 done
-echo
+echo ; exit $FINAL_EXIT_CODE
