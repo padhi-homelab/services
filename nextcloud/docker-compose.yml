@@ -99,7 +99,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: nextcloud:29.0.5
+    image: padhihomelab/nextcloud:29.0.6_19.24.4_1.1.0-core
     restart: unless-stopped
 
     security_opt:
@@ -121,9 +121,6 @@ services:
     - ./data/nextcloud/var/www/html:/var/www/html:rw
     # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
     - ./data/nextcloud/crontabs:/crontabs:rw
-    # FIXME: See https://github.com/nextcloud/docker/issues/1667
-    - /dev/null:/var/log/apache2/access.log:rw
-    - /dev/null:/var/log/apache2/other_vhosts_access.log:rw
     # FIXME: See https://github.com/nextcloud/docker/issues/763#issuecomment-1007447212
     - ./data/nextcloud/usr/local/etc/php/conf.d/redis-session.ini:/usr/local/etc/php/conf.d/redis-session.ini:rw
     # FIXME: See https://github.com/nextcloud/docker/issues/1494#issuecomment-1213540687
@@ -145,7 +142,7 @@ services:
 
   push:
     hostname: push
-    image: nextcloud:29.0.5
+    image: padhihomelab/nextcloud:29.0.6_19.24.4_1.1.0-core
     restart: unless-stopped
 
     security_opt:
@@ -180,7 +177,7 @@ services:
 
   cron:
     hostname: cron
-    image: nextcloud:29.0.5
+    image: padhihomelab/nextcloud:29.0.6_19.24.4_1.1.0-core
     restart: unless-stopped
     entrypoint: /cron.sh
 

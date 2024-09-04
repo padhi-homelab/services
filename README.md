@@ -592,15 +592,15 @@ Compositions Found (18):
           <sub>imaginary</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/nextcloud/'>
+        <a href='https://hub.docker.com/r/padhihomelab/nextcloud/'>
           <sub>nextcloud</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/nextcloud/'>
+        <a href='https://hub.docker.com/r/padhihomelab/nextcloud/'>
           <sub>cron</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/nextcloud/'>
+        <a href='https://hub.docker.com/r/padhihomelab/nextcloud/'>
           <sub>push</sub>
         </a>
       </th>
@@ -611,11 +611,11 @@ Compositions Found (18):
         <br>
         <code><sub>20240808...48</sub></code>
         <br>
-        <code><sub>29.0.5</sub></code>
+        <code><sub>29.0.6...core</sub></code>
         <br>
-        <code><sub>29.0.5</sub></code>
+        <code><sub>29.0.6...core</sub></code>
         <br>
-        <code><sub>29.0.5</sub></code>
+        <code><sub>29.0.6...core</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
