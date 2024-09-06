@@ -520,7 +520,7 @@ perform () {
     do_${SIMPLE_VERB} ; verb_exit=$?
 
     [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[>] '$comp' is valid!"
-    [ "$SIMPLE_VERB" = "status" ]  || [ $verb_exit -eq 0 ]  || echo "[>] '$comp' is healthy!"
+    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[>] '$comp' is healthy!"
 
     [ $verb_exit -eq 0 ] \
       || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
