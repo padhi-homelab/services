@@ -271,7 +271,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.22.1-r...s</sub></code>
+        <code><sub>1.22.2-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -309,7 +309,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>2024.8.3_2.0.0</sub></code>
+        <code><sub>2024.9.1_2.0.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -359,7 +359,7 @@ Compositions Found (18):
         <br>
         <code><sub>v3.3.21</sub></code>
         <br>
-        <code><sub>0.22.554</sub></code>
+        <code><sub>0.22.565</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
