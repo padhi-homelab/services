@@ -1,12 +1,12 @@
 # Services
 
 <details>
-<summary><h3>Why <code>compositions.sh</code>?</h3></summary>
+<summary><h3>Why <code>comp</code>?</h3></summary>
 
 The multi-staged nature and repetitive commands for setting up
 compositions with non-standard configuration
 (e.g., non-root containers, networking across compositions etc.)
-is the raison d'être for `compositions.sh`.
+is the raison d'être for `comp`.
 
 For running non-root containers with the host users UID:GID,
 so as to avoid permission issues with mounted volumes,
@@ -24,17 +24,17 @@ details (server's FQDN, ACME email and server etc.).
 One might also want to attach containers to [externally-created Docker networks],
 for sharing data across multiple compositions without exposing anything to host.
 In that case, a separate `docker network` command must be executed before starting services.
-`compositions.sh` automatically detects external networks in YAML files,
+`comp` automatically detects external networks in YAML files,
 and creates them if they do not already exist.
 
 Finally, I also added several safeguards that `docker compose` doesn't provide.
 For instance, missing host directories that are required to be mounted to containers
 are automatically created by Docker (and are owned by `root`!),
-but `compositions.sh` errors out in such cases requesting the user for explicit action.
+but `comp` errors out in such cases requesting the user for explicit action.
 
 #### Why not use Ansible?
 
-Seemed like an overkill, when I initially wrote `compositions.sh`.
+Seemed like an overkill, when I initially wrote `comp`.
 </details>
 
 ### Usage
@@ -57,27 +57,27 @@ Typical workflows:
 
 - (Re)start compositions:
   ```
-  ./compositions.sh down,up tang pihole
+  ./comp down,up tang pihole
   ```
 
 - Update repo & restart a composition:
   ```
-  git pull && ./compositions.sh pdu pihole
+  git pull && ./comp pdu pihole
   ```
   Note how we specify verbs `pull,down,up` using just their first characters.
 
 - Checking the status of compositions:
   ```
-  ./compositions.sh status tang pihole
+  ./comp status tang pihole
   ```
 
 <details>
 <summary><h4>Full List of Flags and Options</h4></summary>
 
 ```console
-$ ./compositions.sh
+$ ./comp
 Usage:
-  ./compositions.sh <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
+  ./comp <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
 Verbs: (short forms within [])
   [c]lean        Delete '<comp_dir>/data'
@@ -90,7 +90,7 @@ Verbs: (short forms within [])
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --fail-fast]         Fail on the first verb failures
+  [-F | --fail-fast]         Fail on the first verb failure
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 

@@ -26,7 +26,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --labels no ${TARGET_SERVICE}
+          ./comp up --labels no ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |
@@ -35,7 +35,7 @@ jobs:
       -
         name: "Service: Test"
         run: |
-          if ! ./compositions.sh status ${TARGET_SERVICE}; then
+          if ! ./comp status ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker compose logs
             exit 1

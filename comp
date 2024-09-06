@@ -41,7 +41,7 @@ ARG_LABELS="auto"
 ARG_LOGGING="auto"
 ARG_PORTS="auto"
 
-: "${COMPOSITIONS_INTERNAL_CALL:=}"
+: "${COMP_INTERNAL_CALL:=}"
 
 # # # # # # # # # # # # # # # # # # #     HELPER ROUTINES     # # # # # # # # # # # # # # # # # # #
 
@@ -57,7 +57,7 @@ __append_env_from () {
 __CALL_SELF__ () {
   local cur_dir="$(pwd)"
   cd "$SELF_DIR"
-  COMPOSITIONS_INTERNAL_CALL=1 bash "$0" "$@"
+  COMP_INTERNAL_CALL=1 bash "$0" "$@"
   local exit_code=$?
   cd "$cur_dir"
   return $exit_code
@@ -149,6 +149,8 @@ __maybe_fail_fast () {
   elif [ $FINAL_EXIT_CODE -ne $1 ] ; then
     FINAL_EXIT_CODE=$EXIT_CODE_GENERIC_ERROR
   fi
+
+  return $1
 }
 
 __read_option () {
@@ -245,6 +247,8 @@ do_down () {
 }
 
 do_overrides () {
+  __do_prereqs overrides || return 1
+
   local any_override=''
   for ofile in $(find .. -maxdepth 1 -type f -iname '*override*') ; do
     any_override='YES'
@@ -261,6 +265,7 @@ do_overrides () {
 }
 
 do_pull () {
+  __do_prereqs pull || return 1
   $DOCKER_COMPOSE_CMD pull
 }
 
@@ -268,7 +273,7 @@ do_status () {
   __do_prereqs status || return 1
 
   printf '[s] Querying service:'
-  for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
+  for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
     printf " $svc"
     if ! ( $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ) ; then
       echo ; __error "'$svc' is not healthy."
@@ -279,8 +284,9 @@ do_status () {
 }
 
 do_up () {
-  local COMPOSE_FILES=( "docker-compose.yml" )
+  __do_prereqs status "yes" || return 1
 
+  local COMPOSE_FILES=( "docker-compose.yml" )
   for fragment in DEVICES LABELS LOGGING PORTS ; do
     local OPTION="OPTION_${fragment}"
     if [ "${!OPTION}" != "yes" ] ; then continue ; fi
@@ -306,7 +312,7 @@ do_up () {
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
 
 usage () {
-  if [ $# -gt 0 ] ; then echo -e "\nERROR: $1" >&2 ; fi
+  [ $# -eq 0 ] || echo -e "\nERROR: $1" >&2
   num_comps="$(\ls -1 */docker-compose.yml | wc -l)"
   compositions="$(\ls -Cdw100000 */docker-compose.yml | sed 's:\/[^[:space:]]*::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
   echo -e "
@@ -324,7 +330,7 @@ Verbs: (short forms within [])
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --fail-fast]         Fail on the first verb failures
+  [-F | --fail-fast]         Fail on the first verb failure
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
@@ -351,8 +357,7 @@ Compositions Found ($num_comps):" >&2
 
 [ $# -gt 0 ] || usage
 
-VERBS="$1"
-VERBS="${VERBS//,/ }"
+VERBS="${1//,/ }"
 
 expand_verbs () {
   local expanded=""
@@ -483,15 +488,15 @@ perform () {
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
     printf "\n[+] Executing '$SIMPLE_VERB' on "
-    [ -z "$COMPOSITIONS_INTERNAL_CALL" ] || printf 'pre-req '
+    [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "'$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
-      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND ; continue
+      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
     fi
     if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
       __error "No 'docker-compose.yml' found under '$comp'!"
-      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND ; continue
+      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
     fi
 
     cd "$SELF_DIR/$comp"
@@ -503,35 +508,22 @@ perform () {
     [ -n "$opt_line_head" ] || echo
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
-      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR
-
-    [ "$SIMPLE_VERB" != "overrides" ] || __do_prereqs overrides \
-      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
-
-    [ "$SIMPLE_VERB" != "pull" ] || __do_prereqs pull \
-      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
-
-    [ "$SIMPLE_VERB" != "up" ] || __do_prereqs status "yes" \
-      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
+      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR || continue
 
     [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
-      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR
+      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR || continue
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
-      || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR
+      || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
 
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?
 
-    if [ "$SIMPLE_VERB" = "validate" ] && [ $verb_exit -eq 0 ] ; then
-      echo "[>] '$comp' is valid!"
-    fi
+    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[>] '$comp' is valid!"
+    [ "$SIMPLE_VERB" = "status" ]  || [ $verb_exit -eq 0 ]  || echo "[>] '$comp' is healthy!"
 
-    if [ "$SIMPLE_VERB" = "status" ] && [ $verb_exit -eq 0 ] ; then
-      echo "[>] '$comp' is healthy!"
-    fi
-
-    [ $verb_exit -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE
+    [ $verb_exit -eq 0 ] \
+      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
@@ -539,7 +531,7 @@ perform () {
 }
 
 print_sepator_line () {
-  [ -n "$COMPOSITIONS_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
+  [ -n "$COMP_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
 }
 
 print_sepator_line

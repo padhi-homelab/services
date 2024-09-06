@@ -26,7 +26,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./compositions.sh up --labels no traefik
+          ./comp up --labels no traefik
       -
         name: "Service: Wait"
         run: |
@@ -35,7 +35,7 @@ jobs:
       -
         name: "Service: Test"
         run: |
-          if ! ./compositions.sh status ${TARGET_SERVICE}; then
+          if ! ./comp status ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker compose logs
             exit 1
@@ -43,7 +43,7 @@ jobs:
       -
         name: "Service: Restart with labels"
         run: |
-          ./compositions.sh down,up traefik
+          ./comp down,up traefik
       -
         name: "Service: Wait"
         run: |
@@ -51,7 +51,7 @@ jobs:
       -
         name: "Service: Test with Traefik"
         run: |
-          if ! ./compositions.sh status ${TARGET_SERVICE}; then
+          if ! ./comp status ${TARGET_SERVICE}; then
             docker ps
             cd ${TARGET_SERVICE} ; docker compose logs
             exit 1
