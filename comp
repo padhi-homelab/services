@@ -15,9 +15,10 @@ YQ_CMD="yq"
 FINAL_EXIT_CODE=0
 EXIT_CODE_GENERIC_ERROR=1
 
-EXIT_CODE_USAGE_ERROR=-10
-EXIT_CODE_DEP_INSTALL_FAILURE=-20
-EXIT_CODE_COMPOSITION_NOT_FOUND=-30
+EXIT_CODE_USAGE_ERROR=250
+EXIT_CODE_OPTIONS_CONF_ERROR=240
+EXIT_CODE_DEP_INSTALL_FAILURE=230
+EXIT_CODE_COMPOSITION_NOT_FOUND=220
 
 EXIT_CODE_GEN_ERROR=10
 EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=20
@@ -34,12 +35,6 @@ OPTION_HOOKS=""
 OPTION_LABELS=""
 OPTION_LOGGING=""
 OPTION_PORTS=""
-
-ARG_DEVICES="auto"
-ARG_HOOKS="auto"
-ARG_LABELS="auto"
-ARG_LOGGING="auto"
-ARG_PORTS="auto"
 
 : "${COMP_INTERNAL_CALL:=}"
 
@@ -79,7 +74,6 @@ __create_external_networks () {
 
 __do_prereqs () {
   [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
-
   [ -f "$PREREQS_FILENAME" ] || return 0
 
   local verb="$1"
@@ -155,30 +149,21 @@ __maybe_fail_fast () {
 
 __read_option () {
   local OPTION="OPTION_$1"
+  local OVERRIDE_OPTION=""
 
-  local ARG="ARG_$1"
-  case "${!ARG}" in
-       yes ) printf -v "$OPTION" "%s" "yes"
-             return 0 ;;
-        no ) printf -v "$OPTION" "%s" "no"
-             printf "$opt_line_head: $1 (arg) "
-             opt_line_head=''
-             return 0 ;;
-  esac
-
-  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
-    local OVERRIDE_COMP_OPTION="$(cat options.override.conf 2>/dev/null | grep $1 | cut -d= -f2)"
-    if ! [ -z "$OVERRIDE_COMP_OPTION" ] ; then
-      printf -v "$OPTION" "%s" "$OVERRIDE_COMP_OPTION"
-      if [ "$OVERRIDE_COMP_OPTION" != "yes" ]; then
-        printf "$opt_line_head: $1 (conf) "
-        opt_line_head=''
-      fi
-      return 0
+  if [ -z "${!OPTION}" ] && [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
+    OVERRIDE_OPTION="$(cat options.override.conf 2>/dev/null | grep "$1" | cut -d= -f2)"
+    if [ -n "$OVERRIDE_OPTION" ] ; then
+      validate_and_set_option "$OVERRIDE_OPTION" "$1" override || return 1
     fi
   fi
-  
-  printf -v "$OPTION" "%s" "yes"
+  [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" "yes"
+
+  if [ "${!OPTION}" != "yes" ] ; then 
+    printf "$opt_line_head: $1 "
+    [ -z "$OVERRIDE_OPTION" ] && printf "(arg) " || printf "(conf) "
+    opt_line_head=''
+  fi
 }
 
 __run_hooks () {
@@ -357,8 +342,6 @@ Compositions Found ($num_comps):" >&2
 
 [ $# -gt 0 ] || usage
 
-VERBS="${1//,/ }"
-
 expand_verbs () {
   local expanded=""
   while read -n1 char; do
@@ -376,6 +359,7 @@ expand_verbs () {
   VERBS="$expanded"
 }
 
+VERBS="${1//,/ }"
 for VERB in $VERBS ; do
   [ "$VERB" = "clean" ] || \
   [ "$VERB" = "down" ] || \
@@ -409,11 +393,16 @@ for opt in "$@" ; do
   esac
 done
 
-validate_optarg () {
+validate_and_set_option () {
+  local OPTION="OPTION_$2"
   case "$1" in
-    yes | no ) return 0 ;;
+    yes | no ) printf -v "$OPTION" "%s" "$1"
+               return 0
   esac
-  usage "Unknown option argument: '$1'"
+  [ "$3" = "override" ] \
+    && ( echo ; __error "Invalid value '$1' for '${2,,}' option in options.override.conf" ) \
+    || usage "Invalid value '$1' for '${2,,}' option"
+  return 1
 }
 
 OPTIND=1
@@ -424,11 +413,11 @@ while getopts ':FOPRd:g:h:l:p:' OPTION ; do
     "P" ) FLAG_SKIP_PREREQS="yes" ;;
     "R" ) FLAG_SKIP_REGENERATE="yes" ;;
 
-    "d" ) validate_optarg "$OPTARG" && ARG_DEVICES="$OPTARG" ;;
-    "g" ) validate_optarg "$OPTARG" && ARG_LOGGING="$OPTARG" ;;
-    "h" ) validate_optarg "$OPTARG" && ARG_HOOKS="$OPTARG" ;;
-    "l" ) validate_optarg "$OPTARG" && ARG_LABELS="$OPTARG" ;;
-    "p" ) validate_optarg "$OPTARG" && ARG_PORTS="$OPTARG" ;;
+    "d" ) validate_and_set_option "$OPTARG" DEVICES usage ;;
+    "g" ) validate_and_set_option "$OPTARG" LOGGING usage ;;
+    "h" ) validate_and_set_option "$OPTARG" HOOKS usage ;;
+    "l" ) validate_and_set_option "$OPTARG" LABELS usage ;;
+    "p" ) validate_and_set_option "$OPTARG" PORTS usage ;;
 
       * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
@@ -501,10 +490,14 @@ perform () {
 
     cd "$SELF_DIR/$comp"
 
+    local opt_error=0
     opt_line_head='[o] Disabled options'
     for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
-      __read_option $opt
+      __read_option $opt && continue
+      opt_error=1
     done
+    [ "$opt_error" -eq 0 ] \
+      || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
     [ -n "$opt_line_head" ] || echo
 
     [ "$SIMPLE_VERB" = "clean" ] || __gen_env \

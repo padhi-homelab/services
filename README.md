@@ -1,4 +1,5 @@
-# Services
+# Services <a href='https://github.com/padhi-homelab/services/actions/workflows/self_test.yml'><img align='right' src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/self_test.yml?branch=master&logo=github&logoWidth=24&style=for-the-badge&label=self test'></img></a>
+
 
 <details>
 <summary><h3>Why <code>comp</code>?</h3></summary>
