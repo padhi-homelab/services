@@ -122,12 +122,13 @@ Compositions Found (18):
   <thead>
     <tr>
       <th colspan='4' align='center'>╭── &nbsp; Compositions &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
-      <th align='center'><sub>amd64</sub></th>
+      <th align='center'><sub>amd 64</sub></th>
       <th align='center'><sub>386</sub></th>
-      <th align='center'><sub>arm/v6</sub></th>
-      <th align='center'><sub>arm/v7</sub></th>
-      <th align='center'><sub>arm64</sub></th>
-      <th align='center'><sub>ppc64le</sub></th>
+      <th align='center'><sub>arm v6</sub></th>
+      <th align='center'><sub>arm v7</sub></th>
+      <th align='center'><sub>arm 64</sub></th>
+      <th align='center'><sub>ppc 64le</sub></th>
+      <th align='center'><sub>risc v64</sub></th>
     </tr>
   </thead>
   <tbody>
@@ -178,6 +179,11 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -215,6 +221,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -254,6 +263,9 @@ Compositions Found (18):
       <td align='center'>
         :heavy_check_mark:
       </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -292,6 +304,9 @@ Compositions Found (18):
       <td align='center'>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -326,6 +341,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
@@ -392,6 +410,13 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -426,6 +451,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
@@ -467,6 +495,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
     </tr>
     <tr>
@@ -530,6 +561,13 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -564,6 +602,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
@@ -676,6 +717,19 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -718,6 +772,11 @@ Compositions Found (18):
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
       </td>
     </tr>
@@ -766,6 +825,11 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -804,6 +868,9 @@ Compositions Found (18):
       <td align='center'>
         :heavy_check_mark:
       </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -822,7 +889,7 @@ Compositions Found (18):
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.31.3</sub></code>
+        <code><sub>1.32.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -838,6 +905,9 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
@@ -905,6 +975,13 @@ Compositions Found (18):
         <br>
         :heavy_multiplication_x:
       </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
     </tr>
     <tr>
       <th>
@@ -941,7 +1018,10 @@ Compositions Found (18):
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_multiplication_x:
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>
@@ -960,14 +1040,14 @@ Compositions Found (18):
           <sub>mongodb</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/r/padhihomelab/unifi'>
+        <a href='https://hub.docker.com/r/goofball222/unifi'>
           <sub>unifi</sub>
         </a>
       </th>
       <td align='center'>
         <code><sub>4.4.18</sub></code>
         <br>
-        <code><sub>8.4.59</sub></code>
+        <code><sub>8.4.62</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -989,6 +1069,11 @@ Compositions Found (18):
       </td>
       <td align='center'>
         :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_multiplication_x:
