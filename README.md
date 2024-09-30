@@ -2,7 +2,7 @@
 
 
 <details>
-<summary><h3>Why <code>comp</code>?</h3></summary>
+<summary><h4>Why <code>comp</code>?</h4></summary>
 
 The multi-staged nature and repetitive commands for setting up
 compositions with non-standard configuration
@@ -33,14 +33,14 @@ For instance, missing host directories that are required to be mounted to contai
 are automatically created by Docker (and are owned by `root`!),
 but `comp` errors out in such cases requesting the user for explicit action.
 
-#### Why not use Ansible?
+#### Why not use Ansible / Kubernetes / XYZ?
 
-Seemed like an overkill, when I initially wrote `comp`.
+Seemed like overkill, when I initially wrote `comp`.
 </details>
 
 ### Usage
 
-Initial setup:
+Optional setup:
 
 1. Override the global env generators as necessary, e.g.:
    ```

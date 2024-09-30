@@ -6,6 +6,9 @@ on:
   push:
     branches: master
 
+env:
+  DEBUG: 1
+
 jobs:
   test:
     runs-on: ubuntu-latest

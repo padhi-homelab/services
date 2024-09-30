@@ -20,10 +20,10 @@ EXIT_CODE_OPTIONS_CONF_ERROR=240
 EXIT_CODE_DEP_INSTALL_FAILURE=230
 EXIT_CODE_COMPOSITION_NOT_FOUND=220
 
-EXIT_CODE_GEN_ERROR=10
-EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=20
-EXIT_CODE_SIMPLE_VERB_FAILURE=30
-EXIT_CODE_POST_HOOK_SCRIPT_ERROR=40
+EXIT_CODE_SETUP_ERROR=10
+EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=100
+EXIT_CODE_SIMPLE_VERB_FAILURE=110
+EXIT_CODE_POST_HOOK_SCRIPT_ERROR=120
 
 FLAG_FAIL_FAST=""
 FLAG_SKIP_OVERRIDES=""
@@ -82,7 +82,7 @@ __do_prereqs () {
     if [ "$verb" = "status" ] ; then
       if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
         [ "$ensure_running" = "yes" ] || return 1
-        __CALL_SELF__ down,up -F "$prereq_comp_dir" || return 1
+        __CALL_SELF__ up -F "$prereq_comp_dir" || return 1
       fi
     else
       __CALL_SELF__ $verb -F "$prereq_comp_dir" || return 1
@@ -163,6 +163,13 @@ __read_option () {
     printf "$opt_line_head: $1 "
     [ -z "$OVERRIDE_OPTION" ] && printf "(arg) " || printf "(conf) "
     opt_line_head=''
+  else
+    if [ -f "docker-compose.${1,,}.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.${1,,}.yml" )
+      if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
+        COMPOSE_FILES+=( "docker-compose.${1,,}.override.yml" )
+      fi
+    fi
   fi
 }
 
@@ -203,10 +210,14 @@ __verify_volumes () {
   done
 }
 
+__will_invoke_compose () {
+  [ "$1" = "down" ] || [ "$1" = "pull" ] || [ "$1" = "status" ] || [ "$1" = "up" ]
+}
+
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
 
 do_validate () {
-  __do_prereqs validate || return 1
+  [ "$1" = "shallow" ] || __do_prereqs validate || return 1
 
   printf '[v] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
@@ -224,6 +235,10 @@ do_validate () {
 
 do_clean () {
   do_down || return 1
+
+  printf "Remove '$comp/data' (y/N)? " ; read -n1 2>&1 ; echo
+  [[ $REPLY =~ ^[Yy]$ ]]  || return 0
+
   rm -rfv data generated .env
 }
 
@@ -270,26 +285,6 @@ do_status () {
 
 do_up () {
   __do_prereqs status "yes" || return 1
-
-  local COMPOSE_FILES=( "docker-compose.yml" )
-  for fragment in DEVICES LABELS LOGGING PORTS ; do
-    local OPTION="OPTION_${fragment}"
-    if [ "${!OPTION}" != "yes" ] ; then continue ; fi
-
-    if [ -f "docker-compose.${fragment,,}.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.${fragment,,}.yml" )
-    fi
-    if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${fragment,,}.override.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.${fragment,,}.override.yml" )
-    fi
-  done
-
-  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
-    COMPOSE_FILES+=( "docker-compose.override.yml")
-  fi
-
-  __create_external_networks "${COMPOSE_FILES[@]}" || return 1
-  __verify_volumes "${COMPOSE_FILES[@]}" || return 1
 
   $DOCKER_COMPOSE_CMD ${COMPOSE_FILES[@]/#/-f } up -d
 }
@@ -489,6 +484,10 @@ perform () {
     fi
 
     cd "$SELF_DIR/$comp"
+    COMPOSE_FILES=( "docker-compose.yml" )
+    if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
+      COMPOSE_FILES+=( "docker-compose.override.yml")
+    fi
 
     local opt_error=0
     opt_line_head='[o] Disabled options'
@@ -500,14 +499,23 @@ perform () {
       || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
     [ -n "$opt_line_head" ] || echo
 
-    [ "$SIMPLE_VERB" = "clean" ] || __gen_env \
-      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR || continue
+    [ "$SIMPLE_VERB" = "validate" ] || do_validate shallow
 
-    [ "$SIMPLE_VERB" != "up" ] || __gen_templates \
-      || __maybe_fail_fast $EXIT_CODE_GEN_ERROR || continue
+    if __will_invoke_compose "$SIMPLE_VERB" ; then
+      __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      __create_external_networks "${COMPOSE_FILES[@]}" \
+        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      __gen_templates \
+      || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+    fi
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
+
+    if __will_invoke_compose "$SIMPLE_VERB" ; then
+      __verify_volumes "${COMPOSE_FILES[@]}" \
+        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+    fi
 
     local verb_exit=0
     do_${SIMPLE_VERB} ; verb_exit=$?

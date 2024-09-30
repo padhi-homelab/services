@@ -25,6 +25,6 @@ if [ "${RUNNER_CMD}" = "${DOCKER_CMD}" ] ; then
 fi
 
 if ! $RUNNER_CMD network inspect $NAME &> /dev/null; then
-  echo -n "[~] Creating external $RUNNER_CMD network '$NAME': "
+  echo -n "[~] Creating external $RUNNER_CMD network: "
   $RUNNER_CMD network create $NETWORK_FLAGS $NAME
 fi
