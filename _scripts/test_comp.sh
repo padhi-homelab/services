@@ -30,7 +30,7 @@ function SETUP () {
     echo "INPUT: $3"
   fi
   
-  echo "$3" | ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH"
+  ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"$3"
   COMP_EXIT_CODE=$?
   if [ -n "$DEBUG" ]; then
     echo "\$COMP_ERR_PATH contents:"

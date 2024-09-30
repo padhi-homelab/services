@@ -177,9 +177,11 @@ __read_option () {
 }
 
 __run_hooks () {
-  local stage="$1.$2"
+  local stage="$1"
+  [ -z "${2:-}" ] || stage="$1.$2"
   ls docker-compose."$stage"_hook*.sh &> /dev/null || return 0
-  echo "[*] Running '$2' hooks for '$1' ..."
+  [ -n "${2:-}" ] && echo "[>] Running '$2' hooks for '$1' ..." \
+                  || echo "[>] Running '$1' hooks ..."
 
   if ! ( set -a && source .env && ./docker-compose."$stage"_hook.sh ) ; then
     __error "HOOK 'docker-compose.${stage}_hook.sh' FAILED!" ; return 1
@@ -257,14 +259,14 @@ do_overrides () {
     any_override='YES'
     printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
   done < <(find .. -maxdepth 1 -type f -iname '*override*')
-  [ -n "$any_override" ] || echo '[>] No global override files.'
+  [ -n "$any_override" ] || echo '[-] No global override files.'
 
   any_override=''
   while IFS= read -r ofile ; do
     any_override='YES'
     printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
   done < <(find . -maxdepth 1 -type f -iname '*override*')
-  [ -n "$any_override" ] || echo '[>] No local override files.'
+  [ -n "$any_override" ] || echo '[-] No local override files.'
 }
 
 do_pull () {
@@ -275,7 +277,7 @@ do_pull () {
 do_status () {
   __do_prereqs status || return 1
 
-  printf '[s] Querying service:'
+  printf '[?] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
     echo -n " $svc"
     if ! ( $DOCKER_COMPOSE_CMD ps "$svc" 2> /dev/null | grep -q healthy ) ; then
@@ -508,7 +510,9 @@ perform () {
       __create_external_networks "${COMPOSE_FILES[@]}" \
         || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __gen_templates \
-      || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      [ "$OPTION_HOOKS" != "yes" ] || __run_hooks pre \
+        || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     fi
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" pre \
@@ -522,11 +526,16 @@ perform () {
     local verb_exit=0
     "do_${SIMPLE_VERB}" ; verb_exit=$?
 
-    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[>] '$comp' is valid!"
-    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[>] '$comp' is healthy!"
+    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[=] '$comp' is valid!"
+    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[=] '$comp' is healthy!"
 
     [ $verb_exit -eq 0 ] \
       || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+
+    if __will_invoke_compose "$SIMPLE_VERB" ; then
+      [ "$OPTION_HOOKS" != "yes" ] || __run_hooks post \
+        || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR || continue
+    fi
 
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR

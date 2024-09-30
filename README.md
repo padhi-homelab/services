@@ -48,6 +48,7 @@ Optional setup:
    ```
 2. For each desired composition, override the:
     - static and/or dynamic env generators in a similar manner
+    - additional prerequisite compositions: `pre.override.reqs`
     - docker service configuration: `docker-compose.override.yml`
     - docker service hooks: `docker-compose.up.pre_hook.override.01.sh` etc.
 
@@ -1129,6 +1130,9 @@ When deploying, all changes MUST appear in `.gitignore`d files:
     - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
+  - `pre.override.reqs` may name _additional_ compositions as prerequisites
+    - compositions listed in `pre.reqs` cannot be removed, however
+    - see [`tang/pre.reqs`](tang/pre.reqs) for an example
   - `options.override.env` may contain overrides for default values of the `{devices|labels|logging|ports}`
     options
     - options provided on the command-line may still override `options.override.conf`
@@ -1142,8 +1146,11 @@ When deploying, all changes MUST appear in `.gitignore`d files:
   - `docker-compose.override.{yml|yaml}` may contain overrides for docker compose
     - modular overrides may also be specified for individual YAML fragment files:  
       `docker-compose.{devices|labels|logging|ports}.override.{yml|yaml}`
+  - `docker-compose.{pre,post}_hook.override.*.sh`
+    may define additional hooks to be run before `docker compose`
+    - see [`nextcloud/docker-compose.pre_hook.sh`](nextcloud/docker-compose.pre_hook.sh) for an example
   - `docker-compose.{up,down,clean}.{pre,post}_hook.override.*.sh`
-    may define additional hooks to be run
+    may define additional verb-specific hooks to be run
     - see [`monitarr/docker-compose.up.pre_hook.sh`](monitarr/docker-compose.up.pre_hook.sh) for an example
 
 #### Subdirectories
