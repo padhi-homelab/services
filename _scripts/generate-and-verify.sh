@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC2154 source=/dev/null
+
 set -Eumo pipefail
+
+SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+source "$SELF_DIR/colors.sh"
 
 SOURCE_FILE="$1"
 TARGET_FILE="$2"
 
 ENV_VARS="$(cut -d= -f1 .env | awk '{print "$" $0}')"
 
-echo -n "[~] Generating '$TARGET_FILE': "
+echo -n "[*] Generating '$TARGET_FILE': "
 
 if [ -e "$TARGET_FILE" ] && [ ! -f "$TARGET_FILE" ] ; then
   echo "CANNOT OVERWRITE!"
@@ -17,8 +22,8 @@ fi
 env -i - $(paste .env) \
     envsubst "$ENV_VARS"\
         < "$SOURCE_FILE" \
-        > "$TARGET_FILE"
-[ $? -eq 0 ] || exit 1
+        > "$TARGET_FILE" \
+  || exit 1
 
 SRC_VARS=$(envsubst -v "$(cat "$SOURCE_FILE")" | paste -sd '|')
 
@@ -30,4 +35,4 @@ if grep -qE "$SRC_VARS" "$TARGET_FILE" ; then
   exit 1
 fi
 
-echo VERIFIED
+echo "${_fg_green_}VERIFIED${_normal_}"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2034,SC2317 source=/dev/null
+# shellcheck disable=SC2016,SC2034,SC2068,SC2154,SC2317 source=/dev/null
 
 set -Eumo pipefail
 
@@ -39,6 +39,8 @@ OPTION_LOGGING=""
 OPTION_PORTS=""
 
 : "${COMP_INTERNAL_CALL:=}"
+
+source "$SCRIPTS_DIR/colors.sh"
 
 # # # # # # # # # # # # # # # # # # #     HELPER ROUTINES     # # # # # # # # # # # # # # # # # # #
 
@@ -80,7 +82,7 @@ __do_prereqs () {
 
   local verb="$1"
   local ensure_running="${2:-no}"
-  while IFS= read -rd '' prereq_comp_dir ; do
+  while IFS= read -r prereq_comp_dir ; do
     if [ "$verb" = "status" ] ; then
       if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
         [ "$ensure_running" = "yes" ] || return 1
@@ -89,11 +91,11 @@ __do_prereqs () {
     else
       __CALL_SELF__ "$verb" -F "$prereq_comp_dir" || return 1
     fi
-  done < <(cat "$PREREQS_FILENAME" "$PREREQS_OVERRIDE_FILENAME")
+  done < <(cat "$PREREQS_FILENAME" "$PREREQS_OVERRIDE_FILENAME" 2>/dev/null)
 }
 
 __error () {
-  echo "[X] ERROR: $1" >&2
+  echo "${_fg_red_}${_bold_}[X] ERROR${_normal_}: $1" >&2
 }
 
 __gen_env () {
@@ -123,18 +125,17 @@ __gen_env () {
 
 __gen_templates () {
   find ./extra -name '*.template.*' 2>/dev/null | grep -q . || return 0
-  echo "[*] Verifying templated files ..."
+  echo "[~] Verifying templated files ..."
 
-  find ./extra -name '*.template.*' -print0 | \
-    while IFS= read -rd '' template_file ; do
-      local generated_file="./generated${template_file#./extra}"
-      mkdir -p "$(dirname "$generated_file")"
-      generated_file="${generated_file/.template/}"
-      if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] ; then
-        "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
-          || return 1
-      fi
-    done
+  while IFS= read -r template_file ; do
+    local generated_file="./generated${template_file#./extra}"
+    mkdir -p "$(dirname "$generated_file")"
+    generated_file="${generated_file/.template/}"
+    if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] ; then
+      "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
+        || return 1
+    fi
+  done < <(find ./extra -name '*.template.*')
 }
 
 __maybe_fail_fast () {
@@ -176,20 +177,20 @@ __read_option () {
 }
 
 __run_hooks () {
-  ls "docker-compose.$1.$2_hook*.sh" &> /dev/null || return 0
+  local stage="$1.$2"
+  ls docker-compose."$stage"_hook*.sh &> /dev/null || return 0
   echo "[*] Running '$2' hooks for '$1' ..."
 
-  if ! ( set -a && source .env && "./docker-compose.$1.$2_hook.sh" ) ; then
-    __error "HOOK 'docker-compose.$1.$2_hook.sh' FAILED!" ; return 1
+  if ! ( set -a && source .env && ./docker-compose."$stage"_hook.sh ) ; then
+    __error "HOOK 'docker-compose.${stage}_hook.sh' FAILED!" ; return 1
   fi
 
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] ; then
-    find . -maxdepth 1 -type f -name "docker-compose.$1.$2_hook.override*.sh" -print0 | \
-      while IFS= read -r -d '' hook_file ; do
-        if ! ( set -a && source .env && "$hook_file" ) ; then
-          __error "HOOK '${hook_file#./}' FAILED!" ; return 1
-        fi
-      done
+    while IFS= read -r hook_file ; do
+      if ! ( set -a && source .env && "$hook_file" ) ; then
+        __error "HOOK '${hook_file#./}' FAILED!" ; return 1
+      fi
+    done < <(find . -maxdepth 1 -type f -name "docker-compose.${stage}_hook.override*.sh")
   fi
 }
 
@@ -221,7 +222,7 @@ __will_invoke_compose () {
 do_validate () {
   [ "$1" = "shallow" ] || __do_prereqs validate || return 1
 
-  printf '[v] Validating service:'
+  printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
     echo -n " $svc"
@@ -252,20 +253,18 @@ do_overrides () {
   __do_prereqs overrides || return 1
 
   local any_override=''
-  find .. -maxdepth 1 -type f -iname '*override*' -print0 | \
-    while IFS= read -rd '' ofile ; do
-      any_override='YES'
-      printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
-    done
-  [ -z "$any_override" ] && echo '[>] No global override files.'
+  while IFS= read -r ofile ; do
+    any_override='YES'
+    printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
+  done < <(find .. -maxdepth 1 -type f -iname '*override*')
+  [ -n "$any_override" ] || echo '[>] No global override files.'
 
   any_override=''
-  find . -maxdepth 1 -type f -iname '*override*' -print0 | \
-    while IFS= read -rd '' ofile ; do
-      any_override='YES'
-      printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
-    done
-  [ -z "$any_override" ] && echo '[>] No local override files.'
+  while IFS= read -r ofile ; do
+    any_override='YES'
+    printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
+  done < <(find . -maxdepth 1 -type f -iname '*override*')
+  [ -n "$any_override" ] || echo '[>] No local override files.'
 }
 
 do_pull () {
@@ -289,7 +288,7 @@ do_status () {
 
 do_up () {
   __do_prereqs status "yes" || return 1
-  $DOCKER_COMPOSE_CMD "${COMPOSE_FILES[@]/#/-f }" up -d
+  $DOCKER_COMPOSE_CMD ${COMPOSE_FILES[@]/#/-f } up -d
 }
 
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
@@ -474,9 +473,9 @@ perform () {
   local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
-    echo -ne "\n[+] Executing '$SIMPLE_VERB' on "
+    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_}[${SIMPLE_VERB:0:1}]${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
-    echo "'$comp' ... "
+    echo "${_bold_}$comp${_normal_} ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "'$comp' is not a base directory at '$SELF_DIR'!"
       __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
