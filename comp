@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034,SC2317 source=/dev/null
 
 set -Eumo pipefail
 
@@ -7,6 +8,7 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 LIB_DIR="$SELF_DIR/.lib"
 SCRIPTS_DIR="$SELF_DIR/_scripts"
 PREREQS_FILENAME="pre.reqs"
+PREREQS_OVERRIDE_FILENAME="pre.override.reqs"
 
 DOCKER_CMD="docker"
 DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
@@ -44,7 +46,7 @@ __append_env_from () {
   if [ -f "$1" ] ; then
     if ! ( set -a && source .env && "$1" ) >> .env ; then
       local script_file="${1/#./$comp}"
-      echo "'${script_file#$SELF_DIR/}' FAILED!" ; return 1
+      echo "'${script_file#"$SELF_DIR"/}' FAILED!" ; return 1
     fi
   fi
 }
@@ -61,14 +63,14 @@ __CALL_SELF__ () {
 __create_external_networks () {
   local EXTERNAL_NETWORKS=( )
   for yml in "$@" ; do
-    for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' $yml) ; do
+    for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' "$yml") ; do
       # NOTE: `echo ... | xargs` to get rid of quotes around network name during extraction via `yq`.
-      EXTERNAL_NETWORKS+=( $(echo $ext_net | xargs) )
+      EXTERNAL_NETWORKS+=( $(echo "$ext_net" | xargs) )
     done
   done
 
   for ext_net in $(printf "%s\n" "${EXTERNAL_NETWORKS[@]}" | sort -u) ; do
-    "$SCRIPTS_DIR/create-network.sh" $ext_net || return 1
+    "$SCRIPTS_DIR/create-network.sh" "$ext_net" || return 1
   done
 }
 
@@ -78,20 +80,20 @@ __do_prereqs () {
 
   local verb="$1"
   local ensure_running="${2:-no}"
-  for prereq_comp_dir in $(cat "$PREREQS_FILENAME") ; do
+  while IFS= read -rd '' prereq_comp_dir ; do
     if [ "$verb" = "status" ] ; then
       if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
         [ "$ensure_running" = "yes" ] || return 1
         __CALL_SELF__ up -F "$prereq_comp_dir" || return 1
       fi
     else
-      __CALL_SELF__ $verb -F "$prereq_comp_dir" || return 1
+      __CALL_SELF__ "$verb" -F "$prereq_comp_dir" || return 1
     fi
-  done
+  done < <(cat "$PREREQS_FILENAME" "$PREREQS_OVERRIDE_FILENAME")
 }
 
 __error () {
-  echo "[X] ERROR:" $1 >&2
+  echo "[X] ERROR: $1" >&2
 }
 
 __gen_env () {
@@ -124,7 +126,7 @@ __gen_templates () {
   echo "[*] Verifying templated files ..."
 
   find ./extra -name '*.template.*' -print0 | \
-    while IFS= read -r -d '' template_file ; do
+    while IFS= read -rd '' template_file ; do
       local generated_file="./generated${template_file#./extra}"
       mkdir -p "$(dirname "$generated_file")"
       generated_file="${generated_file/.template/}"
@@ -136,15 +138,15 @@ __gen_templates () {
 }
 
 __maybe_fail_fast () {
-  [ "$FLAG_FAIL_FAST" != "yes" ] || exit $1
+  [ "$FLAG_FAIL_FAST" != "yes" ] || exit "$1"
 
-  if [ $FINAL_EXIT_CODE -eq 0 ] ; then
+  if [ "$FINAL_EXIT_CODE" -eq 0 ] ; then
     FINAL_EXIT_CODE=$1
-  elif [ $FINAL_EXIT_CODE -ne $1 ] ; then
+  elif [ "$FINAL_EXIT_CODE" -ne "$1" ] ; then
     FINAL_EXIT_CODE=$EXIT_CODE_GENERIC_ERROR
   fi
 
-  return $1
+  return "$1"
 }
 
 __read_option () {
@@ -152,7 +154,7 @@ __read_option () {
   local OVERRIDE_OPTION=""
 
   if [ -z "${!OPTION}" ] && [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
-    OVERRIDE_OPTION="$(cat options.override.conf 2>/dev/null | grep "$1" | cut -d= -f2)"
+    OVERRIDE_OPTION="$(grep -s "$1" options.override.conf | cut -d= -f2)"
     if [ -n "$OVERRIDE_OPTION" ] ; then
       validate_and_set_option "$OVERRIDE_OPTION" "$1" override || return 1
     fi
@@ -160,7 +162,7 @@ __read_option () {
   [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" "yes"
 
   if [ "${!OPTION}" != "yes" ] ; then 
-    printf "$opt_line_head: $1 "
+    echo -n "$opt_line_head: $1 "
     [ -z "$OVERRIDE_OPTION" ] && printf "(arg) " || printf "(conf) "
     opt_line_head=''
   else
@@ -174,7 +176,7 @@ __read_option () {
 }
 
 __run_hooks () {
-  ls docker-compose.$1.$2_hook*.sh &> /dev/null || return 0
+  ls "docker-compose.$1.$2_hook*.sh" &> /dev/null || return 0
   echo "[*] Running '$2' hooks for '$1' ..."
 
   if ! ( set -a && source .env && "./docker-compose.$1.$2_hook.sh" ) ; then
@@ -194,16 +196,16 @@ __run_hooks () {
 __verify_volumes () {
   local mounted_volumes=( )
   for yml in "$@" ; do
-    for vol in $($YQ_CMD -M '.services.[] | with_entries(select(.key == "volumes")) | .[] | .[] as $v | $v' $yml) ; do
+    for vol in $($YQ_CMD -M '.services.[] | with_entries(select(.key == "volumes")) | .[] | .[] as $v | $v' "$yml") ; do
       case $vol in
-        ./* | /* ) mounted_volumes+=( $vol ) ;;
+        ./* | /* ) mounted_volumes+=( "$vol" ) ;;
                * ) ;;
       esac
     done
   done
 
   for vol in $(printf "%s\n" "${mounted_volumes[@]}" | sort -u) ; do
-    local vol="$(echo "$vol" | cut -d: -f1)"
+    vol="$(echo "$vol" | cut -d: -f1)"
     if ! [ -e "$vol" ] ; then
       __error "VOLUME PATH '${vol/#./$comp}' NOT FOUND!" ; return 1
     fi
@@ -222,7 +224,7 @@ do_validate () {
   printf '[v] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    printf " $svc"
+    echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
         echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
@@ -236,7 +238,7 @@ do_validate () {
 do_clean () {
   do_down || return 1
 
-  printf "Remove '$comp/data' (y/N)? " ; read -n1 2>&1 ; echo
+  echo -n "Remove '$comp/data' (y/N)? " ; read -rn1 2>&1 ; echo
   [[ $REPLY =~ ^[Yy]$ ]]  || return 0
 
   rm -rfv data generated .env
@@ -250,17 +252,19 @@ do_overrides () {
   __do_prereqs overrides || return 1
 
   local any_override=''
-  for ofile in $(find .. -maxdepth 1 -type f -iname '*override*') ; do
-    any_override='YES'
-    printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
-  done
+  find .. -maxdepth 1 -type f -iname '*override*' -print0 | \
+    while IFS= read -rd '' ofile ; do
+      any_override='YES'
+      printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
+    done
   [ -z "$any_override" ] && echo '[>] No global override files.'
 
   any_override=''
-  for ofile in $(find . -maxdepth 1 -type f -iname '*override*') ; do
-    any_override='YES'
-    printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." $ofile
-  done
+  find . -maxdepth 1 -type f -iname '*override*' -print0 | \
+    while IFS= read -rd '' ofile ; do
+      any_override='YES'
+      printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
+    done
   [ -z "$any_override" ] && echo '[>] No local override files.'
 }
 
@@ -274,8 +278,8 @@ do_status () {
 
   printf '[s] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
-    printf " $svc"
-    if ! ( $DOCKER_COMPOSE_CMD ps $svc 2> /dev/null | grep -q healthy ) ; then
+    echo -n " $svc"
+    if ! ( $DOCKER_COMPOSE_CMD ps "$svc" 2> /dev/null | grep -q healthy ) ; then
       echo ; __error "'$svc' is not healthy."
       return 1
     fi
@@ -285,8 +289,7 @@ do_status () {
 
 do_up () {
   __do_prereqs status "yes" || return 1
-
-  $DOCKER_COMPOSE_CMD ${COMPOSE_FILES[@]/#/-f } up -d
+  $DOCKER_COMPOSE_CMD "${COMPOSE_FILES[@]/#/-f }" up -d
 }
 
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
@@ -339,18 +342,18 @@ Compositions Found ($num_comps):" >&2
 
 expand_verbs () {
   local expanded=""
-  while read -n1 char; do
+  while read -rn1 char; do
     case "$char" in
-      "c" | "C")  expanded="$expanded clean" ;;
-      "d" | "D")  expanded="$expanded down" ;;
-      "o" | "O")  expanded="$expanded overrides" ;;
-      "p" | "P")  expanded="$expanded pull" ;;
-      "s" | "S")  expanded="$expanded status" ;;
-      "u" | "U")  expanded="$expanded up" ;;
-      "v" | "V")  expanded="$expanded validate" ;;
-              *)  return 1
+      "c") expanded="$expanded clean" ;;
+      "d") expanded="$expanded down" ;;
+      "o") expanded="$expanded overrides" ;;
+      "p") expanded="$expanded pull" ;;
+      "s") expanded="$expanded status" ;;
+      "u") expanded="$expanded up" ;;
+      "v") expanded="$expanded validate" ;;
+        *) return 1
     esac
-  done < <(printf "$1")
+  done < <(echo -n "$1")
   VERBS="$expanded"
 }
 
@@ -417,7 +420,7 @@ while getopts ':FOPRd:g:h:l:p:' OPTION ; do
       * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
 done
-shift $(($OPTIND -1))
+shift $((OPTIND -1))
 
 if [ $# -le 0 ] ; then
   __error "No <comp_dir>' provided!"
@@ -471,7 +474,7 @@ perform () {
   local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
-    printf "\n[+] Executing '$SIMPLE_VERB' on "
+    echo -ne "\n[+] Executing '$SIMPLE_VERB' on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "'$comp' ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
@@ -509,7 +512,7 @@ perform () {
       || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
     fi
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB pre \
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" pre \
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
 
     if __will_invoke_compose "$SIMPLE_VERB" ; then
@@ -518,7 +521,7 @@ perform () {
     fi
 
     local verb_exit=0
-    do_${SIMPLE_VERB} ; verb_exit=$?
+    "do_${SIMPLE_VERB}" ; verb_exit=$?
 
     [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[>] '$comp' is valid!"
     [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[>] '$comp' is healthy!"
@@ -526,7 +529,7 @@ perform () {
     [ $verb_exit -eq 0 ] \
       || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks $SIMPLE_VERB post \
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
 }
@@ -537,7 +540,7 @@ print_sepator_line () {
 
 print_sepator_line
 for VERB in $VERBS ; do
-  perform $VERB
+  perform "$VERB"
   print_sepator_line
 done
-echo ; exit $FINAL_EXIT_CODE
+echo ; exit "$FINAL_EXIT_CODE"
