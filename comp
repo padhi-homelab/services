@@ -261,8 +261,8 @@ do_clean () {
 
   rm -rfv generated .env
   if [ -d data ] ; then
-    echo -n "Remove '$comp/data' (y/N)? " ; read -rn1 2>&1
-    [[ $REPLY =~ ^[Yy]$ ]] && echo || return 0
+    echo -n "Remove '$comp/data' (y/N)? " ; read -r
+    [[ $REPLY =~ ^[Yy]$ ]] || return 0
   fi
   rm -rfv data
 }
@@ -450,7 +450,6 @@ if [ $# -le 0 ] ; then
 fi
 
 # # # # # # # # # # # # # # # # # # #       DEPENDENCIES      # # # # # # # # # # # # # # # # # # #
-
 # FIXME: Improve `podman` support and make it default.
 
 if ! $DOCKER_CMD version &> /dev/null ; then
@@ -478,7 +477,7 @@ if ! $DOCKER_COMPOSE_CMD version &> /dev/null ; then
   fi
 fi
 
-if ! $YQ_CMD &> /dev/null ; then
+if ! command -v $YQ_CMD &> /dev/null ; then
   if ! [ -x "$LIB_DIR/yq" ] ; then
     if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" ; then
       __error 'Failed to locate: `yq`!'

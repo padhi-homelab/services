@@ -26,21 +26,10 @@ if [ -z "$RUNNER_CMD" ] ; then
 fi
 
 if [ "${RUNNER_CMD}" = "${DOCKER_CMD}" ] ; then
-  case "$(uname -m)" in
-    x86_64  )            ARCH="amd64" ;;
-    aarch64 )            ARCH="aarch64" ;;
-    arm     | armv7l )   ARCH="armv7" ;;
-    ppc64   )            ARCH="ppc64le" ;;
-    s390x   )            ARCH="s390x" ;;
-    * )                  exit 1 ;;
-  esac
-  URL="https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-linux-${ARCH}"
+  URL="https://github.com/docker/compose/releases/download/v${DOCKER_COMPOSE_VERSION}/docker-compose-linux-$(uname -m)"
 elif [ "${RUNNER_CMD}" = "${PODMAN_CMD}" ] ; then
   URL="https://raw.githubusercontent.com/containers/podman-compose/v${PODMAN_COMPOSE_VERSION}/podman_compose.py"
 fi
-
-echo $RUNNER_CMD
-echo $URL
 
 mkdir -p "$(dirname "$OUTPUT")"
 rm -f "$OUTPUT"

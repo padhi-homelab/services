@@ -5,6 +5,7 @@ set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 cd "$SELF_DIR/.."
+rm -rf .lib
 
 DEBUG="${DEBUG:-}"
 
@@ -57,6 +58,8 @@ SETUP "invocation without args" \
       ""
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
       "Expected EXIT_CODE_USAGE_ERROR"
+CHECK $'grep -sq "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
+      "Expected usage information on stderr"
 
 SETUP "status of non-existent composition" \
       "status unknown_comp" \
