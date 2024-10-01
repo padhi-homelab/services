@@ -1,4 +1,4 @@
-name: "Docker Compose Test (docker.sock)"
+name: "Docker Compose Test (Kodi_DB)"
 
 on:
   pull_request:
@@ -9,8 +9,8 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: docker.sock
-  TARGET_TIMEOUT: 15
+  TARGET_SERVICE: kodi_db
+  TARGET_TIMEOUT: 60
 
 jobs:
   test:
@@ -19,6 +19,10 @@ jobs:
       -
         name: "Git: Checkout"
         uses: actions/checkout@v4
+      -
+        name: "Service: Setup"
+        run: |
+          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
       -
         name: "Service: Start"
         run: |

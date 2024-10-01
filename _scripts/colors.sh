@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
+set -Eumo pipefail
+
+DISABLE_COLORS=${DISABLE_COLORS:-}
+
 function P () {
+  [ -z "$DISABLE_COLORS" ] || return 0
   tput "$@" 2>/dev/null
 }
 

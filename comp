@@ -138,6 +138,15 @@ __gen_templates () {
   done < <(find ./extra -name '*.template.*')
 }
 
+__grab_ps () {
+  # FIXME: `podman` doesn't print health status!
+  local _ps_res="$( $DOCKER_CMD ps \
+    --format '{{.Label "com.docker.compose.service"}}\t{{.Status}}' \
+    --filter label=com.docker.compose.project=$comp \
+  )"
+  eval "$1"='$_ps_res'
+}
+
 __maybe_fail_fast () {
   [ "$FLAG_FAIL_FAST" != "yes" ] || exit "$1"
 
@@ -216,20 +225,25 @@ __verify_volumes () {
 }
 
 __will_invoke_compose () {
-  [ "$1" = "down" ] || [ "$1" = "pull" ] || [ "$1" = "status" ] || [ "$1" = "up" ]
+  [ "$1" = "down" ] || [ "$1" = "pull" ] || [ "$1" = "up" ]
 }
 
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
 
 do_validate () {
-  [ "$1" = "shallow" ] || __do_prereqs validate || return 1
+  [ "${1:-}" = "shallow" ] || __do_prereqs validate || return 1
+
+  if echo "$comp" | grep -q '\.'; then
+    __error "$DOCKER_COMPOSE_CMD will use '${comp//.}' as project name."
+    return 1
+  fi
 
   printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
     echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
-      if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr; then
+      if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr ; then
         echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
         return 1
       fi
@@ -239,12 +253,18 @@ do_validate () {
 }
 
 do_clean () {
-  do_down || return 1
+  __grab_ps __ps_before_clean
+  if [ -n "$__ps_before_clean" ] ; then
+    __error "Cannot clean while ${_bold_}$comp${_normal_} is running!"
+    return 1
+  fi
 
-  echo -n "Remove '$comp/data' (y/N)? " ; read -rn1 2>&1 ; echo
-  [[ $REPLY =~ ^[Yy]$ ]]  || return 0
-
-  rm -rfv data generated .env
+  rm -rfv generated .env
+  if [ -d data ] ; then
+    echo -n "Remove '$comp/data' (y/N)? " ; read -rn1 2>&1
+    [[ $REPLY =~ ^[Yy]$ ]] && echo || return 0
+  fi
+  rm -rfv data
 }
 
 do_down () {
@@ -277,11 +297,12 @@ do_pull () {
 do_status () {
   __do_prereqs status || return 1
 
+  __grab_ps __ps_before_status
   printf '[?] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
     echo -n " $svc"
-    if ! ( $DOCKER_COMPOSE_CMD ps "$svc" 2> /dev/null | grep -q healthy ) ; then
-      echo ; __error "'$svc' is not healthy."
+    if ! ( echo "$__ps_before_status" | grep "$svc" | grep -q healthy ) ; then
+      echo ; __error "Unhealthy service: ${_fg_red_}$svc${_normal_}"
       return 1
     fi
   done
@@ -303,14 +324,14 @@ usage () {
 Usage:
   $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
 
-Verbs: (short forms within [])
-  [c]lean        Delete '<comp_dir>/data'
-  [d]own         Stop a composition
-  [o]verrides    List all override files in a composition
-  [p]ull         Pull all images for a composition
-  [s]tatus       Display health / status of a composition
-  [u]p           Start a composition
-  [v]alidate     Validate a composition
+Verbs: (short forms within <>)
+  <c>lean        Delete '<comp_dir>/data'
+  <d>own         Stop a composition
+  <o>verrides    List all override files in a composition
+  <p>ull         Pull all images for a composition
+  <s>tatus       Display health / status of a composition
+  <u>p           Start a composition
+  <v>alidate     Validate a composition
 
 Flags:
   [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
@@ -475,15 +496,15 @@ perform () {
   local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
     comp="${comp%/}"
-    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_}[${SIMPLE_VERB:0:1}]${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
+    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${SIMPLE_VERB:0:1} ${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "${_bold_}$comp${_normal_} ... "
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
-      __error "'$comp' is not a base directory at '$SELF_DIR'!"
+      __error "${_bold_}$comp${_normal_} is not a base directory at '$SELF_DIR'!"
       __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
     fi
     if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
-      __error "No 'docker-compose.yml' found under '$comp'!"
+      __error "No 'docker-compose.yml' found under ${_bold_}$comp${_normal_}!"
       __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
     fi
 
@@ -526,8 +547,8 @@ perform () {
     local verb_exit=0
     "do_${SIMPLE_VERB}" ; verb_exit=$?
 
-    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[=] '$comp' is valid!"
-    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[=] '$comp' is healthy!"
+    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[=] ${_bold_}$comp${_normal_} is valid!"
+    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[=] ${_bold_}$comp${_normal_} is healthy!"
 
     [ $verb_exit -eq 0 ] \
       || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue

@@ -111,8 +111,8 @@ Options:              { yes | no }
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions Found (18):
-  airdcpp      certbot  docker.sock  gitea      hass       indexarr
-  influxdb     kodi.db  monitarr     navidrome  nextcloud  pihole
+  airdcpp      certbot  docker_sock  gitea      hass       indexarr
+  influxdb     kodi_db  monitarr     navidrome  nextcloud  pihole
   qbittorrent  tang     telegraf     teslamate  traefik    unifi
 ```
 </details>
@@ -229,11 +229,11 @@ Compositions Found (18):
     </tr>
     <tr>
       <th>
-        <a href='https://docs.docker.com/engine/security/protect-access/'>docker.sock</a>
+        <a href='https://docs.docker.com/engine/security/protect-access/'>docker_sock</a>
         <br>
         <sub>-</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28docker.sock%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_docker.sock.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28docker_sock%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_docker_sock.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         A
@@ -466,7 +466,7 @@ Compositions Found (18):
         <br>
         <sub>:3306</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Kodi.DB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_kodi.db.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Kodi.DB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_kodi_db.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B

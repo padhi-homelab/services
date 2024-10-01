@@ -19,7 +19,7 @@ mkdir -p "$TEST_COMP_TMP_PATH"
 
 # SETUP <test description> <comp arguments> <stdin content>
 function SETUP () {
-  echo -e "\n${_fg_white_}${_bg_black_}${_bold_}[#]${_normal_} Test $1: "
+  echo -e "\n${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
 
   local io_path_prefix="$TEST_COMP_TMP_PATH/$1"
   COMP_ERR_PATH="$io_path_prefix.err"
@@ -30,7 +30,7 @@ function SETUP () {
     echo "INPUT: $3"
   fi
   
-  ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"$3"
+  DISABLE_COLORS=1 ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"$3"
   COMP_EXIT_CODE=$?
   if [ -n "$DEBUG" ]; then
     echo "\$COMP_ERR_PATH contents:"
@@ -52,8 +52,6 @@ function CHECK {
   fi
 }
 
-./comp status tang &> /dev/null
-
 SETUP "invocation without args" \
       "" \
       ""
@@ -63,29 +61,84 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
 SETUP "status of non-existent composition" \
       "status unknown_comp" \
       ""
+CHECK $'grep -sq "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
       "Expected EXIT_CODE_COMPOSITION_NOT_FOUND"
 CHECK $'grep -sq "is not a base directory" "$COMP_ERR_PATH"' \
       "Expected a helpful error message"
 
-SETUP "deny deleting data" \
+SETUP "that 'tang' is not running" \
+      "status -P tang" \
+      ""
+CHECK $'grep -sq "Executing status on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Unhealthy service: tang" "$COMP_ERR_PATH"' \
+      "Expected error message for unhealthy service"
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
+      "Expected EXIT_CODE_SIMPLE_VERB_FAILURE"
+
+SETUP "starting 'tang' service without prerequisites" \
+      "up -P tang" \
+      "n"
+CHECK $'grep -sq "Executing up on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "Expected EXIT_CODE = 0"
+
+SETUP "cleaning 'tang' service before stopping" \
+      "clean tang" \
+      ""
+CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Cannot clean while tang is running" "$COMP_ERR_PATH"' \
+      "Expected error message for running composition"
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
+      "Expected EXIT_CODE_SIMPLE_VERB_FAILURE"
+
+# Wait for tang to start and record health status
+sleep 15s
+
+SETUP "that 'tang' is still running" \
+      "status -P tang" \
+      ""
+CHECK $'grep -sq "Executing status on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
+CHECK $'grep -sq "tang is healthy" "$COMP_OUT_PATH"' \
+      "Expected info message for healthy composition"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "Expected EXIT_CODE = 0"
+
+SETUP "stopping 'tang' service" \
+      "down tang" \
+      ""
+CHECK $'grep -sq "Executing down on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "Expected EXIT_CODE = 0"
+
+SETUP "cleaning, but deny deleting data" \
       "clean tang" \
       "n"
+CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "Expected EXIT_CODE = 0"
 CHECK $'grep -sq "Remove \'tang/data\' (y/N)?" "$COMP_OUT_PATH"' \
       "Expected confirmation prompt before deletion"
-CHECK $'[ -f tang/.env ]' \
+CHECK $'[ -d tang/data ]' \
       "Expected data is not deleted"
 
-SETUP "allow deleting data" \
+SETUP "cleaning, and allow deleting data" \
       "clean tang" \
       "y"
+CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
+      "Expected info message at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "Expected EXIT_CODE = 0"
 CHECK $'grep -sq "Remove \'tang/data\' (y/N)?" "$COMP_OUT_PATH"' \
       "Expected confirmation prompt before deletion"
-CHECK $'! [ -f tang/.env ]' \
+CHECK $'! [ -d tang/data ]' \
       "Expected data is deleted"
 
 exit "$FINAL_EXIT_CODE"
