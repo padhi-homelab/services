@@ -100,7 +100,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       "Expected EXIT_CODE_SIMPLE_VERB_FAILURE"
 
 # Wait for tang to start and record health status
-sleep 15s
+sleep 30s
 
 SETUP "that 'tang' is still running" \
       "status -P tang" \

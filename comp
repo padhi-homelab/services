@@ -469,9 +469,8 @@ if ! $DOCKER_COMPOSE_CMD version &> /dev/null ; then
         __error 'Failed to locate: `'"$DOCKER_COMPOSE_CMD"'` or `'"$DOCKER_CMD"'-compose`!'
         exit $EXIT_CODE_DEP_INSTALL_FAILURE
       fi
-    else
-      DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
     fi
+    DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
   else
     DOCKER_COMPOSE_CMD="$DOCKER_CMD-compose"
   fi
@@ -483,9 +482,8 @@ if ! command -v $YQ_CMD &> /dev/null ; then
       __error 'Failed to locate: `yq`!'
       exit $EXIT_CODE_DEP_INSTALL_FAILURE
     fi
-  else
-    YQ_CMD="$LIB_DIR/yq"
   fi
+  YQ_CMD="$LIB_DIR/yq"
 fi
 
 # # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
