@@ -20,7 +20,7 @@ mkdir -p "$TEST_COMP_TMP_PATH"
 
 # SETUP <test description> <comp arguments> <stdin content>
 function SETUP () {
-  echo -e "\n${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
+  echo ; echo "${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
 
   local io_path_prefix="$TEST_COMP_TMP_PATH/$1"
   COMP_ERR_PATH="$io_path_prefix.err"
@@ -42,6 +42,7 @@ function SETUP () {
   fi
 }
 
+# CHECK <condition> <description> <exit immediately?>
 function CHECK {
   [ -z "$DEBUG" ] || echo "CHECK: $1"
 
@@ -50,98 +51,144 @@ function CHECK {
   else
     echo "    ${_fg_red_}${_bold_}-${_normal_} $2: ${_fg_red_}${_bold_}FAILURE${_normal_}"
     FINAL_EXIT_CODE=1
+    [ -z "${3:-}" ] || FINAL
   fi
+}
+
+function _WAIT () {
+  echo ; echo "${_fg_white_}${_bg_black_}${_bold_} W ${_normal_} Waiting ${_fg_magenta_}$1${_normal_} for $2"
+  sleep "$1"
+}
+
+function _INIT () {
+  echo ; echo -n "${_fg_white_}${_bg_black_}${_bold_} I ${_normal_} Initializing ${_fg_magenta_}$1${_normal_} -> "
+  TARGET_COMP="test__$1__"
+  rm -rf "$TARGET_COMP"
+  cp -r "$1" "$TARGET_COMP"
+  TARGET_COMP_DISPLAY="${_fg_blue_}$TARGET_COMP${_normal_}"
+  ( cd "$TARGET_COMP" && rm -rf .env data generated ./*override* )
+  echo "$TARGET_COMP_DISPLAY"
+}
+
+function FINAL () {
+  echo ; printf '%.0s-' {1..100} ; echo ; echo
+  if [ "$FINAL_EXIT_CODE" -eq 0 ] ; then
+    echo "${_fg_white_}${_bg_black_}${_bold_} S ${_normal_} All checks ${_fg_green_}SUCCESSFUL${_normal_}."
+  else
+    echo "${_fg_white_}${_bg_black_}${_bold_} F ${_normal_} Some checks ${_fg_red_}${_bold_}FAILED${_normal_}!"
+  fi
+  exit $FINAL_EXIT_CODE
 }
 
 SETUP "invocation without args" \
       "" \
       ""
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
-      "Expected EXIT_CODE_USAGE_ERROR"
 CHECK $'grep -sq "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
-      "Expected usage information on stderr"
+      "Usage information on stderr"
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
+      "EXIT_CODE_USAGE_ERROR"
 
 SETUP "status of non-existent composition" \
       "status unknown_comp" \
       ""
 CHECK $'grep -sq "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
-      "Expected EXIT_CODE_COMPOSITION_NOT_FOUND"
+      "Info message at beginning of execution"
 CHECK $'grep -sq "is not a base directory" "$COMP_ERR_PATH"' \
-      "Expected a helpful error message"
+      "Helpful error message on stderr"
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
+      "EXIT_CODE_COMPOSITION_NOT_FOUND"
 
-SETUP "that 'tang' is not running" \
-      "status -P tang" \
+_INIT tang
+
+SETUP "stopping $TARGET_COMP_DISPLAY while its not running" \
+      "down $TARGET_COMP" \
       ""
-CHECK $'grep -sq "Executing status on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
-CHECK $'grep -sq "Unhealthy service: tang" "$COMP_ERR_PATH"' \
-      "Expected error message for unhealthy service"
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
-      "Expected EXIT_CODE_SIMPLE_VERB_FAILURE"
+CHECK $'grep -sq "Executing down on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
-SETUP "starting 'tang' service without prerequisites" \
-      "up -P tang" \
+SETUP "that status reports $TARGET_COMP_DISPLAY is unhealthy" \
+      "status -P $TARGET_COMP" \
+      ""
+CHECK $'grep -sq "Executing status on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'grep -sq "Unhealthy service:" "$COMP_ERR_PATH"' \
+      "Error message about unhealthy service on stderr"
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
+      "EXIT_CODE_SIMPLE_VERB_FAILURE" \
+      exit_on_failure
+
+SETUP "starting $TARGET_COMP_DISPLAY without prerequisites" \
+      "up -P $TARGET_COMP" \
       "n"
-CHECK $'grep -sq "Executing up on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Executing up on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "Expected EXIT_CODE = 0"
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
-SETUP "cleaning 'tang' service before stopping" \
-      "clean tang" \
+SETUP "cleaning $TARGET_COMP_DISPLAY before stopping" \
+      "clean $TARGET_COMP" \
       ""
-CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
-CHECK $'grep -sq "Cannot clean while tang is running" "$COMP_ERR_PATH"' \
-      "Expected error message for running composition"
+CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'grep -sq "Cannot clean while $TARGET_COMP is running" "$COMP_ERR_PATH"' \
+      "Error message about running composition on stderr" \
+      exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
-      "Expected EXIT_CODE_SIMPLE_VERB_FAILURE"
+      "EXIT_CODE_SIMPLE_VERB_FAILURE" \
+      exit_on_failure
 
-# Wait for tang to start and record health status
-sleep 30s
+_WAIT 30s "$TARGET_COMP_DISPLAY to start up and emit health status"
 
-SETUP "that 'tang' is still running" \
-      "status -P tang" \
+SETUP "that status reports $TARGET_COMP_DISPLAY is healthy" \
+      "status -P $TARGET_COMP" \
       ""
-CHECK $'grep -sq "Executing status on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
-CHECK $'grep -sq "tang is healthy" "$COMP_OUT_PATH"' \
-      "Expected info message for healthy composition"
+CHECK $'grep -sq "Executing status on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'grep -sq "$TARGET_COMP is healthy" "$COMP_OUT_PATH"' \
+      "Info message about healthy composition"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "Expected EXIT_CODE = 0"
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
-SETUP "stopping 'tang' service" \
-      "down tang" \
+SETUP "stopping $TARGET_COMP_DISPLAY while its running" \
+      "down $TARGET_COMP" \
       ""
-CHECK $'grep -sq "Executing down on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Executing down on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "Expected EXIT_CODE = 0"
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
 SETUP "cleaning, but deny deleting data" \
-      "clean tang" \
+      "clean $TARGET_COMP" \
       "n"
-CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'grep -sq "Remove \'$TARGET_COMP/data\' (y/N)?" "$COMP_OUT_PATH"' \
+      "Confirmation prompt before deletion"
+CHECK $'[ -d $TARGET_COMP/data ]' \
+      "Data is not deleted" \
+      exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "Expected EXIT_CODE = 0"
-CHECK $'grep -sq "Remove \'tang/data\' (y/N)?" "$COMP_OUT_PATH"' \
-      "Expected confirmation prompt before deletion"
-CHECK $'[ -d tang/data ]' \
-      "Expected data is not deleted"
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
 SETUP "cleaning, and allow deleting data" \
-      "clean tang" \
+      "clean $TARGET_COMP" \
       "y"
-CHECK $'grep -sq "Executing clean on tang" "$COMP_OUT_PATH"' \
-      "Expected info message at beginning of execution"
+CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
+      "Info message at beginning of execution"
+CHECK $'grep -sq "Remove \'$TARGET_COMP/data\' (y/N)?" "$COMP_OUT_PATH"' \
+      "Confirmation prompt before deletion"
+CHECK $'! [ -d $TARGET_COMP/data ]' \
+      "Data is deleted" \
+      exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "Expected EXIT_CODE = 0"
-CHECK $'grep -sq "Remove \'tang/data\' (y/N)?" "$COMP_OUT_PATH"' \
-      "Expected confirmation prompt before deletion"
-CHECK $'! [ -d tang/data ]' \
-      "Expected data is deleted"
+      "EXIT_CODE = 0" \
+      exit_on_failure
 
-exit "$FINAL_EXIT_CODE"
+FINAL

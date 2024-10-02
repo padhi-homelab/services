@@ -986,6 +986,47 @@ Compositions Found (18):
     </tr>
     <tr>
       <th>
+        <a href='https://github.com/padhi-homelab/docker_tiny-httpd/'>Tiny HTTPD</a>
+        <br>
+        <sub>:443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tiny_HTTPD%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_tiny_httpd.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/tiny-httpd'>
+          <sub>tiny-httpd</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.29</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://traefik.io/'>Traefik</a>
         <br>
         <sub>:443, :8443, :9080, :9443</sub>
