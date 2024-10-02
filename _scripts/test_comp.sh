@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#shellcheck disable=SC2086,SC2154 source=/dev/null
+#shellcheck disable=SC2059,SC2086,SC2154 source=/dev/null
 
 set -Eumo pipefail
 
@@ -18,8 +18,11 @@ TEST_COMP_TMP_PATH=/tmp/__test_comp_intermediate_storage_dir__
 rm -rf "$TEST_COMP_TMP_PATH"
 mkdir -p "$TEST_COMP_TMP_PATH"
 
+SKIPPING_THIS=
+
 # SETUP <test description> <comp arguments> <stdin content>
 function SETUP () {
+  [ -z "$SKIPPING_THIS" ] || return
   echo ; echo "${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
 
   local io_path_prefix="$TEST_COMP_TMP_PATH/$1"
@@ -44,6 +47,7 @@ function SETUP () {
 
 # CHECK <condition> <description> <exit immediately?>
 function CHECK {
+  [ -z "$SKIPPING_THIS" ] || return
   [ -z "$DEBUG" ] || echo "CHECK: $1"
 
   if eval -- $1 ; then
@@ -55,19 +59,27 @@ function CHECK {
   fi
 }
 
+# _WAIT <duration> <description>
 function _WAIT () {
+  [ -z "$SKIPPING_THIS" ] || return
   echo ; echo "${_fg_white_}${_bg_black_}${_bold_} W ${_normal_} Waiting ${_fg_magenta_}$1${_normal_} for $2"
   sleep "$1"
 }
 
+COMP_COUNTER=1
+# _INIT <comp_dir>
 function _INIT () {
+  [ -z "$SKIPPING_THIS" ] || return
+  local TARGET_COMP_VAR="TARGET_COMP_$COMP_COUNTER"
+  local TARGET_COMP_DISPLAY_VAR="TARGET_COMP_${COMP_COUNTER}_DISPLAY"
   echo ; echo -n "${_fg_white_}${_bg_black_}${_bold_} I ${_normal_} Initializing ${_fg_magenta_}$1${_normal_} -> "
-  TARGET_COMP="test__$1__"
-  rm -rf "$TARGET_COMP"
-  cp -r "$1" "$TARGET_COMP"
-  TARGET_COMP_DISPLAY="${_fg_blue_}$TARGET_COMP${_normal_}"
-  ( cd "$TARGET_COMP" && rm -rf .env data generated ./*override* )
-  echo "$TARGET_COMP_DISPLAY"
+  printf -v "$TARGET_COMP_VAR" "test__${COMP_COUNTER}__$1__"
+  rm -rf "${!TARGET_COMP_VAR}"
+  cp -r "$1" "${!TARGET_COMP_VAR}"
+  printf -v "$TARGET_COMP_DISPLAY_VAR" "${_fg_blue_}${!TARGET_COMP_VAR}${_normal_}"
+  ( cd "${!TARGET_COMP_VAR}" && rm -rf .env data generated ./*override* )
+  echo "${!TARGET_COMP_DISPLAY_VAR}"
+  (( COMP_COUNTER++ ))
 }
 
 function FINAL () {
@@ -83,7 +95,7 @@ function FINAL () {
 SETUP "invocation without args" \
       "" \
       ""
-CHECK $'grep -sq "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
       "Usage information on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
       "EXIT_CODE_USAGE_ERROR"
@@ -91,86 +103,86 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
 SETUP "status of non-existent composition" \
       "status unknown_comp" \
       ""
-CHECK $'grep -sq "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "is not a base directory" "$COMP_ERR_PATH"' \
-      "Helpful error message on stderr"
+CHECK $'grep -qs "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "is not a base directory" "$COMP_ERR_PATH"' \
+      "Helpful message on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
       "EXIT_CODE_COMPOSITION_NOT_FOUND"
 
 _INIT tang
 
-SETUP "stopping $TARGET_COMP_DISPLAY while its not running" \
-      "down $TARGET_COMP" \
+SETUP "stopping $TARGET_COMP_1_DISPLAY while its not running" \
+      "down $TARGET_COMP_1" \
       ""
-CHECK $'grep -sq "Executing down on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
+CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "that status reports $TARGET_COMP_DISPLAY is unhealthy" \
-      "status -P $TARGET_COMP" \
+SETUP "that status reports $TARGET_COMP_1_DISPLAY is unhealthy" \
+      "status -P $TARGET_COMP_1" \
       ""
-CHECK $'grep -sq "Executing status on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "Unhealthy service:" "$COMP_ERR_PATH"' \
-      "Error message about unhealthy service on stderr"
+CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "Unhealthy service:" "$COMP_ERR_PATH"' \
+      "Error about unhealthy service on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       "EXIT_CODE_SIMPLE_VERB_FAILURE" \
       exit_on_failure
 
-SETUP "starting $TARGET_COMP_DISPLAY without prerequisites" \
-      "up -P $TARGET_COMP" \
-      "n"
-CHECK $'grep -sq "Executing up on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
+SETUP "starting $TARGET_COMP_1_DISPLAY without prerequisites" \
+      "up -P $TARGET_COMP_1" \
+      ""
+CHECK $'grep -qs "Executing up on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "cleaning $TARGET_COMP_DISPLAY before stopping" \
-      "clean $TARGET_COMP" \
+SETUP "cleaning $TARGET_COMP_1_DISPLAY before stopping" \
+      "clean $TARGET_COMP_1" \
       ""
-CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "Cannot clean while $TARGET_COMP is running" "$COMP_ERR_PATH"' \
-      "Error message about running composition on stderr" \
+CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "Cannot clean while $TARGET_COMP_1 is running" "$COMP_ERR_PATH"' \
+      "Error about running composition on stderr" \
       exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       "EXIT_CODE_SIMPLE_VERB_FAILURE" \
       exit_on_failure
 
-_WAIT 30s "$TARGET_COMP_DISPLAY to start up and emit health status"
+_WAIT 30s "$TARGET_COMP_1_DISPLAY to start up and emit health status"
 
-SETUP "that status reports $TARGET_COMP_DISPLAY is healthy" \
-      "status -P $TARGET_COMP" \
+SETUP "that status reports $TARGET_COMP_1_DISPLAY is healthy" \
+      "status -P $TARGET_COMP_1" \
       ""
-CHECK $'grep -sq "Executing status on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "$TARGET_COMP is healthy" "$COMP_OUT_PATH"' \
-      "Info message about healthy composition"
+CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "$TARGET_COMP_1 is healthy" "$COMP_OUT_PATH"' \
+      "Info about healthy composition"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "stopping $TARGET_COMP_DISPLAY while its running" \
-      "down $TARGET_COMP" \
+SETUP "stopping $TARGET_COMP_1_DISPLAY while its running" \
+      "down $TARGET_COMP_1" \
       ""
-CHECK $'grep -sq "Executing down on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
+CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
 SETUP "cleaning, but deny deleting data" \
-      "clean $TARGET_COMP" \
+      "clean $TARGET_COMP_1" \
       "n"
-CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "Remove \'$TARGET_COMP/data\' (y/N)?" "$COMP_OUT_PATH"' \
+CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "Remove \'$TARGET_COMP_1/data\' (y/N)?" "$COMP_OUT_PATH"' \
       "Confirmation prompt before deletion"
-CHECK $'[ -d $TARGET_COMP/data ]' \
+CHECK $'[ -d $TARGET_COMP_1/data ]' \
       "Data is not deleted" \
       exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
@@ -178,15 +190,30 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "cleaning, and allow deleting data" \
-      "clean $TARGET_COMP" \
+      "clean $TARGET_COMP_1" \
       "y"
-CHECK $'grep -sq "Executing clean on $TARGET_COMP" "$COMP_OUT_PATH"' \
-      "Info message at beginning of execution"
-CHECK $'grep -sq "Remove \'$TARGET_COMP/data\' (y/N)?" "$COMP_OUT_PATH"' \
+CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "Remove \'$TARGET_COMP_1/data\' (y/N)?" "$COMP_OUT_PATH"' \
       "Confirmation prompt before deletion"
-CHECK $'! [ -d $TARGET_COMP/data ]' \
+CHECK $'! [ -d $TARGET_COMP_1/data ]' \
       "Data is deleted" \
       exit_on_failure
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0" \
+      exit_on_failure
+
+_INIT tiny_httpd
+
+echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
+
+SETUP "starting $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY with different options" \
+      "up -P $TARGET_COMP_1 $TARGET_COMP_2" \
+      ""
+CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
+      "Info with disabled options at beginning of $TARGET_COMP_1_DISPLAY execution"
+CHECK $'grep -lPqsvz "Executing up on $TARGET_COMP_2.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
+      "Info without disabled options at beginning of $TARGET_COMP_2_DISPLAY execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure

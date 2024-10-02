@@ -71,7 +71,7 @@ __create_external_networks () {
     done
   done
 
-  for ext_net in $(printf "%s\n" "${EXTERNAL_NETWORKS[@]}" | sort -u) ; do
+  for ext_net in $( printf "%s\n" "${EXTERNAL_NETWORKS[@]}" | sort -u ) ; do
     "$SCRIPTS_DIR/create-network.sh" "$ext_net" || return 1
   done
 }
@@ -91,7 +91,7 @@ __do_prereqs () {
     else
       __CALL_SELF__ "$verb" -F "$prereq_comp_dir" || return 1
     fi
-  done < <(cat "$PREREQS_FILENAME" "$PREREQS_OVERRIDE_FILENAME" 2>/dev/null)
+  done < <( cat "$PREREQS_FILENAME" "$PREREQS_OVERRIDE_FILENAME" 2>/dev/null )
 }
 
 __error () {
@@ -125,7 +125,7 @@ __gen_env () {
 
 __gen_templates () {
   find ./extra -name '*.template.*' 2>/dev/null | grep -q . || return 0
-  echo "[~] Verifying templated files ..."
+  echo "[~] Generating templated files ..."
 
   while IFS= read -r template_file ; do
     local generated_file="./generated${template_file#./extra}"
@@ -233,9 +233,11 @@ __will_invoke_compose () {
 do_validate () {
   [ "${1:-}" = "shallow" ] || __do_prereqs validate || return 1
 
-  if echo "$comp" | grep -q '\.'; then
-    __error "$DOCKER_COMPOSE_CMD will use '${comp//.}' as project name."
-    return 1
+  if echo "$comp" | grep -q '\.' ; then
+    __error "$DOCKER_COMPOSE_CMD will use '${comp//.}' as project name." ; return 1
+  fi
+  if [[ "$comp" =~ ^_ ]] ; then
+    __error "$DOCKER_COMPOSE_CMD will use '${comp:1}' as project name." ; return 1
   fi
 
   printf '[~] Validating service:'
@@ -489,6 +491,8 @@ fi
 # # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
 
 COMPOSITIONS=( "$@" )
+OPTIONS_FROM_ARGS=( "$OPTION_DEVICES" "$OPTION_HOOKS" "$OPTION_LABELS" "$OPTION_LOGGING" "$OPTION_PORTS" )
+
 perform () {
   local SIMPLE_VERB="$1"
   for comp in "${COMPOSITIONS[@]}" ; do
@@ -496,6 +500,7 @@ perform () {
     echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${SIMPLE_VERB:0:1} ${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "${_bold_}$comp${_normal_} ... "
+
     if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
       __error "${_bold_}$comp${_normal_} is not a base directory at '$SELF_DIR'!"
       __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
@@ -511,6 +516,7 @@ perform () {
       COMPOSE_FILES+=( "docker-compose.override.yml")
     fi
 
+    read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
     local opt_error=0
     opt_line_head='[o] Disabled options'
     for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do

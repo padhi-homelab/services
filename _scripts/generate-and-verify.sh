@@ -12,7 +12,7 @@ TARGET_FILE="$2"
 
 ENV_VARS="$(cut -d= -f1 .env | awk '{print "$" $0}')"
 
-echo -n "[*] Generating '$TARGET_FILE': "
+echo -n "[*] $TARGET_FILE: "
 
 if [ -e "$TARGET_FILE" ] && [ ! -f "$TARGET_FILE" ] ; then
   echo "CANNOT OVERWRITE!"
@@ -30,7 +30,7 @@ SRC_VARS=$(envsubst -v "$(cat "$SOURCE_FILE")" | paste -sd '|')
 if grep -qE "$SRC_VARS" "$TARGET_FILE" ; then
   LINE="$(grep -E "$SRC_VARS" "$TARGET_FILE")"
   LEFTOVER_VAR="$(envsubst -v "$LINE" | paste -sd '|')"
-  echo "\`$LEFTOVER_VAR\` NOT DEFINED!"
+  echo "${_fg_red_}${_bold_}\`$LEFTOVER_VAR\` NOT DEFINED!${_normal_}"
   rm "$TARGET_FILE"
   exit 1
 fi
