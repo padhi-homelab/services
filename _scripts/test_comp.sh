@@ -237,14 +237,14 @@ SETUP "stopping $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY without options"
 CHECK $'grep -Pqs "Container $TARGET_COMP_1.* Removed" "$COMP_ERR_PATH"' \
       "Stopped $TARGET_COMP_1_DISPLAY successfully" \
       exit_on_failure
-CHECK $'grep -qs "No resource found to remove for project \\\\\\\\\\"$TARGET_COMP_2\\\\\\\\\\"" "$COMP_ERR_PATH"' \
+CHECK $'grep -Pqs "No resource found to remove for project .*$TARGET_COMP_2" "$COMP_ERR_PATH"' \
       "Nothing to remove reported for $TARGET_COMP_2_DISPLAY" \
       exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-_INIT tang _ .bad.name_
+_INIT tang _.test.very_ .bad.name_
 
 SETUP "starting $TARGET_COMP_3_DISPLAY" \
       "up -P $TARGET_COMP_3"
@@ -256,6 +256,8 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
+_WAIT 30s "$TARGET_COMP_3_DISPLAY to start up and emit health status"
+
 SETUP "that status reports $TARGET_COMP_3_DISPLAY is healthy" \
       "status -P $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
@@ -265,7 +267,7 @@ CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
 CHECK $'grep -qs "Guessing project name to be" "$COMP_ERR_PATH"' \
       "Best-effort guess for project name"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "EXIT_CODE = 0; best-effort guess works (for now)" \
+      "EXIT_CODE = 0; best-effort guess works for now" \
       exit_on_failure
 
 SETUP "stopping & cleaning $TARGET_COMP_3_DISPLAY" \
@@ -277,7 +279,7 @@ CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
 CHECK $'grep -qs "Guessing project name to be" "$COMP_ERR_PATH"' \
       "Best-effort guess for project name"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
-      "EXIT_CODE = 0; best-effort guess works (for now)" \
+      "EXIT_CODE = 0; best-effort guess works for now" \
       exit_on_failure
 
 FINAL
