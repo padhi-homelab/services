@@ -20,21 +20,23 @@ mkdir -p "$TEST_COMP_TMP_PATH"
 
 SKIPPING_THIS=
 
-# SETUP <test description> <comp arguments> <stdin content>
+# SETUP <test description> <comp arguments> [stdin content]
 function SETUP () {
   [ -z "$SKIPPING_THIS" ] || return
   echo ; echo "${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
 
-  local io_path_prefix="$TEST_COMP_TMP_PATH/$1"
+  local io_path_prefix="$( echo "$TEST_COMP_TMP_PATH/$1" \
+                         | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" \
+                         | sed "s/\x0f//g" )"
   COMP_ERR_PATH="$io_path_prefix.err"
   COMP_OUT_PATH="$io_path_prefix.out"
 
   if [ -n "$DEBUG" ]; then
     echo "COMMAND: ./comp $2"
-    echo "INPUT: $3"
+    echo "INPUT: ${3:-}"
   fi
   
-  DISABLE_COLORS=1 ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"$3"
+  DISABLE_COLORS=1 ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"${3:-}"
   COMP_EXIT_CODE=$?
   if [ -n "$DEBUG" ]; then
     echo "\$COMP_ERR_PATH contents:"
@@ -45,7 +47,7 @@ function SETUP () {
   fi
 }
 
-# CHECK <condition> <description> <exit immediately?>
+# CHECK <condition> <description> [exit immediately?]
 function CHECK {
   [ -z "$SKIPPING_THIS" ] || return
   [ -z "$DEBUG" ] || echo "CHECK: $1"
@@ -67,13 +69,13 @@ function _WAIT () {
 }
 
 COMP_COUNTER=1
-# _INIT <comp_dir>
+# _INIT <comp_dir> [name prefix] [name suffix]
 function _INIT () {
   [ -z "$SKIPPING_THIS" ] || return
   local TARGET_COMP_VAR="TARGET_COMP_$COMP_COUNTER"
   local TARGET_COMP_DISPLAY_VAR="TARGET_COMP_${COMP_COUNTER}_DISPLAY"
   echo ; echo -n "${_fg_white_}${_bg_black_}${_bold_} I ${_normal_} Initializing ${_fg_magenta_}$1${_normal_} -> "
-  printf -v "$TARGET_COMP_VAR" "test__${COMP_COUNTER}__$1__"
+  printf -v "$TARGET_COMP_VAR" "${2:-}test__${COMP_COUNTER}__$1__${3:-}"
   rm -rf "${!TARGET_COMP_VAR}"
   cp -r "$1" "${!TARGET_COMP_VAR}"
   printf -v "$TARGET_COMP_DISPLAY_VAR" "${_fg_blue_}${!TARGET_COMP_VAR}${_normal_}"
@@ -93,7 +95,6 @@ function FINAL () {
 }
 
 SETUP "invocation without args" \
-      "" \
       ""
 CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
       "Usage information on stderr"
@@ -101,8 +102,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
       "EXIT_CODE_USAGE_ERROR"
 
 SETUP "status of non-existent composition" \
-      "status unknown_comp" \
-      ""
+      "status unknown_comp"
 CHECK $'grep -qs "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "is not a base directory" "$COMP_ERR_PATH"' \
@@ -113,8 +113,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
 _INIT tang
 
 SETUP "stopping $TARGET_COMP_1_DISPLAY while its not running" \
-      "down $TARGET_COMP_1" \
-      ""
+      "down $TARGET_COMP_1"
 CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
@@ -122,8 +121,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "that status reports $TARGET_COMP_1_DISPLAY is unhealthy" \
-      "status -P $TARGET_COMP_1" \
-      ""
+      "status -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "Unhealthy service:" "$COMP_ERR_PATH"' \
@@ -133,8 +131,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       exit_on_failure
 
 SETUP "starting $TARGET_COMP_1_DISPLAY without prerequisites" \
-      "up -P $TARGET_COMP_1" \
-      ""
+      "up -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing up on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
@@ -142,8 +139,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "cleaning $TARGET_COMP_1_DISPLAY before stopping" \
-      "clean $TARGET_COMP_1" \
-      ""
+      "clean $TARGET_COMP_1"
 CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "Cannot clean while $TARGET_COMP_1 is running" "$COMP_ERR_PATH"' \
@@ -156,8 +152,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
 _WAIT 30s "$TARGET_COMP_1_DISPLAY to start up and emit health status"
 
 SETUP "that status reports $TARGET_COMP_1_DISPLAY is healthy" \
-      "status -P $TARGET_COMP_1" \
-      ""
+      "status -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "$TARGET_COMP_1 is healthy" "$COMP_OUT_PATH"' \
@@ -167,8 +162,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "stopping $TARGET_COMP_1_DISPLAY while its running" \
-      "down $TARGET_COMP_1" \
-      ""
+      "down $TARGET_COMP_1"
 CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
@@ -208,14 +202,82 @@ _INIT tiny_httpd
 echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
 
 SETUP "starting $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY with different options" \
-      "up -P $TARGET_COMP_1 $TARGET_COMP_2" \
-      ""
+      "up -P $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
-      "Info with disabled options at beginning of $TARGET_COMP_1_DISPLAY execution"
+      "Info with disabled options at beginning of $TARGET_COMP_1_DISPLAY execution" \
+      exit_on_failure
 CHECK $'grep -lPqsvz "Executing up on $TARGET_COMP_2.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
-      "Info without disabled options at beginning of $TARGET_COMP_2_DISPLAY execution"
+      "Info without disabled options at beginning of $TARGET_COMP_2_DISPLAY execution" \
+      exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
+      exit_on_failure
+
+echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
+
+SETUP "stopping $TARGET_COMP_1_DISPLAY with a bad option & $TARGET_COMP_2_DISPLAY without options" \
+      "down -P $TARGET_COMP_1 $TARGET_COMP_2"
+CHECK $'grep -Pqs "Invalid value \'nyet\' for \'devices\' option in options\.override\.conf" "$COMP_ERR_PATH"' \
+      "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
+      exit_on_failure
+CHECK $'grep -Pqsv "Container $TARGET_COMP_1.* Stopping" "$COMP_ERR_PATH"' \
+      "Did not stop $TARGET_COMP_1_DISPLAY" \
+      exit_on_failure
+CHECK $'grep -Pqs "Container $TARGET_COMP_2.* Removed" "$COMP_ERR_PATH"' \
+      "Stopped $TARGET_COMP_2_DISPLAY successfully" \
+      exit_on_failure
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
+      "EXIT_CODE_OPTIONS_CONF_ERROR" \
+      exit_on_failure
+
+rm $TARGET_COMP_1/options.override.conf
+
+SETUP "stopping $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY without options" \
+      "down -P $TARGET_COMP_1 $TARGET_COMP_2"
+CHECK $'grep -Pqs "Container $TARGET_COMP_1.* Removed" "$COMP_ERR_PATH"' \
+      "Stopped $TARGET_COMP_1_DISPLAY successfully" \
+      exit_on_failure
+CHECK $'grep -qs "No resource found to remove for project \\\\\\\\\\"$TARGET_COMP_2\\\\\\\\\\"" "$COMP_ERR_PATH"' \
+      "Nothing to remove reported for $TARGET_COMP_2_DISPLAY" \
+      exit_on_failure
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0" \
+      exit_on_failure
+
+_INIT tang _ .bad.name_
+
+SETUP "starting $TARGET_COMP_3_DISPLAY" \
+      "up -P $TARGET_COMP_3"
+CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to '.'"
+CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to leading '_'"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0" \
+      exit_on_failure
+
+SETUP "that status reports $TARGET_COMP_3_DISPLAY is healthy" \
+      "status -P $TARGET_COMP_3"
+CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to '.'"
+CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to leading '_'"
+CHECK $'grep -qs "Guessing project name to be" "$COMP_ERR_PATH"' \
+      "Best-effort guess for project name"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0; best-effort guess works (for now)" \
+      exit_on_failure
+
+SETUP "stopping & cleaning $TARGET_COMP_3_DISPLAY" \
+      "down,clean $TARGET_COMP_3"
+CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to '.'"
+CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
+      "Name validation error due to leading '_'"
+CHECK $'grep -qs "Guessing project name to be" "$COMP_ERR_PATH"' \
+      "Best-effort guess for project name"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0; best-effort guess works (for now)" \
       exit_on_failure
 
 FINAL

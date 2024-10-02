@@ -141,10 +141,16 @@ __gen_templates () {
 }
 
 __grab_ps () {
+  # FIXME: Best effort project name guessing without running compose.
+  local proj=$comp
+  ! [[ "$comp" =~ ^_ ]] || proj=${proj:1}
+  echo "$comp" | grep -qv '\.' || proj=${proj//.}
+  [ "$proj" = "$comp" ] || __warning "Guessing project name to be $proj"
+
   # FIXME: `podman` doesn't print health status!
   local _ps_res="$( $DOCKER_CMD ps \
     --format '{{.Label "com.docker.compose.service"}}\t{{.Status}}' \
-    --filter label=com.docker.compose.project=$comp \
+    --filter label=com.docker.compose.project=$proj \
   )"
   eval "$1"='$_ps_res'
 }
@@ -226,6 +232,10 @@ __verify_volumes () {
   done
 }
 
+__warning () {
+  echo "${_fg_yellow_}${_bold_}[W] WARNING${_normal_}: $1" >&2
+}
+
 __will_invoke_compose () {
   [ "$1" = "down" ] || [ "$1" = "pull" ] || [ "$1" = "up" ]
 }
@@ -235,12 +245,14 @@ __will_invoke_compose () {
 do_validate () {
   [ "${1:-}" = "shallow" ] || __do_prereqs validate || return 1
 
-  if echo "$comp" | grep -q '\.' ; then
-    __error "$DOCKER_COMPOSE_CMD will use '${comp//.}' as project name." ; return 1
-  fi
+  local err=
   if [[ "$comp" =~ ^_ ]] ; then
-    __error "$DOCKER_COMPOSE_CMD will use '${comp:1}' as project name." ; return 1
+    __error "$DOCKER_COMPOSE_CMD drops leading '_' from project name." ; err=1
   fi
+  if echo "$comp" | grep -q '\.' ; then
+    __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
+  fi
+  [ -z "$err" ] || return 1
 
   printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do

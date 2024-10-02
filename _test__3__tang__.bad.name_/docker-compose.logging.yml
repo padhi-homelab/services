@@ -1,0 +1,6 @@
+services:
+  tang:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
