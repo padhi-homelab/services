@@ -40,21 +40,6 @@ Seemed like overkill, when I initially wrote `comp`.
 
 ### Usage
 
-Optional setup:
-
-1. Override the global env generators as necessary, e.g.:
-   ```
-   echo "MY_GLOBAL_ENV_VAR=10" >> static.global.override.env
-   ```
-2. For each desired composition, override the:
-    - static and/or dynamic env generators in a similar manner
-    - additional prerequisite compositions: `pre.override.reqs`
-    - docker service configuration: `docker-compose.override.yml`
-    - docker service hooks: `docker-compose.up.pre_hook.override.01.sh` etc.
-
-See [Structure & Conventions](#structure--conventions)
-for more details on these overrides.
-
 Typical workflows:
 
 - (Re)start compositions:
@@ -73,49 +58,10 @@ Typical workflows:
   ./comp status tang pihole
   ```
 
-<details>
-<summary><h4>Full List of Flags and Options</h4></summary>
+See [comp#L319](comp#L319) for all supported supported flags and options.
 
-```console
-$ ./comp
-Usage:
-  ./comp <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
-
-Verbs: (short forms within [])
-  [c]lean        Delete '<comp_dir>/data'
-  [d]own         Stop a composition
-  [o]verrides    List all override files in a composition
-  [p]ull         Pull all images for a composition
-  [s]tatus       Display health / status of a composition
-  [u]p           Start a composition
-  [v]alidate     Validate a composition
-
-Flags:
-  [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
-  [-F | --fail-fast]         Fail on the first verb failure
-  [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
-  [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
-
-Options:              { yes | no }
-  [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
-  [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
-  [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
-  [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
-
- <omitted> = Configure the option unless overridden in options.override.conf:
-             use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
-        no = Never configure the option (and use docker default instead):
-             ignores 'docker-compose.*.{sh,yml}' files.
-       yes = Always configure the option as specified:
-             ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
-
-Compositions Found (18):
-  airdcpp      certbot  docker_sock  gitea      hass       indexarr
-  influxdb     kodi_db  monitarr     navidrome  nextcloud  pihole
-  qbittorrent  tang     telegraf     teslamate  traefik    unifi
-```
-</details>
+Also see [Structure & Conventions](#structure--conventions)
+for optionally customizing compositions via _overrides_.
 
 ### Arch. Support
 
@@ -993,7 +939,7 @@ Compositions Found (18):
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tiny_HTTPD%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_tiny_httpd.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B
+        A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/tiny-httpd'>

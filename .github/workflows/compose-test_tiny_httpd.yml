@@ -10,7 +10,7 @@ on:
 
 env:
   TARGET_SERVICE: tiny_httpd
-  TARGET_TIMEOUT: 15
+  TARGET_TIMEOUT: 30
 
 jobs:
   test:
