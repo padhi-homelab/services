@@ -167,6 +167,10 @@ __maybe_fail_fast () {
   return "$1"
 }
 
+__print_sepator_line () {
+  [ -n "$COMP_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
+}
+
 __read_option () {
   local OPTION="OPTION_$1"
   local OVERRIDE_OPTION=""
@@ -180,9 +184,7 @@ __read_option () {
   [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" "yes"
 
   if [ "${!OPTION}" != "yes" ] ; then 
-    echo -n "$opt_line_head: $1 "
-    [ -z "$OVERRIDE_OPTION" ] && printf "(arg) " || printf "(conf) "
-    opt_line_head=''
+    [ -z "$OVERRIDE_OPTION" ] && disabled_options+=("$1 (arg)") || disabled_options+=("$1 (conf)")
   else
     if [ -f "docker-compose.${1,,}.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.${1,,}.yml" )
@@ -427,7 +429,7 @@ validate_and_set_option () {
     yes | no ) printf -v "$OPTION" "%s" "$1" ; return 0
   esac
   if [ "$3" = "override" ] ; then
-    echo ; __error "Invalid value '$1' for '${2,,}' option in options.override.conf"
+    echo ; __error "Invalid value '$1' for '$2' in $comp/options.override.conf"
   else
     usage "Invalid value '$1' for '${2,,}' option"
   fi
@@ -500,39 +502,37 @@ fi
 COMPOSITIONS=( "$@" )
 OPTIONS_FROM_ARGS=( "$OPTION_DEVICES" "$OPTION_HOOKS" "$OPTION_LABELS" "$OPTION_LOGGING" "$OPTION_PORTS" )
 
-perform () {
-  local SIMPLE_VERB="$1"
-  for comp in "${COMPOSITIONS[@]}" ; do
-    comp="${comp%/}"
+__print_sepator_line
+for comp in "${COMPOSITIONS[@]}" ; do
+  comp="${comp%/}"
+
+  if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
+    echo ; __error "${_bold_}$comp${_normal_} is not a base directory at '$SELF_DIR'!"
+    __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
+  fi
+  if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
+    echo ; __error "No 'docker-compose.yml' found under ${_bold_}$comp${_normal_}!"
+    __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
+  fi
+
+  cd "$SELF_DIR/$comp"
+  COMPOSE_FILES=( "docker-compose.yml" )
+  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
+    COMPOSE_FILES+=( "docker-compose.override.yml")
+  fi
+
+  read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
+  disabled_options=() ; opt_error=0
+  for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
+    __read_option $opt || opt_error=1
+  done
+  [ "$opt_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
+
+  for SIMPLE_VERB in $VERBS ; do
     echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${SIMPLE_VERB:0:1} ${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "${_bold_}$comp${_normal_} ... "
-
-    if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
-      __error "${_bold_}$comp${_normal_} is not a base directory at '$SELF_DIR'!"
-      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
-    fi
-    if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
-      __error "No 'docker-compose.yml' found under ${_bold_}$comp${_normal_}!"
-      __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
-    fi
-
-    cd "$SELF_DIR/$comp"
-    COMPOSE_FILES=( "docker-compose.yml" )
-    if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.override.yml")
-    fi
-
-    read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
-    local opt_error=0
-    opt_line_head='[o] Disabled options'
-    for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
-      __read_option $opt && continue
-      opt_error=1
-    done
-    [ "$opt_error" -eq 0 ] \
-      || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
-    [ -n "$opt_line_head" ] || echo
+    [ ${#disabled_options[@]} -eq 0 ] || echo "[o] Disabled options: ${disabled_options[*]}"
 
     [ "$SIMPLE_VERB" = "validate" ] || do_validate shallow
 
@@ -554,13 +554,12 @@ perform () {
         || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
     fi
 
-    local verb_exit=0
-    "do_${SIMPLE_VERB}" ; verb_exit=$?
+    verb_ret=0 ; "do_${SIMPLE_VERB}" ; verb_ret=$?
 
-    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_exit -ne 0 ] || echo "[=] ${_bold_}$comp${_normal_} is valid!"
-    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_exit -ne 0 ]  || echo "[=] ${_bold_}$comp${_normal_} is healthy!"
+    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$comp${_normal_} is valid!"
+    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$comp${_normal_} is healthy!"
 
-    [ $verb_exit -eq 0 ] \
+    [ $verb_ret -eq 0 ] \
       || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
     if __will_invoke_compose "$SIMPLE_VERB" ; then
@@ -571,15 +570,6 @@ perform () {
     [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
-}
-
-print_sepator_line () {
-  [ -n "$COMP_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
-}
-
-print_sepator_line
-for VERB in $VERBS ; do
-  perform "$VERB"
-  print_sepator_line
+  __print_sepator_line
 done
 echo ; exit "$FINAL_EXIT_CODE"

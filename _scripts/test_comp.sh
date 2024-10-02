@@ -57,7 +57,7 @@ function CHECK {
   else
     echo "    ${_fg_red_}${_bold_}-${_normal_} $2: ${_fg_red_}${_bold_}FAILURE${_normal_}"
     FINAL_EXIT_CODE=1
-    [ -z "${3:-}" ] || FINAL
+    [ -z "${3:-}" ] || _EXIT "Aborting early. "
   fi
 }
 
@@ -71,7 +71,6 @@ function _WAIT () {
 COMP_COUNTER=1
 # _INIT <comp_dir> [name prefix] [name suffix]
 function _INIT () {
-  [ -z "$SKIPPING_THIS" ] || return
   local TARGET_COMP_VAR="TARGET_COMP_$COMP_COUNTER"
   local TARGET_COMP_DISPLAY_VAR="TARGET_COMP_${COMP_COUNTER}_DISPLAY"
   echo ; echo -n "${_fg_white_}${_bg_black_}${_bold_} I ${_normal_} Initializing ${_fg_magenta_}$1${_normal_} -> "
@@ -84,12 +83,13 @@ function _INIT () {
   (( COMP_COUNTER++ ))
 }
 
-function FINAL () {
+# _EXIT [message]
+function _EXIT () {
   echo ; printf '%.0s-' {1..100} ; echo ; echo
   if [ "$FINAL_EXIT_CODE" -eq 0 ] ; then
-    echo "${_fg_white_}${_bg_black_}${_bold_} S ${_normal_} All checks ${_fg_green_}SUCCESSFUL${_normal_}."
+    echo "${_fg_white_}${_bg_black_}${_bold_} S ${_normal_} ${1:-}All checks ${_fg_green_}SUCCESSFUL${_normal_}."
   else
-    echo "${_fg_white_}${_bg_black_}${_bold_} F ${_normal_} Some checks ${_fg_red_}${_bold_}FAILED${_normal_}!"
+    echo "${_fg_white_}${_bg_black_}${_bold_} F ${_normal_} ${1:-}Some checks ${_fg_red_}${_bold_}FAILED${_normal_}!"
   fi
   exit $FINAL_EXIT_CODE
 }
@@ -103,9 +103,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
 
 SETUP "status of non-existent composition" \
       "status unknown_comp"
-CHECK $'grep -qs "Executing status on unknown_comp" "$COMP_OUT_PATH"' \
-      "Info at beginning of execution"
-CHECK $'grep -qs "is not a base directory" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "unknown_comp is not a base directory" "$COMP_ERR_PATH"' \
       "Helpful message on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
       "EXIT_CODE_COMPOSITION_NOT_FOUND"
@@ -217,7 +215,7 @@ echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
 
 SETUP "stopping $TARGET_COMP_1_DISPLAY with a bad option & $TARGET_COMP_2_DISPLAY without options" \
       "down -P $TARGET_COMP_1 $TARGET_COMP_2"
-CHECK $'grep -Pqs "Invalid value \'nyet\' for \'devices\' option in options\.override\.conf" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
       exit_on_failure
 CHECK $'grep -Pqsv "Container $TARGET_COMP_1.* Stopping" "$COMP_ERR_PATH"' \
@@ -282,4 +280,4 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0; best-effort guess works for now" \
       exit_on_failure
 
-FINAL
+_EXIT "Ran all checks. "
