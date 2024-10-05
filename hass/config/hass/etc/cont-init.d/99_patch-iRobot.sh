@@ -6,10 +6,10 @@ apk add --no-cache patch
 
 cd /usr/src/homeassistant/homeassistant/components/roomba
 
-patch irobot_base.py << 'EOF'
---- irobot_base_old.py  2023-07-26 22:26:44.387000000 -0700
-+++ irobot_base.py      2023-07-26 22:27:36.995000000 -0700
-@@ -173,7 +173,7 @@
+patch entity.py << 'EOF'
+--- entity_old.py  2024-10-04 20:26:44.387000000 -0700
++++ entity.py      2024-10-04 20:27:36.995000000 -0700
+@@ -182,7 +182,7 @@
          software_version = state.get("softwareVer")
  
          # Set properties that are to appear in the GUI
