@@ -262,8 +262,11 @@ do_validate () {
     echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr ; then
-        echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml."
-        return 1
+        if [ "${1:-}" = "shallow" ] ; then
+          echo ; __warning "Consider moving '$bad_attr' for '$svc' into docker_compose.$bad_attr.yml."
+        else
+          echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml." ; return 1
+        fi
       fi
     done
   done
