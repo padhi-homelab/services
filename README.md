@@ -4,38 +4,40 @@
 <details>
 <summary><h4>Why <code>comp</code>?</h4></summary>
 
-The multi-staged nature and repetitive commands for setting up
-compositions with non-standard configuration
-(e.g., non-root containers, networking across compositions etc.)
-is the raison d'être for `comp`.
+The multi-staged nature and repetitive commands for setting up complex compositions
+(e.g., containers with host user's UID:GID, shared networks across compositions, etc.)
+is the raison d'être for `comp`. Some of the key features are highlighted below.
 
-For running non-root containers with the host users UID:GID,
-so as to avoid permission issues with mounted volumes,
-one must at least create a `.env` file
-with variables pointing to their UID:GID,
-for `docker compose` to pick them up and replace them in YAML files.
-But, that's just the start!
+For running non-root containers with the host user's UID:GID
+(e.g., to avoid permission issues with mounted volumes),
+one must grab these from the host, and pass them as `env` variables,
+for `docker compose` to pick them up.
+The same applies to `TZ` and other host-side configs as well.
+Not all of these configs are absolute constants
+that maybe added to a `.env` and never be updated again.
+In such cases, we ideally want a "hook" that runs before `docker compose` is run,
+and updates / generates the `.env` as necessary.
 
-One might want to attach some "hooks" when starting and/or stopping services.
-For instance, since Traefik [can't simultaneously accept][traefik config]
-a static configuration file _and_ some command-line configuration arguments,
-I have a "start" hook to _generate_ a static configuration file with server-specific
-details (server's FQDN, ACME email and server etc.).
+Similar hooks are also desirable to set up [external networks]
+that are shared across multiple compositions.
+In such cases, the hook would execute a `docker network` command
+before running `docker compose`.
+`comp` automatically grabs all external networks in YAML files,
+and has a hook to create them if they do not already exist.
 
-One might also want to attach containers to [externally-created Docker networks],
-for sharing data across multiple compositions without exposing anything to host.
-In that case, a separate `docker network` command must be executed before starting services.
-`comp` automatically detects external networks in YAML files,
-and creates them if they do not already exist.
-
-Finally, I also added several safeguards that `docker compose` doesn't provide.
-For instance, missing host directories that are required to be mounted to containers
-are automatically created by Docker (and are owned by `root`!),
-but `comp` errors out in such cases requesting the user for explicit action.
+`comp` also has several safeguards that `docker compose` doesn't provide.
+For instance, any non-existent host directories that are mounted to containers
+are automatically created by Docker and are owned by `root`,
+even when the `--user` flag is set!
+`comp` errors out in such cases, requesting the user for explicit action.
 
 #### Why not use Ansible / Kubernetes / XYZ?
 
 Seemed like overkill, when I initially wrote `comp`.
+
+#### Why `bash`?
+
+Why not?
 </details>
 
 ### Usage
@@ -1104,7 +1106,7 @@ running the container with a rootless docker daemon.
 
 ### Structure & Conventions
 
-When deploying, all changes MUST appear in `.gitignore`d files:
+All specializations should be added to `*.override.*` files.
 
 - at the repo root:
   - `static.global.override.env` may store global constants
@@ -1192,5 +1194,4 @@ When deploying, all changes MUST appear in `.gitignore`d files:
 
 
 
-[externally-created docker networks]: https://docs.docker.com/compose/networking/#use-a-pre-existing-network
-[traefik config]:                     https://doc.traefik.io/traefik/getting-started/configuration-overview/#the-static-configuration
+[external networks]: https://docs.docker.com/compose/networking/#use-a-pre-existing-network

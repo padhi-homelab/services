@@ -195,6 +195,10 @@ __read_option () {
   fi
 }
 
+__run_hook () {
+  ( set -a && source .env && ./"$1" ) || __error "HOOK '$1' FAILED!" ; return 1
+}
+
 __run_hooks () {
   local stage="$1"
   [ -z "${2:-}" ] || stage="$1.$2"
@@ -202,15 +206,10 @@ __run_hooks () {
   [ -n "${2:-}" ] && echo "[>] Running '$2' hooks for '$1' ..." \
                   || echo "[>] Running '$1' hooks ..."
 
-  if ! ( set -a && source .env && ./docker-compose."$stage"_hook.sh ) ; then
-    __error "HOOK 'docker-compose.${stage}_hook.sh' FAILED!" ; return 1
-  fi
-
+  [ ! -f "docker-compose.${stage}_hook.sh" ] || __run_hook "docker-compose.${stage}_hook.sh"
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] ; then
     while IFS= read -r hook_file ; do
-      if ! ( set -a && source .env && "$hook_file" ) ; then
-        __error "HOOK '${hook_file#./}' FAILED!" ; return 1
-      fi
+      __run_hook "$hook_file"
     done < <(find . -maxdepth 1 -type f -name "docker-compose.${stage}_hook.override*.sh")
   fi
 }
