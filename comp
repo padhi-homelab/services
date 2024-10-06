@@ -14,7 +14,6 @@ DOCKER_CMD="docker"
 DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
 YQ_CMD="yq"
 
-FINAL_EXIT_CODE=0
 EXIT_CODE_GENERIC_ERROR=1
 
 EXIT_CODE_USAGE_ERROR=250
@@ -49,7 +48,7 @@ __append_env_from () {
     if set -a && source .env && "$1" > .env.add ; then
       cat .env.add >> .env ; rm .env.add
     else
-      local script_file="${1/#./$comp}"
+      local script_file="${1/#./$_CUR_COMP_}"
       echo "'${script_file#"$SELF_DIR"/}' FAILED!" ; return 1
     fi
   fi
@@ -66,7 +65,7 @@ __CALL_SELF__ () {
 
 __create_external_networks () {
   local EXTERNAL_NETWORKS=( )
-  for yml in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
+  for yml in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
     for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' "$yml") ; do
       # NOTE: `echo ... | xargs` to get rid of quotes around network name during extraction via `yq`.
       EXTERNAL_NETWORKS+=( $(echo "$ext_net" | xargs) )
@@ -142,10 +141,10 @@ __gen_templates () {
 
 __grab_ps () {
   # FIXME: Best effort project name guessing without running compose.
-  local proj=$comp
-  ! [[ "$comp" =~ ^_ ]] || proj=${proj:1}
-  echo "$comp" | grep -qv '\.' || proj=${proj//.}
-  [ "$proj" = "$comp" ] || __warning "Guessing project name to be $proj"
+  local proj="$_CUR_COMP_"
+  ! [[ "$_CUR_COMP_" =~ ^_ ]] || proj=${proj:1}
+  echo "$_CUR_COMP_" | grep -qv '\.' || proj=${proj//.}
+  [ "$proj" = "$_CUR_COMP_" ] || __warning "Guessing project name to be $proj"
 
   # FIXME: `podman` doesn't print health status!
   local _ps_res="$( $DOCKER_CMD ps \
@@ -158,10 +157,10 @@ __grab_ps () {
 __maybe_fail_fast () {
   [ "$FLAG_FAIL_FAST" != "yes" ] || exit "$1"
 
-  if [ "$FINAL_EXIT_CODE" -eq 0 ] ; then
-    FINAL_EXIT_CODE=$1
-  elif [ "$FINAL_EXIT_CODE" -ne "$1" ] ; then
-    FINAL_EXIT_CODE=$EXIT_CODE_GENERIC_ERROR
+  if [ "$_FINAL_EXIT_CODE_" -eq 0 ] ; then
+    _FINAL_EXIT_CODE_=$1
+  elif [ "$_FINAL_EXIT_CODE_" -ne "$1" ] ; then
+    _FINAL_EXIT_CODE_=$EXIT_CODE_GENERIC_ERROR
   fi
 
   return "$1"
@@ -184,12 +183,12 @@ __read_option () {
   [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" "yes"
 
   if [ "${!OPTION}" != "yes" ] ; then 
-    [ -z "$OVERRIDE_OPTION" ] && disabled_options+=("$1 (arg)") || disabled_options+=("$1 (conf)")
+    [ -z "$OVERRIDE_OPTION" ] && _DISABLED_OPTIONS_+=("$1 (arg)") || _DISABLED_OPTIONS_+=("$1 (conf)")
   else
     if [ -f "docker-compose.${1,,}.yml" ] ; then
-      COMPOSE_FILES+=( "docker-compose.${1,,}.yml" )
+      _CUR_COMPOSE_FILES_+=( "docker-compose.${1,,}.yml" )
       if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
-        COMPOSE_OVERRIDE_FILES+=( "docker-compose.${1,,}.override.yml" )
+        _CUR_COMPOSE_OVERRIDE_FILES_+=( "docker-compose.${1,,}.override.yml" )
       fi
     fi
   fi
@@ -218,7 +217,7 @@ __run_hooks () {
 
 __verify_volumes () {
   local mounted_volumes=( )
-  for yml in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
+  for yml in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
     for vol in $($YQ_CMD -M '.services.[] | with_entries(select(.key == "volumes")) | .[] | .[] as $v | $v' "$yml") ; do
       case $vol in
         ./* | /* ) mounted_volumes+=( "$vol" ) ;;
@@ -230,7 +229,7 @@ __verify_volumes () {
   for vol in $(printf "%s\n" "${mounted_volumes[@]}" | sort -u) ; do
     vol="$(echo "$vol" | cut -d: -f1)"
     if ! [ -e "$vol" ] ; then
-      __error "VOLUME PATH '${vol/#./$comp}' NOT FOUND!" ; return 1
+      __error "VOLUME PATH '${vol/#./$_CUR_COMP_}' NOT FOUND!" ; return 1
     fi
   done
 }
@@ -240,7 +239,7 @@ __warning () {
 }
 
 __will_invoke_compose () {
-  [ "$1" = "down" ] || [ "$1" = "pull" ] || [ "$1" = "up" ]
+  [ "$_CUR_VERB_" = "down" ] || [ "$_CUR_VERB_" = "pull" ] || [ "$_CUR_VERB_" = "up" ]
 }
 
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
@@ -249,10 +248,10 @@ do_validate () {
   [ "${1:-}" = "shallow" ] || __do_prereqs validate || return 1
 
   local err=
-  if [[ "$comp" =~ ^_ ]] ; then
+  if [[ "$_CUR_COMP_" =~ ^_ ]] ; then
     __error "$DOCKER_COMPOSE_CMD drops leading '_' from project name." ; err=1
   fi
-  if echo "$comp" | grep -q '\.' ; then
+  if echo "$_CUR_COMP_" | grep -q '\.' ; then
     __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
   fi
   [ -z "$err" ] || return 1
@@ -277,12 +276,12 @@ do_validate () {
 do_clean () {
   __grab_ps __ps_before_clean
   if [ -n "$__ps_before_clean" ] ; then
-    __error "Cannot clean while ${_bold_}$comp${_normal_} is running!" ; return 1
+    __error "Cannot clean while ${_bold_}$_CUR_COMP_${_normal_} is running!" ; return 1
   fi
 
   rm -rfv generated .env
   if [ -d data ] ; then
-    echo -n "Remove '$comp/data' (y/N)? " ; read -r
+    echo -n "Remove '$_CUR_COMP_/data' (y/N)? " ; read -r
     [[ $REPLY =~ ^[Yy]$ ]] || return 0
   fi
   rm -rfv data
@@ -332,11 +331,11 @@ do_status () {
 do_up () {
   __do_prereqs status "yes" || return 1
 
-  local all_compose_files=()
-  for cf in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
-    all_compose_files+=(-f "$cf")
+  local all__CUR_COMPOSE_FILES_=()
+  for cf in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
+    all__CUR_COMPOSE_FILES_+=(-f "$cf")
   done
-  $DOCKER_COMPOSE_CMD "${all_compose_files[@]}" up -d
+  $DOCKER_COMPOSE_CMD "${all__CUR_COMPOSE_FILES_[@]}" up -d
 }
 
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
@@ -438,7 +437,7 @@ validate_and_set_option () {
     yes | no ) printf -v "$OPTION" "%s" "$1" ; return 0
   esac
   if [ "$3" = "override" ] ; then
-    echo ; __error "Invalid value '$1' for '$2' in $comp/options.override.conf"
+    echo ; __error "Invalid value '$1' for '$2' in $_CUR_COMP_/options.override.conf"
   else
     usage "Invalid value '$1' for '${2,,}' option"
   fi
@@ -511,41 +510,39 @@ fi
 COMPOSITIONS=( "$@" )
 OPTIONS_FROM_ARGS=( "$OPTION_DEVICES" "$OPTION_HOOKS" "$OPTION_LABELS" "$OPTION_LOGGING" "$OPTION_PORTS" )
 
-__print_sepator_line
-for comp in "${COMPOSITIONS[@]}" ; do
-  comp="${comp%/}"
-
-  if ! { [ "$comp" = "$(basename "$comp")" ] && [ -d "$SELF_DIR/$comp" ]; } ; then
-    echo ; __error "${_bold_}$comp${_normal_} is not a base directory at '$SELF_DIR'!"
+_FINAL_EXIT_CODE_=0 ; unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
+for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
+  _CUR_COMP_="${_CUR_COMP_%/}"
+  if ! cd "$SELF_DIR/$_CUR_COMP_" ; then
+    echo ; __error "${_bold_}$_CUR_COMP_${_normal_} is not a base directory at '$SELF_DIR'!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
-  if ! [ -f "$SELF_DIR/$comp/docker-compose.yml" ] ; then
-    echo ; __error "No 'docker-compose.yml' found under ${_bold_}$comp${_normal_}!"
+  if ! [ -f "$SELF_DIR/$_CUR_COMP_/docker-compose.yml" ] ; then
+    echo ; __error "No 'docker-compose.yml' found under ${_bold_}$_CUR_COMP_${_normal_}!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
 
-  cd "$SELF_DIR/$comp"
-  COMPOSE_FILES=( "docker-compose.yml" )
+  _CUR_COMPOSE_FILES_=( "docker-compose.yml" )
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
-    COMPOSE_OVERRIDE_FILES=( "docker-compose.override.yml")
+    _CUR_COMPOSE_OVERRIDE_FILES_=( "docker-compose.override.yml")
   fi
 
   read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
-  disabled_options=() ; opt_error=0
+  _DISABLED_OPTIONS_=() ; opt_error=0
   for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
     __read_option $opt || opt_error=1
   done
   [ "$opt_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
 
-  for SIMPLE_VERB in $VERBS ; do
-    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${SIMPLE_VERB:0:1} ${_normal_} Executing ${_bold_}$SIMPLE_VERB${_normal_} on "
+  for _CUR_VERB_ in $VERBS ; do
+    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_:0:1} ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
-    echo "${_bold_}$comp${_normal_} ... "
-    [ ${#disabled_options[@]} -eq 0 ] || echo "[o] Disabled options: ${disabled_options[*]}"
+    echo "${_bold_}$_CUR_COMP_${_normal_} ... "
+    [ ${#_DISABLED_OPTIONS_[@]} -eq 0 ] || echo "[o] Disabled options: ${_DISABLED_OPTIONS_[*]}"
 
-    [ "$SIMPLE_VERB" = "validate" ] || do_validate shallow
+    [ "$_CUR_VERB_" = "validate" ] || do_validate shallow
 
-    if __will_invoke_compose "$SIMPLE_VERB" ; then
+    if __will_invoke_compose ; then
       __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __create_external_networks || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __gen_templates || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
@@ -553,29 +550,28 @@ for comp in "${COMPOSITIONS[@]}" ; do
         || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     fi
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" pre \
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$_CUR_VERB_" pre \
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
 
-    if __will_invoke_compose "$SIMPLE_VERB" ; then
+    if __will_invoke_compose ; then
       __verify_volumes || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
     fi
 
-    verb_ret=0 ; "do_${SIMPLE_VERB}" ; verb_ret=$?
+    verb_ret=0 ; "do_${_CUR_VERB_}" ; verb_ret=$?
 
-    [ "$SIMPLE_VERB" != "validate" ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$comp${_normal_} is valid!"
-    [ "$SIMPLE_VERB" != "status" ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$comp${_normal_} is healthy!"
+    [ "$_CUR_VERB_" != "validate" ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is valid!"
+    [ "$_CUR_VERB_" != "status" ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
 
-    [ $verb_ret -eq 0 ] \
-      || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+    [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
-    if __will_invoke_compose "$SIMPLE_VERB" ; then
+    if __will_invoke_compose ; then
       [ "$OPTION_HOOKS" != "yes" ] || __run_hooks post \
         || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR || continue
     fi
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$SIMPLE_VERB" post \
+    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$_CUR_VERB_" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
   done
-  __print_sepator_line
+  unset _CUR_VERB_ ; __print_sepator_line
 done
-echo ; exit "$FINAL_EXIT_CODE"
+echo ; exit "$_FINAL_EXIT_CODE_"

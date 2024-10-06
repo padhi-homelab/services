@@ -36,8 +36,10 @@ function SETUP () {
     echo "INPUT: ${3:-}"
   fi
   
-  DISABLE_COLORS=1 ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"${3:-}"
+  DISABLE_COLORS=1 timeout 60s \
+    ./comp $2 >"$COMP_OUT_PATH" 2>"$COMP_ERR_PATH" <<<"${3:-}"
   COMP_EXIT_CODE=$?
+
   if [ -n "$DEBUG" ]; then
     echo "\$COMP_ERR_PATH contents:"
     cat "$COMP_ERR_PATH"
@@ -48,7 +50,7 @@ function SETUP () {
 }
 
 # CHECK <condition> <description> [exit immediately?]
-function CHECK {
+function CHECK () {
   [ -z "$SKIPPING_THIS" ] || return
   [ -z "$DEBUG" ] || echo "CHECK: $1"
 
@@ -59,6 +61,17 @@ function CHECK {
     FINAL_EXIT_CODE=1
     [ -z "${3:-}" ] || _EXIT "Aborting early. "
   fi
+}
+
+function CLEAN () {
+  echo ; echo -n "${_fg_white_}${_bg_black_}${_bold_} C ${_normal_} Cleaning up clones:"
+  for i in $(seq $(( COMP_COUNTER - 1 ))) ; do
+    local TARGET_COMP_VAR="TARGET_COMP_$i"
+    local TARGET_COMP_DISPLAY_VAR="TARGET_COMP_${i}_DISPLAY"
+    rm -rf "${!TARGET_COMP_VAR}"
+    echo -n " ${!TARGET_COMP_DISPLAY_VAR}"
+  done
+  echo
 }
 
 # _WAIT <duration> <description>
@@ -126,6 +139,29 @@ CHECK $'grep -qs "Unhealthy service:" "$COMP_ERR_PATH"' \
       "Error about unhealthy service on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       "EXIT_CODE_SIMPLE_VERB_FAILURE" \
+      exit_on_failure
+
+echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
+
+SETUP "overriddes list for $TARGET_COMP_1_DISPLAY with a bad option" \
+      "overrides -P $TARGET_COMP_1"
+CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
+      "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
+      exit_on_failure
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
+      "EXIT_CODE_OPTIONS_CONF_ERROR" \
+      exit_on_failure
+
+echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
+
+SETUP "overriddes list for $TARGET_COMP_1_DISPLAY" \
+      "overrides -P $TARGET_COMP_1"
+CHECK $'grep -qs "Executing overrides on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
+      "Info at beginning of execution"
+CHECK $'grep -qs "\[L\] $TARGET_COMP_1/options.override.conf" "$COMP_OUT_PATH"' \
+      "options.override.conf listed"
+CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
+      "EXIT_CODE = 0" \
       exit_on_failure
 
 SETUP "starting $TARGET_COMP_1_DISPLAY without prerequisites" \
@@ -196,8 +232,6 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 _INIT tiny_httpd
-
-echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
 
 SETUP "starting $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY with different options" \
       "up -P $TARGET_COMP_1 $TARGET_COMP_2"
@@ -280,4 +314,4 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0; best-effort guess works for now" \
       exit_on_failure
 
-_EXIT "Ran all checks. "
+CLEAN ; _EXIT "Finished self test. "
