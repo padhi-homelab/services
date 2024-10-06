@@ -66,7 +66,7 @@ __CALL_SELF__ () {
 
 __create_external_networks () {
   local EXTERNAL_NETWORKS=( )
-  for yml in "$@" ; do
+  for yml in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
     for ext_net in $($YQ_CMD -M '.networks | with_entries(select(.value.external == true)) | keys | .[]' "$yml") ; do
       # NOTE: `echo ... | xargs` to get rid of quotes around network name during extraction via `yq`.
       EXTERNAL_NETWORKS+=( $(echo "$ext_net" | xargs) )
@@ -189,14 +189,14 @@ __read_option () {
     if [ -f "docker-compose.${1,,}.yml" ] ; then
       COMPOSE_FILES+=( "docker-compose.${1,,}.yml" )
       if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
-        COMPOSE_FILES+=( "docker-compose.${1,,}.override.yml" )
+        COMPOSE_OVERRIDE_FILES+=( "docker-compose.${1,,}.override.yml" )
       fi
     fi
   fi
 }
 
 __run_hook () {
-  ( set -a && source .env && ./"$1" ) || __error "HOOK '$1' FAILED!" ; return 1
+  ( set -a && source .env && ./"$1" ) || { __error "HOOK '$1' FAILED!" ; return 1 ; }
 }
 
 __run_hooks () {
@@ -206,17 +206,19 @@ __run_hooks () {
   [ -n "${2:-}" ] && echo "[>] Running '$2' hooks for '$1' ..." \
                   || echo "[>] Running '$1' hooks ..."
 
-  [ ! -f "docker-compose.${stage}_hook.sh" ] || __run_hook "docker-compose.${stage}_hook.sh"
+  [ ! -f "docker-compose.${stage}_hook.sh" ] \
+    || __run_hook "docker-compose.${stage}_hook.sh" || return 1
+
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] ; then
     while IFS= read -r hook_file ; do
-      __run_hook "$hook_file"
+      __run_hook "$hook_file" || return 1
     done < <(find . -maxdepth 1 -type f -name "docker-compose.${stage}_hook.override*.sh")
   fi
 }
 
 __verify_volumes () {
   local mounted_volumes=( )
-  for yml in "$@" ; do
+  for yml in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
     for vol in $($YQ_CMD -M '.services.[] | with_entries(select(.key == "volumes")) | .[] | .[] as $v | $v' "$yml") ; do
       case $vol in
         ./* | /* ) mounted_volumes+=( "$vol" ) ;;
@@ -329,7 +331,12 @@ do_status () {
 
 do_up () {
   __do_prereqs status "yes" || return 1
-  $DOCKER_COMPOSE_CMD ${COMPOSE_FILES[@]/#/-f } up -d
+
+  local all_compose_files=()
+  for cf in "${COMPOSE_FILES[@]}" "${COMPOSE_OVERRIDE_FILES[@]}" ; do
+    all_compose_files+=(-f "$cf")
+  done
+  $DOCKER_COMPOSE_CMD "${all_compose_files[@]}" up -d
 }
 
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
@@ -520,7 +527,7 @@ for comp in "${COMPOSITIONS[@]}" ; do
   cd "$SELF_DIR/$comp"
   COMPOSE_FILES=( "docker-compose.yml" )
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
-    COMPOSE_FILES+=( "docker-compose.override.yml")
+    COMPOSE_OVERRIDE_FILES=( "docker-compose.override.yml")
   fi
 
   read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
@@ -540,10 +547,8 @@ for comp in "${COMPOSITIONS[@]}" ; do
 
     if __will_invoke_compose "$SIMPLE_VERB" ; then
       __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
-      __create_external_networks "${COMPOSE_FILES[@]}" \
-        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
-      __gen_templates \
-        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      __create_external_networks || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      __gen_templates || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       [ "$OPTION_HOOKS" != "yes" ] || __run_hooks pre \
         || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     fi
@@ -552,8 +557,7 @@ for comp in "${COMPOSITIONS[@]}" ; do
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
 
     if __will_invoke_compose "$SIMPLE_VERB" ; then
-      __verify_volumes "${COMPOSE_FILES[@]}" \
-        || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
+      __verify_volumes || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
     fi
 
     verb_ret=0 ; "do_${SIMPLE_VERB}" ; verb_ret=$?
