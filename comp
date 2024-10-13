@@ -259,7 +259,7 @@ do_validate () {
   [ "${1:-}" = "shallow" ] || printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    echo -n " $svc"
+    [ "${1:-}" = "shallow" ] || echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr ; then
         if [ "${1:-}" = "shallow" ] ; then
@@ -270,7 +270,7 @@ do_validate () {
       fi
     done
   done
-  echo
+  [ "${1:-}" = "shallow" ] || echo
 }
 
 do_clean () {
@@ -522,7 +522,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
 
-  _CUR_COMPOSE_FILES_=( "docker-compose.yml" )
+  _CUR_COMPOSE_FILES_=( "docker-compose.yml" ) ; _CUR_COMPOSE_OVERRIDE_FILES_=()
   if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
     _CUR_COMPOSE_OVERRIDE_FILES_=( "docker-compose.override.yml")
   fi
