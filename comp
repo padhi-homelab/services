@@ -256,7 +256,7 @@ do_validate () {
   fi
   [ -z "$err" ] || return 1
 
-  printf '[~] Validating service:'
+  [ "${1:-}" = "shallow" ] || printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
     echo -n " $svc"
