@@ -11,8 +11,8 @@ PREREQS_FILENAME="pre.reqs"
 PREREQS_OVERRIDE_FILENAME="pre.override.reqs"
 
 DOCKER_CMD="docker"
-DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
-YQ_CMD="yq"
+DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
+YQ_CMD="$LIB_DIR/yq"
 
 EXIT_CODE_GENERIC_ERROR=1
 
@@ -167,7 +167,7 @@ __maybe_fail_fast () {
 }
 
 __print_sepator_line () {
-  [ -n "$COMP_INTERNAL_CALL" ] || printf '%.0s-' {1..80}
+  [ -n "$COMP_INTERNAL_CALL" ] || printf "%.0s${1:--}" {1..80}
 }
 
 __read_option () {
@@ -242,6 +242,11 @@ __will_invoke_compose () {
   [ "$_CUR_VERB_" = "down" ] || [ "$_CUR_VERB_" = "pull" ] || [ "$_CUR_VERB_" = "up" ]
 }
 
+__will_do_pre_reqs () {
+  [ "$_CUR_VERB_" = "overrides" ] || [ "$_CUR_VERB_" = "pull" ] || [ "$_CUR_VERB_" = "status" ] \
+    || [ "$_CUR_VERB_" = "up" ] || [ "$_CUR_VERB_" = "validate" ]
+}
+
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
 
 do_validate () {
@@ -249,10 +254,18 @@ do_validate () {
 
   local err=
   if [[ "$_CUR_COMP_" =~ ^_ ]] ; then
-    __error "$DOCKER_COMPOSE_CMD drops leading '_' from project name." ; err=1
+    if [ "${1:-}" = "shallow" ] ; then
+      __warning "$DOCKER_COMPOSE_CMD drops leading '_' from project name."
+    else
+      __error "$DOCKER_COMPOSE_CMD drops leading '_' from project name." ; err=1
+    fi
   fi
   if echo "$_CUR_COMP_" | grep -q '\.' ; then
-    __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
+    if [ "${1:-}" = "shallow" ] ; then
+      __warning "$DOCKER_COMPOSE_CMD drops all '.' from project name."
+    else
+      __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
+    fi
   fi
   [ -z "$err" ] || return 1
 
@@ -292,8 +305,6 @@ do_down () {
 }
 
 do_overrides () {
-  __do_prereqs overrides || return 1
-
   local any_override=''
   while IFS= read -r ofile ; do
     any_override='YES'
@@ -310,13 +321,10 @@ do_overrides () {
 }
 
 do_pull () {
-  __do_prereqs pull || return 1
   $DOCKER_COMPOSE_CMD pull
 }
 
 do_status () {
-  __do_prereqs status || return 1
-
   __grab_ps __ps_before_status
   printf '[?] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
@@ -329,8 +337,6 @@ do_status () {
 }
 
 do_up () {
-  __do_prereqs status "yes" || return 1
-
   local all__CUR_COMPOSE_FILES_=()
   for cf in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
     all__CUR_COMPOSE_FILES_+=(-f "$cf")
@@ -477,32 +483,21 @@ if ! $DOCKER_CMD version &> /dev/null ; then
     exit $EXIT_CODE_DEP_INSTALL_FAILURE
   else
     DOCKER_CMD="podman"
-    DOCKER_COMPOSE_CMD="$DOCKER_CMD compose"
   fi
 fi
 
-if ! $DOCKER_COMPOSE_CMD version &> /dev/null ; then
-  if ! command -v $DOCKER_CMD-compose &> /dev/null ; then
-    if ! [ -x "$LIB_DIR/compose" ] ; then
-      if ! "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose" ; then
-        __error 'Failed to locate: `'"$DOCKER_COMPOSE_CMD"'` or `'"$DOCKER_CMD"'-compose`!'
-        exit $EXIT_CODE_DEP_INSTALL_FAILURE
-      fi
-    fi
-    DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
-  else
-    DOCKER_COMPOSE_CMD="$DOCKER_CMD-compose"
+if ! [ -x "$DOCKER_COMPOSE_CMD" ] ; then
+  if ! "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose" ; then
+    __error 'Failed to locate or download: `'"$DOCKER_CMD"'-compose`!'
+    exit $EXIT_CODE_DEP_INSTALL_FAILURE
   fi
 fi
 
-if ! command -v $YQ_CMD &> /dev/null ; then
-  if ! [ -x "$LIB_DIR/yq" ] ; then
-    if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" ; then
-      __error 'Failed to locate: `yq`!'
-      exit $EXIT_CODE_DEP_INSTALL_FAILURE
-    fi
+if ! [ -x "$YQ_CMD" ] ; then
+  if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" ; then
+    __error 'Failed to locate or download: `yq`!'
+    exit $EXIT_CODE_DEP_INSTALL_FAILURE
   fi
-  YQ_CMD="$LIB_DIR/yq"
 fi
 
 # # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
@@ -535,12 +530,27 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   [ "$opt_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
 
   for _CUR_VERB_ in $VERBS ; do
+    [ "$_CUR_VERB_" = "validate" ] || do_validate shallow
+
+    if __will_do_pre_reqs ; then
+      __print_sepator_line ·
+      [ "$_CUR_VERB_" != "overrides" ] || __do_prereqs overrides \
+        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      [ "$_CUR_VERB_" != "pull" ] || __do_prereqs pull \
+        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      [ "$_CUR_VERB_" != "status" ] || __do_prereqs status \
+        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      [ "$_CUR_VERB_" != "up" ] || __do_prereqs status "yes" \
+        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      [ "$_CUR_VERB_" != "validate" ] || do_validate \
+        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      __print_sepator_line ·
+    fi
+
     echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_:0:1} ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
     [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
     echo "${_bold_}$_CUR_COMP_${_normal_} ... "
     [ ${#_DISABLED_OPTIONS_[@]} -eq 0 ] || echo "[o] Disabled options: ${_DISABLED_OPTIONS_[*]}"
-
-    [ "$_CUR_VERB_" = "validate" ] || do_validate shallow
 
     if __will_invoke_compose ; then
       __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
@@ -574,4 +584,5 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   done
   unset _CUR_VERB_ ; __print_sepator_line
 done
-echo ; exit "$_FINAL_EXIT_CODE_"
+[ -n "$COMP_INTERNAL_CALL" ] || echo
+exit "$_FINAL_EXIT_CODE_"
