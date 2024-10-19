@@ -32,14 +32,6 @@ api:
   dashboard: true
   insecure: false
 
-certificatesResolvers:
-  lets-encrypt:
-    acme:
-      email: ${SERVER_LETS_ENCRYPT_ACME_EMAIL}
-      storage: "/etc/traefik/lets-encrypt/acme.json"
-      caServer: ${SERVER_LETS_ENCRYPT_ACME_CA_SERVER}
-      tlsChallenge: true
-
 entryPoints:
   internal:
     address: ":8080"
@@ -73,7 +65,6 @@ entryPoints:
       - default@file
       - add-ssl-headers@file
       tls:
-        certResolver: lets-encrypt
         domains:
         - main: ${SERVER_WAN_FQDN}
 
