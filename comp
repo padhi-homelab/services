@@ -4,9 +4,13 @@
 set -Eumo pipefail
 
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-
 LIB_DIR="$SELF_DIR/.lib"
 SCRIPTS_DIR="$SELF_DIR/_scripts"
+
+source "$SCRIPTS_DIR/colors.sh"
+
+COMP_SELF_CALL_DEPTH="${COMP_SELF_CALL_DEPTH:-0}"
+
 PREREQS_FILENAME="pre.reqs"
 PREREQS_OVERRIDE_FILENAME="pre.override.reqs"
 
@@ -37,10 +41,6 @@ OPTION_LABELS=""
 OPTION_LOGGING=""
 OPTION_PORTS=""
 
-: "${COMP_INTERNAL_CALL:=}"
-
-source "$SCRIPTS_DIR/colors.sh"
-
 # # # # # # # # # # # # # # # # # # #     HELPER ROUTINES     # # # # # # # # # # # # # # # # # # #
 
 __append_env_from () {
@@ -57,7 +57,7 @@ __append_env_from () {
 __CALL_SELF__ () {
   local cur_dir="$(pwd)"
   cd "$SELF_DIR"
-  COMP_INTERNAL_CALL=1 bash "$0" "$@"
+  COMP_SELF_CALL_DEPTH=$(( COMP_SELF_CALL_DEPTH + 1 )) bash "$0" "$@"
   local exit_code=$?
   cd "$cur_dir"
   return $exit_code
@@ -167,7 +167,11 @@ __maybe_fail_fast () {
 }
 
 __print_sepator_line () {
-  [ -n "$COMP_INTERNAL_CALL" ] || printf "%.0s${1:--}" {1..80}
+  case "$COMP_SELF_CALL_DEPTH" in
+    0 ) printf "%.0s–" {1..80} ;;
+    1 ) printf "%.0s·" {1..80} ;;
+    * ) ;;
+  esac
 }
 
 __read_option () {
@@ -329,7 +333,7 @@ do_status () {
   printf '[?] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
     echo -n " $svc"
-    if ! ( echo "$__ps_before_status" | grep "$svc" | grep -q healthy ) ; then
+    if ! ( echo "$__ps_before_status" | grep "$svc" | grep -q "(healthy)" ) ; then
       echo ; __error "Unhealthy service: ${_fg_red_}$svc${_normal_}" ; return 1
     fi
   done
@@ -533,7 +537,6 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ "$_CUR_VERB_" = "validate" ] || do_validate shallow
 
     if __will_do_pre_reqs ; then
-      __print_sepator_line ·
       [ "$_CUR_VERB_" != "overrides" ] || __do_prereqs overrides \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
       [ "$_CUR_VERB_" != "pull" ] || __do_prereqs pull \
@@ -544,11 +547,16 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
       [ "$_CUR_VERB_" != "validate" ] || do_validate \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      __print_sepator_line ·
     fi
 
-    echo -ne "\n${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_:0:1} ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
-    [ -z "$COMP_INTERNAL_CALL" ] || printf 'pre-req '
+    _CUR_VERB_PREFIX_="${_CUR_VERB_:0:1}"
+    if [ "$COMP_SELF_CALL_DEPTH" -eq "0" ] ; then
+      _CUR_VERB_PREFIX_="${_fg_white_}${_bg_blue_}${_bold_} ${_CUR_VERB_PREFIX_^^}"
+    else
+      _CUR_VERB_PREFIX_="${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_PREFIX_}"
+    fi
+    echo -ne "\n$_CUR_VERB_PREFIX_ ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
+    [ "$COMP_SELF_CALL_DEPTH" -eq "0" ] || printf 'pre-req '
     echo "${_bold_}$_CUR_COMP_${_normal_} ... "
     [ ${#_DISABLED_OPTIONS_[@]} -eq 0 ] || echo "[o] Disabled options: ${_DISABLED_OPTIONS_[*]}"
 
@@ -584,5 +592,5 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   done
   unset _CUR_VERB_ ; __print_sepator_line
 done
-[ -n "$COMP_INTERNAL_CALL" ] || echo
+[ "$COMP_SELF_CALL_DEPTH" -gt "0" ] || echo
 exit "$_FINAL_EXIT_CODE_"
