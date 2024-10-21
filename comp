@@ -254,18 +254,17 @@ __will_do_pre_reqs () {
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
 
 do_validate () {
-  [ "${1:-}" = "shallow" ] || __do_prereqs validate || return 1
-
+  local non_failing="${1:-}"
   local err=
   if [[ "$_CUR_COMP_" =~ ^_ ]] ; then
-    if [ "${1:-}" = "shallow" ] ; then
+    if [ -n "$non_failing" ] ; then
       __warning "$DOCKER_COMPOSE_CMD drops leading '_' from project name."
     else
       __error "$DOCKER_COMPOSE_CMD drops leading '_' from project name." ; err=1
     fi
   fi
   if echo "$_CUR_COMP_" | grep -q '\.' ; then
-    if [ "${1:-}" = "shallow" ] ; then
+    if [ -n "$non_failing" ] ; then
       __warning "$DOCKER_COMPOSE_CMD drops all '.' from project name."
     else
       __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
@@ -273,13 +272,13 @@ do_validate () {
   fi
   [ -z "$err" ] || return 1
 
-  [ "${1:-}" = "shallow" ] || printf '[~] Validating service:'
+  [ -n "$non_failing" ] || printf '[~] Validating service:'
   for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
     local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
-    [ "${1:-}" = "shallow" ] || echo -n " $svc"
+    [ -n "$non_failing" ] || echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr ; then
-        if [ "${1:-}" = "shallow" ] ; then
+        if [ -n "$non_failing" ] ; then
           echo ; __warning "Consider moving '$bad_attr' for '$svc' into docker_compose.$bad_attr.yml."
         else
           echo ; __error "'$bad_attr' for '$svc' should be in docker_compose.$bad_attr.yml." ; return 1
@@ -287,7 +286,7 @@ do_validate () {
       fi
     done
   done
-  [ "${1:-}" = "shallow" ] || echo
+  [ -n "$non_failing" ] || echo
 }
 
 do_clean () {
@@ -509,10 +508,10 @@ fi
 COMPOSITIONS=( "$@" )
 OPTIONS_FROM_ARGS=( "$OPTION_DEVICES" "$OPTION_HOOKS" "$OPTION_LABELS" "$OPTION_LOGGING" "$OPTION_PORTS" )
 
-_FINAL_EXIT_CODE_=0 ; unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
+_FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
 for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   _CUR_COMP_="${_CUR_COMP_%/}"
-  if ! cd "$SELF_DIR/$_CUR_COMP_" ; then
+  if ! cd "$SELF_DIR/$_CUR_COMP_" 2>/dev/null ; then
     echo ; __error "${_bold_}$_CUR_COMP_${_normal_} is not a base directory at '$SELF_DIR'!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
@@ -534,9 +533,9 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   [ "$opt_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
 
   for _CUR_VERB_ in $VERBS ; do
-    [ "$_CUR_VERB_" = "validate" ] || do_validate shallow
-
+    (( ++_CUR_STAGE_ ))
     if __will_do_pre_reqs ; then
+      [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
       [ "$_CUR_VERB_" != "overrides" ] || __do_prereqs overrides \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
       [ "$_CUR_VERB_" != "pull" ] || __do_prereqs pull \
@@ -545,9 +544,10 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
       [ "$_CUR_VERB_" != "up" ] || __do_prereqs status "yes" \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != "validate" ] || do_validate \
+      [ "$_CUR_VERB_" != "validate" ] || __do_prereqs validate \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
     fi
+    [ "$_CUR_VERB_" = "validate" ] || do_validate non_failing
 
     _CUR_VERB_PREFIX_="${_CUR_VERB_:0:1}"
     if [ "$COMP_SELF_CALL_DEPTH" -eq "0" ] ; then
