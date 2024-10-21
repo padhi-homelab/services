@@ -10,10 +10,3 @@ services:
       traefik.http.routers.nextcloud.entryPoints: wan-https
       # NOTE: Order of middlewares matters: redirect must be performed before stripping
       traefik.http.routers.nextcloud.middlewares: nextcloud-caldav-redirect@docker,strip-nextcloud-prefix
-  push:
-    labels:
-      traefik.enable: true
-      traefik.http.middlewares.strip-push-prefix.stripPrefix.prefixes: "/nextcloud/push"
-      traefik.http.routers.push.rule: PathPrefix(`/nextcloud/push`)
-      traefik.http.routers.push.entryPoints: wan-https
-      traefik.http.routers.push.middlewares: strip-push-prefix
