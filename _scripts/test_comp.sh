@@ -23,7 +23,7 @@ SKIPPING_THIS=
 # SETUP <test description> <comp arguments> [stdin content]
 function SETUP () {
   [ -z "$SKIPPING_THIS" ] || return
-  echo ; echo "${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test $1: "
+  echo ; echo "${_fg_white_}${_bg_black_}${_bold_} T ${_normal_} Test that $1:"
 
   local io_path_prefix="$( echo "$TEST_COMP_TMP_PATH/$1" \
                          | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g" \
@@ -107,14 +107,14 @@ function _EXIT () {
   exit $FINAL_EXIT_CODE
 }
 
-SETUP "invocation without args" \
+SETUP "invocation without args fails" \
       ""
-CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] \[options\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
       "Usage information on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
       "EXIT_CODE_USAGE_ERROR"
 
-SETUP "status of non-existent composition" \
+SETUP "operations on non-existent compositions fail" \
       "status unknown_comp"
 CHECK $'grep -qs "unknown_comp is not a base directory" "$COMP_ERR_PATH"' \
       "Helpful message on stderr"
@@ -123,7 +123,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_COMPOSITION_NOT_FOUND ]'\
 
 _INIT tang
 
-SETUP "stopping $TARGET_COMP_1_DISPLAY while its not running" \
+SETUP "stopping $TARGET_COMP_1_DISPLAY while its not running passes" \
       "down $TARGET_COMP_1"
 CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -131,7 +131,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "that status reports $TARGET_COMP_1_DISPLAY is unhealthy" \
+SETUP "status reports $TARGET_COMP_1_DISPLAY is unhealthy" \
       "status -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -143,7 +143,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
 
 echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
 
-SETUP "overriddes list for $TARGET_COMP_1_DISPLAY with a bad option" \
+SETUP "bad options in overriddes list break $TARGET_COMP_1_DISPLAY" \
       "overrides -P $TARGET_COMP_1"
 CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
@@ -154,7 +154,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
 
 echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
 
-SETUP "overriddes list for $TARGET_COMP_1_DISPLAY" \
+SETUP "querying the overriddes list for $TARGET_COMP_1_DISPLAY otherwise passes" \
       "overrides -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing overrides on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -164,7 +164,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "starting $TARGET_COMP_1_DISPLAY without prerequisites" \
+SETUP "$TARGET_COMP_1_DISPLAY can be started without prerequisites" \
       "up -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing up on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -172,7 +172,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "cleaning $TARGET_COMP_1_DISPLAY before stopping" \
+SETUP "cleaning $TARGET_COMP_1_DISPLAY before stopping fails" \
       "clean $TARGET_COMP_1"
 CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -195,7 +195,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "stopping $TARGET_COMP_1_DISPLAY while its running" \
+SETUP "stopping $TARGET_COMP_1_DISPLAY while its running passes" \
       "down $TARGET_COMP_1"
 CHECK $'grep -qs "Executing down on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
@@ -203,7 +203,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "cleaning, but deny deleting data" \
+SETUP "cleaning works when denying deletion of data" \
       "clean $TARGET_COMP_1" \
       "n"
 CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
@@ -217,7 +217,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-SETUP "cleaning, and allow deleting data" \
+SETUP "cleaning works when allowing deletion of data" \
       "clean $TARGET_COMP_1" \
       "y"
 CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
@@ -233,7 +233,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 
 _INIT tiny_httpd
 
-SETUP "starting $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY with different options" \
+SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY may be started with different options" \
       "up -P $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
       "Info with disabled options at beginning of $TARGET_COMP_1_DISPLAY execution" \
@@ -247,7 +247,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 
 echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
 
-SETUP "stopping $TARGET_COMP_1_DISPLAY with a bad option & $TARGET_COMP_2_DISPLAY without options" \
+SETUP "a bad option breaks $TARGET_COMP_1_DISPLAY but $TARGET_COMP_2_DISPLAY still works without options" \
       "down -P $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
@@ -262,10 +262,8 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
       "EXIT_CODE_OPTIONS_CONF_ERROR" \
       exit_on_failure
 
-rm $TARGET_COMP_1/options.override.conf
-
-SETUP "stopping $TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY without options" \
-      "down -P $TARGET_COMP_1 $TARGET_COMP_2"
+SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY can both be stopped when ignoring overrides" \
+      "down -P -O $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -Pqs "Container $TARGET_COMP_1.* Removed" "$COMP_ERR_PATH"' \
       "Stopped $TARGET_COMP_1_DISPLAY successfully" \
       exit_on_failure
@@ -278,7 +276,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 
 _INIT tang _.test.very_ .bad.name_
 
-SETUP "starting $TARGET_COMP_3_DISPLAY" \
+SETUP "starting $TARGET_COMP_3_DISPLAY works" \
       "up -P $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
       "Name validation error due to '.'"
@@ -290,7 +288,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 
 _WAIT 30s "$TARGET_COMP_3_DISPLAY to start up and emit health status"
 
-SETUP "that status reports $TARGET_COMP_3_DISPLAY is healthy" \
+SETUP "status reports $TARGET_COMP_3_DISPLAY is healthy" \
       "status -P $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
       "Name validation error due to '.'"
@@ -302,7 +300,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0; best-effort guess works for now" \
       exit_on_failure
 
-SETUP "stopping & cleaning $TARGET_COMP_3_DISPLAY" \
+SETUP "stopping & cleaning $TARGET_COMP_3_DISPLAY work" \
       "down,clean $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
       "Name validation error due to '.'"

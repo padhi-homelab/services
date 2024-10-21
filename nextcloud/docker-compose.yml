@@ -70,7 +70,7 @@ services:
 
   imaginary:
     hostname: imaginary
-    image: nextcloud/aio-imaginary:20240808_083748
+    image: nextcloud/aio-imaginary:20241017_085101
     restart: unless-stopped
 
     cap_add:
@@ -97,7 +97,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: padhihomelab/nextcloud:30.0.0_19.24.4_1.1.0-core
+    image: padhihomelab/nextcloud:30.0.1-core
     restart: unless-stopped
 
     security_opt:
@@ -114,7 +114,6 @@ services:
     - proxy
     volumes:
     - ./config/nextcloud/cron.sh:/cron.sh:ro
-    - ./config/nextcloud/push.sh:/push.sh:ro
     - ./data/nextcloud/data:/data:rw
     - ./data/nextcloud/var/www/html:/var/www/html:rw
     # NOTE: Expose `crontabs` to allow for adding or removing cron jobs
@@ -138,44 +137,9 @@ services:
       timeout: 3s
       start_period: 15s
 
-  push:
-    hostname: push
-    image: padhihomelab/nextcloud:30.0.0_19.24.4_1.1.0-core
-    restart: unless-stopped
-
-    security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
-    - no-new-privileges:true
-    user: ${USER_ID:?}
-
-    entrypoint: /push.sh
-
-    depends_on:
-    - nextcloud
-
-    networks:
-    - default
-    - proxy
-    volumes_from:
-    - nextcloud:rw
-
-    env_file:
-    - env/mariadb
-    - env/redis
-    - env/nextcloud
-    environment:
-      TZ: ${TZ:?}
-      NEXTCLOUD_URL: http://nextcloud/
-    
-    healthcheck:
-      test: "pgrep notify_push"
-      interval: 15s
-      timeout: 3s
-      start_period: 5s
-
   cron:
     hostname: cron
-    image: padhihomelab/nextcloud:30.0.0_19.24.4_1.1.0-core
+    image: padhihomelab/nextcloud:30.0.1-core
     restart: unless-stopped
     entrypoint: /cron.sh
 

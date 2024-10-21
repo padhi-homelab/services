@@ -355,7 +355,7 @@ usage () {
   compositions="$(\ls -Cdw100000 */docker-compose.yml | sed 's:\/[^[:space:]]*::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
   echo -e "
 Usage:
-  $0 <verb>[,<verb>,...] [flags] <comp_dir> [<comp_dir> ...]
+  $0 <verb>[,<verb>,...] [flags] [options] <comp_dir> [<comp_dir> ...]
 
 Verbs: (short forms within <>)
   <c>lean        Delete '<comp_dir>/data'
