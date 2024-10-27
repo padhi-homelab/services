@@ -247,8 +247,11 @@ __will_invoke_compose () {
 }
 
 __will_do_pre_reqs () {
-  [ "$_CUR_VERB_" = "overrides" ] || [ "$_CUR_VERB_" = "pull" ] || [ "$_CUR_VERB_" = "status" ] \
-    || [ "$_CUR_VERB_" = "up" ] || [ "$_CUR_VERB_" = "validate" ]
+  [ "$FLAG_SKIP_PREREQS" != "yes" ] && {
+    [ "$_CUR_VERB_" = "overrides" ] || [ "$_CUR_VERB_" = "pull" ] \
+    || [ "$_CUR_VERB_" = "status" ] || [ "$_CUR_VERB_" = "up" ] \
+    || [ "$_CUR_VERB_" = "validate" ] ;
+  }
 }
 
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
@@ -351,8 +354,8 @@ do_up () {
 
 usage () {
   [ $# -eq 0 ] || echo -e "\nERROR: $1" >&2
-  num_comps="$(\ls -1 */docker-compose.yml | wc -l)"
-  compositions="$(\ls -Cdw100000 */docker-compose.yml | sed 's:\/[^[:space:]]*::g; s:[[:space:]]\+: :g' | fmt -56 | column -t)"
+  local num_comps="$(find . -maxdepth 2 -type f -name docker-compose.yml | wc -l)"
+  readarray -t compositions < <(find . -maxdepth 2 -type f -name docker-compose.yml -printf '%h\0' | xargs -0 -I{} basename {})
   echo -e "
 Usage:
   $0 <verb>[,<verb>,...] [flags] [options] <comp_dir> [<comp_dir> ...]
@@ -387,9 +390,10 @@ Options:              { yes | no }
              ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
 
 Compositions Found ($num_comps):" >&2
-  while IFS= read -r line ; do
-    echo "  $line"
-  done <<< "$compositions" >&2
+  for (( i=0 ; i<${#compositions[@]} ; i++ )) ; do
+    printf "%-13s" "${compositions[i]}"
+    (( (i + 1) % 7 != 0 )) || printf "\n"
+  done >&2
   exit $EXIT_CODE_USAGE_ERROR
 }
 [ $# -gt 0 ] || usage
