@@ -51,7 +51,7 @@ services:
       start_period: 15s
 
   jackett:
-    image: padhihomelab/jackett:0.22.565
+    image: padhihomelab/jackett:0.22.844
     restart: unless-stopped
 
     security_opt:
