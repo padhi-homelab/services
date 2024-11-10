@@ -5,7 +5,7 @@ networks:
 services:
   mqtt:
     hostname: mqtt
-    image: eclipse-mosquitto:2.0.18
+    image: eclipse-mosquitto:2.0.20
     restart: unless-stopped
 
     security_opt:
@@ -28,7 +28,7 @@ services:
 
   db:
     hostname: db
-    image: postgres:16.3
+    image: postgres:17.0
     restart: unless-stopped
 
     security_opt:
@@ -54,7 +54,7 @@ services:
 
   teslamate:
     hostname: teslamate
-    image: teslamate/teslamate:1.30.0
+    image: teslamate/teslamate:1.31.1
     restart: unless-stopped
 
     cap_drop:

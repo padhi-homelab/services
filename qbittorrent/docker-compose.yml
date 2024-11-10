@@ -25,7 +25,7 @@ services:
       PROXY_PASSWORD: 'pass'
 
   qbittorrent:
-    image: padhihomelab/qbittorrent-nox:4.6.5
+    image: padhihomelab/qbittorrent-nox:5.0.1
     restart: unless-stopped
 
     security_opt:
