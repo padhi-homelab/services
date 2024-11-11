@@ -20,7 +20,7 @@ services:
     - ./data/navidrome/data:/data:rw
 
     environment:
-      ND_BASEURL: /navidrome
+      ND_BASEURL: "/${NAVIDROME_BASE_PATH:?}"
       ND_LOGLEVEL: info
       ND_SCANSCHEDULE: 30m
       ND_SESSIONTIMEOUT: 8h

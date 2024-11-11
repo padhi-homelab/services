@@ -81,7 +81,7 @@ services:
       DATABASE_NAME: teslamate
       DATABASE_HOST: db
       MQTT_HOST: mqtt
-      URL_PATH: '/teslamate'
+      URL_PATH: '/${TESLAMATE_BASE_PATH:?}'
       TZ: ${TZ:?}
 
     healthcheck:

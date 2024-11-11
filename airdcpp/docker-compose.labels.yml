@@ -2,8 +2,8 @@ services:
   airdcpp:
     labels:
       traefik.enable: true
-      traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/airdcpp"
-      traefik.http.routers.airdcpp.rule: PathPrefix(`/airdcpp`)
+      traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/${AIRDCPP_BASE_PATH:?}"
+      traefik.http.routers.airdcpp.rule: PathPrefix(`/${AIRDCPP_BASE_PATH:?}`)
       traefik.http.services.airdcpp.loadBalancer.server.port: 5600
       traefik.http.routers.airdcpp.entryPoints: wan-https
       traefik.http.routers.airdcpp.middlewares: strip-airdcpp-prefix

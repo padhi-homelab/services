@@ -2,5 +2,5 @@ services:
   navidrome:
     labels:
       traefik.enable: true
-      traefik.http.routers.navidrome.rule: PathPrefix(`/navidrome`)
+      traefik.http.routers.navidrome.rule: PathPrefix(`/${NAVIDROME_BASE_PATH:?}`)
       traefik.http.routers.navidrome.entryPoints: wan-https

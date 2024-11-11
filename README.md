@@ -1112,7 +1112,7 @@ All specializations should be added to `*.override.*` files.
     - see [`.github/workflows/config/options.conf`](.github/workflows/config/options.conf) for an example
   - `static.override.env` may store additional service-specific constants
     - similar idea as its global counterpart `static.global.env`
-    - see [`.archive/nocodb/static.env`](.archive/nocodb/static.env) for an example
+    - see [`gitea/static.env`](gitea/static.env) for an example
   - `dynamic.override.env.sh` may generate additional service-specific evironment variables
     - similar idea as its global counterpart `dynamic.global.env.sh`
     - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
