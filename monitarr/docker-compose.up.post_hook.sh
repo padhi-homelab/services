@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2154
+
+set -Eumo pipefail
+
+SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+
+echo -n "${_fg_white_}${_bg_magenta_}${_bold_} * ${_normal_} "
+echo -n "${_bold_}$(basename "$SELF_DIR")-lidarr${_normal_} may now be accessed on "
+echo "${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${LIDARR_BASE_PATH}/${_normal_}"
+echo -n "${_fg_white_}${_bg_magenta_}${_bold_} * ${_normal_} "
+echo -n "${_bold_}$(basename "$SELF_DIR")-radarr${_normal_} may now be accessed on "
+echo "${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${RADARR_BASE_PATH}/${_normal_}"
+echo -n "${_fg_white_}${_bg_magenta_}${_bold_} * ${_normal_} "
+echo -n "${_bold_}$(basename "$SELF_DIR")-sonarr${_normal_} may now be accessed on "
+echo "${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${SONARR_BASE_PATH}/${_normal_}"

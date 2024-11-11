@@ -4,6 +4,8 @@ services:
       traefik.enable: true
       traefik.http.middlewares.strip-pihole-prefix.stripPrefix.prefixes: "/${PIHOLE_BASE_PATH:?}"
       traefik.http.middlewares.add-admin-prefix.addPrefix.prefix: "/admin"
+      # FIXME: The redirectRegex middleware below is necessary to correctly redirect after login.
+      # The `/admin` redirect seems to be hard coded (unlike the rest of the application, thankfully!).
       traefik.http.middlewares.pihole-postlogin-redirect.redirectRegex.permanent: true
       traefik.http.middlewares.pihole-postlogin-redirect.redirectRegex.regex: "^https://(.+)/admin/$"
       traefik.http.middlewares.pihole-postlogin-redirect.redirectRegex.replacement: "https://$${1}/${PIHOLE_BASE_PATH:?}/"

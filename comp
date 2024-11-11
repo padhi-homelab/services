@@ -204,7 +204,8 @@ __read_option () {
 }
 
 __run_hook () {
-  ( set -a && source .env && ./"$1" ) || { __error "HOOK '$1' FAILED!" ; return 1 ; }
+  ( set -a && source "$SCRIPTS_DIR/colors.sh" && source .env && ./"$1" ) \
+    || { __error "HOOK '$1' FAILED!" ; return 1 ; }
 }
 
 __run_hooks () {
