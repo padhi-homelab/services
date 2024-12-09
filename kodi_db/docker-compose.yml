@@ -1,7 +1,7 @@
 services:
   mariadb:
     hostname: mariadb
-    image: mariadb:11.5.2
+    image: mariadb:11.6.2
     restart: unless-stopped
 
     security_opt:
