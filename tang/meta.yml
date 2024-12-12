@@ -1,0 +1,9 @@
+messages:
+  up:
+    post:
+    - >-
+      ${_bold_}${_CUR_COMP_}${_normal_} is now listening on
+      ${_fg_magenta_}${_uline_}https://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTP_PORT}/${_normal_}
+
+pre_reqs:
+- traefik

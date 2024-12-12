@@ -1,0 +1,9 @@
+messages:
+  up:
+    post:
+    - >-
+      ${_bold_}${_CUR_COMP_}${_normal_} may now be accessed on
+      ${_fg_magenta_}${_uline_}https://${SERVER_LAN_FQDN}:34443/dashboard/${_normal_}
+
+pre_reqs:
+- docker_sock

@@ -1,0 +1,9 @@
+messages:
+  up:
+    post:
+    - >-
+      ${_bold_}${_CUR_COMP_}${_normal_} may now be accessed on
+      ${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${_normal_}
+
+pre_reqs:
+- traefik
