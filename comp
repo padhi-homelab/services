@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2016,SC2154,SC2164,SC2317 source=/dev/null
+# shellcheck disable=SC2016,SC2154,SC2155,SC2164,SC2317 source=/dev/null
 
 set -Eumo pipefail
 
@@ -11,7 +11,7 @@ source "$SCRIPTS_DIR/colors.sh"
 
 COMP_SELF_CALL_DEPTH="${COMP_SELF_CALL_DEPTH:-0}"
 
-DOCKER_CMD="docker"
+DOCKER_CMD=docker
 DOCKER_COMPOSE_CMD="$LIB_DIR/compose"
 YQ_CMD="$LIB_DIR/yq"
 
@@ -77,20 +77,20 @@ __create_external_networks () {
 }
 
 __do_prereqs () {
-  [ "$FLAG_SKIP_PREREQS" != "yes" ] || return 0
+  [ "$FLAG_SKIP_PREREQS" != yes ] || return 0
 
   local verb="$1"
   local ensure_running="${2:-no}"
   while IFS= read -r prereq_comp_dir ; do
-    if [ "$verb" = "status" ] ; then
+    if [ "$verb" = status ] ; then
       if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
-        [ "$ensure_running" = "yes" ] || return 1
+        [ "$ensure_running" = yes ] || return 1
         __CALL_SELF__ up -F "$prereq_comp_dir" || return 1
       fi
     else
       __CALL_SELF__ "$verb" -F "$prereq_comp_dir" || return 1
     fi
-  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .pre_reqs | .[]" "meta.yml" 2>/dev/null )
+  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .pre_reqs | .[]" meta.yml 2>/dev/null )
 }
 
 __error () {
@@ -98,25 +98,25 @@ __error () {
 }
 
 __gen_env () {
-  [ ! -f .env ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] || return 0
+  [ ! -f .env ] || [ "$FLAG_SKIP_REGENERATE" != yes ] || return 0
   rm -rf .env
 
   printf "[*] Generating '.env':"
   cp "$SELF_DIR/static.global.env" .env || return 1
-  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
+  if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f "$SELF_DIR/static.global.override.env" ] ; then
     cat "$SELF_DIR/static.global.override.env" >> .env || return 1
   fi
 
   __append_env_from "$SELF_DIR/dynamic.global.env.sh" || return 1
-  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
+  [ "$FLAG_SKIP_OVERRIDES" = yes ] || \
     __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
 
-  [ ! -f "static.env" ] || cat "static.env" >> .env || return 1
-  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
-    [ ! -f "static.override.env" ] || cat "static.override.env" >> .env || return 1
+  [ ! -f static.env ] || cat static.env >> .env || return 1
+  [ "$FLAG_SKIP_OVERRIDES" = yes ] || \
+    [ ! -f static.override.env ] || cat static.override.env >> .env || return 1
 
   __append_env_from "./dynamic.env.sh" || return 1
-  [ "$FLAG_SKIP_OVERRIDES" = "yes" ] || \
+  [ "$FLAG_SKIP_OVERRIDES" = yes ] || \
     __append_env_from "./dynamic.override.env.sh" || return 1
 
   env -i bash --norc --noprofile -c "set -a ; source .env ; env" \
@@ -134,7 +134,7 @@ __gen_templates () {
     local generated_file="./generated${template_file#./extra}"
     mkdir -p "$(dirname "$generated_file")"
     generated_file="${generated_file/.template/}"
-    if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != "yes" ] ; then
+    if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != yes ] ; then
       "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
         || return 1
     fi
@@ -151,13 +151,13 @@ __grab_ps () {
   # FIXME: `podman` doesn't print health status!
   local _ps_res="$( $DOCKER_CMD ps \
     --format '{{.Label "com.docker.compose.service"}}\t{{.Status}}' \
-    --filter label=com.docker.compose.project=$proj \
+    --filter label=com.docker.compose.project="$proj" \
   )"
   eval "$1"='$_ps_res'
 }
 
 __maybe_fail_fast () {
-  [ "$FLAG_FAIL_FAST" != "yes" ] || exit "$1"
+  [ "$FLAG_FAIL_FAST" != yes ] || exit "$1"
 
   if [ "$_FINAL_EXIT_CODE_" -eq 0 ] ; then
     _FINAL_EXIT_CODE_=$1
@@ -180,20 +180,20 @@ __read_option () {
   local OPTION="OPTION_$1"
   local OVERRIDE_OPTION=""
 
-  if [ -z "${!OPTION}" ] && [ "$FLAG_SKIP_OVERRIDES" != "yes" ]; then
+  if [ -z "${!OPTION}" ] && [ "$FLAG_SKIP_OVERRIDES" != yes ]; then
     OVERRIDE_OPTION="$(grep -s "$1" options.override.conf | cut -d= -f2)"
     if [ -n "$OVERRIDE_OPTION" ] ; then
       validate_and_set_option "$OVERRIDE_OPTION" "$1" override || return 1
     fi
   fi
-  [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" "yes"
+  [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" yes
 
-  if [ "${!OPTION}" != "yes" ] ; then 
+  if [ "${!OPTION}" != yes ] ; then 
     [ -z "$OVERRIDE_OPTION" ] && _DISABLED_OPTIONS_+=("$1 (arg)") || _DISABLED_OPTIONS_+=("$1 (conf)")
   else
     if [ -f "docker-compose.${1,,}.yml" ] ; then
       _CUR_COMPOSE_FILES_+=( "docker-compose.${1,,}.yml" )
-      if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
+      if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
         _CUR_COMPOSE_OVERRIDE_FILES_+=( "docker-compose.${1,,}.override.yml" )
       fi
     fi
@@ -215,7 +215,7 @@ __run_hooks () {
   [ ! -f "docker-compose.${stage}_hook.sh" ] \
     || __run_hook "docker-compose.${stage}_hook.sh" || return 1
 
-  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] ; then
+  if [ "$FLAG_SKIP_OVERRIDES" != yes ] ; then
     while IFS= read -r hook_file ; do
       __run_hook "$hook_file" || return 1
     done < <(find . -maxdepth 1 -type f -name "docker-compose.${stage}_hook.override*.sh")
@@ -229,8 +229,8 @@ __show_message () {
   while IFS= read -r msg ; do
     echo -n "${_fg_white_}${_bg_magenta_}${_bold_} * ${_normal_} "
     _CUR_COMP_="$_CUR_COMP_" _CUR_VERB_="$_CUR_VERB_" \
-      bash -c "set -a ; source '$SCRIPTS_DIR/colors.sh' ; source .env ; echo '$msg'"
-  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .messages.$stage | .[]" "meta.yml" 2>/dev/null )
+      bash -c "set -a ; source '$SCRIPTS_DIR/colors.sh' ; source .env ; echo \"$msg\""
+  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .messages.$stage | .[]" meta.yml 2>/dev/null )
 }
 
 __verify_volumes () {
@@ -258,14 +258,14 @@ __warning () {
 }
 
 __will_invoke_compose () {
-  [ "$_CUR_VERB_" = "down" ] || [ "$_CUR_VERB_" = "pull" ] || [ "$_CUR_VERB_" = "up" ]
+  [ "$_CUR_VERB_" = down ] || [ "$_CUR_VERB_" = pull ] || [ "$_CUR_VERB_" = up ]
 }
 
 __will_do_pre_reqs () {
-  [ "$FLAG_SKIP_PREREQS" != "yes" ] && {
-    [ "$_CUR_VERB_" = "overrides" ] || [ "$_CUR_VERB_" = "pull" ] \
-    || [ "$_CUR_VERB_" = "status" ] || [ "$_CUR_VERB_" = "up" ] \
-    || [ "$_CUR_VERB_" = "validate" ] ;
+  [ "$FLAG_SKIP_PREREQS" != yes ] && {
+    [ "$_CUR_VERB_" = overrides ] || [ "$_CUR_VERB_" = pull ] \
+    || [ "$_CUR_VERB_" = status ] || [ "$_CUR_VERB_" = up ] \
+    || [ "$_CUR_VERB_" = validate ] ;
   }
 }
 
@@ -326,16 +326,16 @@ do_down () {
 }
 
 do_overrides () {
-  local any_override=''
+  local any_override=
   while IFS= read -r ofile ; do
-    any_override='YES'
+    any_override=YES
     printf '[G] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
   done < <(find .. -maxdepth 1 -type f -iname '*override*')
   [ -n "$any_override" ] || echo '[-] No global override files.'
 
-  any_override=''
+  any_override=
   while IFS= read -r ofile ; do
-    any_override='YES'
+    any_override=YES
     printf '[L] ' ; realpath -s --relative-to="$(pwd)/.." "$ofile"
   done < <(find . -maxdepth 1 -type f -iname '*override*')
   [ -n "$any_override" ] || echo '[-] No local override files.'
@@ -414,26 +414,26 @@ Compositions Found ($num_comps):" >&2
 [ $# -gt 0 ] || usage
 
 expand_verbs () {
-  local expanded=""
+  local expanded=
   while read -rn1 char; do
     case "$char" in
-      "c") expanded="$expanded clean" ;;
-      "d") expanded="$expanded down" ;;
-      "o") expanded="$expanded overrides" ;;
-      "p") expanded="$expanded pull" ;;
-      "s") expanded="$expanded status" ;;
-      "u") expanded="$expanded up" ;;
-      "v") expanded="$expanded validate" ;;
-        *) return 1
+      c) expanded="$expanded clean" ;;
+      d) expanded="$expanded down" ;;
+      o) expanded="$expanded overrides" ;;
+      p) expanded="$expanded pull" ;;
+      s) expanded="$expanded status" ;;
+      u) expanded="$expanded up" ;;
+      v) expanded="$expanded validate" ;;
+      *) return 1
     esac
-  done < <(echo -n "$1")
+  done < <( echo -n "$1" )
   VERBS="$expanded"
 }
 
 VERBS="${1//,/ }"
 for V in $VERBS ; do
-  [ "$V" = "clean" ] || [ "$V" = "down" ] || [ "$V" = "overrides" ] || [ "$V" = "pull" ] \
-    || [ "$V" = "status" ] || [ "$V" = "up" ] || [ "$V" = "validate" ] \
+  [ "$V" = clean ] || [ "$V" = down ] || [ "$V" = overrides ] || [ "$V" = pull ] \
+    || [ "$V" = status ] || [ "$V" = up ] || [ "$V" = validate ] \
     || expand_verbs "$VERBS" \
     || usage "Unknown verb: $V"
 done
@@ -442,20 +442,20 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    "--fail-fast")       set -- "$@" "-F" ;;
-    "--skip-prereqs")    set -- "$@" "-P" ;;
-    "--skip-overrides")  set -- "$@" "-O" ;;
-    "--skip-regenerate") set -- "$@" "-R" ;;
+    --fail-fast)       set -- "$@" "-F" ;;
+    --skip-prereqs)    set -- "$@" "-P" ;;
+    --skip-overrides)  set -- "$@" "-O" ;;
+    --skip-regenerate) set -- "$@" "-R" ;;
 
-    "--devices")         set -- "$@" "-d" ;;
-    "--hooks")           set -- "$@" "-h" ;;
-    "--labels")          set -- "$@" "-l" ;;
-    "--logging")         set -- "$@" "-g" ;;
-    "--ports")           set -- "$@" "-p" ;;
+    --devices)         set -- "$@" "-d" ;;
+    --hooks)           set -- "$@" "-h" ;;
+    --labels)          set -- "$@" "-l" ;;
+    --logging)         set -- "$@" "-g" ;;
+    --ports)           set -- "$@" "-p" ;;
 
-    "--")                set -- "$@" "--" ;;
-    "--"*)               usage "Unrecognized option: $opt." ;;
-    *)                   set -- "$@" "$opt"
+    --)                set -- "$@" "--" ;;
+    --*)               usage "Unrecognized option: $opt." ;;
+    *)                 set -- "$@" "$opt"
   esac
 done
 
@@ -464,7 +464,7 @@ validate_and_set_option () {
   case "$1" in
     yes | no ) printf -v "$OPTION" "%s" "$1" ; return 0
   esac
-  if [ "$3" = "override" ] ; then
+  if [ "$3" = override ] ; then
     echo ; __error "Invalid value '$1' for '$2' in $_CUR_COMP_/options.override.conf"
   else
     usage "Invalid value '$1' for '${2,,}' option"
@@ -475,18 +475,18 @@ validate_and_set_option () {
 OPTIND=1
 while getopts ':FOPRd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
-    "F" ) FLAG_FAIL_FAST="yes" ;;
-    "O" ) FLAG_SKIP_OVERRIDES="yes" ;;
-    "P" ) FLAG_SKIP_PREREQS="yes" ;;
-    "R" ) FLAG_SKIP_REGENERATE="yes" ;;
+    F ) FLAG_FAIL_FAST=yes ;;
+    O ) FLAG_SKIP_OVERRIDES=yes ;;
+    P ) FLAG_SKIP_PREREQS=yes ;;
+    R ) FLAG_SKIP_REGENERATE=yes ;;
 
-    "d" ) validate_and_set_option "$OPTARG" DEVICES usage ;;
-    "g" ) validate_and_set_option "$OPTARG" LOGGING usage ;;
-    "h" ) validate_and_set_option "$OPTARG" HOOKS usage ;;
-    "l" ) validate_and_set_option "$OPTARG" LABELS usage ;;
-    "p" ) validate_and_set_option "$OPTARG" PORTS usage ;;
+    d ) validate_and_set_option "$OPTARG" DEVICES usage ;;
+    g ) validate_and_set_option "$OPTARG" LOGGING usage ;;
+    h ) validate_and_set_option "$OPTARG" HOOKS usage ;;
+    l ) validate_and_set_option "$OPTARG" LABELS usage ;;
+    p ) validate_and_set_option "$OPTARG" PORTS usage ;;
 
-      * ) usage "Unrecognized option: -$OPTARG." ;;
+    * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
 done
 shift $((OPTIND -1))
@@ -504,7 +504,7 @@ if ! $DOCKER_CMD version &> /dev/null ; then
     __error 'Failed to locate: `docker` or `podman`!'
     exit $EXIT_CODE_DEP_INSTALL_FAILURE
   else
-    DOCKER_CMD="podman"
+    DOCKER_CMD=podman
   fi
 fi
 
@@ -543,8 +543,8 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   [ ! -f "meta.override.yml" ] || _CUR_YQ_META_QUERY_PFX_='. *= load("meta.override.yml") | '
 
   _CUR_COMPOSE_FILES_=( "docker-compose.yml" ) ; _CUR_COMPOSE_OVERRIDE_FILES_=()
-  if [ "$FLAG_SKIP_OVERRIDES" != "yes" ] && [ -f "docker-compose.override.yml" ] ; then
-    _CUR_COMPOSE_OVERRIDE_FILES_=( "docker-compose.override.yml")
+  if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f docker-compose.override.yml ] ; then
+    _CUR_COMPOSE_OVERRIDE_FILES_=( docker-compose.override.yml)
   fi
 
   read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
@@ -558,27 +558,27 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     (( ++_CUR_STAGE_ ))
     if __will_do_pre_reqs ; then
       [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
-      [ "$_CUR_VERB_" != "overrides" ] || __do_prereqs overrides \
+      [ "$_CUR_VERB_" != overrides ] || __do_prereqs overrides \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != "pull" ] || __do_prereqs pull \
+      [ "$_CUR_VERB_" != pull ] || __do_prereqs pull \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != "status" ] || __do_prereqs status \
+      [ "$_CUR_VERB_" != status ] || __do_prereqs status \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != "up" ] || __do_prereqs status "yes" \
+      [ "$_CUR_VERB_" != up ] || __do_prereqs status yes \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != "validate" ] || __do_prereqs validate \
+      [ "$_CUR_VERB_" != validate ] || __do_prereqs validate \
         || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
     fi
-    [ "$_CUR_VERB_" = "validate" ] || do_validate non_failing
+    [ "$_CUR_VERB_" = validate ] || do_validate non_failing
 
     _CUR_VERB_PREFIX_="${_CUR_VERB_:0:1}"
-    if [ "$COMP_SELF_CALL_DEPTH" -eq "0" ] ; then
+    if [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] ; then
       _CUR_VERB_PREFIX_="${_fg_white_}${_bg_blue_}${_bold_} ${_CUR_VERB_PREFIX_^^}"
     else
       _CUR_VERB_PREFIX_="${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_PREFIX_}"
     fi
     echo -ne "\n$_CUR_VERB_PREFIX_ ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
-    [ "$COMP_SELF_CALL_DEPTH" -eq "0" ] || printf 'pre-req '
+    [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] || printf 'pre-req '
     echo "${_bold_}$_CUR_COMP_${_normal_} ... "
     [ ${#_DISABLED_OPTIONS_[@]} -eq 0 ] || echo "[o] Disabled options: ${_DISABLED_OPTIONS_[*]}"
 
@@ -586,12 +586,12 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
       __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __create_external_networks || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __gen_templates || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
-      [ "$OPTION_HOOKS" != "yes" ] || __run_hooks pre \
+      [ "$OPTION_HOOKS" != yes ] || __run_hooks pre \
         || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
       __show_message pre
     fi
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$_CUR_VERB_" pre \
+    [ "$OPTION_HOOKS" != yes ] || __run_hooks "$_CUR_VERB_" pre \
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     __show_message "$_CUR_VERB_" pre
 
@@ -601,22 +601,22 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
 
     verb_ret=0 ; "do_${_CUR_VERB_}" ; verb_ret=$?
 
-    [ "$_CUR_VERB_" != "validate" ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is valid!"
-    [ "$_CUR_VERB_" != "status" ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
+    [ "$_CUR_VERB_" != validate ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is valid!"
+    [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
 
     [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
     if __will_invoke_compose ; then
-      [ "$OPTION_HOOKS" != "yes" ] || __run_hooks post \
+      [ "$OPTION_HOOKS" != yes ] || __run_hooks post \
         || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR || continue
       __show_message post
     fi
 
-    [ "$OPTION_HOOKS" != "yes" ] || __run_hooks "$_CUR_VERB_" post \
+    [ "$OPTION_HOOKS" != yes ] || __run_hooks "$_CUR_VERB_" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
     __show_message "$_CUR_VERB_" post
   done
   unset _CUR_VERB_ ; __print_sepator_line
 done
-[ "$COMP_SELF_CALL_DEPTH" -gt "0" ] || echo
+[ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
 exit "$_FINAL_EXIT_CODE_"
