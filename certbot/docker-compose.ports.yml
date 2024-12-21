@@ -1,4 +1,4 @@
 services:
   certbot:
     ports:
-    - 80:80
+    - ${SERVER_WAN_BINDING_IP:?}:80:80

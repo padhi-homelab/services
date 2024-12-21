@@ -1,10 +1,10 @@
 services:
   unifi:
     ports:
-    - "3478:3478/udp"   # STUN
-   #- "6789:6789/tcp"   # Speed test
-    - "8080:8080/tcp"   # Device/ controller comm.
-    - "8443:8443/tcp"   # Controller GUI/API as seen in a web browser
-   #- "8880:8880/tcp"   # HTTP portal redirection
-   #- "8843:8843/tcp"   # HTTPS portal redirection
-    - "10001:10001/udp" # Layer 2 discovery
+    - ${SERVER_LAN_BINDING_IP:?}:3478:3478/udp   # STUN
+   #- ${SERVER_LAN_BINDING_IP:?}:6789:6789/tcp   # Speed test
+    - ${SERVER_LAN_BINDING_IP:?}:8080:8080/tcp   # Device/ controller comm.
+    - ${SERVER_LAN_BINDING_IP:?}:8443:8443/tcp   # Controller GUI/API as seen in a web browser
+   #- ${SERVER_LAN_BINDING_IP:?}:8880:8880/tcp   # HTTP portal redirection
+   #- ${SERVER_LAN_BINDING_IP:?}:8843:8843/tcp   # HTTPS portal redirection
+    - ${SERVER_LAN_BINDING_IP:?}:10001:10001/udp # Layer 2 discovery
