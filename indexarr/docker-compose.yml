@@ -5,7 +5,7 @@ networks:
 services:
   openvpn:
     hostname: openvpn
-    image: padhihomelab/openvpn-client:2.6.11
+    image: padhihomelab/openvpn-client:2.6.12
     restart: unless-stopped
 
     cap_add:
@@ -51,7 +51,7 @@ services:
       start_period: 15s
 
   jackett:
-    image: padhihomelab/jackett:0.22.898
+    image: padhihomelab/jackett:0.22.1101
     restart: unless-stopped
 
     security_opt:

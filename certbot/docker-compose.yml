@@ -9,6 +9,7 @@ services:
 
     volumes:
     - ./data/certbot/etc/letsencrypt:/etc/letsencrypt
+    - ./data/certbot/var/log/letsencrypt:/var/log/letsencrypt
 
     environment:
       DOCKER_UID: ${USER_ID:?}
