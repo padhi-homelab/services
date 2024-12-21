@@ -547,7 +547,8 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     _CUR_COMPOSE_OVERRIDE_FILES_=( docker-compose.override.yml)
   fi
 
-  read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS <<<"${OPTIONS_FROM_ARGS[*]}"
+  IFS=, read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS \
+             <<< "$( IFS=, ; echo "${OPTIONS_FROM_ARGS[*]}" )"
   _DISABLED_OPTIONS_=() ; opt_error=0
   for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
     __read_option $opt || opt_error=1
