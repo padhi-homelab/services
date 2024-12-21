@@ -1,5 +1,4 @@
 services:
   openvpn:
     ports:
-    # $PROXY_USERNAME:$PROXY_PASSWORD SOCKS proxy
-    - 35432:5432
+    - 35432:5432 # SOCKS proxy
