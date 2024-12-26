@@ -1,0 +1,3 @@
+POSTGRES_DB: 'netbox'
+POSTGRES_USER: 'nbox_pg_user'
+POSTGRES_PASSWORD: 'nbdb.pg~p4ss'

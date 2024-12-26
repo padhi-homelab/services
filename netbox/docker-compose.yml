@@ -1,0 +1,86 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  postgres:
+    hostname: postgres
+    image: postgres:17.2-alpine
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - default
+    volumes:
+    - ./data/postgres/var/lib/postgresql/data:/var/lib/postgresql/data:rw
+
+    env_file:
+    - env/postgres
+
+    healthcheck:
+      test: "psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c 'SELECT 1'"
+      interval: 15s
+      timeout: 3s
+      start_period: 30s
+
+  redis:
+    hostname: redis
+    image: valkey/valkey:8.0.1-alpine
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    command: |-
+      sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
+
+    networks:
+    - default
+    volumes:
+    - ./data/redis/data:/data:rw
+
+    env_file:
+    - env/redis
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: '[ $$(valkey-cli --pass "$${REDIS_PASSWORD}" ping) = ''PONG'' ]'
+      start_period: 10s
+      interval: 5s
+
+  netbox:
+    hostname: netbox
+    image: 567b20c7ee5f
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+
+    depends_on:
+    - postgres
+    - redis
+
+    networks:
+    - default
+    - proxy
+    volumes:
+    - ./data/netbox/opt/netbox/netbox/media:/opt/netbox/netbox/media:rw
+    - ./data/netbox/opt/netbox/netbox/reports:/opt/netbox/netbox/reports:rw
+    - ./data/netbox/opt/netbox/netbox/scripts:/opt/netbox/netbox/scripts:rw
+
+    env_file:
+    - env/postgres
+    - env/redis
+    - env/netbox
+    environment:
+      DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
+      TZ: ${TZ:?}
