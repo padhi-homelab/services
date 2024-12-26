@@ -28,7 +28,7 @@ services:
 
   db:
     hostname: db
-    image: postgres:17.0
+    image: postgres:17.2-alpine
     restart: unless-stopped
 
     security_opt:
@@ -42,9 +42,9 @@ services:
     - ./data/db/var/lib/postgresql/data:/var/lib/postgresql/data:rw
 
     environment:
+      POSTGRES_DB: teslamate
       POSTGRES_USER: tmate
       POSTGRES_PASSWORD: 'db~pass'
-      POSTGRES_DB: teslamate
 
     healthcheck:
       test: "psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c 'SELECT 1'"

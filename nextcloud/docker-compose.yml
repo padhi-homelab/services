@@ -65,7 +65,7 @@ services:
 
     healthcheck:
       test: "redis-cli ping"
-      interval: 15s
+      interval: 5s
       start_period: 10s
 
   imaginary:
