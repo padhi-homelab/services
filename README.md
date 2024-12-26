@@ -609,6 +609,10 @@ for optionally customizing compositions via _overrides_.
       </td>
       <td align='center'>
         :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
       </td>
       <td align='center'>
         :heavy_check_mark:

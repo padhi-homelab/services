@@ -10,7 +10,7 @@ on:
 
 env:
   TARGET_SERVICE: netbox
-  TARGET_TIMEOUT: 120
+  TARGET_TIMEOUT: 300
 
 jobs:
   test:
@@ -48,7 +48,7 @@ jobs:
       -
         name: "Service: Wait"
         run: |
-          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
+          sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test with Traefik"
         run: |
