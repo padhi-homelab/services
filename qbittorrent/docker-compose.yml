@@ -34,7 +34,8 @@ services:
     tty: true
 
     depends_on:
-    - openvpn
+      openvpn:
+        condition: service_healthy
 
     network_mode: service:openvpn
     volumes:

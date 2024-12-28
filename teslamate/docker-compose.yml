@@ -65,8 +65,10 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - db
-    - mqtt
+      db:
+        condition: service_healthy
+      mqtt:
+        condition: service_healthy
 
     networks:
     - default

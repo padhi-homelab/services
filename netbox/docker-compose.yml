@@ -65,8 +65,10 @@ services:
     - no-new-privileges:true
 
     depends_on:
-    - postgres
-    - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
     networks:
     - default

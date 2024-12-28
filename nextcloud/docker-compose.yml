@@ -106,8 +106,10 @@ services:
     user: ${USER_ID:?}
 
     depends_on:
-    - mariadb
-    - redis
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
     networks:
     - default
@@ -150,7 +152,8 @@ services:
     # user: ${USER_ID:?}
 
     depends_on:
-    - nextcloud
+      nextcloud:
+        condition: service_healthy
 
     networks:
     - default

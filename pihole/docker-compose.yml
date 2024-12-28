@@ -40,7 +40,8 @@ services:
     # NOTE: no `user:` needed; runs as non-root user since 2022.01
 
     depends_on:
-    - dnscrypt-proxy
+      dnscrypt-proxy:
+        condition: service_healthy
 
     networks:
       default:
