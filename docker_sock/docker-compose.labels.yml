@@ -3,6 +3,7 @@ services:
     labels:
       traefik.enable: true
       traefik.docker.network: shared
-      traefik.http.routers.docker_sock.rule: PathPrefix(`/docker_sock`)
       traefik.http.services.docker_sock.loadBalancer.server.port: 9000
+      #
+      traefik.http.routers.docker_sock.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/docker_sock`)
       traefik.http.routers.docker_sock.entryPoints: lan-https

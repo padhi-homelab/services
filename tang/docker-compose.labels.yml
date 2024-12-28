@@ -2,7 +2,9 @@ services:
   tang:
     labels:
       traefik.enable: true
+      #
       traefik.http.middlewares.strip-tang-prefix.stripPrefix.prefixes: "/${TANG_BASE_PATH:?}"
-      traefik.http.routers.tang.rule: PathPrefix(`/${TANG_BASE_PATH:?}`)
+      #
+      traefik.http.routers.tang.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TANG_BASE_PATH:?}`)
       traefik.http.routers.tang.entryPoints: lan-http
       traefik.http.routers.tang.middlewares: strip-tang-prefix

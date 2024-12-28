@@ -2,13 +2,17 @@ services:
   hass:
     labels:
       traefik.enable: true
+      #
       traefik.http.middlewares.only-https-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: https
       traefik.http.middlewares.only-wss-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: wss
+      #
       # NOTE: Serving hass behind a subpath is not supported.
       # See https://github.com/home-assistant/core/issues/21113
-      traefik.http.routers.hass.rule: PathPrefix(`/`)
+      #
+      traefik.http.routers.hass.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)
       traefik.http.routers.hass.entryPoints: wan-https
       traefik.http.routers.hass.middlewares: only-https-forwarded-proto
-      traefik.http.routers.hass-websocket.rule: PathPrefix(`/api/websocket`)
+      #
+      traefik.http.routers.hass-websocket.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/api/websocket`)
       traefik.http.routers.hass-websocket.entryPoints: wan-https
       traefik.http.routers.hass-websocket.middlewares: only-wss-forwarded-proto

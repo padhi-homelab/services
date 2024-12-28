@@ -2,5 +2,6 @@ services:
   http:
     labels:
       traefik.enable: true
-      traefik.http.routers.http.rule: PathPrefix(`/`)
+      #
+      traefik.http.routers.http.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)
       traefik.http.routers.http.entryPoints: wan-https

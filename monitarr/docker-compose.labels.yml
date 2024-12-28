@@ -2,17 +2,20 @@ services:
   lidarr:
     labels:
       traefik.enable: true
-      traefik.http.routers.lidarr.rule: PathPrefix(`/${LIDARR_BASE_PATH:?}`)
+      #
+      traefik.http.routers.lidarr.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${LIDARR_BASE_PATH:?}`)
       traefik.http.routers.lidarr.entryPoints: wan-https
 
   radarr:
     labels:
       traefik.enable: true
-      traefik.http.routers.radarr.rule: PathPrefix(`/${RADARR_BASE_PATH:?}`)
+      #
+      traefik.http.routers.radarr.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${RADARR_BASE_PATH:?}`)
       traefik.http.routers.radarr.entryPoints: wan-https
 
   sonarr:
     labels:
       traefik.enable: true
-      traefik.http.routers.sonarr.rule: PathPrefix(`/${SONARR_BASE_PATH:?}`)
+      #
+      traefik.http.routers.sonarr.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${SONARR_BASE_PATH:?}`)
       traefik.http.routers.sonarr.entryPoints: wan-https

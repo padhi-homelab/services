@@ -2,6 +2,7 @@ services:
   traefik:
     labels:
       traefik.enable: true
-      traefik.http.routers.dashboard.rule: PathPrefix(`/api`) || PathPrefix(`/dashboard`)
+      #
+      traefik.http.routers.dashboard.rule: Host(`${SERVER_LAN_FQDN:?}`) && ( PathPrefix(`/api`) || PathPrefix(`/dashboard`) )
       traefik.http.routers.dashboard.entryPoints: lan-internal
       traefik.http.routers.dashboard.service: api@internal
