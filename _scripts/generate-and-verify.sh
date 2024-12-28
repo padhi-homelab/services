@@ -8,11 +8,20 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$SELF_DIR/colors.sh"
 
 SOURCE_FILE="$1"
+SOURCE_ROOT="$(echo "$SOURCE_FILE" | cut -d'/' -f2)"
 TARGET_FILE="$2"
+TARGET_ROOT="$(echo "$TARGET_FILE" | cut -d'/' -f2)"
+
+SOURCE_ROOTLESS="$(echo "$TARGET_FILE" | cut -d'/' -f3-)"
+TARGET_ROOTLESS="$(echo "$TARGET_FILE" | cut -d'/' -f3-)"
+
+if [ "$SOURCE_ROOTLESS" = "$TARGET_ROOTLESS" ]; then
+  echo -n " @  {$SOURCE_ROOT -> $TARGET_ROOT}/$TARGET_ROOTLESS: "
+else
+  echo -n " @  $SOURCE_FILE -> $TARGET_FILE: "
+fi
 
 ENV_VARS="$(cut -d= -f1 .env | awk '{print "$" $0}')"
-
-echo -n "[*] $TARGET_FILE: "
 
 if [ -e "$TARGET_FILE" ] && [ ! -f "$TARGET_FILE" ] ; then
   echo "CANNOT OVERWRITE!"

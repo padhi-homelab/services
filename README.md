@@ -60,7 +60,7 @@ Typical workflows:
   ./comp status tang pihole
   ```
 
-See [comp#L319](comp#L319) for all supported supported flags and options.
+See [comp#L372](comp#L372) for all supported supported flags and options.
 
 Also see [Structure & Conventions](#structure--conventions)
 for optionally customizing compositions via _overrides_.
@@ -1176,13 +1176,14 @@ All specializations should be added to `*.override.*` files.
     - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
-  - `pre.override.reqs` may name _additional_ compositions as prerequisites
-    - compositions listed in `pre.reqs` cannot be removed, however
-    - see [`tang/pre.reqs`](tang/pre.reqs) for an example
-  - `options.override.env` may contain overrides for default values of the `{devices|labels|logging|ports}`
-    options
-    - options provided on the command-line may still override `options.override.conf`
-    - see [`.github/workflows/config/options.conf`](.github/workflows/config/options.conf) for an example
+  - `meta.override.yml` may:
+    - specify other compositions as prerequisites
+      - see [`tang/meta.yml`](tang/meta.yml) for an example
+    - contain overrides for the `{devices|labels|logging|ports}` fragments  
+      (flags used on the command-line will further override this)
+      - see [`.github/workflows/config/meta.override.yml`](.github/workflows/config/meta.override.yml) for an example
+    - specify messages to be displayed after verb executions
+      - see [`traefik/meta.yml`](traefik/meta.yml) for an example
   - `static.override.env` may store additional service-specific constants
     - similar idea as its global counterpart `static.global.env`
     - see [`gitea/static.env`](gitea/static.env) for an example

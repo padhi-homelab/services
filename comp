@@ -18,7 +18,7 @@ YQ_CMD="$LIB_DIR/yq"
 EXIT_CODE_GENERIC_ERROR=1
 
 EXIT_CODE_USAGE_ERROR=250
-EXIT_CODE_OPTIONS_CONF_ERROR=240
+EXIT_CODE_FRAGMENTS_ERROR=240
 EXIT_CODE_DEP_INSTALL_FAILURE=230
 EXIT_CODE_COMPOSITION_NOT_FOUND=220
 
@@ -32,11 +32,11 @@ FLAG_SKIP_OVERRIDES=""
 FLAG_SKIP_PREREQS=""
 FLAG_SKIP_REGENERATE=""
 
-OPTION_DEVICES=""
-OPTION_HOOKS=""
-OPTION_LABELS=""
-OPTION_LOGGING=""
-OPTION_PORTS=""
+FRAGMENT_DEVICES=""
+FRAGMENT_HOOKS=""
+FRAGMENT_LABELS=""
+FRAGMENT_LOGGING=""
+FRAGMENT_PORTS=""
 
 # # # # # # # # # # # # # # # # # # #     HELPER ROUTINES     # # # # # # # # # # # # # # # # # # #
 
@@ -44,7 +44,7 @@ __append_env_from () {
   if [ -f "$1" ] ; then
     local script_file="${1/#./$_CUR_COMP_}"
     echo -n " ${script_file#"$SELF_DIR"/}"
-    if bash -c "set -a ; source .env ; $1" > .env.add ; then
+    if bash -c "set -aeu ; source .env ; $1" > .env.add ; then
       cat .env.add >> .env ; rm .env.add
     else
       echo " ${_fg_red_}${_bold_}FAILED!${_normal_}" ; return 1
@@ -119,7 +119,7 @@ __gen_env () {
   [ "$FLAG_SKIP_OVERRIDES" = yes ] || \
     __append_env_from "./dynamic.override.env.sh" || return 1
 
-  env -i bash --norc --noprofile -c "set -a ; source .env ; env" \
+  env -i bash --norc --noprofile -c "set -aeu ; source .env ; env" \
     | sed 's;^\(_\|PWD\|SHLVL\)=.*$;;g' | grep . > .env.new
   mv .env.new .env
 
@@ -128,7 +128,7 @@ __gen_env () {
 
 __gen_templates () {
   find ./extra -name '*.template.*' 2>/dev/null | grep -q . || return 0
-  echo "[~] Generating templated files ..."
+  echo "[*] Generating templated files ..."
 
   while IFS= read -r template_file ; do
     local generated_file="./generated${template_file#./extra}"
@@ -176,21 +176,21 @@ __print_sepator_line () {
   esac
 }
 
-__read_option () {
-  local OPTION="OPTION_$1"
-  local OVERRIDE_OPTION=""
+__read_fragment () {
+  local FRAGMENT="FRAGMENT_$1"
+  local OVERRIDE_FRAGMENT=""
 
-  if [ -z "${!OPTION}" ] && [ "$FLAG_SKIP_OVERRIDES" != yes ]; then
-    OVERRIDE_OPTION="$(grep -s "$1" options.override.conf | cut -d= -f2)"
-    if [ -n "$OVERRIDE_OPTION" ] ; then
-      validate_and_set_option "$OVERRIDE_OPTION" "$1" override || return 1
+  if [ -z "${!FRAGMENT}" ] && [ "$FLAG_SKIP_OVERRIDES" != yes ]; then
+    OVERRIDE_FRAGMENT="$( "$YQ_CMD" ".fragments.${1^^} // \"\"" meta.override.yml 2>/dev/null )"
+    if [ -n "$OVERRIDE_FRAGMENT" ] ; then
+      validate_and_set_fragment "$OVERRIDE_FRAGMENT" "$1" override || return 1
     fi
   fi
-  [ -n "${!OPTION}" ] || printf -v "$OPTION" "%s" yes
+  [ -n "${!FRAGMENT}" ] || printf -v "$FRAGMENT" "%s" use
 
-  if [ "${!OPTION}" != yes ] ; then 
-    [ -z "$OVERRIDE_OPTION" ] && _DISABLED_OPTIONS_+=("$1 (arg)") || _DISABLED_OPTIONS_+=("$1 (conf)")
-  else
+  if [ "${!FRAGMENT}" != use ] ; then 
+    [ -z "$OVERRIDE_FRAGMENT" ] && _DISABLED_FRAGMENTS_+=("$1 (arg)") || _DISABLED_FRAGMENTS_+=("$1 (conf)")
+  elif [ "$1" != HOOKS ] ; then
     if [ -f "docker-compose.${1,,}.yml" ] ; then
       _CUR_COMPOSE_FILES_+=( "docker-compose.${1,,}.yml" )
       if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
@@ -201,7 +201,7 @@ __read_option () {
 }
 
 __run_hook () {
-  ( set -a && source "$SCRIPTS_DIR/colors.sh" && source .env && ./"$1" ) \
+  ( set -aeu ; source "$SCRIPTS_DIR/colors.sh" ; source .env ; ./"$1" ) \
     || { __error "HOOK '$1' FAILED!" ; return 1 ; }
 }
 
@@ -231,7 +231,7 @@ __show_message () {
     _LINK_FONT_="${_fg_magenta_}${_uline_}" \
     _RESET_FONT_="${_normal_}" \
     _THIS_COMPOSITION_="${_bold_}${_CUR_COMP_}${_normal_}" \
-      bash -c "set -a ; source .env ; echo \"$msg\""
+      bash -c "set -aeu ; source .env ; echo \"$msg\""
   done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .messages.$stage | .[]" meta.yml 2>/dev/null )
 }
 
@@ -392,19 +392,19 @@ Flags:
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
   [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
 
-Options:              { yes | no }
+Fragments:            { use | ignore }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
   [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]      Run pre and post hook 'docker-compose.*.yml' scripts
+  [-h | --hooks]      Run pre and post hook 'docker-compose.*_hook.sh' scripts
   [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
   [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
 
- <omitted> = Configure the option unless overridden in options.override.conf:
-             use 'docker-compose.*.{sh,yml}' unless overriden in options.override.conf.
-        no = Never configure the option (and use docker default instead):
-             ignores 'docker-compose.*.{sh,yml}' files.
-       yes = Always configure the option as specified:
-             ignores options*.conf and uses all 'docker-compose.*.{sh,yml}' files.
+ <omitted> = Unless overriden, use the fragment files:
+             use 'docker-compose.<fragment>.{sh,yml}' unless overriden in 'meta.override.yml'.
+    ignore = Do not use the fragment files (and use docker default instead):
+             ignores 'docker-compose.<fragment>.{sh,yml}' file.
+       use = Ignore overrides and use the fragment file:
+             uses 'docker-compose.<fragment>.{sh,yml}' file ignoring 'meta.override.yml'.
 
 Compositions Found ($num_comps):" >&2
   for (( i=0 ; i<${#compositions[@]} ; i++ )) ; do
@@ -461,15 +461,17 @@ for opt in "$@" ; do
   esac
 done
 
-validate_and_set_option () {
-  local OPTION="OPTION_$2"
-  case "$1" in
-    yes | no ) printf -v "$OPTION" "%s" "$1" ; return 0
+validate_and_set_fragment () {
+  local FRAGMENT="FRAGMENT_$2"
+  local FRAGMENT_VALUE="${1,,}"
+  case "$FRAGMENT_VALUE" in
+    use | ignore ) printf -v "$FRAGMENT" "%s" "$FRAGMENT_VALUE"
+                   return 0
   esac
   if [ "$3" = override ] ; then
-    echo ; __error "Invalid value '$1' for '$2' in $_CUR_COMP_/options.override.conf"
+    echo ; __error "Invalid value '$1' for '$2' in $_CUR_COMP_/meta.override.yml"
   else
-    usage "Invalid value '$1' for '${2,,}' option"
+    usage "Invalid value '$1' for '${2,,}' fragment"
   fi
   return 1
 }
@@ -482,11 +484,11 @@ while getopts ':FOPRd:g:h:l:p:' OPTION ; do
     P ) FLAG_SKIP_PREREQS=yes ;;
     R ) FLAG_SKIP_REGENERATE=yes ;;
 
-    d ) validate_and_set_option "$OPTARG" DEVICES usage ;;
-    g ) validate_and_set_option "$OPTARG" LOGGING usage ;;
-    h ) validate_and_set_option "$OPTARG" HOOKS usage ;;
-    l ) validate_and_set_option "$OPTARG" LABELS usage ;;
-    p ) validate_and_set_option "$OPTARG" PORTS usage ;;
+    d ) validate_and_set_fragment "$OPTARG" DEVICES usage ;;
+    g ) validate_and_set_fragment "$OPTARG" LOGGING usage ;;
+    h ) validate_and_set_fragment "$OPTARG" HOOKS usage ;;
+    l ) validate_and_set_fragment "$OPTARG" LABELS usage ;;
+    p ) validate_and_set_fragment "$OPTARG" PORTS usage ;;
 
     * ) usage "Unrecognized option: -$OPTARG." ;;
   esac
@@ -527,7 +529,7 @@ fi
 # # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
 
 COMPOSITIONS=( "$@" )
-OPTIONS_FROM_ARGS=( "$OPTION_DEVICES" "$OPTION_HOOKS" "$OPTION_LABELS" "$OPTION_LOGGING" "$OPTION_PORTS" )
+FRAGMENTS_FROM_ARGS=( "$FRAGMENT_DEVICES" "$FRAGMENT_HOOKS" "$FRAGMENT_LABELS" "$FRAGMENT_LOGGING" "$FRAGMENT_PORTS" )
 
 _FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; _CUR_YQ_META_QUERY_PFX_=""
 unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
@@ -549,13 +551,13 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     _CUR_COMPOSE_OVERRIDE_FILES_=( docker-compose.override.yml)
   fi
 
-  IFS=, read -r OPTION_DEVICES OPTION_HOOKS OPTION_LABELS OPTION_LOGGING OPTION_PORTS \
-             <<< "$( IFS=, ; echo "${OPTIONS_FROM_ARGS[*]}" )"
-  _DISABLED_OPTIONS_=() ; opt_error=0
-  for opt in DEVICES HOOKS LABELS LOGGING PORTS ; do
-    __read_option $opt || opt_error=1
+  IFS=, read -r FRAGMENT_DEVICES FRAGMENT_HOOKS FRAGMENT_LABELS FRAGMENT_LOGGING FRAGMENT_PORTS \
+             <<< "$( IFS=, ; echo "${FRAGMENTS_FROM_ARGS[*]}" )"
+  _DISABLED_FRAGMENTS_=() ; frag_error=0
+  for frag in DEVICES HOOKS LABELS LOGGING PORTS ; do
+    __read_fragment $frag || frag_error=1
   done
-  [ "$opt_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_OPTIONS_CONF_ERROR || continue
+  [ "$frag_error" -eq 0 ] || __maybe_fail_fast $EXIT_CODE_FRAGMENTS_ERROR || continue
 
   for _CUR_VERB_ in $VERBS ; do
     (( ++_CUR_STAGE_ ))
@@ -583,18 +585,18 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     echo -ne "\n$_CUR_VERB_PREFIX_ ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
     [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] || printf 'pre-req '
     echo "${_bold_}$_CUR_COMP_${_normal_} ... "
-    [ ${#_DISABLED_OPTIONS_[@]} -eq 0 ] || echo "[o] Disabled options: ${_DISABLED_OPTIONS_[*]}"
+    [ ${#_DISABLED_FRAGMENTS_[@]} -eq 0 ] || echo "[o] Disabled fragments: ${_DISABLED_FRAGMENTS_[*]}"
 
     if __will_invoke_compose ; then
       __gen_env || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __create_external_networks || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
       __gen_templates || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
-      [ "$OPTION_HOOKS" != yes ] || __run_hooks pre \
+      [ "$FRAGMENT_HOOKS" != use ] || __run_hooks pre \
         || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
       __show_message pre
     fi
 
-    [ "$OPTION_HOOKS" != yes ] || __run_hooks "$_CUR_VERB_" pre \
+    [ "$FRAGMENT_HOOKS" != use ] || __run_hooks "$_CUR_VERB_" pre \
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     __show_message "$_CUR_VERB_" pre
 
@@ -610,12 +612,12 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
 
     if __will_invoke_compose ; then
-      [ "$OPTION_HOOKS" != yes ] || __run_hooks post \
+      [ "$FRAGMENT_HOOKS" != use ] || __run_hooks post \
         || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR || continue
       __show_message post
     fi
 
-    [ "$OPTION_HOOKS" != yes ] || __run_hooks "$_CUR_VERB_" post \
+    [ "$FRAGMENT_HOOKS" != use ] || __run_hooks "$_CUR_VERB_" post \
       || __maybe_fail_fast $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
     __show_message "$_CUR_VERB_" post
   done

@@ -22,11 +22,11 @@ jobs:
       -
         name: "Service: Setup"
         run: |
-          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
       -
         name: "Service: Start"
         run: |
-          ./comp up --labels no traefik
+          ./comp up --labels ignore traefik
       -
         name: "Service: Wait"
         run: |

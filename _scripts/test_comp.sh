@@ -141,25 +141,31 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
       "EXIT_CODE_SIMPLE_VERB_FAILURE" \
       exit_on_failure
 
-echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
+cat > $TARGET_COMP_1/meta.override.yml << EOF
+fragments:
+  DEVICES: nyet
+EOF
 
-SETUP "bad options in overriddes list break $TARGET_COMP_1_DISPLAY" \
+SETUP "bad fragment value in meta breaks $TARGET_COMP_1_DISPLAY" \
       "overrides -P $TARGET_COMP_1"
-CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/meta.override.yml" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
       exit_on_failure
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
-      "EXIT_CODE_OPTIONS_CONF_ERROR" \
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_FRAGMENTS_ERROR ]' \
+      "EXIT_CODE_FRAGMENTS_ERROR" \
       exit_on_failure
 
-echo "DEVICES=no" > $TARGET_COMP_1/options.override.conf
+cat > $TARGET_COMP_1/meta.override.yml << EOF
+fragments:
+  DEVICES: ignore
+EOF
 
-SETUP "querying the overriddes list for $TARGET_COMP_1_DISPLAY otherwise passes" \
+SETUP "querying the overrides list for $TARGET_COMP_1_DISPLAY otherwise passes" \
       "overrides -P $TARGET_COMP_1"
 CHECK $'grep -qs "Executing overrides on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
-CHECK $'grep -qs "\[L\] $TARGET_COMP_1/options.override.conf" "$COMP_OUT_PATH"' \
-      "options.override.conf listed"
+CHECK $'grep -qs "\[L\] $TARGET_COMP_1/meta.override.yml" "$COMP_OUT_PATH"' \
+      "meta.override.yml listed"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
@@ -233,23 +239,26 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 
 _INIT tiny_httpd
 
-SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY may be started with different options" \
+SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY may be started with different fragments" \
       "up -P $TARGET_COMP_1 $TARGET_COMP_2"
-CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
-      "Info with disabled options at beginning of $TARGET_COMP_1_DISPLAY execution" \
+CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled fragments: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
+      "Info with disabled fragments at beginning of $TARGET_COMP_1_DISPLAY execution" \
       exit_on_failure
-CHECK $'grep -lPqsvz "Executing up on $TARGET_COMP_2.*\\n.*Disabled options: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
-      "Info without disabled options at beginning of $TARGET_COMP_2_DISPLAY execution" \
+CHECK $'grep -lPqsvz "Executing up on $TARGET_COMP_2.*\\n.*Disabled fragments: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
+      "Info without disabled fragments at beginning of $TARGET_COMP_2_DISPLAY execution" \
       exit_on_failure
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       "EXIT_CODE = 0" \
       exit_on_failure
 
-echo "DEVICES=nyet" > $TARGET_COMP_1/options.override.conf
+cat > $TARGET_COMP_1/meta.override.yml << EOF
+fragments:
+  DEVICES: nyet
+EOF
 
-SETUP "a bad option breaks $TARGET_COMP_1_DISPLAY but $TARGET_COMP_2_DISPLAY still works without options" \
+SETUP "a bad fragment breaks $TARGET_COMP_1_DISPLAY but $TARGET_COMP_2_DISPLAY still works without fragments" \
       "down -P $TARGET_COMP_1 $TARGET_COMP_2"
-CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/options\.override\.conf" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/meta.override.yml" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
       exit_on_failure
 CHECK $'grep -Pqsv "Container $TARGET_COMP_1.* Stopping" "$COMP_ERR_PATH"' \
@@ -258,8 +267,8 @@ CHECK $'grep -Pqsv "Container $TARGET_COMP_1.* Stopping" "$COMP_ERR_PATH"' \
 CHECK $'grep -Pqs "Container $TARGET_COMP_2.* Removed" "$COMP_ERR_PATH"' \
       "Stopped $TARGET_COMP_2_DISPLAY successfully" \
       exit_on_failure
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_OPTIONS_CONF_ERROR ]' \
-      "EXIT_CODE_OPTIONS_CONF_ERROR" \
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_FRAGMENTS_ERROR ]' \
+      "EXIT_CODE_FRAGMENTS_ERROR" \
       exit_on_failure
 
 SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY can both be stopped when ignoring overrides" \

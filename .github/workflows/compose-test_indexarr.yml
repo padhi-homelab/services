@@ -24,12 +24,12 @@ jobs:
         run: |
           mkdir -p "${TARGET_SERVICE}/data/openvpn"
           cp -r .github/workflows/config/vpn_alt "${TARGET_SERVICE}/data/openvpn/config"
-          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
-          cp .github/workflows/config/options.conf "traefik/options.override.conf"
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
+          cp .github/workflows/config/meta.override.yml "traefik/"
       -
         name: "Service: Start"
         run: |
-          ./comp up --skip-prereqs --labels no ${TARGET_SERVICE}
+          ./comp up --skip-prereqs --labels ignore ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

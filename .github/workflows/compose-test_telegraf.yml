@@ -22,7 +22,7 @@ jobs:
       -
         name: "Service: Start"
         run: |
-          ./comp up --labels no ${TARGET_SERVICE}
+          ./comp up --labels ignore ${TARGET_SERVICE}
       -
         name: "Service: Wait"
         run: |

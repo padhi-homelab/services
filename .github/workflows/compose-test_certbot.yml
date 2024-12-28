@@ -22,9 +22,9 @@ jobs:
       -
         name: "Service: Setup"
         run: |
-          cp .github/workflows/config/options.conf "${TARGET_SERVICE}/options.override.conf"
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
       -
         name: "Service: Start"
         run: |
-          ./comp up --labels no ${TARGET_SERVICE}
+          ./comp up --labels ignore ${TARGET_SERVICE}
           cd ${TARGET_SERVICE} ; cat .env
