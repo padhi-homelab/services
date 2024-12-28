@@ -62,6 +62,6 @@ jobs:
           docker compose exec -T traefik wget --spider --no-check-certificate https://localhost/nextcloud/ \
             || (docker ps ; docker compose logs ; cd ../${TARGET_SERVICE} ; docker compose logs ; exit 1)
           docker compose exec -T traefik wget -S --spider --no-check-certificate \
-                                              https://localhost:443/nextcloud/.well-known/caldav 2>&1 \
+                                              https://localhost/nextcloud/.well-known/caldav 2>&1 \
              | grep "Location: " | grep -q "/nextcloud/remote.php/dav" \
             || (docker ps ; docker compose logs ; cd ../${TARGET_SERVICE} ; docker compose logs ; exit 1)

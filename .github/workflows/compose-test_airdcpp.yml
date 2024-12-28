@@ -61,5 +61,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker compose exec -T traefik wget --spider --no-check-certificate --header "Accept: text/html" https://127.0.0.1/airdcpp/ \
+          docker compose exec -T traefik wget --spider --no-check-certificate --header "Accept: text/html" https://localhost/airdcpp/ \
             || (docker ps ; docker compose logs ; cd ../airdcpp ; docker compose logs ; exit 1)
