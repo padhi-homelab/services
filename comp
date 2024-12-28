@@ -228,8 +228,10 @@ __show_message () {
 
   while IFS= read -r msg ; do
     echo -n "${_fg_white_}${_bg_magenta_}${_bold_} * ${_normal_} "
-    _CUR_COMP_="$_CUR_COMP_" _CUR_VERB_="$_CUR_VERB_" \
-      bash -c "set -a ; source '$SCRIPTS_DIR/colors.sh' ; source .env ; echo \"$msg\""
+    _LINK_FONT_="${_fg_magenta_}${_uline_}" \
+    _RESET_FONT_="${_normal_}" \
+    _THIS_COMPOSITION_="${_bold_}${_CUR_COMP_}${_normal_}" \
+      bash -c "set -a ; source .env ; echo \"$msg\""
   done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .messages.$stage | .[]" meta.yml 2>/dev/null )
 }
 

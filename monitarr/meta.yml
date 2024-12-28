@@ -2,14 +2,14 @@ messages:
   up:
     post:
     - >-
-      ${_bold_}${_CUR_COMP_}-lidarr${_normal_} may now be accessed on
-      ${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${LIDARR_BASE_PATH}/${_normal_}
+      ${_bold_}${_CUR_COMP_}-lidarr${_RESET_FONT_} may now be accessed on
+      ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${LIDARR_BASE_PATH}/${_RESET_FONT_}
     - >-
-      ${_bold_}${_CUR_COMP_}-radarr${_normal_} may now be accessed on
-      ${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${RADARR_BASE_PATH}/${_normal_}
+      ${_bold_}${_CUR_COMP_}-radarr${_RESET_FONT_} may now be accessed on
+      ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${RADARR_BASE_PATH}/${_RESET_FONT_}
     - >-
-      ${_bold_}${_CUR_COMP_}-sonarr${_normal_} may now be accessed on
-      ${_fg_magenta_}${_uline_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${SONARR_BASE_PATH}/${_normal_}
+      ${_bold_}${_CUR_COMP_}-sonarr${_RESET_FONT_} may now be accessed on
+      ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${SONARR_BASE_PATH}/${_RESET_FONT_}
 
 pre_reqs:
 - traefik

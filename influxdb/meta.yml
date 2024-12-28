@@ -2,5 +2,5 @@ messages:
   up:
     post:
     - >-
-      ${_bold_}${_CUR_COMP_}${_normal_} may now be accessed on
-      ${_fg_magenta_}${_uline_}https://${SERVER_LAN_FQDN}:8086/${_normal_}
+      ${_THIS_COMPOSITION_} may now be accessed on
+      ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:8086/${_RESET_FONT_}
