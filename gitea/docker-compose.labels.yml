@@ -7,6 +7,6 @@ services:
       traefik.http.middlewares.only-https-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: https
       traefik.http.middlewares.strip-gitea-prefix.stripPrefix.prefixes: "/${GITEA_BASE_PATH:?}"
       #
-      traefik.http.routers.gitea.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${GITEA_BASE_PATH:?}`)
-      traefik.http.routers.gitea.entryPoints: wan-https
+      traefik.http.routers.gitea.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${GITEA_BASE_PATH:?}`)
+      traefik.http.routers.gitea.entryPoints: lan-https
       traefik.http.routers.gitea.middlewares: only-https-forwarded-proto, strip-gitea-prefix
