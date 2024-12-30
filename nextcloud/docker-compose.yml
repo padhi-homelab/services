@@ -68,6 +68,38 @@ services:
       interval: 5s
       start_period: 10s
 
+  fulltextsearch:
+    hostname: fulltextsearch
+    image: nextcloud/aio-fulltextsearch:20241216_102930
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: ${USER_ID:?}
+
+    networks:
+    - default
+    volumes:
+    - ./data/fulltextsearch/usr/share/elasticsearch/data:/usr/share/elasticsearch/data:rw
+
+    environment:
+      ES_JAVA_OPTS: "-Xms512M -Xmx512M"
+      bootstrap.memory_lock: true
+      cluster.name: nextcloud-aio
+      discovery.type: single-node
+      logger.org.elasticsearch.discovery: WARN
+      http.port: 9200
+      xpack.license.self_generated.type: basic
+      xpack.security.enabled: false
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: "curl -f http://localhost:9200 || exit 1"
+      interval: 10s
+      timeout: 3s
+      start_period: 30s
+
   imaginary:
     hostname: imaginary
     image: nextcloud/aio-imaginary:20241216_102930
@@ -80,7 +112,7 @@ services:
     - no-new-privileges:true
     user: ${USER_ID:?}
 
-    command: -cpus 3 -concurrency 16 -enable-url-source
+    command: -cpus 4 -concurrency 16 -enable-url-source
 
     networks:
     - default
@@ -109,6 +141,10 @@ services:
       mariadb:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      fulltextsearch:
+        condition: service_healthy
+      imaginary:
         condition: service_healthy
 
     networks:

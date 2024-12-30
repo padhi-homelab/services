@@ -9,6 +9,11 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
+  fulltextsearch:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
   imaginary:
     logging:
       options:
