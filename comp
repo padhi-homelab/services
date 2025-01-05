@@ -53,11 +53,10 @@ __append_env_from () {
 }
 
 __CALL_SELF__ () {
-  local cur_dir="$(pwd)"
-  cd "$SELF_DIR"
-  COMP_SELF_CALL_DEPTH=$(( COMP_SELF_CALL_DEPTH + 1 )) bash "$0" "$@"
+  pushd "$SELF_DIR"
+  COMP_SELF_CALL_DEPTH="$(( COMP_SELF_CALL_DEPTH + 1 ))" bash "$0" "$@"
   local exit_code=$?
-  cd "$cur_dir"
+  popd
   return $exit_code
 }
 

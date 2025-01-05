@@ -26,7 +26,7 @@ services:
       TZ: ${TZ:?}
 
     healthcheck:
-      test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:3000/healthcheck"]
+      test: ["CMD", "curl", "-o", "/dev/null", "-sS", "http://localhost:3000/api/healthz"]
       interval: 15s
       timeout: 2s
       start_period: 5s

@@ -45,7 +45,7 @@ services:
 
   sonarr:
     hostname: sonarr
-    image: padhihomelab/sonarr:4.0.11.2680
+    image: padhihomelab/sonarr:4.0.12.2823
     restart: unless-stopped
 
     security_opt:

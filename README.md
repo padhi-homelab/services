@@ -478,7 +478,7 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>5.16.3.9541</sub></code>
         <br>
-        <code><sub>4.0.11.2680</sub></code>
+        <code><sub>4.0.12.2823</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
