@@ -43,14 +43,28 @@ entryPoints:
       - default@file
       - add-ssl-headers@file
       tls: true
-  lan-http:
-    address: ":${SERVER_LAN_HTTP_PORT}"
+  lan-http-a:
+    address: ":${SERVER_LAN_HTTP_PORT_A}"
     http:
       middlewares:
       - restrict-to-lan-ip@file
       - default@file
-  lan-https:
-    address: ":${SERVER_LAN_HTTPS_PORT}"
+  lan-https-a:
+    address: ":${SERVER_LAN_HTTPS_PORT_A}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
+  lan-http-b:
+    address: ":${SERVER_LAN_HTTP_PORT_B}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+  lan-https-b:
+    address: ":${SERVER_LAN_HTTPS_PORT_B}"
     http:
       middlewares:
       - restrict-to-lan-ip@file

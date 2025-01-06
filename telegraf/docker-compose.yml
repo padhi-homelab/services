@@ -27,8 +27,6 @@ services:
       HOST_PROC: /host/proc
       HOST_SYS: /host/sys
       HOST_MOUNT_PREFIX: /host
-      SERVER_LAN_FQDN: ${SERVER_LAN_FQDN:?}
-      SERVER_LAN_HTTPS_PORT: ${SERVER_LAN_HTTPS_PORT:?}
       TELEGRAF_LOGGING_FILE: STDOUT
       TELEGRAF_REPORTING_ENABLED: 'false'
       INFLUXDB_URL: http://${SERVER_LAN_FQDN:?}:8086
