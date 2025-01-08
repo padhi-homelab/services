@@ -43,6 +43,7 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+      GROUP_UID: ${GROUP_ID:?}
       TZ: ${TZ:?}
 
     healthcheck:
@@ -72,4 +73,5 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}

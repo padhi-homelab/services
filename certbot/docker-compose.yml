@@ -13,6 +13,7 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}
       CERTBOT_EMAIL: ${SERVER_LETS_ENCRYPT_ACME_EMAIL:?}
       CERTBOT_DOMAIN: ${SERVER_WAN_FQDN:?}

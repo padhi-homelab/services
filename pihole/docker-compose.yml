@@ -26,6 +26,7 @@ services:
     environment:
       TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}
 
   pihole:
     hostname: pihole

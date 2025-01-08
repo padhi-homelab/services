@@ -46,3 +46,4 @@ services:
 
     environment:
       DOCKER_UID: ${USER_ID:?}
+      DOCKER_GID: ${GROUP_ID:?}

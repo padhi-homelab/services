@@ -13,7 +13,7 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     command: |-
       --transaction-isolation=READ-COMMITTED
@@ -48,7 +48,7 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     command: |-
       sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
@@ -76,7 +76,7 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
     - default
@@ -110,7 +110,7 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     command: -cpus 4 -concurrency 16 -enable-url-source
 
@@ -135,7 +135,7 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: ${USER_ID:?}
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     depends_on:
       mariadb:
@@ -185,7 +185,7 @@ services:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     # FIXME: `crond` needs to run as `root` user.
-    # user: ${USER_ID:?}
+    # user: "${USER_ID:?}:${GROUP_ID}"
 
     depends_on:
       nextcloud:
