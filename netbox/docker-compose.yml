@@ -29,7 +29,7 @@ services:
 
   redis:
     hostname: redis
-    image: valkey/valkey:8.0.1-alpine
+    image: valkey/valkey:8.0.2-alpine
     restart: unless-stopped
 
     security_opt:
@@ -57,7 +57,7 @@ services:
 
   netbox:
     hostname: netbox
-    image: padhihomelab/netbox:4.1.10
+    image: padhihomelab/netbox:4.2.0
     restart: unless-stopped
 
     security_opt:

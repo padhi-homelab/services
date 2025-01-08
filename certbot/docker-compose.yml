@@ -1,7 +1,7 @@
 services:
   certbot:
     hostname: certbot
-    image: padhihomelab/certbot:3.0.1
+    image: padhihomelab/certbot:3.1.0
     restart: unless-stopped
 
     security_opt:

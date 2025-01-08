@@ -13,8 +13,6 @@ services:
     - ./data/mongo/data/db:/data/db:rw
 
     environment:
-      PUID: ${USER_ID:?}
-      PGID: ${GROUP_ID:?}
       TZ: ${TZ:?}
 
     healthcheck:
@@ -25,7 +23,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:8.6.9-alpine
+    image: goofball222/unifi:9.0.108-alpine
     restart: unless-stopped
 
     security_opt:
