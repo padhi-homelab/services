@@ -57,7 +57,7 @@ services:
 
   netbox:
     hostname: netbox
-    image: padhihomelab/netbox:4.2.0
+    image: padhihomelab/netbox:4.2.1
     restart: unless-stopped
 
     security_opt:
