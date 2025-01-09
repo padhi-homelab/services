@@ -76,7 +76,10 @@ services:
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    # FIXME: Investigate why this fails to start with ${GROUP_ID:?}.
+    #        Nextcloud AIO seems to be using GID 0 as well:
+    #        https://github.com/nextcloud/all-in-one/blob/main/Containers/fulltextsearch/Dockerfile#L21
+    user: ${USER_ID:?}:0
 
     networks:
     - default
