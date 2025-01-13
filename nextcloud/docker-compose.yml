@@ -10,11 +10,6 @@ services:
     image: mariadb:10.11.10
     restart: unless-stopped
 
-    security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
-    - no-new-privileges:true
-    user: "${USER_ID:?}:${GROUP_ID}"
-
     command: |-
       --transaction-isolation=READ-COMMITTED
       --binlog-format=ROW
@@ -22,6 +17,11 @@ services:
       --skip-innodb-read-only-compressed
       --character-set-server=utf8mb4
       --collation-server=utf8mb4_unicode_ci
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
     - default
@@ -45,13 +45,13 @@ services:
     image: redis:7.4.2
     restart: unless-stopped
 
+    command: |-
+      sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
+
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
-
-    command: |-
-      sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
 
     networks:
     - default
@@ -108,14 +108,14 @@ services:
     image: nextcloud/aio-imaginary:20241216_102930
     restart: unless-stopped
 
+    command: -cpus 4 -concurrency 16 -enable-url-source
+
     cap_add:
     - SYS_NICE
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
-
-    command: -cpus 4 -concurrency 16 -enable-url-source
 
     networks:
     - default

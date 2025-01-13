@@ -32,13 +32,13 @@ services:
     image: valkey/valkey:8.0.2-alpine
     restart: unless-stopped
 
+    command: |-
+      sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
+
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
-
-    command: |-
-      sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
 
     networks:
     - default

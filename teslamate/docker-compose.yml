@@ -26,7 +26,7 @@ services:
       retries: 2
       start_period: 15s
 
-  db:
+  postgres:
     hostname: db
     image: postgres:17.2-alpine
     restart: unless-stopped
@@ -39,7 +39,7 @@ services:
     networks:
     - default
     volumes:
-    - ./data/db/var/lib/postgresql/data:/var/lib/postgresql/data:rw
+    - ./data/postgres/var/lib/postgresql/data:/var/lib/postgresql/data:rw
 
     environment:
       POSTGRES_DB: teslamate
@@ -65,7 +65,7 @@ services:
     user: "${USER_ID:?}:${GROUP_ID}"
 
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
       mqtt:
         condition: service_healthy
@@ -81,7 +81,7 @@ services:
       DATABASE_USER: tmate
       DATABASE_PASS: 'db~pass'
       DATABASE_NAME: teslamate
-      DATABASE_HOST: db
+      DATABASE_HOST: postgres
       MQTT_HOST: mqtt
       URL_PATH: '/${TESLAMATE_BASE_PATH:?}'
       TZ: ${TZ:?}
