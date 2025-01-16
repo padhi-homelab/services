@@ -5,7 +5,7 @@ networks:
 services:
   hass:
     hostname: hass
-    image: padhihomelab/hass:2025.1.2_2.0.2
+    image: padhihomelab/hass:2025.1.2_2.0.3
     restart: unless-stopped
 
     security_opt:
