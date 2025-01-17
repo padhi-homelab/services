@@ -467,7 +467,7 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>8.0.2...ne</sub></code>
         <br>
-        <code><sub>4.2.1</sub></code>
+        <code><sub>4.2.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -527,11 +527,11 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>7.4.2</sub></code>
         <br>
-        <code><sub>20241216...30</sub></code>
+        <code><sub>20250114...11</sub></code>
         <br>
-        <code><sub>30.0.4-core</sub></code>
+        <code><sub>30.0.5-core</sub></code>
         <br>
-        <code><sub>30.0.4-core</sub></code>
+        <code><sub>30.0.5-core</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
