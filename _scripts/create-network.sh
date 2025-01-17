@@ -2,6 +2,9 @@
 
 set -Eumo pipefail
 
+SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+source "$SELF_DIR/colors.sh"
+
 NAME=$1
 
 RUNNER_CMD="${RUNNER_CMD:-}"
@@ -25,6 +28,6 @@ if [ "${RUNNER_CMD}" = "${DOCKER_CMD}" ] ; then
 fi
 
 if ! $RUNNER_CMD network inspect $NAME &> /dev/null; then
-  echo -n "[~] Creating external $RUNNER_CMD network: "
+  echo -n "[~] Creating external $RUNNER_CMD network '${_bold_}$NAME${_normal_}': "
   $RUNNER_CMD network create $NETWORK_FLAGS $NAME
 fi
