@@ -14,7 +14,10 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [ ubuntu-24.04 , ubuntu-24.04-arm ]
+    runs-on: ${{ matrix.platform }}
     steps:
       -
         name: "Git: Checkout"
