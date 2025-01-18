@@ -5,7 +5,7 @@ networks:
 services:
   docker.sock-proxy:
     hostname: docker.sock-proxy
-    image: padhihomelab/docker.sock-proxy:2.8.10
+    image: padhihomelab/docker.sock-proxy:${DOCKER_SOCK_PROXY_VERSION:?}
     restart: unless-stopped
 
     security_opt:

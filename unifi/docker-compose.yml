@@ -1,8 +1,7 @@
 services:
   mongo:
     hostname: mongo
-    # NOTE: MongoDB 4.4.19+ and 5.0+ requires ARMv8.2A+
-    image: mongo:4.4.18
+    image: mongo:${MONGO_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -24,7 +23,7 @@ services:
 
   unifi:
     hostname: unifi
-    image: goofball222/unifi:9.0.108-alpine
+    image: goofball222/unifi:${UNIFI_VERSION:?}
     restart: unless-stopped
 
     security_opt:

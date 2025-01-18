@@ -510,6 +510,11 @@ for optionally customizing compositions via _overrides_.
           <sub>redis</sub>
         </a>
         <br>
+        <a href='https://hub.docker.com/repository/docker/nextcloud/aio-fulltextsearch'>
+          <sub>fulltextsearch</sub>
+        </a>
+        <br>
+        <br>
         <a href='https://hub.docker.com/repository/docker/nextcloud/aio-imaginary'>
           <sub>imaginary</sub>
         </a>
@@ -523,9 +528,11 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>10.11.10</sub></code>
+        <code><sub>11.6.2</sub></code>
         <br>
         <code><sub>7.4.2</sub></code>
+        <br>
+        <code><sub>20250116...30</sub></code>
         <br>
         <code><sub>20250114...11</sub></code>
         <br>
@@ -543,6 +550,8 @@ for optionally customizing compositions via _overrides_.
         <br>
         :heavy_multiplication_x:
         <br>
+        :heavy_multiplication_x:
+        <br>
         :heavy_check_mark:
         <br>
         :heavy_check_mark:
@@ -554,6 +563,8 @@ for optionally customizing compositions via _overrides_.
         :heavy_multiplication_x:
         <br>
         :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
         <br>

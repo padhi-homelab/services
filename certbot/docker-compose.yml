@@ -1,7 +1,7 @@
 services:
   certbot:
     hostname: certbot
-    image: certbot/certbot:v3.1.0
+    image: certbot/certbot:${CERTBOT_VERSION:?}
     restart: unless-stopped
     entrypoint: entrypoint
 

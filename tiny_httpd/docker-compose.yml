@@ -5,7 +5,7 @@ networks:
 services:
   http:
     hostname: http
-    image: padhihomelab/tiny-httpd:2.29
+    image: padhihomelab/tiny-httpd:${TINY_HTTPD_VERSION:?}
     restart: unless-stopped
 
     security_opt:

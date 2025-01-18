@@ -5,7 +5,7 @@ networks:
 services:
   postgres:
     hostname: postgres
-    image: postgres:17.2-alpine
+    image: postgres:${POSTGRES_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -29,7 +29,7 @@ services:
 
   redis:
     hostname: redis
-    image: valkey/valkey:8.0.2-alpine
+    image: valkey/valkey:${VALKEY_VERSION:?}
     restart: unless-stopped
 
     command: |-
@@ -57,7 +57,7 @@ services:
 
   netbox:
     hostname: netbox
-    image: padhihomelab/netbox:4.2.2
+    image: padhihomelab/netbox:${NETBOX_VERSION:?}
     restart: unless-stopped
 
     security_opt:

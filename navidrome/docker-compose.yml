@@ -5,7 +5,7 @@ networks:
 services:
   navidrome:
     hostname: navidrome
-    image: deluan/navidrome:0.54.4
+    image: deluan/navidrome:${NAVIDROME_VERSION:?}
     restart: unless-stopped
 
     security_opt:

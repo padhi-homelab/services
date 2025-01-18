@@ -5,9 +5,7 @@ networks:
 services:
   mariadb:
     hostname: mariadb
-    # FIXME: Nextcloud doesn't officially recommend MariaDB 11+ yet
-    # See https://help.nextcloud.com/t/nexcloud-27-with-mariadb-11-0-2-stopped-working/165988
-    image: mariadb:10.11.10
+    image: mariadb:${MARIADB_VERSION:?}
     restart: unless-stopped
 
     command: |-
@@ -36,13 +34,13 @@ services:
       MYSQL_RANDOM_ROOT_PASSWORD: 1
 
     healthcheck:
-      test: "mysql $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      test: "mariadb $$MYSQL_DATABASE -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
       interval: 15s
-      start_period: 10s
+      start_period: 30s
 
   redis:
     hostname: redis
-    image: redis:7.4.2
+    image: redis:${REDIS_VERSION:?}
     restart: unless-stopped
 
     command: |-
@@ -70,7 +68,7 @@ services:
 
   fulltextsearch:
     hostname: fulltextsearch
-    image: nextcloud/aio-fulltextsearch:20241216_102930
+    image: nextcloud/aio-fulltextsearch:${NEXTCLOUD_FULL_TEXT_SEARCH_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -105,7 +103,7 @@ services:
 
   imaginary:
     hostname: imaginary
-    image: nextcloud/aio-imaginary:20250114_092611
+    image: nextcloud/aio-imaginary:${NEXTCLOUD_IMAGINARY_VERSION:?}
     restart: unless-stopped
 
     command: -cpus 4 -concurrency 16 -enable-url-source
@@ -132,7 +130,7 @@ services:
 
   nextcloud:
     hostname: nextcloud
-    image: padhihomelab/nextcloud:30.0.5-core
+    image: padhihomelab/nextcloud:${NEXTCLOUD_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -170,6 +168,9 @@ services:
     - env/nextcloud
     environment:
       TZ: ${TZ:?}
+      # NOTE: Overwrites necessary for reverse proxy
+      OVERWRITEPROTOCOL: 'https'
+      OVERWRITEWEBROOT: '/${NEXTCLOUD_BASE_PATH:?}'
       NEXTCLOUD_TRUSTED_DOMAINS: ${SERVER_WAN_FQDN:?} ${SERVER_LAN_FQDN:?} nextcloud
 
     healthcheck:
@@ -180,7 +181,7 @@ services:
 
   cron:
     hostname: cron
-    image: padhihomelab/nextcloud:30.0.5-core
+    image: padhihomelab/nextcloud:${NEXTCLOUD_VERSION:?}
     restart: unless-stopped
     entrypoint: /cron.sh
 

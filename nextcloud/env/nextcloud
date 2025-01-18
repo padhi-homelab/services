@@ -1,8 +1,5 @@
 MYSQL_HOST: 'mariadb'
 REDIS_HOST: 'redis'
-# NOTE: Overwrites necessary for reverse proxy
-OVERWRITEPROTOCOL: 'https'
-OVERWRITEWEBROOT: '/${NEXTCLOUD_BASE_PATH:?}'
 # FIXME: See https://github.com/nextcloud/docker/issues/1494
 #APACHE_DISABLE_REWRITE_IP: 1
 NEXTCLOUD_DATA_DIR: '/data'

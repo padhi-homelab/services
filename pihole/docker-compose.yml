@@ -10,7 +10,7 @@ networks:
 services:
   dnscrypt-proxy:
     hostname: dnscrypt-proxy
-    image: padhihomelab/dnscrypt-proxy:2.1.7
+    image: padhihomelab/dnscrypt-proxy:${DNSCRYPT_PROXY_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -30,7 +30,7 @@ services:
 
   pihole:
     hostname: pihole
-    image: pihole/pihole:2024.07.0
+    image: pihole/pihole:${PIHOLE_VERSION:?}
     restart: unless-stopped
 
     # FIXME: cannot use `no-new-privileges` yet,
