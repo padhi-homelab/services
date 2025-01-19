@@ -1,0 +1,2 @@
+# FIXME: Netbox config script uses this env var name.
+REDIS_PASSWORD: 'netbox~valkey-password'

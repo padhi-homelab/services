@@ -27,8 +27,8 @@ services:
       timeout: 3s
       start_period: 30s
 
-  redis:
-    hostname: redis
+  valkey:
+    hostname: valkey
     image: valkey/valkey:${VALKEY_VERSION:?}
     restart: unless-stopped
 
@@ -43,10 +43,10 @@ services:
     networks:
     - default
     volumes:
-    - ./data/redis/data:/data:rw
+    - ./data/valkey/data:/data:rw
 
     env_file:
-    - env/redis
+    - env/valkey
     environment:
       TZ: ${TZ:?}
 
@@ -67,7 +67,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
 
     networks:
@@ -80,7 +80,7 @@ services:
 
     env_file:
     - env/postgres
-    - env/redis
+    - env/valkey
     - env/netbox
     environment:
       DOCKER_UID: ${USER_ID:?}
