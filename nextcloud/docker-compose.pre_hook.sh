@@ -7,7 +7,7 @@ DATA_DIR="$SELF_DIR/data"
 
 mkdir -p "$DATA_DIR/fulltextsearch/usr/share/elasticsearch/data" \
          "$DATA_DIR/mariadb/var/lib/mysql" \
-         "$DATA_DIR/redis/data" \
+         "$DATA_DIR/valkey/data" \
          "$DATA_DIR/nextcloud/crontabs" \
          "$DATA_DIR/nextcloud/data" \
          "$DATA_DIR/nextcloud/var/www/html" \

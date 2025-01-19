@@ -1,105 +1,5 @@
 # Nextcloud
 
-<table>
-  <thead>
-    <tr>
-      <th colspan='4' align='center'>╭── &nbsp; Composition &nbsp; &nbsp; \ &nbsp; &nbsp; Supported Archs &nbsp; ─── </th>
-      <th align='center'><sub>amd64</sub></th>
-      <th align='center'><sub>386</sub></th>
-      <th align='center'><sub>arm/v6</sub></th>
-      <th align='center'><sub>arm/v7</sub></th>
-      <th align='center'><sub>arm64</sub></th>
-      <th align='center'><sub>ppc64le</sub></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>
-        <a href='https://nextcloud.com/'>Nextcloud</a>
-        <br>
-        <sub>:443/nextcloud</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/workflow/status/padhi-homelab/services/Docker%20Compose%20Test%20(Nextcloud)?logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B <br> B <br> B <br> B
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/mariadb'>
-          <sub>mariadb</sub>
-        </a>
-        <a href='https://hub.docker.com/_/redis'>
-          <sub>redis</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/nextcloud'>
-          <sub>nextcloud</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/_/nextcloud'>
-          <sub>cron</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>10.9.3</sub></code>
-        <br>
-        <code><sub>7.0.5</sub></code>
-        <br>
-        <code><sub>30.0.1-core</sub></code>
-        <br>
-        <code><sub>30.0.1-core</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-## Exposure
-
-- Ports:
-  - `80` ; NOT exposed to host
-
-- Reverse Proxy
-  - `traefik` ; dynamic routing via docker labels
-    - Entrypoint: `SERVER_WAN_HTTPS_PORT` (see: [static.global.env](../static.global.env))
-    - Subfolder: `/nextcloud`
-
 
 ## Bug Fixes
 
@@ -115,6 +15,7 @@ Implemented solution proposed in [comment-1213540687](https://github.com/nextclo
 
 Implemented solution proposed in [comment-1308141561](https://github.com/nextcloud/docker/issues/1740#issuecomment-1308141561).
 
+
 ## Enhancements
 
 ### Security
@@ -127,7 +28,7 @@ Implemented solution proposed in [comment-1308141561](https://github.com/nextclo
 
 ### Usability
 
-1. Proper [carddav and caldav redirection](docker-compose.labels.yml#L8-L10)
+1. Proper [carddav and caldav redirection](docker-compose.labels.yml)
    with subfolder in Traefik
 
 2. Ability to edit crontab file (`data/nextcloud/crontabs/user`, generated after first run)

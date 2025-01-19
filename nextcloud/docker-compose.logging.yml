@@ -4,7 +4,7 @@ services:
       options:
         max-size: "1m"
         max-file: "1"
-  redis:
+  valkey:
     logging:
       options:
         max-size: "1m"

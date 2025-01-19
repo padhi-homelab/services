@@ -38,13 +38,13 @@ services:
       interval: 15s
       start_period: 30s
 
-  redis:
-    hostname: redis
-    image: redis:${REDIS_VERSION:?}
+  valkey:
+    hostname: valkey
+    image: valkey/valkey:${VALKEY_VERSION:?}
     restart: unless-stopped
 
     command: |-
-      sh -c 'exec redis-server --requirepass "$${REDIS_HOST_PASSWORD}"'
+      sh -c 'exec valkey-server --requirepass "$${REDIS_HOST_PASSWORD}"'
 
     security_opt:
     # NOTE: Do NOT add a [space] before `true` below.
@@ -54,15 +54,15 @@ services:
     networks:
     - default
     volumes:
-    - ./data/redis/data:/data:rw
+    - ./data/valkey/data:/data:rw
 
     env_file:
-    - env/redis
+    - env/valkey
     environment:
       TZ: ${TZ:?}
 
     healthcheck:
-      test: "redis-cli ping"
+      test: '[ $$(valkey-cli --pass "$${REDIS_HOST_PASSWORD}" ping) = ''PONG'' ]'
       interval: 5s
       start_period: 10s
 
@@ -141,7 +141,7 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
       fulltextsearch:
         condition: service_healthy
@@ -164,7 +164,7 @@ services:
 
     env_file:
     - env/mariadb
-    - env/redis
+    - env/valkey
     - env/nextcloud
     environment:
       TZ: ${TZ:?}
@@ -202,7 +202,7 @@ services:
 
     env_file:
     - env/mariadb
-    - env/redis
+    - env/valkey
     - env/nextcloud
     environment:
       TZ: ${TZ:?}

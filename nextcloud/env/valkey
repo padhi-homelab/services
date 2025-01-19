@@ -1,0 +1,2 @@
+# FIXME: Nextcloud config scripts use this env var name.
+REDIS_HOST_PASSWORD: 'nextcloud_password'
