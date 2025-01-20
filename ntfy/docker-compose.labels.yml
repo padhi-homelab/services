@@ -1,0 +1,10 @@
+services:
+  ntfy:
+    labels:
+      traefik.enable: true
+      #
+      traefik.http.routers.ntfy-wan.rule: Host(`${SERVER_WAN_FQDN:?}`) && !( PathPrefix(`/docs`) || PathPrefix(`/static`) || PathPrefix(`/${NTFY_BASE_PATH:?}`) )
+      traefik.http.routers.ntfy-wan.entryPoints: wan-https
+      #
+      traefik.http.routers.ntfy-lan.rule: Host(`${SERVER_LAN_FQDN:?}`)
+      traefik.http.routers.ntfy-lan.entryPoints: lan-https-a

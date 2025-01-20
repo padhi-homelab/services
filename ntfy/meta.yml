@@ -1,0 +1,9 @@
+messages:
+  up:
+    post:
+    - >-
+      ${_THIS_COMPOSITION_} UI may now be accessed on
+      ${_LINK_FONT_}http://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_PORT_A}/${NTFY_BASE_PATH}${_RESET_FONT_}
+
+pre_reqs:
+- traefik

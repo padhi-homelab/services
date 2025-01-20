@@ -1,0 +1,42 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  ntfy:
+    hostname: ntfy
+    image: binwiederhier/ntfy:${NTFY_VERSION:?}
+    restart: unless-stopped
+
+    command: serve
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: "${USER_ID}:${GROUP_ID}"
+
+    networks:
+    - proxy
+    volumes:
+    - ./data/ntfy/etc/ntfy:/etc/ntfy
+    - ./data/ntfy/var/cache/ntfy:/var/cache/ntfy
+    - ./data/ntfy/var/lib/ntfy:/var/lib/ntfy
+
+    environment:
+      NTFY_BASE_URL: "https://${SERVER_WAN_FQDN:?}:${SERVER_WAN_HTTPS_PORT:?}"
+      NTFY_ATTACHMENT_CACHE_DIR: /var/lib/ntfy/attachments
+      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
+      NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_BEHIND_PROXY: true
+      NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
+      NTFY_ENABLE_SIGNUP: false
+      NTFY_ENABLE_LOGIN: true
+      NTFY_WEB_ROOT: "/${NTFY_BASE_PATH}"
+      TZ: ${TZ:?}
+
+    healthcheck:
+        test: [ "CMD-SHELL", "wget -q --tries=1 http://localhost:80/v1/health -O - | grep -Eo '\"healthy\"\\s*:\\s*true' || exit 1" ]
+        interval: 30s
+        timeout: 5s
+        retries: 3
+        start_period: 60s

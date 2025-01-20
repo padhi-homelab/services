@@ -514,7 +514,6 @@ for optionally customizing compositions via _overrides_.
           <sub>fulltextsearch</sub>
         </a>
         <br>
-        <br>
         <a href='https://hub.docker.com/repository/docker/nextcloud/aio-imaginary'>
           <sub>imaginary</sub>
         </a>
@@ -570,6 +569,38 @@ for optionally customizing compositions via _overrides_.
         <br>
         :heavy_multiplication_x:
         <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://ntfy.sh/'>ntfy</a>
+        <br>
+        <sub>:443, :4443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Ntfy%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_ntfy.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/binwiederhier/ntfy'>
+          <sub>ntfy</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>v2.11.0</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
         :heavy_multiplication_x:
       </td>
     </tr>
