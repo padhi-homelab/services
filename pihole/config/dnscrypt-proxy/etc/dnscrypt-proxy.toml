@@ -7,28 +7,25 @@ ipv4_servers = true
 ipv6_servers = false
 dnscrypt_servers = true
 doh_servers = true
+odoh_servers = false
 
-require_dnssec = false
+require_dnssec = true
 require_nolog = true
 require_nofilter = true
 
 disabled_server_names = []
 
 force_tcp = false
+http3 = false
 
 timeout = 4096
 keepalive = 30
 
-lb_strategy = 'ph'
+lb_strategy = 'p2'
 lb_estimator = true
 
 log_level = 2
 log_file = '/dev/stdout'
-# log_file = '/var/log/dnscrypt-proxy.log'
-# use_syslog = true
-# log_files_max_size = 10
-# log_files_max_age = 7
-# log_files_max_backups = 1
 
 cert_refresh_delay = 240
 
@@ -42,14 +39,14 @@ block_ipv6 = true
 block_unqualified = true
 block_undelegated = true
 
-reject_ttl = 600
+reject_ttl = 60
 
 cache = true
 cache_size = 4096
 cache_min_ttl = 2400
 cache_max_ttl = 86400
-cache_neg_min_ttl = 60
-cache_neg_max_ttl = 600
+cache_neg_min_ttl = 30
+cache_neg_max_ttl = 300
 
 
 [sources]
@@ -59,7 +56,7 @@ cache_neg_max_ttl = 600
   [sources.'fast-public-resolvers']
     urls = ['https://raw.githubusercontent.com/padhi-homelab/services/master/pihole/extra/dnscrypt-proxy/resolvers.md']
     cache_file = 'fast-public-resolvers.md'
-    minisign_key = 'RWTlA9afb9LeoqUvzxWmOE2NOOLngZFDsegzVhadYhfX7GtxVo2ZlUK3'
+    minisign_key = 'RWSBkxsy0yTPu4nZqV3A629dKOsPMygTmW1ipw8XUPteuEaw4klYfBGd'
     prefix = 'fast-'
 
   ## Default source list from https://github.com/DNSCrypt/dnscrypt-resolvers
@@ -90,7 +87,7 @@ cache_neg_max_ttl = 600
 
 [broken_implementations]
 
-fragments_blocked = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'quad9-dnscrypt-ip4-filter-pri', 'quad9-dnscrypt-ip4-nofilter-pri', 'quad9-dnscrypt-ip6-filter-pri', 'quad9-dnscrypt-ip6-nofilter-pri', 'cleanbrowsing-adult', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-security']
+fragments_blocked = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'cisco-sandbox', 'cleanbrowsing-adult', 'cleanbrowsing-adult-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-security', 'cleanbrowsing-security-ipv6']
 
 
 [anonymized_dns]
