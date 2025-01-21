@@ -23,15 +23,18 @@ services:
     - ./data/ntfy/var/lib/ntfy:/var/lib/ntfy
 
     environment:
-      NTFY_BASE_URL: "https://${SERVER_WAN_FQDN:?}:${SERVER_WAN_HTTPS_PORT:?}"
       NTFY_ATTACHMENT_CACHE_DIR: /var/lib/ntfy/attachments
-      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
       NTFY_AUTH_DEFAULT_ACCESS: deny-all
+      NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
+      NTFY_BASE_URL: "https://${SERVER_WAN_FQDN:?}:${SERVER_WAN_HTTPS_PORT:?}"
       NTFY_BEHIND_PROXY: true
       NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
-      NTFY_ENABLE_SIGNUP: false
       NTFY_ENABLE_LOGIN: true
+      NTFY_ENABLE_SIGNUP: false
       NTFY_WEB_ROOT: "/${NTFY_BASE_PATH}"
+      NTFY_SMTP_SERVER_ADDR_PREFIX: "ntfy-"
+      NTFY_SMTP_SERVER_DOMAIN: "${SERVER_WAN_FQDN:?}"
+      NTFY_SMTP_SERVER_LISTEN: ":${NTFY_SMTP_LISTEN_PORT:?}"
       TZ: ${TZ:?}
 
     healthcheck:
