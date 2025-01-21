@@ -1,0 +1,23 @@
+networks:
+  proxy:
+    external: true
+
+services:
+  uptime:
+    hostname: uptime
+    image: louislam/uptime-kuma:${UPTIME_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+
+    networks:
+    - proxy
+    volumes:
+    - ./data/uptime/app/data:/app/data
+
+    environment:
+      PUID: ${USER_ID:?}
+      PGID: ${GROUP_ID:?}
+      TZ: ${TZ:?}

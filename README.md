@@ -903,6 +903,38 @@ for optionally customizing compositions via _overrides_.
         :heavy_multiplication_x:
       </td>
     </tr>
+    <tr>
+      <th>
+        <a href='https://uptime.kuma.pet/'>Uptime</a>
+        <br>
+        <sub>:4443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Uptime%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_uptime.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/louislam/uptime-kuma'>
+          <sub>uptime</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>1.23.16..ne</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
   </tbody>
 </table>
 

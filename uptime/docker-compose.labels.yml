@@ -1,0 +1,8 @@
+services:
+  uptime:
+    labels:
+      traefik.enable: true
+      #traefik.http.services.uptime.loadBalancer.server.port: 3001
+      #
+      traefik.http.routers.uptime.rule: Host(`${SERVER_LAN_FQDN:?}`)
+      traefik.http.routers.uptime.entryPoints: lan-https-a
