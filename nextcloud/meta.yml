@@ -5,5 +5,5 @@ messages:
       ${_THIS_COMPOSITION_} may now be accessed on
       ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${NEXTCLOUD_BASE_PATH}/${_RESET_FONT_}
 
-pre_reqs:
+related:
 - traefik

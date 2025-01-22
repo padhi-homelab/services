@@ -5,5 +5,5 @@ messages:
       ${_THIS_COMPOSITION_} is now listening on
       ${_LINK_FONT_}http://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTP_PORT_B}/${_RESET_FONT_}
 
-pre_reqs:
+related:
 - traefik

@@ -29,8 +29,8 @@ EXIT_CODE_POST_HOOK_SCRIPT_ERROR=120
 
 FLAG_FAIL_FAST=""
 FLAG_SKIP_OVERRIDES=""
-FLAG_SKIP_PREREQS=""
-FLAG_SKIP_REGENERATE=""
+FLAG_SKIP_RELATED=""
+FLAG_SKIP_GENERATE=""
 
 FRAGMENT_DEVICES=""
 FRAGMENT_HOOKS=""
@@ -75,21 +75,14 @@ __create_external_networks () {
   done
 }
 
-__do_prereqs () {
-  [ "$FLAG_SKIP_PREREQS" != yes ] || return 0
-
-  local verb="$1"
-  local ensure_running="${2:-no}"
-  while IFS= read -r prereq_comp_dir ; do
-    if [ "$verb" = status ] ; then
-      if ! __CALL_SELF__ status -F "$prereq_comp_dir" ; then
-        [ "$ensure_running" = yes ] || return 1
-        __CALL_SELF__ up -F "$prereq_comp_dir" || return 1
-      fi
-    else
-      __CALL_SELF__ "$verb" -F "$prereq_comp_dir" || return 1
-    fi
-  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .pre_reqs | .[]" meta.yml 2>/dev/null )
+__do_ () {
+  local target="$1"
+  local verb="$2"
+  while IFS= read -r target_comp ; do
+    # NOTE: Use `--skip-related` to avoid potential circular dependency:
+    #       comp --[ pre_reqs ]--> target_comp --[ related ]--> comp
+    __CALL_SELF__ "$verb" --fail-fast --skip-related "$target_comp" || return 1
+  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .$target | .[]" meta.yml 2>/dev/null )
 }
 
 __error () {
@@ -97,7 +90,7 @@ __error () {
 }
 
 __gen_env () {
-  [ ! -f .env ] || [ "$FLAG_SKIP_REGENERATE" != yes ] || return 0
+  [ ! -f .env ] || [ "$FLAG_SKIP_GENERATE" != yes ] || return 0
   rm -rf .env
 
   printf "[*] Generating '.env':"
@@ -133,7 +126,7 @@ __gen_templates () {
     local generated_file="./generated${template_file#./extra}"
     mkdir -p "$(dirname "$generated_file")"
     generated_file="${generated_file/.template/}"
-    if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_REGENERATE" != yes ] ; then
+    if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_GENERATE" != yes ] ; then
       "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
         || return 1
     fi
@@ -263,11 +256,11 @@ __will_invoke_compose () {
 }
 
 __will_do_pre_reqs () {
-  [ "$FLAG_SKIP_PREREQS" != yes ] && {
-    [ "$_CUR_VERB_" = overrides ] || [ "$_CUR_VERB_" = pull ] \
-    || [ "$_CUR_VERB_" = status ] || [ "$_CUR_VERB_" = up ] \
-    || [ "$_CUR_VERB_" = validate ] ;
-  }
+  [ "$_CUR_VERB_" != clean ] && [ "$_CUR_VERB_" != down ]
+}
+
+__will_do_related () {
+  [ "$FLAG_SKIP_RELATED" != yes ] && __will_do_pre_reqs
 }
 
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
@@ -386,10 +379,10 @@ Verbs: (short forms within <>)
   <v>alidate     Validate a composition
 
 Flags:
-  [-P | --skip-prereqs]      Ignore verifying/starting prerequisite compositions
   [-F | --fail-fast]         Fail on the first verb failure
+  [-G | --skip-generate]     Use existing '.env' and 'generated/'
   [-O | --skip-overrides]    Ignore overrides in scripts, environments, flags etc.
-  [-R | --skip-regenerate]   Use existing '.env' and 'generated/'
+  [-R | --skip-related]      Ignore verifying/starting sibling compositions
 
 Fragments:            { use | ignore }
   [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
@@ -444,9 +437,9 @@ for opt in "$@" ; do
   shift
   case "$opt" in
     --fail-fast)       set -- "$@" "-F" ;;
-    --skip-prereqs)    set -- "$@" "-P" ;;
+    --skip-generate)   set -- "$@" "-G" ;;
     --skip-overrides)  set -- "$@" "-O" ;;
-    --skip-regenerate) set -- "$@" "-R" ;;
+    --skip-related)    set -- "$@" "-R" ;;
 
     --devices)         set -- "$@" "-d" ;;
     --hooks)           set -- "$@" "-h" ;;
@@ -476,12 +469,12 @@ validate_and_set_fragment () {
 }
 
 OPTIND=1
-while getopts ':FOPRd:g:h:l:p:' OPTION ; do
+while getopts ':FGORd:g:h:l:p:' OPTION ; do
   case "$OPTION" in
     F ) FLAG_FAIL_FAST=yes ;;
+    G ) FLAG_SKIP_GENERATE=yes ;;
     O ) FLAG_SKIP_OVERRIDES=yes ;;
-    P ) FLAG_SKIP_PREREQS=yes ;;
-    R ) FLAG_SKIP_REGENERATE=yes ;;
+    R ) FLAG_SKIP_RELATED=yes ;;
 
     d ) validate_and_set_fragment "$OPTARG" DEVICES usage ;;
     g ) validate_and_set_fragment "$OPTARG" LOGGING usage ;;
@@ -562,16 +555,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     (( ++_CUR_STAGE_ ))
     if __will_do_pre_reqs ; then
       [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
-      [ "$_CUR_VERB_" != overrides ] || __do_prereqs overrides \
-        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != pull ] || __do_prereqs pull \
-        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != status ] || __do_prereqs status \
-        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != up ] || __do_prereqs status yes \
-        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_VERB_" != validate ] || __do_prereqs validate \
-        || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      __do_ pre_reqs "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
     fi
     [ "$_CUR_VERB_" = validate ] || do_validate non_failing
 
@@ -609,6 +593,11 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
 
     [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+
+    if __will_do_related ; then
+      __do_ related "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
+    fi
 
     if __will_invoke_compose ; then
       [ "$FRAGMENT_HOOKS" != use ] || __run_hooks post \

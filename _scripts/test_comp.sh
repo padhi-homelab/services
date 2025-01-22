@@ -132,7 +132,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "status reports $TARGET_COMP_1_DISPLAY is unhealthy" \
-      "status -P $TARGET_COMP_1"
+      "status -R $TARGET_COMP_1"
 CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "Unhealthy service:" "$COMP_ERR_PATH"' \
@@ -147,7 +147,7 @@ fragments:
 EOF
 
 SETUP "bad fragment value in meta breaks $TARGET_COMP_1_DISPLAY" \
-      "overrides -P $TARGET_COMP_1"
+      "overrides -R $TARGET_COMP_1"
 CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/meta.override.yml" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
       exit_on_failure
@@ -161,7 +161,7 @@ fragments:
 EOF
 
 SETUP "querying the overrides list for $TARGET_COMP_1_DISPLAY otherwise passes" \
-      "overrides -P $TARGET_COMP_1"
+      "overrides -R $TARGET_COMP_1"
 CHECK $'grep -qs "Executing overrides on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "\[L\] $TARGET_COMP_1/meta.override.yml" "$COMP_OUT_PATH"' \
@@ -171,7 +171,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
       exit_on_failure
 
 SETUP "$TARGET_COMP_1_DISPLAY can be started without prerequisites" \
-      "up -P $TARGET_COMP_1"
+      "up -R $TARGET_COMP_1"
 CHECK $'grep -qs "Executing up on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
@@ -192,7 +192,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
 _WAIT 30s "$TARGET_COMP_1_DISPLAY to start up and emit health status"
 
 SETUP "that status reports $TARGET_COMP_1_DISPLAY is healthy" \
-      "status -P $TARGET_COMP_1"
+      "status -R $TARGET_COMP_1"
 CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "$TARGET_COMP_1 is healthy" "$COMP_OUT_PATH"' \
@@ -240,7 +240,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 _INIT tiny_httpd
 
 SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY may be started with different fragments" \
-      "up -P $TARGET_COMP_1 $TARGET_COMP_2"
+      "up -R $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -lPqsz "Executing up on $TARGET_COMP_1.*\\n.*Disabled fragments: DEVICES \(conf\)" "$COMP_OUT_PATH"' \
       "Info with disabled fragments at beginning of $TARGET_COMP_1_DISPLAY execution" \
       exit_on_failure
@@ -257,7 +257,7 @@ fragments:
 EOF
 
 SETUP "a bad fragment breaks $TARGET_COMP_1_DISPLAY but $TARGET_COMP_2_DISPLAY still works without fragments" \
-      "down -P $TARGET_COMP_1 $TARGET_COMP_2"
+      "down -R $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -qs "Invalid value \'nyet\' for \'DEVICES\' in $TARGET_COMP_1/meta.override.yml" "$COMP_ERR_PATH"' \
       "Configuration error reported for $TARGET_COMP_1_DISPLAY" \
       exit_on_failure
@@ -272,7 +272,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_FRAGMENTS_ERROR ]' \
       exit_on_failure
 
 SETUP "$TARGET_COMP_1_DISPLAY & $TARGET_COMP_2_DISPLAY can both be stopped when ignoring overrides" \
-      "down -P -O $TARGET_COMP_1 $TARGET_COMP_2"
+      "down -R -O $TARGET_COMP_1 $TARGET_COMP_2"
 CHECK $'grep -Pqs "Container $TARGET_COMP_1.* Removed" "$COMP_ERR_PATH"' \
       "Stopped $TARGET_COMP_1_DISPLAY successfully" \
       exit_on_failure
@@ -286,7 +286,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 _INIT tang _.test.very_ .bad.name_
 
 SETUP "starting $TARGET_COMP_3_DISPLAY works" \
-      "up -P $TARGET_COMP_3"
+      "up -R $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
       "Name validation error due to '.'"
 CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \
@@ -298,7 +298,7 @@ CHECK $'[ $COMP_EXIT_CODE -eq 0 ]' \
 _WAIT 30s "$TARGET_COMP_3_DISPLAY to start up and emit health status"
 
 SETUP "status reports $TARGET_COMP_3_DISPLAY is healthy" \
-      "status -P $TARGET_COMP_3"
+      "status -R $TARGET_COMP_3"
 CHECK $'grep -qs "drops all \'\.\' from project name" "$COMP_ERR_PATH"' \
       "Name validation error due to '.'"
 CHECK $'grep -qs "drops leading \'_\' from project name" "$COMP_ERR_PATH"' \

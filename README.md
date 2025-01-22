@@ -984,8 +984,12 @@ All specializations should be added to `*.override.*` files.
 
 - within each composition:
   - `meta.override.yml` may:
-    - specify other compositions as prerequisites
+    - specify other compositions as _prerequisites_
+      - see [`airdcpp/meta.yml`](airdcpp/meta.yml) for an example
+      - these are started and validated before starting the composition
+    - specify other compositions as _related_
       - see [`tang/meta.yml`](tang/meta.yml) for an example
+      - these are optionally started and validated after starting the composition
     - contain overrides for the `{devices|labels|logging|ports}` fragments  
       (flags used on the command-line will further override this)
       - see [`.github/workflows/config/meta.override.yml`](.github/workflows/config/meta.override.yml) for an example
