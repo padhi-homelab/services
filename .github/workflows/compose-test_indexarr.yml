@@ -25,10 +25,10 @@ jobs:
       -
         name: "Service: Setup"
         run: |
-          mkdir -p "${TARGET_SERVICE}/data/openvpn"
-          cp -r .github/workflows/config/vpn_alt "${TARGET_SERVICE}/data/openvpn/config"
+          mkdir -p "openvpn/data/vpn"
+          cp -r .github/workflows/config/vpn "openvpn/data/vpn/config"
+          cp .github/workflows/config/meta.override.yml "openvpn/"
           cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
-          cp .github/workflows/config/meta.override.yml "traefik/"
       -
         name: "Service: Start"
         run: |
@@ -49,6 +49,9 @@ jobs:
       -
         name: "Service: Restart with Traefik"
         run: |
+          cp .github/workflows/config/meta.override.yml "traefik/"
+          cp .github/workflows/config/docker-compose.vpn-proxy-expose.yml "openvpn/docker-compose.override.yml"
+
           ./comp down,up ${TARGET_SERVICE}
       -
         name: "Service: Wait"

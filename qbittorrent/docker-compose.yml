@@ -1,29 +1,4 @@
-networks:
-  proxy:
-    external: true
-
 services:
-  openvpn:
-    hostname: openvpn
-    image: padhihomelab/openvpn-client:${OPENVPN_CLIENT_VERSION:?}
-
-    cap_add:
-    - NET_ADMIN
-    security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
-    - no-new-privileges:true
-
-    networks:
-    - proxy
-    volumes:
-    - ./data/openvpn/config:/config:ro
-
-    environment:
-      CONFIG_FILE_NAME: 'client.conf'
-      FORWARDED_PORTS: ''
-      PROXY_USERNAME: 'user'
-      PROXY_PASSWORD: 'pass'
-
   qbittorrent:
     image: padhihomelab/qbittorrent-nox:${QBITTORRENT_VERSION:?}
     restart: unless-stopped
@@ -33,11 +8,7 @@ services:
     - no-new-privileges:true
     tty: true
 
-    depends_on:
-      openvpn:
-        condition: service_healthy
-
-    network_mode: service:openvpn
+    network_mode: container:vpn
     volumes:
     - ./data/qbittorrent/config:/config:rw
     - ./data/qbittorrent/data:/data:rw

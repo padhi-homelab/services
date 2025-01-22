@@ -1,0 +1,35 @@
+name: "Docker Compose Test (OpenVPN)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: openvpn
+  TARGET_TIMEOUT: 30
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ ubuntu-24.04 , ubuntu-24.04-arm ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v4
+      -
+        name: "Service: Setup"
+        run: |
+          mkdir -p "openvpn/data/vpn"
+          cp -r .github/workflows/config/vpn "openvpn/data/vpn/config"
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
+      -
+        name: "Service: Start"
+        run: |
+          ./comp up --labels ignore ${TARGET_SERVICE}
+          cd ${TARGET_SERVICE} ; cat .env

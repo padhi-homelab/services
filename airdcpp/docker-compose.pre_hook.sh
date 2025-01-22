@@ -7,5 +7,4 @@ DATA_DIR="$SELF_DIR/data"
 
 mkdir -p "$DATA_DIR/airdcpp/config" \
          "$DATA_DIR/airdcpp/downloads" \
-         "$DATA_DIR/airdcpp/shared" \
-         "$DATA_DIR/openvpn/config"
+         "$DATA_DIR/airdcpp/shared"

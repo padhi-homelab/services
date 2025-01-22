@@ -90,17 +90,11 @@ for optionally customizing compositions via _overrides_.
         A <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
-          <sub>openvpn&#8209;client</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/airdcpp/'>
           <sub>airdcpp</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.12</sub></code>
-        <br>
         <code><sub>2.13.2</sub></code>
       </td>
       <td align='center'>
@@ -113,8 +107,6 @@ for optionally customizing compositions via _overrides_.
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
     </tr>
@@ -258,10 +250,6 @@ for optionally customizing compositions via _overrides_.
         A <br> B <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
-          <sub>openvpn&#8209;client</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/flaresolverr/flaresolverr/'>
           <sub>solvarr</sub>
         </a>
@@ -271,8 +259,6 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.12</sub></code>
-        <br>
         <code><sub>v3.3.21</sub></code>
         <br>
         <code><sub>0.22.1261</sub></code>
@@ -287,8 +273,6 @@ for optionally customizing compositions via _overrides_.
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
@@ -606,6 +590,38 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
+        <a href='https://openvpn.net/'>OpenVPN</a>
+        <br>
+        <sub>:5432</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28OpenVPN%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_openvpn.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A <br> A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
+          <sub>vpn</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.6.12</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
         <sub>:53, :9443/pihole</sub>
@@ -648,7 +664,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://www.qbittorrent.org/'>qBittorrent</a>
         <br>
-        <sub>:5432, :443/qbittorrent</sub>
+        <sub>:443/qbittorrent</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28qBittorrent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_qbittorrent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -656,17 +672,11 @@ for optionally customizing compositions via _overrides_.
         A <br> A
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
-          <sub>openvpn&#8209;client</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/r/padhihomelab/qbittorrent-nox/'>
           <sub>qbittorrent&#8209;nox</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.12</sub></code>
-        <br>
         <code><sub>5.0.1</sub></code>
       </td>
       <td align='center'>
@@ -679,8 +689,6 @@ for optionally customizing compositions via _overrides_.
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
         :heavy_multiplication_x:
       </td>
     </tr>

@@ -1,4 +1,0 @@
-services:
-  openvpn:
-    ports:
-    - ${SERVER_LAN_BINDING_IP:?}:35432:5432 # SOCKS proxy

@@ -1,6 +1,6 @@
 services:
-  qbittorrent:
+  vpn:
     logging:
       options:
-        max-size: "4m"
+        max-size: "1m"
         max-file: "1"

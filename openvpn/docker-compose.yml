@@ -1,0 +1,21 @@
+services:
+  vpn:
+    hostname: vpn
+    container_name: vpn
+    image: padhihomelab/openvpn-client:${OPENVPN_CLIENT_VERSION:?}
+    restart: unless-stopped
+
+    cap_add:
+    - NET_ADMIN
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+
+    volumes:
+    - ./data/vpn/config:/config:ro
+
+    environment:
+      CONFIG_FILE_NAME: 'client.conf'
+      FORWARDED_PORTS: ''
+      PROXY_USERNAME: 'user'
+      PROXY_PASSWORD: 'pass'

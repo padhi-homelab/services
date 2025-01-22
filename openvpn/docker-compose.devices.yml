@@ -1,4 +1,4 @@
 services:
-  openvpn:
+  vpn:
     devices:
     - /dev/net/tun:/dev/net/tun

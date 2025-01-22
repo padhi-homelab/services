@@ -1,30 +1,4 @@
-networks:
-  proxy:
-    external: true
-
 services:
-  openvpn:
-    hostname: openvpn
-    image: padhihomelab/openvpn-client:${OPENVPN_CLIENT_VERSION:?}
-    restart: unless-stopped
-
-    cap_add:
-    - NET_ADMIN
-    security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
-    - no-new-privileges:true
-
-    networks:
-    - proxy
-    volumes:
-    - ./data/openvpn/config:/config:ro
-
-    environment:
-      CONFIG_FILE_NAME: 'client.conf'
-      FORWARDED_PORTS: ''
-      PROXY_USERNAME: 'user'
-      PROXY_PASSWORD: 'pass'
-
   solvarr:
     image: flaresolverr/flaresolverr:${FLARESOLVERR_VERSION:?}
     restart: unless-stopped
@@ -33,11 +7,7 @@ services:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
-    depends_on:
-      openvpn:
-        condition: service_healthy
-
-    network_mode: service:openvpn
+    network_mode: container:vpn
     volumes:
     - ./config/solvarr/healthcheck.sh:/healthcheck.sh:ro
 
@@ -60,13 +30,7 @@ services:
     # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
-    depends_on:
-      openvpn:
-        condition: service_healthy
-      solvarr:
-        condition: service_healthy
-
-    network_mode: service:openvpn
+    network_mode: container:vpn
     volumes:
     - ./data/jackett/config:/config:rw
     - ./data/jackett/downloads:/downloads:rw
