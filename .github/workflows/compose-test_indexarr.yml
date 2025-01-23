@@ -50,8 +50,6 @@ jobs:
         name: "Service: Restart with Traefik"
         run: |
           cp .github/workflows/config/meta.override.yml "traefik/"
-          cp .github/workflows/config/docker-compose.vpn-proxy-expose.yml "openvpn/docker-compose.override.yml"
-
           ./comp down,up ${TARGET_SERVICE}
       -
         name: "Service: Wait"

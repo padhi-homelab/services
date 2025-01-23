@@ -1,8 +1,0 @@
-networks:
-  proxy:
-    external: true
-
-services:
-  vpn:
-    networks:
-    - proxy

@@ -87,7 +87,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28AirDC%2B%2B%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_airdcpp.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> B
+        B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/airdcpp/'>
@@ -247,7 +247,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_indexarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> B <br> B
+        B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/flaresolverr/flaresolverr/'>
@@ -597,7 +597,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28OpenVPN%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_openvpn.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> A
+        A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/openvpn-client/'>
@@ -669,7 +669,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28qBittorrent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_qbittorrent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        A <br> A
+        A
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/qbittorrent-nox/'>
