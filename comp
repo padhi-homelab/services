@@ -9,6 +9,7 @@ SCRIPTS_DIR="$SELF_DIR/_scripts"
 
 source "$SCRIPTS_DIR/colors.sh"
 
+COMP_SELF_CALL_REASON="${COMP_SELF_CALL_REASON:-}"
 COMP_SELF_CALL_DEPTH="${COMP_SELF_CALL_DEPTH:-0}"
 
 DOCKER_CMD=docker
@@ -24,7 +25,7 @@ EXIT_CODE_COMPOSITION_NOT_FOUND=220
 
 EXIT_CODE_SETUP_ERROR=10
 EXIT_CODE_PRE_HOOK_SCRIPT_ERROR=100
-EXIT_CODE_SIMPLE_VERB_FAILURE=110
+EXIT_CODE_VERB_FAILURE=110
 EXIT_CODE_POST_HOOK_SCRIPT_ERROR=120
 
 FLAG_FAIL_FAST=""
@@ -54,7 +55,10 @@ __append_env_from () {
 
 __CALL_SELF__ () {
   pushd "$SELF_DIR" > /dev/null
-  COMP_SELF_CALL_DEPTH="$(( COMP_SELF_CALL_DEPTH + 1 ))" bash "$0" "$@"
+  local reason="$1" ; shift
+  COMP_SELF_CALL_REASON="$reason" \
+    COMP_SELF_CALL_DEPTH="$(( COMP_SELF_CALL_DEPTH + 1 ))" \
+    bash "$0" "$@"
   local exit_code=$?
   popd > /dev/null
   return $exit_code
@@ -76,13 +80,13 @@ __create_external_networks () {
 }
 
 __do_ () {
-  local target="$1"
+  local reason="$1"
   local verb="$2"
   while IFS= read -r target_comp ; do
     # NOTE: Use `--skip-related` to avoid potential circular dependency:
-    #       comp --[ pre_reqs ]--> target_comp --[ related ]--> comp
-    __CALL_SELF__ "$verb" --fail-fast --skip-related "$target_comp" || return 1
-  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .$target | .[]" meta.yml 2>/dev/null )
+    #       comp --[ pre_req ]--> target_comp --[ related ]--> comp
+    __CALL_SELF__ "$reason" "$verb" --fail-fast --skip-related "$target_comp" || return 1
+  done < <( "$YQ_CMD" "${_CUR_YQ_META_QUERY_PFX_} .$reason | .[]" meta.yml 2>/dev/null )
 }
 
 __error () {
@@ -255,12 +259,12 @@ __will_invoke_compose () {
   [ "$_CUR_VERB_" = down ] || [ "$_CUR_VERB_" = pull ] || [ "$_CUR_VERB_" = up ]
 }
 
-__will_do_pre_reqs () {
+__will_do_pre_req () {
   [ "$_CUR_VERB_" != clean ] && [ "$_CUR_VERB_" != down ]
 }
 
 __will_do_related () {
-  [ "$FLAG_SKIP_RELATED" != yes ] && __will_do_pre_reqs
+  [ "$FLAG_SKIP_RELATED" != yes ] && __will_do_pre_req
 }
 
 # # # # # # # # # # # # # # # # # # #     TOP-LEVEL VERBS     # # # # # # # # # # # # # # # # # # #
@@ -553,9 +557,9 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
 
   for _CUR_VERB_ in $VERBS ; do
     (( ++_CUR_STAGE_ ))
-    if __will_do_pre_reqs ; then
+    if __will_do_pre_req ; then
       [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
-      __do_ pre_reqs "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+      __do_ pre_req "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_VERB_FAILURE || continue
     fi
     [ "$_CUR_VERB_" = validate ] || do_validate non_failing
 
@@ -566,7 +570,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
       _CUR_VERB_PREFIX_="${_fg_white_}${_bg_black_}${_bold_} ${_CUR_VERB_PREFIX_}"
     fi
     echo -ne "\n$_CUR_VERB_PREFIX_ ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
-    [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] || printf 'pre-req '
+    [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] || printf '%s ' "$COMP_SELF_CALL_REASON"
     echo "${_bold_}$_CUR_COMP_${_normal_} ... "
     [ ${#_DISABLED_FRAGMENTS_[@]} -eq 0 ] || echo "[o] Disabled fragments: ${_DISABLED_FRAGMENTS_[*]}"
 
@@ -592,11 +596,10 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ "$_CUR_VERB_" != validate ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is valid!"
     [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
 
-    [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
+    [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_VERB_FAILURE || continue
 
     if __will_do_related ; then
-      __do_ related "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_SIMPLE_VERB_FAILURE || continue
-      [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
+      { __do_ related "$_CUR_VERB_" || __maybe_fail_fast $EXIT_CODE_VERB_FAILURE || continue ; } ; echo
     fi
 
     if __will_invoke_compose ; then

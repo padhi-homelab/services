@@ -1,2 +1,2 @@
-pre_reqs:
+pre_req:
 - docker_sock

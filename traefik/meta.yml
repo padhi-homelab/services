@@ -5,5 +5,5 @@ messages:
       ${_THIS_COMPOSITION_} dashboard may now be accessed on
       ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:34443/dashboard/${_RESET_FONT_}
 
-pre_reqs:
+pre_req:
 - docker_sock

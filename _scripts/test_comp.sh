@@ -137,8 +137,8 @@ CHECK $'grep -qs "Executing status on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
       "Info at beginning of execution"
 CHECK $'grep -qs "Unhealthy service:" "$COMP_ERR_PATH"' \
       "Error about unhealthy service on stderr"
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
-      "EXIT_CODE_SIMPLE_VERB_FAILURE" \
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_VERB_FAILURE ]' \
+      "EXIT_CODE_VERB_FAILURE" \
       exit_on_failure
 
 cat > $TARGET_COMP_1/meta.override.yml << EOF
@@ -185,8 +185,8 @@ CHECK $'grep -qs "Executing clean on $TARGET_COMP_1" "$COMP_OUT_PATH"' \
 CHECK $'grep -qs "Cannot clean while $TARGET_COMP_1 is running" "$COMP_ERR_PATH"' \
       "Error about running composition on stderr" \
       exit_on_failure
-CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_SIMPLE_VERB_FAILURE ]' \
-      "EXIT_CODE_SIMPLE_VERB_FAILURE" \
+CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_VERB_FAILURE ]' \
+      "EXIT_CODE_VERB_FAILURE" \
       exit_on_failure
 
 _WAIT 30s "$TARGET_COMP_1_DISPLAY to start up and emit health status"
