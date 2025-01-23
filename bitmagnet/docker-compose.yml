@@ -14,6 +14,8 @@ services:
 
     env_file:
     - env/postgres
+    environment:
+      PGPORT: 55432
 
     healthcheck:
       test: "psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c 'SELECT 1'"
@@ -42,6 +44,7 @@ services:
     - env/postgres
     environment:
       POSTGRES_HOST: localhost
+      POSTGRES_PORT: 55432
       TMDB_ENABLED: false
       DHT_SERVER_PORT: 44444
       HTTP_SERVER_CORS_ALLOWED_ORIGINS: "${SERVER_LAN_FQDN:?}"
