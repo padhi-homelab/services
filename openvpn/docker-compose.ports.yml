@@ -1,4 +1,4 @@
 services:
   vpn:
     ports:
-    - ${SERVER_LAN_BINDING_IP:?}:5432:5432 # SOCKS proxy
+    - ${SERVER_LAN_BINDING_IP:?}:${OPENVPN_PROXY_PORT:?}:5432 # SOCKS proxy

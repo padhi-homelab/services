@@ -119,7 +119,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28bitmagnet%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_bitmagnet.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B
+        B <br> C
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/postgres'>
@@ -521,7 +521,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nextcloud.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B <br> C <br> B
+        B <br> B <br> C <br> C <br> B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/mariadb'>
