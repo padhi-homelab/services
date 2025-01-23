@@ -1,0 +1,8 @@
+services:
+  bitmagnet:
+    labels:
+      traefik.enable: true
+      traefik.http.services.bitmagnet.loadBalancer.server.port: 3333
+      #
+      traefik.http.routers.bitmagnet.rule: Host(`${SERVER_LAN_FQDN:?}`)
+      traefik.http.routers.bitmagnet.entryPoints: lan-https-a

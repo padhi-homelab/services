@@ -1,0 +1,11 @@
+services:
+  postgres:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  bitmagnet:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"

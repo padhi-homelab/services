@@ -112,6 +112,44 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
+        <a href='https://bitmagnet.io/'>bitmagnet</a>
+        <br>
+        <sub>:4443</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28bitmagnet%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_bitmagnet.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/postgres'>
+          <sub>postgres</sub>
+        </a>
+        <br>
+        <a href='https://github.com/bitmagnet-io/bitmagnet/pkgs/container/bitmagnet'>
+          <sub>bitmagnet</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>17.2...ne</sub></code>
+        <br>
+        <code><sub>v0.10.0....5</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://certbot.eff.org/'>Certbot</a>
         <br>
         <sub>:80</sub>

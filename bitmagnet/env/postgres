@@ -1,0 +1,3 @@
+POSTGRES_DB: 'bitmagnet'
+POSTGRES_USER: 'bm_pg_user'
+POSTGRES_PASSWORD: 'bm.pg~p4ss'

@@ -1,0 +1,69 @@
+name: "Docker Compose Test (bitmagnet)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: bitmagnet
+  TARGET_TIMEOUT: 45
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ ubuntu-24.04 , ubuntu-24.04-arm ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v4
+      -
+        name: "Service: Setup"
+        run: |
+          mkdir -p "openvpn/data/vpn"
+          cp -r .github/workflows/config/vpn "openvpn/data/vpn/config"
+          cp .github/workflows/config/meta.override.yml "openvpn/"
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
+      -
+        name: "Service: Start"
+        run: |
+          ./comp up --skip-related --labels ignore ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          cd ${TARGET_SERVICE} ; cat .env
+          sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test"
+        run: |
+          if ! ./comp status --skip-related ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker compose logs
+            exit 1
+          fi
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          cp .github/workflows/config/meta.override.yml "traefik/"
+          ./comp down,up ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          if ! ./comp status ${TARGET_SERVICE} ; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker compose logs
+            cd traefik ; docker compose logs
+            exit 1
+          fi
+          cd traefik
+          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:4443/webui/ \
+            || (docker ps ; docker compose logs ; cd ../bitmagnet ; docker compose logs ; exit 1)
