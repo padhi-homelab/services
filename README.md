@@ -318,38 +318,6 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://www.influxdata.com/'>InfluxDB</a>
-        <br>
-        <sub>:8086</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28InfluxDB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_influxdb.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/influxdb'>
-          <sub>influxdb</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>2.7.11-a...e</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://kodi.wiki/view/MySQL/Setting_up_MySQL'>Kodi.DB</a>
         <br>
         <sub>:3306</sub>
@@ -748,38 +716,6 @@ for optionally customizing compositions via _overrides_.
       </th>
       <td align='center'>
         <code><sub>git.02...c8</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://www.influxdata.com/time-series-platform/telegraf/'>Telegraf</a>
-        <br>
-        <sub>-</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Telegraf%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_telegraf.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/telegraf'>
-          <sub>telegraf</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>1.33.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

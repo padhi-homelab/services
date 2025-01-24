@@ -1,4 +1,0 @@
-services:
-  influxdb:
-    ports:
-    - ${SERVER_LAN_BINDING_IP:?}:8086:8086

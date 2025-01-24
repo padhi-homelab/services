@@ -22,6 +22,4 @@ services:
       CONTAINERS: '1'
       # For Traefik network events
       EVENTS: '1'
-      # For Telegraf monitoring
-      INFO: '1'
       TZ: ${TZ:?}
