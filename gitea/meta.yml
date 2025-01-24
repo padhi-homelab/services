@@ -3,7 +3,7 @@ messages:
     post:
     - >-
       ${_THIS_COMPOSITION_} may now be accessed on
-      ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_PORT_B}/${GITEA_BASE_PATH}/${_RESET_FONT_}
+      ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:${SERVER_WAN_HTTPS_PORT}/${GITEA_BASE_PATH}/${_RESET_FONT_}
 
 related:
 - traefik

@@ -3,6 +3,8 @@ services:
     labels:
       traefik.enable: true
       #
+      # FIXME: Serve over a basepath
+      #
       traefik.http.routers.ntfy-wan.rule: Host(`${SERVER_WAN_FQDN:?}`) && !( PathPrefix(`/docs`) || PathPrefix(`/static`) || PathPrefix(`/${NTFY_BASE_PATH:?}`) )
       traefik.http.routers.ntfy-wan.entryPoints: wan-https
       #
