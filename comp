@@ -187,10 +187,10 @@ __read_fragment () {
   if [ "${!FRAGMENT}" != use ] ; then 
     [ -z "$OVERRIDE_FRAGMENT" ] && _DISABLED_FRAGMENTS_+=("$1 (arg)") || _DISABLED_FRAGMENTS_+=("$1 (conf)")
   elif [ "$1" != HOOKS ] ; then
-    if [ -f "docker-compose.${1,,}.yml" ] ; then
-      _CUR_COMPOSE_FILES_+=( "docker-compose.${1,,}.yml" )
-      if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f "docker-compose.${1,,}.override.yml" ] ; then
-        _CUR_COMPOSE_OVERRIDE_FILES_+=( "docker-compose.${1,,}.override.yml" )
+    if [ -f "compose.${1,,}.yml" ] ; then
+      _CUR_COMPOSE_FILES_+=( "compose.${1,,}.yml" )
+      if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f "compose.${1,,}.override.yml" ] ; then
+        _CUR_COMPOSE_OVERRIDE_FILES_+=( "compose.${1,,}.override.yml" )
       fi
     fi
   fi
@@ -204,17 +204,17 @@ __run_hook () {
 __run_hooks () {
   local stage="$1"
   [ -z "${2:-}" ] || stage="$1.$2"
-  ls docker-compose."$stage"_hook*.sh &> /dev/null || return 0
+  ls compose."$stage"_hook*.sh &> /dev/null || return 0
   [ -n "${2:-}" ] && echo "[>] Running '$2' hooks for '$1' ..." \
                   || echo "[>] Running '$1' hooks ..."
 
-  [ ! -f "docker-compose.${stage}_hook.sh" ] \
-    || __run_hook "docker-compose.${stage}_hook.sh" || return 1
+  [ ! -f "compose.${stage}_hook.sh" ] \
+    || __run_hook "compose.${stage}_hook.sh" || return 1
 
   if [ "$FLAG_SKIP_OVERRIDES" != yes ] ; then
     while IFS= read -r hook_file ; do
       __run_hook "$hook_file" || return 1
-    done < <(find . -maxdepth 1 -type f -name "docker-compose.${stage}_hook.override*.sh")
+    done < <(find . -maxdepth 1 -type f -name "compose.${stage}_hook.override*.sh")
   fi
 }
 
@@ -289,8 +289,8 @@ do_validate () {
   [ -z "$err" ] || return 1
 
   [ -n "$non_failing" ] || printf '[~] Validating service:'
-  for svc in $("$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml) ; do
-    local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" docker-compose.yml) )
+  for svc in $("$YQ_CMD" -M '.services | keys | .[]' compose.yml) ; do
+    local attrs=( $("$YQ_CMD" -M ".services.\"$svc\" | keys | .[]" compose.yml) )
     [ -n "$non_failing" ] || echo -n " $svc"
     for bad_attr in devices labels logging ports ; do
       if printf '%s\0' "${attrs[@]}" | grep -Fxqz -- $bad_attr ; then
@@ -346,7 +346,7 @@ do_pull () {
 do_status () {
   __grab_ps __ps_before_status
   printf '[?] Querying service:'
-  for svc in $( "$YQ_CMD" -M '.services | keys | .[]' docker-compose.yml ) ; do
+  for svc in $( "$YQ_CMD" -M '.services | keys | .[]' compose.yml ) ; do
     echo -n " $svc"
     if ! ( echo "$__ps_before_status" | grep "$svc" | grep -q "(healthy)" ) ; then
       echo ; __error "Unhealthy service: ${_fg_red_}$svc${_normal_}" ; return 1
@@ -367,8 +367,8 @@ do_up () {
 
 usage () {
   [ $# -eq 0 ] || echo -e "\nERROR: $1" >&2
-  local num_comps="$(find . -maxdepth 2 -type f -name docker-compose.yml | wc -l)"
-  readarray -t compositions < <(find . -maxdepth 2 -type f -name docker-compose.yml -printf '%h\0' | xargs -0 -I{} basename {})
+  local num_comps="$(find . -maxdepth 2 -type f -name compose.yml | wc -l)"
+  readarray -t compositions < <(find . -maxdepth 2 -type f -name compose.yml -printf '%h\0' | xargs -0 -I{} basename {})
   echo -e "
 Usage:
   $0 <verb>[,<verb>,...] [flags] [options] <comp_dir> [<comp_dir> ...]
@@ -389,18 +389,18 @@ Flags:
   [-R | --skip-related]      Ignore verifying/starting sibling compositions
 
 Fragments:            { use | ignore }
-  [-d | --devices]    Attach devices listed in 'docker-compose.devices.yml'
-  [-g | --logging]    Configure logging as specified in 'docker-compose.logging.yml'
-  [-h | --hooks]      Run pre and post hook 'docker-compose.*_hook.sh' scripts
-  [-l | --labels]     Use labels specified in 'docker-compose.labels.yml'
-  [-p | --ports]      Expose ports listed in 'docker-compose.ports.yml'
+  [-d | --devices]    Attach devices listed in 'compose.devices.yml'
+  [-g | --logging]    Configure logging as specified in 'compose.logging.yml'
+  [-h | --hooks]      Run pre and post hook 'compose.*_hook.sh' scripts
+  [-l | --labels]     Use labels specified in 'compose.labels.yml'
+  [-p | --ports]      Expose ports listed in 'compose.ports.yml'
 
  <omitted> = Unless overriden, use the fragment files:
-             use 'docker-compose.<fragment>.{sh,yml}' unless overriden in 'meta.override.yml'.
+             use 'compose.<fragment>.{sh,yml}' unless overriden in 'meta.override.yml'.
     ignore = Do not use the fragment files (and use docker default instead):
-             ignores 'docker-compose.<fragment>.{sh,yml}' file.
+             ignores 'compose.<fragment>.{sh,yml}' file.
        use = Ignore overrides and use the fragment file:
-             uses 'docker-compose.<fragment>.{sh,yml}' file ignoring 'meta.override.yml'.
+             uses 'compose.<fragment>.{sh,yml}' file ignoring 'meta.override.yml'.
 
 Compositions Found ($num_comps):" >&2
   for (( i=0 ; i<${#compositions[@]} ; i++ )) ; do
@@ -535,16 +535,16 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     echo ; __error "${_bold_}$_CUR_COMP_${_normal_} is not a base directory at '$SELF_DIR'!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
-  if ! [ -f "$SELF_DIR/$_CUR_COMP_/docker-compose.yml" ] ; then
-    echo ; __error "No 'docker-compose.yml' found under ${_bold_}$_CUR_COMP_${_normal_}!"
+  if ! [ -f "$SELF_DIR/$_CUR_COMP_/compose.yml" ] ; then
+    echo ; __error "No 'compose.yml' found under ${_bold_}$_CUR_COMP_${_normal_}!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
 
   [ ! -f "meta.override.yml" ] || _CUR_YQ_META_QUERY_PFX_='. *= load("meta.override.yml") | '
 
-  _CUR_COMPOSE_FILES_=( "docker-compose.yml" ) ; _CUR_COMPOSE_OVERRIDE_FILES_=()
-  if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f docker-compose.override.yml ] ; then
-    _CUR_COMPOSE_OVERRIDE_FILES_=( docker-compose.override.yml)
+  _CUR_COMPOSE_FILES_=( "compose.yml" ) ; _CUR_COMPOSE_OVERRIDE_FILES_=()
+  if [ "$FLAG_SKIP_OVERRIDES" != yes ] && [ -f compose.override.yml ] ; then
+    _CUR_COMPOSE_OVERRIDE_FILES_=( compose.override.yml)
   fi
 
   IFS=, read -r FRAGMENT_DEVICES FRAGMENT_HOOKS FRAGMENT_LABELS FRAGMENT_LOGGING FRAGMENT_PORTS \

@@ -28,7 +28,7 @@ Implemented solution proposed in [comment-1308141561](https://github.com/nextclo
 
 ### Usability
 
-1. Proper [carddav and caldav redirection](docker-compose.labels.yml)
+1. Proper [carddav and caldav redirection](compose.labels.yml)
    with subfolder in Traefik
 
 2. Ability to edit crontab file (`data/nextcloud/crontabs/user`, generated after first run)

@@ -1047,20 +1047,20 @@ All specializations should be added to `*.override.*` files.
   - `dynamic.override.env.sh` may generate additional service-specific evironment variables
     - similar idea as its global counterpart `dynamic.global.env.sh`
     - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
-  - `docker-compose.override.{yml|yaml}` may contain overrides for docker compose
+  - `compose.override.{yml|yaml}` may contain overrides for docker compose
     - modular overrides may also be specified for individual YAML fragment files:  
-      `docker-compose.{devices|labels|logging|ports}.override.{yml|yaml}`
-  - `docker-compose.{pre,post}_hook.override.*.sh`
+      `compose.{devices|labels|logging|ports}.override.{yml|yaml}`
+  - `compose.{pre,post}_hook.override.*.sh`
     may define additional hooks to be run before `docker compose`
-    - see [`nextcloud/docker-compose.pre_hook.sh`](nextcloud/docker-compose.pre_hook.sh) for an example
-  - `docker-compose.{up,down,clean}.{pre,post}_hook.override.*.sh`
+    - see [`nextcloud/compose.pre_hook.sh`](nextcloud/compose.pre_hook.sh) for an example
+  - `compose.{up,down,clean}.{pre,post}_hook.override.*.sh`
     may define additional verb-specific hooks to be run
-    - see [`monitarr/docker-compose.up.pre_hook.sh`](monitarr/docker-compose.up.pre_hook.sh) for an example
+    - see [`monitarr/compose.up.pre_hook.sh`](monitarr/compose.up.pre_hook.sh) for an example
 
 #### Subdirectories
 
 - immediate subdirectories under `config/`, `data/`, `extra/`, and `generated/`
-  must match the service names within `docker-compose.yml`
+  must match the service names within `compose.yml`
 - the directory structure at each of `config/X/Y...`, `data/X/Y...`, `extra/X/Y...`, and `generated/X/Y...`
   must match the root directory hierarchy `/Y/...` in the target container `X`
 
