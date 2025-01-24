@@ -1,8 +1,0 @@
-services:
-  snowflake:
-    hostname: snowflake
-    image: padhihomelab/snowflake:2.0.1
-    restart: unless-stopped
-
-    environment:
-      DOCKER_UID: ${USER_ID:?}
