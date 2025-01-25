@@ -60,5 +60,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:44432/traefik/ \
+          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:24432/traefik/ \
             || (docker ps ; docker compose logs ; exit 1)

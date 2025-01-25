@@ -4,4 +4,4 @@ services:
       traefik.enable: true
       #
       traefik.http.routers.netbox.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${NETBOX_BASE_PATH:?}`)
-      traefik.http.routers.netbox.entryPoints: lan-https-dbg
+      traefik.http.routers.netbox.entryPoints: lan-https-service

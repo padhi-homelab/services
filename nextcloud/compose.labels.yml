@@ -9,6 +9,6 @@ services:
       traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.replacement: "https://$${1}/${NEXTCLOUD_BASE_PATH:?}/remote.php/dav/"
       #
       traefik.http.routers.nextcloud.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${NEXTCLOUD_BASE_PATH:?}`)
-      traefik.http.routers.nextcloud.entryPoints: wan-https-svc
+      traefik.http.routers.nextcloud.entryPoints: wan-https-service
       # NOTE: Order of middlewares matters! redirect must be performed before stripping
       traefik.http.routers.nextcloud.middlewares: nextcloud-caldav-redirect@docker,strip-nextcloud-prefix

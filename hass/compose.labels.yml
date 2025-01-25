@@ -10,9 +10,9 @@ services:
       # See https://github.com/home-assistant/core/issues/21113
       #
       traefik.http.routers.hass.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)
-      traefik.http.routers.hass.entryPoints: wan-https-svc-exc
+      traefik.http.routers.hass.entryPoints: wan-https-service-exclusive
       traefik.http.routers.hass.middlewares: only-https-forwarded-proto
       #
       traefik.http.routers.hass-websocket.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/api/websocket`)
-      traefik.http.routers.hass-websocket.entryPoints: wan-https-svc-exc
+      traefik.http.routers.hass-websocket.entryPoints: wan-https-service-exclusive
       traefik.http.routers.hass-websocket.middlewares: only-wss-forwarded-proto

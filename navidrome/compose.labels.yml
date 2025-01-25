@@ -4,4 +4,4 @@ services:
       traefik.enable: true
       #
       traefik.http.routers.navidrome.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${NAVIDROME_BASE_PATH:?}`)
-      traefik.http.routers.navidrome.entryPoints: wan-https-svc
+      traefik.http.routers.navidrome.entryPoints: wan-https-service

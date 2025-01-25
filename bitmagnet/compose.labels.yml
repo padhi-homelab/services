@@ -7,4 +7,4 @@ services:
       # FIXME: Serve over a basepath
       #
       traefik.http.routers.bitmagnet.rule: Host(`${SERVER_LAN_FQDN:?}`)
-      traefik.http.routers.bitmagnet.entryPoints: lan-https-svc-exc
+      traefik.http.routers.bitmagnet.entryPoints: lan-https-service-exclusive

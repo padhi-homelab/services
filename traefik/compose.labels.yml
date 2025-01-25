@@ -7,10 +7,10 @@ services:
       traefik.http.middlewares.add-dashboard-prefix.addPrefix.prefix: "/${TRAEFIK_UI_BASE_PATH:?}/dashboard"
       #
       traefik.http.routers.traefik-api.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TRAEFIK_UI_BASE_PATH:?}/api`)
-      traefik.http.routers.traefik-api.entryPoints: lan-https-dbg
+      traefik.http.routers.traefik-api.entryPoints: lan-https-monitor
       traefik.http.routers.traefik-api.service: api@internal
       #
       traefik.http.routers.traefik-dashboard.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TRAEFIK_UI_BASE_PATH:?}`)
-      traefik.http.routers.traefik-dashboard.entryPoints: lan-https-dbg
+      traefik.http.routers.traefik-dashboard.entryPoints: lan-https-monitor
       traefik.http.routers.traefik-dashboard.service: api@internal
       traefik.http.routers.traefik-dashboard.middlewares: strip-traefik-prefix, add-dashboard-prefix

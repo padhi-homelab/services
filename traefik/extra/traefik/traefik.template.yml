@@ -36,47 +36,51 @@ api:
 entryPoints:
   x-internal:
     address: ":8080"
-  lan-http-dbg:
-    address: ":${SERVER_LAN_HTTP_DEBUG_PORT}"
-    http:
-      middlewares:
-      - restrict-to-lan-ip@file
-      - default@file
-  lan-http-dbg-exc:
-    address: ":${SERVER_LAN_HTTP_DEBUG_PORT_EXCLUSIVE}"
-    http:
-      middlewares:
-      - restrict-to-lan-ip@file
-      - default@file
-  lan-https-dbg:
-    address: ":${SERVER_LAN_HTTPS_DEBUG_PORT}"
-    http:
-      middlewares:
-      - restrict-to-lan-ip@file
-      - default@file
-      - add-ssl-headers@file
-      tls: true
-  lan-https-dbg-exc:
-    address: ":${SERVER_LAN_HTTPS_DEBUG_PORT_EXCLUSIVE}"
-    http:
-      middlewares:
-      - restrict-to-lan-ip@file
-      - default@file
-      - add-ssl-headers@file
-      tls: true
-  lan-http-svc:
+  lan-http-service:
     address: ":${SERVER_LAN_HTTP_SERVICE_PORT}"
     http:
       middlewares:
       - restrict-to-lan-ip@file
       - default@file
-  lan-http-svc-exc:
+  lan-http-service-exclusive:
     address: ":${SERVER_LAN_HTTP_SERVICE_PORT_EXCLUSIVE}"
     http:
       middlewares:
       - restrict-to-lan-ip@file
       - default@file
-  lan-https-svc:
+  lan-https-internal:
+    address: ":${SERVER_LAN_HTTPS_INTERNAL_PORT}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
+  lan-https-internal-exclusive:
+    address: ":${SERVER_LAN_HTTPS_INTERNAL_PORT_EXCLUSIVE}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
+  lan-https-monitor:
+    address: ":${SERVER_LAN_HTTPS_MONITOR_PORT}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
+  lan-https-monitor-exclusive:
+    address: ":${SERVER_LAN_HTTPS_MONITOR_PORT_EXCLUSIVE}"
+    http:
+      middlewares:
+      - restrict-to-lan-ip@file
+      - default@file
+      - add-ssl-headers@file
+      tls: true
+  lan-https-service:
     address: ":${SERVER_LAN_HTTPS_SERVICE_PORT}"
     http:
       middlewares:
@@ -84,7 +88,7 @@ entryPoints:
       - default@file
       - add-ssl-headers@file
       tls: true
-  lan-https-svc-exc:
+  lan-https-service-exclusive:
     address: ":${SERVER_LAN_HTTPS_SERVICE_PORT_EXCLUSIVE}"
     http:
       middlewares:
@@ -92,8 +96,8 @@ entryPoints:
       - default@file
       - add-ssl-headers@file
       tls: true
-  wan-https-dbg:
-    address: ":${SERVER_WAN_HTTPS_DEBUG_PORT}"
+  wan-https-internal:
+    address: ":${SERVER_WAN_HTTPS_INTERNAL_PORT}"
     http:
       middlewares:
       - block-ddos-attacks@file
@@ -102,8 +106,8 @@ entryPoints:
       tls:
         domains:
         - main: ${SERVER_WAN_FQDN}
-  wan-https-dbg-exc:
-    address: ":${SERVER_WAN_HTTPS_DEBUG_PORT_EXCLUSIVE}"
+  wan-https-internal-exclusive:
+    address: ":${SERVER_WAN_HTTPS_INTERNAL_PORT_EXCLUSIVE}"
     http:
       middlewares:
       - block-ddos-attacks@file
@@ -112,7 +116,27 @@ entryPoints:
       tls:
         domains:
         - main: ${SERVER_WAN_FQDN}
-  wan-https-svc:
+  wan-https-monitor:
+    address: ":${SERVER_WAN_HTTPS_MONITOR_PORT}"
+    http:
+      middlewares:
+      - block-ddos-attacks@file
+      - default@file
+      - add-ssl-headers@file
+      tls:
+        domains:
+        - main: ${SERVER_WAN_FQDN}
+  wan-https-monitor-exclusive:
+    address: ":${SERVER_WAN_HTTPS_MONITOR_PORT_EXCLUSIVE}"
+    http:
+      middlewares:
+      - block-ddos-attacks@file
+      - default@file
+      - add-ssl-headers@file
+      tls:
+        domains:
+        - main: ${SERVER_WAN_FQDN}
+  wan-https-service:
     address: ":${SERVER_WAN_HTTPS_SERVICE_PORT}"
     http:
       middlewares:
@@ -122,7 +146,7 @@ entryPoints:
       tls:
         domains:
         - main: ${SERVER_WAN_FQDN}
-  wan-https-svc-exc:
+  wan-https-service-exclusive:
     address: ":${SERVER_WAN_HTTPS_SERVICE_PORT_EXCLUSIVE}"
     http:
       middlewares:

@@ -7,4 +7,4 @@ services:
       #       It is intended to serve as a catch-all case for unmatched paths.
       #
       traefik.http.routers.http.rule: Host(`${SERVER_WAN_FQDN:?}`)
-      traefik.http.routers.http.entryPoints: wan-https-svc
+      traefik.http.routers.http.entryPoints: wan-https-service

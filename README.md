@@ -496,7 +496,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/netbox-community/netbox'>Netbox</a>
         <br>
-        <sub>:44432/netbox/</sub>
+        <sub>:4432/netbox/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Netbox%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_netbox.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -798,7 +798,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/teslamate-org/teslamate'>Teslamate</a>
         <br>
-        <sub>:44432/teslamate/</sub>
+        <sub>:24432/teslamate/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -879,11 +879,13 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://traefik.io/'>Traefik</a>
         <br>
-        <sub>:443, :802, :803, :4431, :4432, :4433</sub>
+        <sub>:443, :802, :803, :2443, :4431, :4432</sub>
         <br>
-        <sub>:4443, :4802, :4803, :44431, :44433</sub>
+        <sub>:4433, :4443, :24431, :24432, :24433</sub>
         <br>
-        <sub>:44432/traefik</sub>
+        <sub>:44431, :44432, :44433</sub>
+        <br>
+        <sub>:24432/traefik</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_traefik.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -957,7 +959,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://uptime.kuma.pet/'>Uptime</a>
         <br>
-        <sub>:4443/uptime, :44433/</sub>
+        <sub>:2443/uptime, :24433/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Uptime%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_uptime.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -1020,57 +1022,61 @@ running the container with a rootless docker daemon.
 
 ### Structure & Conventions
 
-#### Network
+#### Network Exposure
 
 <table>
   <thead>
     <tr>
       <td colspan='2' rowspan='2' align='center'>(Defaults Ports)</th>
-      <td colspan='2' align='center'><strong>HTTP</strong> (?&thinsp;<strong>80</strong>&thinsp;?)</td>
-      <td colspan='2' align='center'><strong>HTTPS</strong> (?&thinsp;<strong>443</strong>&thinsp;?)</td>
+      <td colspan='1' align='center'><strong>HTTP</strong> (?<strong>80</strong>?)</td>
+      <td colspan='3' align='center'><strong>HTTPS</strong> (?<strong>443</strong>?)</td>
     </tr>
     <tr>
-      <td align='center'><strong>Debug</strong><br>(<strong>4</strong>&thinsp;80&thinsp;?)</td>
-      <td align='center'><strong>Service</strong><br>(80&thinsp;?)</td>
-      <td align='center'><strong>Debug</strong><br>(<strong>4</strong>&thinsp;443&thinsp;?)</td>
-      <td align='center'><strong>Service</strong><br>(443&thinsp;?)</td>
+      <td align='center'><strong>Service</strong><br>(80?)</td>
+      <td align='center'><strong>Internal</strong><br>(<strong>4</strong>443?)</td>
+      <td align='center'><strong>Monitor</strong><br>(<strong>2</strong>443?)</td>
+      <td align='center'><strong>Service</strong><br>(443?)</td>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td rowspan='2' align='center'><strong>WAN</strong></td>
       <td align='center'><strong>Shared</strong><br>(*)</td></td>
-      <td rowspan='2' colspan='2' align='center'>:heavy_multiplication_x:</td>
+      <td rowspan='2' colspan='1' align='center'>:heavy_multiplication_x:</td>
       <td align='center'>4443</td>
+      <td align='center'>2443</td>
       <td align='center'>443</td>
     </tr>
     <tr>
-      <td align='center'><strong>Exclusive</strong><br>(*&thinsp;<strong>1</strong>)</td></td>
+      <td align='center'><strong>Exclusive</strong><br>(*<strong>1</strong>)</td></td>
       <td align='center'>44431</td>
+      <td align='center'>24431</td>
       <td align='center'>4431</td>
     </tr>
     <tr>
       <td rowspan='2' align='center'><strong>LAN</strong></td>
-      <td align='center'><strong>Shared</strong><br>(*&thinsp;<strong>2</strong>)</td></td>
-      <td align='center'>4802</td>
+      <td align='center'><strong>Shared</strong><br>(*<strong>2</strong>)</td></td>
       <td align='center'>802</td>
       <td align='center'>44432</td>
+      <td align='center'>24432</td>
       <td align='center'>4432</td>
     </tr>
     <tr>
-      <td align='center'><strong>Exclusive</strong><br>(*&thinsp;<strong>3</strong>)</td></td>
-      <td align='center'>4803</td>
+      <td align='center'><strong>Exclusive</strong><br>(*<strong>3</strong>)</td></td>
       <td align='center'>803</td>
       <td align='center'>44433</td>
+      <td align='center'>24433</td>
       <td align='center'>4433</td>
     </tr>
   </tbody>
 </table>
 
-- **Debug**: Ports for monitoring and debugging applications
-- **Service**: Ports for applications that serve end-user services
 - **Shared**: Ports for applications that support serving under subpaths
 - **Exclusive**: Ports for containers that do not support subpaths
+<br><br>
+- **Service**: Ports for applications that serve end-user services
+- **Monitor**: Ports for monitoring applications
+- **Internal**: Ports for other internal applications
 
 #### Overrides
 

@@ -6,6 +6,7 @@ networks:
 
 services:
   agent:
+    hostname: ${HOST_NAME:?}
     container_name: beszel-agent
     image: henrygd/beszel-agent:${BESZEL_VERSION:?}
     restart: unless-stopped
