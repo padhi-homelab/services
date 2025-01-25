@@ -959,7 +959,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://uptime.kuma.pet/'>Uptime</a>
         <br>
-        <sub>:2443/uptime, :24433/</sub>
+        <sub>:24433/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Uptime%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_uptime.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
