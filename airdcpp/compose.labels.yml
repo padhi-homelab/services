@@ -7,5 +7,5 @@ services:
       traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/${AIRDCPP_BASE_PATH:?}"
       #
       traefik.http.routers.airdcpp.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${AIRDCPP_BASE_PATH:?}`)
-      traefik.http.routers.airdcpp.entryPoints: wan-https
+      traefik.http.routers.airdcpp.entryPoints: wan-https-svc
       traefik.http.routers.airdcpp.middlewares: strip-airdcpp-prefix

@@ -1,5 +1,7 @@
 networks:
-  proxy:
+  traefik-net:
+    external: true
+  teslamate-mqtt:
     external: true
 
 services:
@@ -13,7 +15,8 @@ services:
     - no-new-privileges:true
 
     networks:
-    - proxy
+    - traefik-net
+    - teslamate-mqtt
     volumes:
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw

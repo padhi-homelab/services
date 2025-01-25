@@ -1,5 +1,5 @@
 networks:
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -150,7 +150,7 @@ services:
 
     networks:
     - default
-    - proxy
+    - traefik-net
     volumes:
     - ./config/nextcloud/cron.sh:/cron.sh:ro
     - ./data/nextcloud/data:/data:rw

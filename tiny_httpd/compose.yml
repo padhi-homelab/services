@@ -1,5 +1,5 @@
 networks:
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -13,7 +13,7 @@ services:
     - no-new-privileges:true
 
     networks:
-    - proxy
+    - traefik-net
     volumes:
     - ./data/http/www:/www:ro
 

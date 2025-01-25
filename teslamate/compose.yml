@@ -1,5 +1,7 @@
 networks:
-  proxy:
+  traefik-net:
+    external: true
+  teslamate-mqtt:
     external: true
 
 services:
@@ -15,6 +17,7 @@ services:
 
     networks:
     - default
+    - teslamate-mqtt
     volumes:
     - ./config/mqtt/mosquitto/config:/mosquitto/config:ro
     - ./data/mqtt/mosquitto/data:/mosquitto/data:rw
@@ -72,7 +75,7 @@ services:
 
     networks:
     - default
-    - proxy
+    - traefik-net
     volumes:
     - ./data/teslamate/opt/app/import:/opt/app/import:rw
 

@@ -82,7 +82,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://airdcpp.net/'>AirDC++</a>
         <br>
-        <sub>:443/airdcpp</sub>
+        <sub>:443/airdcpp/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28AirDC%2B%2B%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_airdcpp.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -114,7 +114,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://bitmagnet.io/'>bitmagnet</a>
         <br>
-        <sub>:4443</sub>
+        <sub>:4433/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28bitmagnet%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_bitmagnet.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -152,7 +152,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://certbot.eff.org/'>Certbot</a>
         <br>
-        <sub>:80</sub>
+        <sub>:80/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Certbot%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_certbot.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -184,7 +184,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://docs.docker.com/engine/security/protect-access/'>docker_sock</a>
         <br>
-        <sub>-</sub>
+        <sub>:44432/docker_sock/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28docker_sock%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_docker_sock.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -216,7 +216,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://gitea.io/'>Gitea</a>
         <br>
-        <sub>:443/gitea</sub>
+        <sub>:443/gitea/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Gitea%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_gitea.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -248,7 +248,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
-        <sub>:443/</sub>
+        <sub>:4431/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_hass.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -280,7 +280,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         Indexarr
         <br>
-        <sub>:443/jackett</sub>
+        <sub>:443/jackett/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_indexarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -352,7 +352,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://wiki.servarr.com/'>Monitarr</a>
         <br>
-        <sub>:443/{lid,rad,son}arr</sub>
+        <sub>:443/{lid,rad,son}arr/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_monitarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -400,7 +400,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://www.navidrome.org/'>Navidrome</a>
         <br>
-        <sub>:443/navidrome</sub>
+        <sub>:443/navidrome/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Navidrome%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_navidrome.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -432,7 +432,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/netbox-community/netbox'>Netbox</a>
         <br>
-        <sub>:9443/netbox</sub>
+        <sub>:44432/netbox/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Netbox%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_netbox.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -484,7 +484,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://nextcloud.com/'>Nextcloud</a>
         <br>
-        <sub>:443/nextcloud</sub>
+        <sub>:443/nextcloud/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Nextcloud%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_nextcloud.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -566,7 +566,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://ntfy.sh/'>ntfy</a>
         <br>
-        <sub>:443, :4443</sub>
+        <sub>:25, :44431/, :44433/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Ntfy%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_ntfy.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -630,7 +630,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
-        <sub>:53, :9443/pihole</sub>
+        <sub>:53, :4432/pihole/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28PiHole%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_pihole.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -670,7 +670,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://www.qbittorrent.org/'>qBittorrent</a>
         <br>
-        <sub>:443/qbittorrent</sub>
+        <sub>:443/qbittorrent/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28qBittorrent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_qbittorrent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -702,7 +702,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/latchset/tang'>Tang</a>
         <br>
-        <sub>:9080/tang</sub>
+        <sub>:802/tang/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tang%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_tang.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -734,7 +734,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/teslamate-org/teslamate'>Teslamate</a>
         <br>
-        <sub>:1883, :9443/teslamate</sub>
+        <sub>:44432/teslamate/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -783,7 +783,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://github.com/padhi-homelab/docker_tiny-httpd/'>Tiny HTTPD</a>
         <br>
-        <sub>:443</sub>
+        <sub>:443/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Tiny_HTTPD%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_tiny_httpd.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -815,7 +815,11 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://traefik.io/'>Traefik</a>
         <br>
-        <sub>:443, :8443, :9080, :9443</sub>
+        <sub>:443, :802, :803, :4431, :4432, :4433</sub>
+        <br>
+        <sub>:4443, :4802, :4803, :44431, :44433</sub>
+        <br>
+        <sub>:44432/traefik</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Traefik%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_traefik.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -847,7 +851,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://unifi-network.ui.com'>Unifi</a>
         <br>
-        <sub>:3478, :8080, :8843, :10001</sub>
+        <sub>:3478, :8080, :8843/, :10001</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Unifi%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_unifi.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -889,7 +893,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://uptime.kuma.pet/'>Uptime</a>
         <br>
-        <sub>:4443</sub>
+        <sub>:4443/uptime, :44433/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Uptime%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_uptime.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -920,7 +924,7 @@ for optionally customizing compositions via _overrides_.
   </tbody>
 </table>
 
-#### Legend
+#### Service Rating
 
 Below, we say that a container is a _non-root container_,
 if it allows running the target service as a non-root user,
@@ -952,7 +956,61 @@ running the container with a rootless docker daemon.
 
 ### Structure & Conventions
 
-All specializations should be added to `*.override.*` files.
+#### Network
+
+<table>
+  <thead>
+    <tr>
+      <td colspan='2' rowspan='2' align='center'>(Defaults Ports)</th>
+      <td colspan='2' align='center'><strong>HTTP</strong> (?&thinsp;<strong>80</strong>&thinsp;?)</td>
+      <td colspan='2' align='center'><strong>HTTPS</strong> (?&thinsp;<strong>443</strong>&thinsp;?)</td>
+    </tr>
+    <tr>
+      <td align='center'><strong>Debug</strong><br>(<strong>4</strong>&thinsp;80&thinsp;?)</td>
+      <td align='center'><strong>Service</strong><br>(80&thinsp;?)</td>
+      <td align='center'><strong>Debug</strong><br>(<strong>4</strong>&thinsp;443&thinsp;?)</td>
+      <td align='center'><strong>Service</strong><br>(443&thinsp;?)</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan='2' align='center'><strong>WAN</strong></td>
+      <td align='center'><strong>Shared</strong><br>(*)</td></td>
+      <td rowspan='2' colspan='2' align='center'>:heavy_multiplication_x:</td>
+      <td align='center'>4443</td>
+      <td align='center'>443</td>
+    </tr>
+    <tr>
+      <td align='center'><strong>Exclusive</strong><br>(*&thinsp;<strong>1</strong>)</td></td>
+      <td align='center'>44431</td>
+      <td align='center'>4431</td>
+    </tr>
+    <tr>
+      <td rowspan='2' align='center'><strong>LAN</strong></td>
+      <td align='center'><strong>Shared</strong><br>(*&thinsp;<strong>2</strong>)</td></td>
+      <td align='center'>4802</td>
+      <td align='center'>802</td>
+      <td align='center'>44432</td>
+      <td align='center'>4432</td>
+    </tr>
+    <tr>
+      <td align='center'><strong>Exclusive</strong><br>(*&thinsp;<strong>3</strong>)</td></td>
+      <td align='center'>4803</td>
+      <td align='center'>803</td>
+      <td align='center'>44433</td>
+      <td align='center'>4433</td>
+    </tr>
+  </tbody>
+</table>
+
+- **Debug**: Ports for monitoring and debugging applications
+- **Service**: Ports for applications that serve end-user services
+- **Shared**: Ports for applications that support serving under subpaths
+- **Exclusive**: Ports for containers that do not support subpaths
+
+#### Overrides
+
+All local tweaks should be added to `*.override.*` files.
 
 - at the repo root:
   - `static.global.override.env` may store global constants

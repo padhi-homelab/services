@@ -1,7 +1,7 @@
 networks:
-  shared:
+  docker-sock:
     external: true
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -16,8 +16,8 @@ services:
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
-    - shared
-    - proxy
+    - docker-sock
+    - traefik-net
     volumes:
     - ./config/traefik/dynamic:/dynamic:ro
     - ./generated/traefik/traefik.yml:/traefik.yml:ro

@@ -2,8 +2,8 @@ services:
   docker.sock-proxy:
     labels:
       traefik.enable: true
-      traefik.docker.network: shared
+      traefik.docker.network: docker-sock
       traefik.http.services.docker_sock.loadBalancer.server.port: 9000
       #
       traefik.http.routers.docker_sock.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${DOCKER_SOCK_PROXY_BASE_PATH:?}`)
-      traefik.http.routers.docker_sock.entryPoints: lan-internal
+      traefik.http.routers.docker_sock.entryPoints: lan-https-dbg

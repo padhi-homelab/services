@@ -8,9 +8,9 @@ services:
       traefik.http.middlewares.only-wss-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: wss
       #
       traefik.http.routers.teslamate.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}`)
-      traefik.http.routers.teslamate.entryPoints: lan-https-b
+      traefik.http.routers.teslamate.entryPoints: lan-https-dbg
       traefik.http.routers.teslamate.middlewares: strip-teslamate-prefix, only-https-forwarded-proto
       #
       traefik.http.routers.teslamate-websocket.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}/live/websocket`)
-      traefik.http.routers.teslamate-websocket.entryPoints: lan-https-b
+      traefik.http.routers.teslamate-websocket.entryPoints: lan-https-dbg
       traefik.http.routers.teslamate-websocket.middlewares: strip-teslamate-prefix, only-wss-forwarded-proto

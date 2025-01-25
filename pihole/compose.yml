@@ -4,7 +4,7 @@ networks:
     ipam:
       config:
       - subnet: 10.0.0.0/29
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -47,7 +47,7 @@ services:
     networks:
       default:
         ipv4_address: 10.0.0.4
-      proxy:
+      traefik-net:
     volumes:
     - ./data/pihole/etc/pihole:/etc/pihole:rw
     - ./data/pihole/etc/dnsmasq.d:/etc/dnsmasq.d:rw

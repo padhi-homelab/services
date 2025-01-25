@@ -5,4 +5,4 @@ services:
       traefik.http.services.jackett.loadBalancer.server.port: 9117
       #
       traefik.http.routers.jackett.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${JACKETT_BASE_PATH:?}`)
-      traefik.http.routers.jackett.entryPoints: wan-https
+      traefik.http.routers.jackett.entryPoints: wan-https-svc

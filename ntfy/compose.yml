@@ -1,5 +1,5 @@
 networks:
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -16,7 +16,7 @@ services:
     user: "${USER_ID}:${GROUP_ID}"
 
     networks:
-    - proxy
+    - traefik-net
     volumes:
     - ./data/ntfy/etc/ntfy:/etc/ntfy
     - ./data/ntfy/var/cache/ntfy:/var/cache/ntfy
@@ -26,7 +26,7 @@ services:
       NTFY_ATTACHMENT_CACHE_DIR: /var/lib/ntfy/attachments
       NTFY_AUTH_DEFAULT_ACCESS: deny-all
       NTFY_AUTH_FILE: /var/lib/ntfy/auth.db
-      NTFY_BASE_URL: "https://${SERVER_WAN_FQDN:?}:${SERVER_WAN_HTTPS_PORT:?}"
+      NTFY_BASE_URL: "https://${SERVER_WAN_FQDN:?}:${SERVER_WAN_HTTPS_SERVICE_PORT:?}"
       NTFY_BEHIND_PROXY: true
       NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
       NTFY_ENABLE_LOGIN: true

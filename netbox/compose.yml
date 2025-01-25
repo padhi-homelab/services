@@ -1,5 +1,5 @@
 networks:
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -72,7 +72,7 @@ services:
 
     networks:
     - default
-    - proxy
+    - traefik-net
     volumes:
     - ./data/netbox/opt/netbox/netbox/media:/opt/netbox/netbox/media:rw
     - ./data/netbox/opt/netbox/netbox/reports:/opt/netbox/netbox/reports:rw

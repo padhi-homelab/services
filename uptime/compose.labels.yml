@@ -3,10 +3,14 @@ services:
     labels:
       traefik.enable: true
       #
+      traefik.http.middlewares.strip-uptime-prefix.stripPrefix.prefixes: "/${UPTIME_BASE_PATH:?}"
+      traefik.http.middlewares.add-status-prefix.addPrefix.prefix: "/status"
+      #
+      traefik.http.routers.uptime-wan.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${UPTIME_BASE_PATH:?}`)
+      traefik.http.routers.uptime-wan.entryPoints: wan-https-dbg
+      traefik.http.routers.uptime-wan.middlewares: strip-uptime-prefix, add-status-prefix
+      #
       # FIXME: Serve over a basepath
       #
-      traefik.http.routers.uptime-wan.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/status`)
-      traefik.http.routers.uptime-wan.entryPoints: wan-https
-      #
       traefik.http.routers.uptime-lan.rule: Host(`${SERVER_LAN_FQDN:?}`)
-      traefik.http.routers.uptime-lan.entryPoints: lan-https-a
+      traefik.http.routers.uptime-lan.entryPoints: lan-https-dbg-exc

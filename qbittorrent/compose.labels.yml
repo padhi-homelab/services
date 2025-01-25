@@ -7,5 +7,5 @@ services:
       traefik.http.middlewares.strip-qbittorrent-prefix.stripPrefix.prefixes: "/${QBITTORRENT_BASE_PATH:?}"
       #
       traefik.http.routers.qbittorrent.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${QBITTORRENT_BASE_PATH:?}`)
-      traefik.http.routers.qbittorrent.entryPoints: wan-https
+      traefik.http.routers.qbittorrent.entryPoints: wan-https-svc
       traefik.http.routers.qbittorrent.middlewares: strip-qbittorrent-prefix

@@ -3,7 +3,7 @@ messages:
     post:
     - >-
       ${_THIS_COMPOSITION_} may now be accessed on
-      ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_PORT_A}/${_RESET_FONT_}
+      ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_SERVICE_PORT_EXCLUSIVE}/${_RESET_FONT_}
 
 pre_req:
 - openvpn

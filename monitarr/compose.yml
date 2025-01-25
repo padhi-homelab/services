@@ -1,5 +1,5 @@
 networks:
-  proxy:
+  traefik-net:
     external: true
 
 services:
@@ -13,7 +13,7 @@ services:
     - no-new-privileges:true
 
     networks:
-    - proxy
+    - traefik-net
     volumes:
     - ./data/lidarr/config:/config:rw
     - ./data/lidarr/downloads:/downloads:rw
@@ -34,7 +34,7 @@ services:
     - no-new-privileges:true
 
     networks:
-    - proxy
+    - traefik-net
     volumes:
     - ./data/radarr/config:/config:rw
     - ./data/radarr/downloads:/downloads:rw
@@ -55,7 +55,7 @@ services:
     - no-new-privileges:true
 
     networks:
-    - proxy
+    - traefik-net
     volumes:
     - ./data/sonarr/config:/config:rw
     - ./data/sonarr/downloads:/downloads:rw

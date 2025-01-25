@@ -1,7 +1,0 @@
-services:
-  mqtt:
-    ports:
-    # FIXME: For accessing from other containers (hass) on the SAME machine,
-    # SERVER_IP needs to be explicitly specified.
-    # see https://stackoverflow.com/a/69994721/554436
-    - ${SERVER_IP:?}:1883:1883

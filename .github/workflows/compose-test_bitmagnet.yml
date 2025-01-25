@@ -65,5 +65,5 @@ jobs:
             exit 1
           fi
           cd traefik
-          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:4443/webui/ \
+          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:4433/webui/ \
             || (docker ps ; docker compose logs ; cd ../bitmagnet ; docker compose logs ; exit 1)

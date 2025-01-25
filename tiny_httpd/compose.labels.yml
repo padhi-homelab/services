@@ -3,5 +3,8 @@ services:
     labels:
       traefik.enable: true
       #
-      traefik.http.routers.http.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)
-      traefik.http.routers.http.entryPoints: wan-https
+      # NOTE: This is not an "exclusive" port use.
+      #       It is intended to serve as a catch-all case for unmatched paths.
+      #
+      traefik.http.routers.http.rule: Host(`${SERVER_WAN_FQDN:?}`)
+      traefik.http.routers.http.entryPoints: wan-https-svc
