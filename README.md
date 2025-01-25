@@ -261,7 +261,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.8.10</sub></code>
+        <code><sub>3.0.7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
