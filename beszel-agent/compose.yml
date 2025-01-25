@@ -1,0 +1,26 @@
+networks:
+  beszel:
+    external: true
+  docker-sock:
+    external: true
+
+services:
+  agent:
+    container_name: beszel-agent
+    image: henrygd/beszel-agent:${BESZEL_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+
+    networks:
+    - beszel
+    - docker-sock
+
+    environment:
+      PORT: ${BESZEL_AGENT_PORT:?}
+      DOCKER_HOST: "tcp://docker.sock-proxy:1279"
+      KEY: "paste_ssh_key_from_hub"
+
+    # FIXME: Healthcheck. See: https://github.com/henrygd/beszel/issues/324

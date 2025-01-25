@@ -1,0 +1,9 @@
+messages:
+  up:
+    post:
+    - >-
+      ${_THIS_COMPOSITION_} is now listening on
+      ${_LINK_FONT_}http://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_DEBUG_PORT_EXCLUSIVE}/${_RESET_FONT_}
+
+related:
+- traefik

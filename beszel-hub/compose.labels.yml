@@ -1,0 +1,9 @@
+services:
+  beszel:
+    labels:
+      traefik.enable: true
+      #
+      # FIXME: Serve over a basepath
+      #
+      traefik.http.routers.beszel.rule: Host(`${SERVER_LAN_FQDN:?}`)
+      traefik.http.routers.beszel.entryPoints: lan-https-dbg-exc

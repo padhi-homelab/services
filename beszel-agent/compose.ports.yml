@@ -1,0 +1,4 @@
+services:
+  agent:
+    ports:
+    - ${SERVER_LAN_BINDING_IP:?}:${BESZEL_AGENT_PORT:?}:${BESZEL_AGENT_PORT:?}

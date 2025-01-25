@@ -1,0 +1,27 @@
+networks:
+  beszel:
+    external: true
+  traefik-net:
+    external: true
+
+services:
+  beszel:
+    hostname: beszel
+    image: henrygd/beszel:${BESZEL_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+
+    networks:
+    - beszel
+    - traefik-net
+    volumes:
+    - ./data/beszel/beszel_data:/beszel_data:rw
+
+    environment:
+      USER_CREATION: false
+
+    # FIXME: Healthcheck. See: https://github.com/henrygd/beszel/issues/324
