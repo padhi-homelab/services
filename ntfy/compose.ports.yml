@@ -1,4 +1,4 @@
 services:
   ntfy:
     ports:
-    - ${SERVER_WAN_BINDING_IP:?}:${NTFY_SMTP_LISTEN_PORT:?}:${NTFY_SMTP_LISTEN_PORT:?}
+    - ${SERVER_LAN_BINDING_IP:?}:${NTFY_SMTP_LISTEN_PORT:?}:${NTFY_SMTP_LISTEN_PORT:?}

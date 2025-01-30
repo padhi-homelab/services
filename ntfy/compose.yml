@@ -18,7 +18,6 @@ services:
     networks:
     - traefik-net
     volumes:
-    - ./data/ntfy/etc/ntfy:/etc/ntfy
     - ./data/ntfy/var/cache/ntfy:/var/cache/ntfy
     - ./data/ntfy/var/lib/ntfy:/var/lib/ntfy
 
@@ -31,10 +30,10 @@ services:
       NTFY_CACHE_FILE: /var/lib/ntfy/cache.db
       NTFY_ENABLE_LOGIN: true
       NTFY_ENABLE_SIGNUP: false
-      NTFY_WEB_ROOT: "/${NTFY_BASE_PATH}"
       NTFY_SMTP_SERVER_ADDR_PREFIX: "ntfy-"
-      NTFY_SMTP_SERVER_DOMAIN: "${SERVER_WAN_FQDN:?}"
+      NTFY_SMTP_SERVER_DOMAIN: "${SERVER_LAN_FQDN:?}"
       NTFY_SMTP_SERVER_LISTEN: ":${NTFY_SMTP_LISTEN_PORT:?}"
+      NTFY_WEB_ROOT: "/${NTFY_BASE_PATH}"
       TZ: ${TZ:?}
 
     healthcheck:
