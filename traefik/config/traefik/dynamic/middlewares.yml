@@ -5,7 +5,6 @@ http:
         customRequestHeaders:
           X-Forwarded-Proto: 'https,wss'
         forceSTSHeader: true
-        isDevelopment: false
         stsIncludeSubdomains: false
         stsPreload: true
         stsSeconds: 31536000
@@ -38,6 +37,7 @@ http:
           X-Powered-By: ''
           X-Robots-Tag: 'none,noarchive,nofollow,noimageindex,noindex,nosnippet,notranslate'
         customFrameOptionsValue: 'sameorigin'
+        isDevelopment: false
         permissionsPolicy: "camera 'none'; geolocation 'none'; microphone 'none'; payment 'none'; usb 'none'; vr 'none';"
         referrerPolicy: 'same-origin'
     compress-response:
