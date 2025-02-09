@@ -197,7 +197,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>17.2...ne</sub></code>
         <br>
-        <code><sub>v0.10.0....5</sub></code>
+        <code><sub>v0.10.0....7</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
