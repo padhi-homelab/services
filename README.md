@@ -60,7 +60,7 @@ Typical workflows:
   ./comp status tang pihole
   ```
 
-See [comp#L372](comp#L372) for all supported supported flags and options.
+See [comp#L373](comp#L373) for all supported supported flags and options.
 
 Also see [Structure & Conventions](#structure--conventions)
 for optionally customizing compositions via _overrides_.
@@ -325,7 +325,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2025.2.3_2.0.5</sub></code>
+        <code><sub>2025.2.4_2.0.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -585,13 +585,13 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>7.4.2</sub></code>
         <br>
-        <code><sub>20250116...30</sub></code>
+        <code><sub>20250204...59</sub></code>
         <br>
-        <code><sub>20250114...11</sub></code>
+        <code><sub>20250204...59</sub></code>
         <br>
-        <code><sub>30.0.5-core</sub></code>
+        <code><sub>30.0.6</sub></code>
         <br>
-        <code><sub>30.0.5-core</sub></code>
+        <code><sub>30.0.6</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
