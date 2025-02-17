@@ -22,8 +22,7 @@ services:
     - ./data/hass/media:/media:rw
     # NOTE: Necessary for bluetooth integration
     - /run/dbus:/run/dbus:ro
-    # NOTE: Patch to show raw states for iRobot devices
-    - ./config/hass/etc/cont-init.d/99_patch-iRobot.sh:/etc/cont-init.d/99_patch-iRobot.sh:ro
+    - ./config/hass/etc/cont-init.d:/etc/cont-init.d:ro
 
     environment:
       TZ: ${TZ:?}
