@@ -1125,8 +1125,8 @@ All local tweaks should be added to `*.override.*` files.
 
 - immediate subdirectories under `config/`, `data/`, `extra/`, and `generated/`
   must match the service names within `compose.yml`
-- the directory structure at each of `config/X/Y...`, `data/X/Y...`, `extra/X/Y...`, and `generated/X/Y...`
-  must match the root directory hierarchy `/Y/...` in the target container `X`
+- the directory structure at each of `config/X/Y/...`, `data/X/Y/...`, `extra/X/Y/...`, and `generated/X/Y/...`
+  must match the absolute path hierarchy `/Y/...` in the container for service `X`
 
 <table>
   <thead>

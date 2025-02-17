@@ -20,7 +20,7 @@ EXIT_CODE_GENERIC_ERROR=1
 
 EXIT_CODE_USAGE_ERROR=250
 EXIT_CODE_FRAGMENTS_ERROR=240
-EXIT_CODE_DEP_INSTALL_FAILURE=230
+EXIT_CODE_DEP_FAILURE=230
 EXIT_CODE_COMPOSITION_NOT_FOUND=220
 
 EXIT_CODE_SETUP_ERROR=10
@@ -131,8 +131,7 @@ __gen_templates () {
     mkdir -p "$(dirname "$generated_file")"
     generated_file="${generated_file/.template/}"
     if [ ! -f "$generated_file" ] || [ "$FLAG_SKIP_GENERATE" != yes ] ; then
-      "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" \
-        || return 1
+      "$SCRIPTS_DIR/generate-and-verify.sh" "$template_file" "$generated_file" || return 1
     fi
   done < <(find ./extra -name '*.template*')
 }
@@ -208,8 +207,7 @@ __run_hooks () {
   [ -n "${2:-}" ] && echo "[>] Running '$2' hooks for '$1' ..." \
                   || echo "[>] Running '$1' hooks ..."
 
-  [ ! -f "compose.${stage}_hook.sh" ] \
-    || __run_hook "compose.${stage}_hook.sh" || return 1
+  [ ! -f "compose.${stage}_hook.sh" ] || __run_hook "compose.${stage}_hook.sh" || return 1
 
   if [ "$FLAG_SKIP_OVERRIDES" != yes ] ; then
     while IFS= read -r hook_file ; do
@@ -245,9 +243,7 @@ __verify_volumes () {
 
   for vol in $(printf "%s\n" "${mounted_volumes[@]}" | sort -u) ; do
     vol="$(echo "$vol" | cut -d: -f1)"
-    if ! [ -e "$vol" ] ; then
-      __error "VOLUME PATH '${vol/#./$_CUR_COMP_}' NOT FOUND!" ; return 1
-    fi
+    [ -e "$vol" ] || { __error "PATH '${vol/#./$_CUR_COMP_}' NOT FOUND!" ; return 1 ; }
   done
 }
 
@@ -307,9 +303,8 @@ do_validate () {
 
 do_clean () {
   __grab_ps __ps_before_clean
-  if [ -n "$__ps_before_clean" ] ; then
-    __error "Cannot clean while ${_bold_}$_CUR_COMP_${_normal_} is running!" ; return 1
-  fi
+  [ -z "$__ps_before_clean" ] \
+    || { __error "Cannot clean while $_DISP_CUR_COMP_ is running!" ; return 1 ; }
 
   rm -rfv generated .env
   if [ -d data ] ; then
@@ -347,10 +342,8 @@ do_status () {
   __grab_ps __ps_before_status
   printf '[?] Querying service:'
   for svc in $( "$YQ_CMD" -M '.services | keys | .[]' compose.yml ) ; do
-    echo -n " $svc"
-    if ! ( echo "$__ps_before_status" | grep "$svc" | grep -q "(healthy)" ) ; then
-      echo ; __error "Unhealthy service: ${_fg_red_}$svc${_normal_}" ; return 1
-    fi
+    ( echo -n " $svc" ; echo "$__ps_before_status" | grep "$svc" | grep -q "(healthy)" ) \
+      || { echo ; __error "Unhealthy service: ${_fg_red_}$svc${_normal_}" ; return 1 ; }
   done
   echo
 }
@@ -402,7 +395,7 @@ Fragments:            { use | ignore }
        use = Ignore overrides and use the fragment file:
              uses 'compose.<fragment>.{sh,yml}' file ignoring 'meta.override.yml'.
 
-Compositions Found ($num_comps):" >&2
+Compositions found ($num_comps):" >&2
   for (( i=0 ; i<${#compositions[@]} ; i++ )) ; do
     printf "%-13s" "${compositions[i]}"
     (( (i + 1) % 7 != 0 )) || printf "\n"
@@ -461,8 +454,7 @@ validate_and_set_fragment () {
   local FRAGMENT="FRAGMENT_$2"
   local FRAGMENT_VALUE="${1,,}"
   case "$FRAGMENT_VALUE" in
-    use | ignore ) printf -v "$FRAGMENT" "%s" "$FRAGMENT_VALUE"
-                   return 0
+    use | ignore ) printf -v "$FRAGMENT" "%s" "$FRAGMENT_VALUE" ; return 0
   esac
   if [ "$3" = override ] ; then
     echo ; __error "Invalid value '$1' for '$2' in $_CUR_COMP_/meta.override.yml"
@@ -491,36 +483,24 @@ while getopts ':FGORd:g:h:l:p:' OPTION ; do
 done
 shift $((OPTIND -1))
 
-if [ $# -le 0 ] ; then
-  __error "No <comp_dir>' provided!"
-  exit $EXIT_CODE_COMPOSITION_NOT_FOUND
-fi
+[ $# -gt 0 ] || { __error "No <comp_dir>' provided!" ; exit $EXIT_CODE_COMPOSITION_NOT_FOUND ; }
 
 # # # # # # # # # # # # # # # # # # #       DEPENDENCIES      # # # # # # # # # # # # # # # # # # #
 # FIXME: Improve `podman` support and make it default.
 
 if ! $DOCKER_CMD version &> /dev/null ; then
   if ! podman version &> /dev/null ; then
-    __error 'Failed to locate: `docker` or `podman`!'
-    exit $EXIT_CODE_DEP_INSTALL_FAILURE
+    __error 'Failed to locate: `docker` or `podman`!' ; exit $EXIT_CODE_DEP_FAILURE
   else
     DOCKER_CMD=podman
   fi
 fi
 
-if ! [ -x "$DOCKER_COMPOSE_CMD" ] ; then
-  if ! "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose" ; then
-    __error 'Failed to locate or download: `'"$DOCKER_CMD"'-compose`!'
-    exit $EXIT_CODE_DEP_INSTALL_FAILURE
-  fi
-fi
+[ -x "$DOCKER_COMPOSE_CMD" ] || "$SCRIPTS_DIR/install-compose.sh" "$LIB_DIR/compose" \
+  || { __error 'Failed to locate or download: `'"$DOCKER_CMD"'-compose`!' ; exit $EXIT_CODE_DEP_FAILURE ; }
 
-if ! [ -x "$YQ_CMD" ] ; then
-  if ! "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" ; then
-    __error 'Failed to locate or download: `yq`!'
-    exit $EXIT_CODE_DEP_INSTALL_FAILURE
-  fi
-fi
+[ -x "$YQ_CMD" ] || "$SCRIPTS_DIR/install-yq.sh" "$LIB_DIR/yq" \
+  || { __error 'Failed to locate or download: `yq`!' ; exit $EXIT_CODE_DEP_FAILURE ; }
 
 # # # # # # # # # # # # # # # # # # #      MAIN FUNCTION      # # # # # # # # # # # # # # # # # # #
 
@@ -530,13 +510,13 @@ FRAGMENTS_FROM_ARGS=( "$FRAGMENT_DEVICES" "$FRAGMENT_HOOKS" "$FRAGMENT_LABELS" "
 _FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; _CUR_YQ_META_QUERY_PFX_=""
 unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
 for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
-  _CUR_COMP_="${_CUR_COMP_%/}"
+  _CUR_COMP_="${_CUR_COMP_%/}" ; _DISP_CUR_COMP_="${_bold_}$_CUR_COMP_${_normal_}"
   if ! cd "$SELF_DIR/$_CUR_COMP_" 2>/dev/null ; then
-    echo ; __error "${_bold_}$_CUR_COMP_${_normal_} is not a base directory at '$SELF_DIR'!"
+    echo ; __error "$_DISP_CUR_COMP_ is not a base directory at '$SELF_DIR'!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
   if ! [ -f "$SELF_DIR/$_CUR_COMP_/compose.yml" ] ; then
-    echo ; __error "No 'compose.yml' found under ${_bold_}$_CUR_COMP_${_normal_}!"
+    echo ; __error "No 'compose.yml' found under $_DISP_CUR_COMP_!"
     __maybe_fail_fast $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
 
@@ -571,7 +551,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     fi
     echo -ne "\n$_CUR_VERB_PREFIX_ ${_normal_} Executing ${_bold_}$_CUR_VERB_${_normal_} on "
     [ "$COMP_SELF_CALL_DEPTH" -eq 0 ] || printf '%s ' "$COMP_SELF_CALL_REASON"
-    echo "${_bold_}$_CUR_COMP_${_normal_} ... "
+    echo "$_DISP_CUR_COMP_ ... "
     [ ${#_DISABLED_FRAGMENTS_[@]} -eq 0 ] || echo "[o] Disabled fragments: ${_DISABLED_FRAGMENTS_[*]}"
 
     if __will_invoke_compose ; then
@@ -587,14 +567,12 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
       || __maybe_fail_fast $EXIT_CODE_PRE_HOOK_SCRIPT_ERROR || continue
     __show_message "$_CUR_VERB_" pre
 
-    if __will_invoke_compose ; then
-      __verify_volumes || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
-    fi
+    ! __will_invoke_compose || __verify_volumes || __maybe_fail_fast $EXIT_CODE_SETUP_ERROR || continue
 
     verb_ret=0 ; "do_${_CUR_VERB_}" ; verb_ret=$?
 
-    [ "$_CUR_VERB_" != validate ] || [ $verb_ret -ne 0 ] || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is valid!"
-    [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] ${_bold_}$_CUR_COMP_${_normal_} is healthy!"
+    [ "$_CUR_VERB_" != validate ] || [ $verb_ret -ne 0 ] || echo "[=] $_DISP_CUR_COMP_ is valid!"
+    [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] $_DISP_CUR_COMP_ is healthy!"
 
     [ $verb_ret -eq 0 ] || __maybe_fail_fast $EXIT_CODE_VERB_FAILURE || continue
 
