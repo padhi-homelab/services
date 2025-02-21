@@ -33,12 +33,9 @@ services:
     image: pihole/pihole:${PIHOLE_VERSION:?}
     restart: unless-stopped
 
-    # FIXME: cannot use `no-new-privileges` yet,
-    # see https://discourse.pi-hole.net/t/sudo-suid-problems/20590
-    # security_opt:
-    # # NOTE: Do NOT add a [space] before `true` below.
-    # - no-new-privileges:true
-    # NOTE: no `user:` needed; runs as non-root user since 2022.01
+    security_opt:
+    # NOTE: Do NOT add a [space] before `true` below.
+    - no-new-privileges:true
 
     depends_on:
       dnscrypt-proxy:
@@ -52,16 +49,12 @@ services:
     - ./data/pihole/etc/pihole:/etc/pihole:rw
     - ./data/pihole/etc/dnsmasq.d:/etc/dnsmasq.d:rw
 
-    dns:
-    - 10.0.0.4
-    - 127.0.0.1
     environment:
-      PIHOLE_DNS_: '10.0.0.3#8053'
-      DNS_BOGUS_PRIV: 'true'
-      DNS_FQDN_REQUIRED: 'true'
-      DNSMASQ_LISTENING: all
-      IPv6: 'false'
-      SKIPGRAVITYONBOOT: 'true'
-      CUSTOM_CACHE_SIZE: 50000
-      WEBPASSWORD: admin
+      FTLCONF_dns_upstreams: '10.0.0.3#8053'
+      FTLCONF_dns_bogusPriv: 'true'
+      FTLCONF_dns_domainNeeded: 'true'
+      FTLCONF_dns_listeningMode: all
+      FTLCONF_webserver_api_password: admin
+      PIHOLE_UID: ${USER_ID:?}
+      PIHOLE_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}

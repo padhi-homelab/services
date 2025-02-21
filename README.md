@@ -293,7 +293,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.23.3-r...s</sub></code>
+        <code><sub>1.23.4-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -397,7 +397,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>11.6.2</sub></code>
+        <code><sub>11.7.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -477,7 +477,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.54.4</sub></code>
+        <code><sub>0.54.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -517,7 +517,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>17.2...ne</sub></code>
+        <code><sub>17.3...ne</sub></code>
         <br>
         <code><sub>8.0.2...ne</sub></code>
         <br>
@@ -581,7 +581,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>11.6.2</sub></code>
+        <code><sub>11.7.2</sub></code>
         <br>
         <code><sub>7.4.2</sub></code>
         <br>
@@ -694,7 +694,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://pi-hole.net'>Pi&#8209;hole</a>
         <br>
-        <sub>:53, :4432/pihole/</sub>
+        <sub>:53, :44433/pihole/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28PiHole%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_pihole.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -713,7 +713,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>2.1.7</sub></code>
         <br>
-        <code><sub>2024.07.0</sub></code>
+        <code><sub>2025.02.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -819,7 +819,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>17.2...ne</sub></code>
+        <code><sub>17.3...ne</sub></code>
         <br>
         <code><sub>2.0.20</sub></code>
         <br>
