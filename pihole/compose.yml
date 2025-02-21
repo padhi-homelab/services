@@ -54,7 +54,6 @@ services:
       FTLCONF_dns_bogusPriv: 'true'
       FTLCONF_dns_domainNeeded: 'true'
       FTLCONF_dns_listeningMode: all
-      FTLCONF_webserver_api_password: admin
       PIHOLE_UID: ${USER_ID:?}
       PIHOLE_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}

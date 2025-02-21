@@ -364,7 +364,7 @@ usage () {
   readarray -t compositions < <(find . -maxdepth 2 -type f -name compose.yml -printf '%h\0' | xargs -0 -I{} basename {})
   echo -e "
 Usage:
-  $0 <verb>[,<verb>,...] [flags] [options] <comp_dir> [<comp_dir> ...]
+  $0 <verb>[,<verb>,...] [flags] [fragments] <comp_dir> [<comp_dir> ...]
 
 Verbs: (short forms within <>)
   <c>lean        Delete '<comp_dir>/data'
