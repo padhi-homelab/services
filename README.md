@@ -5,8 +5,10 @@
 <summary><h4>Why <code>comp</code>?</h4></summary>
 
 The multi-staged nature and repetitive commands for setting up complex compositions
-(e.g., containers with host user's UID:GID, shared networks across compositions, etc.)
-is the raison d'être for `comp`. Some of the key features are highlighted below.
+(e.g., containers with files owned by host user's UID:GID,
+shared external networks across compositions, etc.)
+is the raison d'être for `comp`.
+Some of the key considerations are highlighted below.
 
 For running non-root containers with the host user's UID:GID
 (e.g., to avoid permission issues with mounted volumes),
@@ -325,7 +327,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2025.2.4_2.0.5</sub></code>
+        <code><sub>2025.2.5_2.0.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -713,7 +715,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>2.1.7</sub></code>
         <br>
-        <code><sub>2025.02.3</sub></code>
+        <code><sub>2025.02.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

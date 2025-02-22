@@ -109,7 +109,7 @@ function _EXIT () {
 
 SETUP "invocation without args fails" \
       ""
-CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] \[options\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
+CHECK $'grep -qs "<verb>\[,<verb>,\.\.\.\] \[flags\] \[fragments\] <comp_dir> \[<comp_dir> \.\.\.\]" "$COMP_ERR_PATH"' \
       "Usage information on stderr"
 CHECK $'[ $COMP_EXIT_CODE -eq $EXIT_CODE_USAGE_ERROR ]' \
       "EXIT_CODE_USAGE_ERROR"

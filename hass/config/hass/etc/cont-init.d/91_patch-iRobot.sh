@@ -2,8 +2,8 @@
 
 cd /usr/src/homeassistant/homeassistant/components/roomba
 
-# NOTE: Patch
-#
+# NOTE: Patch iRobot component to also show the raw state from devices,
+#       to inspect the map and room info from the home assistant UI.
 
 patch vacuum.py << 'EOF'
 --- vacuum_old.py       2025-02-16 19:36:03.612955976 -0800
