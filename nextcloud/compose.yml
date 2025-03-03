@@ -68,7 +68,7 @@ services:
 
   fulltextsearch:
     hostname: fulltextsearch
-    image: nextcloud/aio-fulltextsearch:${NEXTCLOUD_FULL_TEXT_SEARCH_VERSION:?}
+    image: nextcloud/aio-fulltextsearch:${NEXTCLOUD_AIO_VERSION:?}
     restart: unless-stopped
 
     security_opt:
@@ -103,7 +103,7 @@ services:
 
   imaginary:
     hostname: imaginary
-    image: nextcloud/aio-imaginary:${NEXTCLOUD_IMAGINARY_VERSION:?}
+    image: nextcloud/aio-imaginary:${NEXTCLOUD_AIO_VERSION:?}
     restart: unless-stopped
 
     command: -cpus 4 -concurrency 16 -enable-url-source

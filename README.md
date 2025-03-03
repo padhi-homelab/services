@@ -199,7 +199,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>17.2...ne</sub></code>
         <br>
-        <code><sub>v0.10.0....7</sub></code>
+        <code><sub>v0.10.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -587,13 +587,13 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>7.4.2</sub></code>
         <br>
-        <code><sub>20250204...59</sub></code>
+        <code><sub>20250225...24</sub></code>
         <br>
-        <code><sub>20250204...59</sub></code>
+        <code><sub>20250225...24</sub></code>
         <br>
-        <code><sub>30.0.6</sub></code>
+        <code><sub>31.0.0</sub></code>
         <br>
-        <code><sub>30.0.6</sub></code>
+        <code><sub>31.0.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -715,7 +715,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>2.1.7</sub></code>
         <br>
-        <code><sub>2025.02.4</sub></code>
+        <code><sub>2025.02.74</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -900,7 +900,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>3.3.3</sub></code>
+        <code><sub>3.3.4</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
