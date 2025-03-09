@@ -22,6 +22,6 @@ services:
     - ./data/beszel/beszel_data:/beszel_data:rw
 
     environment:
-      USER_CREATION: false
+      BESZEL_HUB_USER_CREATION: false
 
     # FIXME: Healthcheck. See: https://github.com/henrygd/beszel/issues/324
