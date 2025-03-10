@@ -22,6 +22,6 @@ services:
     environment:
       ND_BASEURL: "/${NAVIDROME_BASE_PATH:?}"
       ND_LOGLEVEL: info
-      ND_SCANSCHEDULE: 30m
+      ND_SCANNER_SCHEDULE: 30m
       ND_SESSIONTIMEOUT: 8h
       TZ: ${TZ:?}
