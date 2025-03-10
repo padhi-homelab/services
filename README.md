@@ -116,7 +116,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://beszel.dev/'>Beszel Hub</a>
         <br>
-        <sub>:4803/</sub>
+        <sub>:24432/beszel/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Hub%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-hub.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>

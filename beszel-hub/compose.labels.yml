@@ -3,7 +3,8 @@ services:
     labels:
       traefik.enable: true
       #
-      # FIXME: Serve over a basepath
+      traefik.http.middlewares.strip-beszel-prefix.stripPrefix.prefixes: "/${BESZEL_HUB_BASE_PATH:?}"
       #
-      traefik.http.routers.beszel.rule: Host(`${SERVER_LAN_FQDN:?}`)
-      traefik.http.routers.beszel.entryPoints: wan-https-monitor-exclusive
+      traefik.http.routers.beszel.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${BESZEL_HUB_BASE_PATH:?}`)
+      traefik.http.routers.beszel.entryPoints: lan-https-monitor
+      traefik.http.routers.beszel.middlewares: strip-beszel-prefix

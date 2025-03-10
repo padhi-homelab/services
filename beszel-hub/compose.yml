@@ -23,5 +23,6 @@ services:
 
     environment:
       BESZEL_HUB_USER_CREATION: false
+      BESZEL_HUB_APP_URL: "https://${SERVER_LAN_FQDN:?}:${SERVER_LAN_HTTPS_MONITOR_PORT:?}/${BESZEL_HUB_BASE_PATH:?}"
 
     # FIXME: Healthcheck. See: https://github.com/henrygd/beszel/issues/324
