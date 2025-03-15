@@ -97,13 +97,21 @@ __gen_env () {
   [ ! -f .env ] || [ "$FLAG_SKIP_GENERATE" != yes ] || return 0
 
   printf "[*] Generating '.env':"
-  cp "$SELF_DIR/static.global.env" .env || return 1
+  cp "$SELF_DIR/versions.global.env" .env || return 1
+  [ "$FLAG_SKIP_OVERRIDES" = yes ] || [ ! -f "$SELF_DIR/versions.global.override.env" ] \
+    || cat "$SELF_DIR/versions.global.override.env" >> .env || return 1
+
+  cat "$SELF_DIR/static.global.env" >> .env || return 1
   __append_env_from "$SELF_DIR/dynamic.global.env.sh" || return 1
 
   [ "$FLAG_SKIP_OVERRIDES" = yes ] || [ ! -f "$SELF_DIR/static.global.override.env" ] \
     || cat "$SELF_DIR/static.global.override.env" >> .env || return 1
   [ "$FLAG_SKIP_OVERRIDES" = yes ] \
     || __append_env_from "$SELF_DIR/dynamic.global.override.env.sh" || return 1
+
+  [ ! -f versions.env ] || cat versions.env >> .env || return 1
+  [ "$FLAG_SKIP_OVERRIDES" = yes ] || [ ! -f versions.override.env ] \
+    || cat versions.override.env >> .env || return 1
 
   [ ! -f static.env ] || cat static.env >> .env || return 1
   __append_env_from "./dynamic.env.sh" || return 1
@@ -161,7 +169,7 @@ __fail () {
   return "$1"
 }
 
-__print_sepator_line () {
+__print_separator_line () {
   case "$COMP_SELF_CALL_DEPTH" in
     0 ) printf "%.0s–" {1..80} ;;
     1 ) printf "%.0s·" {1..80} ;;
@@ -504,7 +512,7 @@ COMPOSITIONS=( "$@" )
 FRAGMENTS_FROM_ARGS=( "$FRAG_DEVICES" "$FRAG_HOOKS" "$FRAG_LABELS" "$FRAG_LOGGING" "$FRAG_PORTS" )
 
 _FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; _CUR_YQ_META_QUERY_PFX_=""
-unset _CUR_COMP_ _CUR_VERB_ ; __print_sepator_line
+unset _CUR_COMP_ _CUR_VERB_ ; __print_separator_line
 for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   _CUR_COMP_="${_CUR_COMP_%/}" ; _DISP_CUR_COMP_="${_bold_}$_CUR_COMP_${_normal_}"
   if ! cd "$SELF_DIR/$_CUR_COMP_" 2>/dev/null ; then
@@ -586,7 +594,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
       || __fail $EXIT_CODE_POST_HOOK_SCRIPT_ERROR
     __show_message "$_CUR_VERB_" post
   done
-  unset _CUR_VERB_ ; __print_sepator_line
+  unset _CUR_VERB_ ; __print_separator_line
 done
 [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
 exit "$_FINAL_EXIT_CODE_"

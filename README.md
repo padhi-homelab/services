@@ -1085,6 +1085,9 @@ running the container with a rootless docker daemon.
 All local tweaks should be added to `*.override.*` files.
 
 - at the repo root:
+  - `versions.global.override.env` may store global version numbers
+    - these are exposed as-is to docker compose
+    - see [`versions.global.env`](versions.global.env) for the default
   - `static.global.override.env` may store global constants
     - e.g. ACME configs, ports to be open etc.
     - these are exposed as-is to docker compose
@@ -1095,6 +1098,15 @@ All local tweaks should be added to `*.override.*` files.
     - see [`dynamic.global.env.sh`](dynamic.global.env.sh) for the default
 
 - within each composition:
+  - `versions.global.override.env` may store additional composition-specific version numbers
+    - similar idea as its global counterpart `versions.global.env`
+    - see [`unifi/versions.global.env`](unifi/versions.global.env) for an example
+  - `static.override.env` may store additional composition-specific constants
+    - similar idea as its global counterpart `static.global.env`
+    - see [`gitea/static.env`](gitea/static.env) for an example
+  - `dynamic.override.env.sh` may generate additional composition-specific environment variables
+    - similar idea as its global counterpart `dynamic.global.env.sh`
+    - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
   - `meta.override.yml` may:
     - specify other compositions as _prerequisites_
       - see [`airdcpp/meta.yml`](airdcpp/meta.yml) for an example
@@ -1107,12 +1119,6 @@ All local tweaks should be added to `*.override.*` files.
       - see [`.github/workflows/config/meta.override.yml`](.github/workflows/config/meta.override.yml) for an example
     - specify messages to be displayed after verb executions
       - see [`traefik/meta.yml`](traefik/meta.yml) for an example
-  - `static.override.env` may store additional service-specific constants
-    - similar idea as its global counterpart `static.global.env`
-    - see [`gitea/static.env`](gitea/static.env) for an example
-  - `dynamic.override.env.sh` may generate additional service-specific evironment variables
-    - similar idea as its global counterpart `dynamic.global.env.sh`
-    - see [`pihole/dynamic.env.sh`](pihole/dynamic.env.sh) for an example
   - `compose.override.{yml|yaml}` may contain overrides for docker compose
     - modular overrides may also be specified for individual YAML fragment files:  
       `compose.{devices|labels|logging|ports}.override.{yml|yaml}`
