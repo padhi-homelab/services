@@ -21,7 +21,7 @@ services:
 
     environment:
       BESZEL_AGENT_DOCKER_HOST: "tcp://docker.sock-proxy:1279"
-      BESZEL_AGENT_KEY: "paste_ssh_key_from_hub"
+      BESZEL_AGENT_KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM5OjzASQ6C4Qh1LpACCPTK2mG3wQ3fEeH9FepT4x/Ia"
       BESZEL_AGENT_LISTEN: ${BESZEL_AGENT_PORT:?}
 
     healthcheck:

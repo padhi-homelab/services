@@ -82,7 +82,9 @@ __create_external_networks () {
 __rec_ () {
   local reason="$1"
   local verb="$2"
+  local nonempty="_CUR_COMP_${reason^^}_IS_NONEMPTY_"
   while IFS= read -r target_comp ; do
+    printf -v "$nonempty" "%s" "yes"
     # NOTE: Use `--skip-related` to avoid potential circular dependency:
     #       comp --[ pre_req ]--> target_comp --[ related ]--> comp
     __CALL_SELF__ "$reason" "$verb" --fail-fast --skip-related "$target_comp" || return 1
@@ -511,6 +513,7 @@ fi
 COMPOSITIONS=( "$@" )
 FRAGMENTS_FROM_ARGS=( "$FRAG_DEVICES" "$FRAG_HOOKS" "$FRAG_LABELS" "$FRAG_LOGGING" "$FRAG_PORTS" )
 
+_CUR_COMP_RELATED_IS_NONEMPTY_="" ; _CUR_COMP_PRE_REQ_IS_NONEMPTY_=""
 _FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; _CUR_YQ_META_QUERY_PFX_=""
 unset _CUR_COMP_ _CUR_VERB_ ; __print_separator_line
 for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
@@ -581,7 +584,8 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ $verb_ret -eq 0 ] || __fail $EXIT_CODE_VERB_FAILURE || continue
 
     if __will_do_related ; then
-      { __rec_ related "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue ; } ; echo
+      __rec_ related "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
+      [ -z "$_CUR_COMP_RELATED_IS_NONEMPTY_" ] || echo
     fi
 
     if __will_invoke_compose ; then

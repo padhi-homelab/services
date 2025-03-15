@@ -1100,7 +1100,7 @@ All local tweaks should be added to `*.override.*` files.
 - within each composition:
   - `versions.global.override.env` may store additional composition-specific version numbers
     - similar idea as its global counterpart `versions.global.env`
-    - see [`unifi/versions.global.env`](unifi/versions.global.env) for an example
+    - see [`unifi/versions.env`](unifi/versions.env) for an example
   - `static.override.env` may store additional composition-specific constants
     - similar idea as its global counterpart `static.global.env`
     - see [`gitea/static.env`](gitea/static.env) for an example
