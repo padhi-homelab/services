@@ -114,22 +114,22 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://beszel.dev/'>Beszel Hub</a>
+        <a href='https://beszel.dev/'>Beszel Agent</a>
         <br>
-        <sub>:24432/beszel/</sub>
+        <sub>:45876</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Hub%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-hub.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Agent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-agent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/henrygd/beszel'>
-          <sub>beszel</sub>
+        <a href='https://hub.docker.com/r/henrygd/beszel-agent'>
+          <sub>agent</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.10.1</sub></code>
+        <code><sub>0.10.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -146,22 +146,22 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://beszel.dev/'>Beszel Agent</a>
+        <a href='https://beszel.dev/'>Beszel Hub</a>
         <br>
-        <sub>:45876</sub>
+        <sub>:24432/beszel/</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Agent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-agent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Hub%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-hub.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/r/henrygd/beszel-agent'>
-          <sub>agent</sub>
+        <a href='https://hub.docker.com/r/henrygd/beszel'>
+          <sub>beszel</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.9.1</sub></code>
+        <code><sub>0.10.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
