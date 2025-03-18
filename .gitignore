@@ -1,12 +1,14 @@
-.env
-**/*.override.*
-**/private.*
-
-.lib
+# Drafts, overrides and private stuff
 .draft
+**/*.override.*
+**/private_*
 
+# Generated files and directories
+.env
 */data
+.lib
 */generated
 
+# Potential leftovers from test runs
 test__*
 _.test.*

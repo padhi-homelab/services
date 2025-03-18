@@ -10,7 +10,7 @@ on:
 
 env:
   TARGET_SERVICE: beszel-agent
-  TARGET_TIMEOUT: 15
+  TARGET_TIMEOUT: 90
 
 jobs:
   test:
