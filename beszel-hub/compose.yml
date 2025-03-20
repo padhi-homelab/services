@@ -27,5 +27,6 @@ services:
 
     healthcheck:
       test: ['CMD', '/beszel', 'health', '--url', 'http://localhost:8090']
-      start_period: 15s
-      interval: 120s
+      start_period: 30s
+      interval: 5s
+      timeout: 2s
