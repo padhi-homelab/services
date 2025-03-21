@@ -9,13 +9,12 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     networks:
     - traefik-net
     volumes:
-    - ./data/uptime/app/data:/app/data
+    - ./data/uptime/app/data:/app/data:rw
 
     environment:
       PUID: ${USER_ID:?}

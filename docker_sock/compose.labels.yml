@@ -1,9 +1,9 @@
 services:
   docker.sock-proxy:
     labels:
-      traefik.enable: true
-      traefik.docker.network: docker-sock
-      traefik.http.services.docker_sock.loadBalancer.server.port: 9000
-      #
-      traefik.http.routers.docker_sock.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${DOCKER_SOCK_PROXY_BASE_PATH:?}`)
-      traefik.http.routers.docker_sock.entryPoints: lan-https-monitor
+    - "traefik.enable=true"
+    - "traefik.docker.network=docker-sock"
+    - "traefik.http.services.${DOCKER_SOCK_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=9000"
+    #
+    - "traefik.http.routers.${DOCKER_SOCK_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${DOCKER_SOCK_PROXY_BASE_PATH:?}`)"
+    - "traefik.http.routers.${DOCKER_SOCK_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-monitor"

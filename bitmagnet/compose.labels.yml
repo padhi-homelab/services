@@ -1,10 +1,10 @@
 services:
   bitmagnet:
     labels:
-      traefik.enable: true
-      traefik.http.services.bitmagnet.loadBalancer.server.port: 3333
-      #
-      # FIXME: Serve over a basepath
-      #
-      traefik.http.routers.bitmagnet.rule: Host(`${SERVER_LAN_FQDN:?}`)
-      traefik.http.routers.bitmagnet.entryPoints: lan-https-service-exclusive
+    - "traefik.enable=true"
+    - "traefik.http.services.${BITMAGNET_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=3333"
+    #
+    # FIXME: Serve over a basepath
+    #
+    - "traefik.http.routers.${BITMAGNET_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`)"
+    - "traefik.http.routers.${BITMAGNET_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service-exclusive"

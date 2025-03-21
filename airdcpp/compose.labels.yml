@@ -1,11 +1,11 @@
 services:
   airdcpp:
     labels:
-      traefik.enable: true
-      traefik.http.services.airdcpp.loadBalancer.server.port: 5600
-      #
-      traefik.http.middlewares.strip-airdcpp-prefix.stripPrefix.prefixes: "/${AIRDCPP_BASE_PATH:?}"
-      #
-      traefik.http.routers.airdcpp.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${AIRDCPP_BASE_PATH:?}`)
-      traefik.http.routers.airdcpp.entryPoints: wan-https-service
-      traefik.http.routers.airdcpp.middlewares: strip-airdcpp-prefix
+    - "traefik.enable=true"
+    - "traefik.http.services.${AIRDCPP_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=5600"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${AIRDCPP_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${AIRDCPP_BASE_PATH:?}"
+    #
+    - "traefik.http.routers.${AIRDCPP_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${AIRDCPP_BASE_PATH:?}`)"
+    - "traefik.http.routers.${AIRDCPP_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${AIRDCPP_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${AIRDCPP_TRAEFIK_NAMESPACE:?}"

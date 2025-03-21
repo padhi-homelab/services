@@ -1,10 +1,11 @@
 services:
   beszel:
     labels:
-      traefik.enable: true
-      #
-      traefik.http.middlewares.strip-beszel-prefix.stripPrefix.prefixes: "/${BESZEL_HUB_BASE_PATH:?}"
-      #
-      traefik.http.routers.beszel.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${BESZEL_HUB_BASE_PATH:?}`)
-      traefik.http.routers.beszel.entryPoints: lan-https-monitor
-      traefik.http.routers.beszel.middlewares: strip-beszel-prefix
+    - "traefik.enable=true"
+    - "traefik.http.services.${BESZEL_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8090"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${BESZEL_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${BESZEL_HUB_BASE_PATH:?}"
+    #
+    - "traefik.http.routers.${BESZEL_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${BESZEL_HUB_BASE_PATH:?}`)"
+    - "traefik.http.routers.${BESZEL_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-monitor"
+    - "traefik.http.routers.${BESZEL_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${BESZEL_TRAEFIK_NAMESPACE:?}"

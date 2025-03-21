@@ -6,16 +6,15 @@ services:
     entrypoint: entrypoint
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     volumes:
     - ./config/certbot/usr/local/bin/entrypoint:/usr/local/bin/entrypoint:ro
     - ./config/certbot/usr/local/bin/healthcheck:/usr/local/bin/healthcheck:ro
-    - ./data/certbot/etc/letsencrypt:/etc/letsencrypt
-    - ./data/certbot/var/lib/letsencrypt:/var/lib/letsencrypt
-    - ./data/certbot/var/log/letsencrypt:/var/log/letsencrypt
+    - ./data/certbot/etc/letsencrypt:/etc/letsencrypt:rw
+    - ./data/certbot/var/lib/letsencrypt:/var/lib/letsencrypt:rw
+    - ./data/certbot/var/log/letsencrypt:/var/log/letsencrypt:rw
 
     environment:
       CERTBOT_EMAIL: ${LETS_ENCRYPT_ACME_EMAIL:?}

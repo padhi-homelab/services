@@ -9,7 +9,6 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
@@ -36,7 +35,6 @@ services:
       sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
@@ -61,7 +59,6 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
 
     depends_on:

@@ -1,18 +1,19 @@
 services:
   hass:
     labels:
-      traefik.enable: true
-      #
-      traefik.http.middlewares.only-https-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: https
-      traefik.http.middlewares.only-wss-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: wss
-      #
-      # FIXME: Serving hass behind a subpath is not supported, yet.
-      # See https://github.com/home-assistant/core/issues/21113
-      #
-      traefik.http.routers.hass.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)
-      traefik.http.routers.hass.entryPoints: wan-https-service-exclusive
-      traefik.http.routers.hass.middlewares: only-https-forwarded-proto
-      #
-      traefik.http.routers.hass-websocket.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/api/websocket`)
-      traefik.http.routers.hass-websocket.entryPoints: wan-https-service-exclusive
-      traefik.http.routers.hass-websocket.middlewares: only-wss-forwarded-proto
+    - "traefik.enable=true"
+    - "traefik.http.services.${HASS_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8123"
+    #
+    - "traefik.http.middlewares.https-forwarded-proto-for-${HASS_TRAEFIK_NAMESPACE:?}.headers.customRequestHeaders.X-Forwarded-Proto=https"
+    - "traefik.http.middlewares.wss-forwarded-proto-for-${HASS_TRAEFIK_NAMESPACE:?}.headers.customRequestHeaders.X-Forwarded-Proto=wss"
+    #
+    # FIXME: Serving hass behind a subpath is not supported, yet.
+    # See https://github.com/home-assistant/core/issues/21113
+    #
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/`)"
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service-exclusive"
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}.middlewares=https-forwarded-proto-for-${HASS_TRAEFIK_NAMESPACE:?}"
+    #
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}-ws.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/api/websocket`)"
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}-ws.entryPoints=wan-https-service-exclusive"
+    - "traefik.http.routers.${HASS_TRAEFIK_NAMESPACE:?}-ws.middlewares=wss-forwarded-proto-for-${HASS_TRAEFIK_NAMESPACE:?}"

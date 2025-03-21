@@ -1,14 +1,15 @@
 services:
   nextcloud:
     labels:
-      traefik.enable: true
-      #
-      traefik.http.middlewares.strip-nextcloud-prefix.stripPrefix.prefixes: "/${NEXTCLOUD_BASE_PATH:?}"
-      traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.permanent: true
-      traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.regex: "^https://(.+)/${NEXTCLOUD_BASE_PATH:?}/.well-known/(card|cal)dav"
-      traefik.http.middlewares.nextcloud-caldav-redirect.redirectRegex.replacement: "https://$${1}/${NEXTCLOUD_BASE_PATH:?}/remote.php/dav/"
-      #
-      traefik.http.routers.nextcloud.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${NEXTCLOUD_BASE_PATH:?}`)
-      traefik.http.routers.nextcloud.entryPoints: wan-https-service
-      # NOTE: Order of middlewares matters! redirect must be performed before stripping
-      traefik.http.routers.nextcloud.middlewares: nextcloud-caldav-redirect@docker,strip-nextcloud-prefix
+    - "traefik.enable=true"
+    - "traefik.http.services.${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${NEXTCLOUD_BASE_PATH:?}"
+    - "traefik.http.middlewares.caldav-redirect-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.redirectRegex.permanent=true"
+    - "traefik.http.middlewares.caldav-redirect-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.redirectRegex.regex=^https://(.+)/${NEXTCLOUD_BASE_PATH:?}/.well-known/(card|cal)dav"
+    - "traefik.http.middlewares.caldav-redirect-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.redirectRegex.replacement=https://$${1}/${NEXTCLOUD_BASE_PATH:?}/remote.php/dav/"
+    #
+    - "traefik.http.routers.${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${NEXTCLOUD_BASE_PATH:?}`)"
+    - "traefik.http.routers.${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    # NOTE: Order of middlewares matters! redirect must be performed before stripping
+    - "traefik.http.routers.${NEXTCLOUD_TRAEFIK_NAMESPACE:?}.middlewares=caldav-redirect-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?},strip-prefix-for-${NEXTCLOUD_TRAEFIK_NAMESPACE:?}"

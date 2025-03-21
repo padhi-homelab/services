@@ -1,10 +1,11 @@
 services:
   tang:
     labels:
-      traefik.enable: true
-      #
-      traefik.http.middlewares.strip-tang-prefix.stripPrefix.prefixes: "/${TANG_BASE_PATH:?}"
-      #
-      traefik.http.routers.tang.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TANG_BASE_PATH:?}`)
-      traefik.http.routers.tang.entryPoints: lan-http-service
-      traefik.http.routers.tang.middlewares: strip-tang-prefix
+    - "traefik.enable=true"
+    - "traefik.http.services.${TANG_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8080"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${TANG_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${TANG_BASE_PATH:?}"
+    #
+    - "traefik.http.routers.${TANG_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TANG_BASE_PATH:?}`)"
+    - "traefik.http.routers.${TANG_TRAEFIK_NAMESPACE:?}.entryPoints=lan-http-service"
+    - "traefik.http.routers.${TANG_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${TANG_TRAEFIK_NAMESPACE:?}"

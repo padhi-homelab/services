@@ -1,14 +1,15 @@
 services:
   ntfy:
     labels:
-      traefik.enable: true
-      #
-      # FIXME: Serve (API?) over a basepath
-      #
-      traefik.http.routers.ntfy-wan.rule: Host(`${SERVER_WAN_FQDN:?}`) && !( PathPrefix(`/docs`) || PathPrefix(`/static`) || PathPrefix(`/${NTFY_BASE_PATH:?}`) )
-      traefik.http.routers.ntfy-wan.entryPoints: wan-https-internal-exclusive
-      #
-      # FIXME: Serve over a basepath
-      #
-      traefik.http.routers.ntfy-lan.rule: Host(`${SERVER_LAN_FQDN:?}`)
-      traefik.http.routers.ntfy-lan.entryPoints: lan-https-internal-exclusive
+    - "traefik.enable=true"
+    - "traefik.http.services.${NTFY_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
+    #
+    # FIXME: Serve (API?) over a basepath on WAN
+    #
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-wan.rule=Host(`${SERVER_WAN_FQDN:?}`) && !( PathPrefix(`/docs`) || PathPrefix(`/static`) || PathPrefix(`/${NTFY_BASE_PATH:?}`) )"
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-wan.entryPoints=wan-https-internal-exclusive"
+    #
+    # FIXME: Serve dashboard over a basepath on LAN
+    #
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-lan.rule=Host(`${SERVER_LAN_FQDN:?}`)"
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-lan.entryPoints=lan-https-internal-exclusive"

@@ -1,10 +1,11 @@
 services:
   http:
     labels:
-      traefik.enable: true
-      #
-      # NOTE: This is not an "exclusive" port use.
-      #       It is intended to serve as a catch-all case for unmatched paths.
-      #
-      traefik.http.routers.http.rule: Host(`${SERVER_WAN_FQDN:?}`)
-      traefik.http.routers.http.entryPoints: wan-https-service
+    - "traefik.enable=true"
+    - "traefik.http.services.${TINY_HTTPD_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
+    #
+    # NOTE: This is not an "exclusive" port use.
+    #       It is intended to serve as a catch-all case for unmatched paths.
+    #
+    - "traefik.http.routers.${TINY_HTTPD_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`)"
+    - "traefik.http.routers.${TINY_HTTPD_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"

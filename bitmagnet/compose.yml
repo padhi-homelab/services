@@ -4,7 +4,6 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
@@ -31,7 +30,6 @@ services:
     command: worker run --all
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     # FIXME: Run as non-root user
 

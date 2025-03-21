@@ -11,7 +11,6 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
@@ -35,7 +34,6 @@ services:
     restart: unless-stopped
 
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 
@@ -63,7 +61,6 @@ services:
     cap_drop:
     - all
     security_opt:
-    # NOTE: Do NOT add a [space] before `true` below.
     - no-new-privileges:true
     user: "${USER_ID:?}:${GROUP_ID}"
 

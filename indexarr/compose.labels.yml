@@ -1,8 +1,8 @@
 services:
   jackett:
     labels:
-      traefik.enable: true
-      traefik.http.services.jackett.loadBalancer.server.port: 9117
-      #
-      traefik.http.routers.jackett.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${JACKETT_BASE_PATH:?}`)
-      traefik.http.routers.jackett.entryPoints: wan-https-service
+    - "traefik.enable=true"
+    - "traefik.http.services.${JACKETT_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=9117"
+    #
+    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${JACKETT_BASE_PATH:?}`)"
+    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"

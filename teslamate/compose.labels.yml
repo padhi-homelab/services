@@ -1,16 +1,17 @@
 services:
   teslamate:
     labels:
-      traefik.enable: true
-      #
-      traefik.http.middlewares.strip-teslamate-prefix.stripPrefix.prefixes: "/${TESLAMATE_BASE_PATH:?}"
-      traefik.http.middlewares.only-https-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: https
-      traefik.http.middlewares.only-wss-forwarded-proto.headers.customRequestHeaders.X-Forwarded-Proto: wss
-      #
-      traefik.http.routers.teslamate.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}`)
-      traefik.http.routers.teslamate.entryPoints: lan-https-monitor
-      traefik.http.routers.teslamate.middlewares: strip-teslamate-prefix, only-https-forwarded-proto
-      #
-      traefik.http.routers.teslamate-websocket.rule: Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}/live/websocket`)
-      traefik.http.routers.teslamate-websocket.entryPoints: lan-https-monitor
-      traefik.http.routers.teslamate-websocket.middlewares: strip-teslamate-prefix, only-wss-forwarded-proto
+    - "traefik.enable=true"
+    - "traefik.http.services.${TESLAMATE_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=4000"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${TESLAMATE_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${TESLAMATE_BASE_PATH:?}"
+    - "traefik.http.middlewares.https-forwarded-proto-for-${TESLAMATE_TRAEFIK_NAMESPACE:?}.headers.customRequestHeaders.X-Forwarded-Proto=https"
+    - "traefik.http.middlewares.wss-forwarded-proto-for-${TESLAMATE_TRAEFIK_NAMESPACE:?}.headers.customRequestHeaders.X-Forwarded-Proto=wss"
+    #
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}`)"
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-monitor"
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${TESLAMATE_TRAEFIK_NAMESPACE:?},https-forwarded-proto-for-${TESLAMATE_TRAEFIK_NAMESPACE:?}"
+    #
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}-ws.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${TESLAMATE_BASE_PATH:?}/live/websocket`)"
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}-ws.entryPoints=lan-https-monitor"
+    - "traefik.http.routers.${TESLAMATE_TRAEFIK_NAMESPACE:?}-ws.middlewares=strip-prefix-for-${TESLAMATE_TRAEFIK_NAMESPACE:?},wss-forwarded-proto-for-${TESLAMATE_TRAEFIK_NAMESPACE:?}"

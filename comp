@@ -84,6 +84,8 @@ __rec_ () {
   local verb="$2"
   local nonempty="_CUR_COMP_${reason^^}_IS_NONEMPTY_"
   while IFS= read -r target_comp ; do
+    [ -n "${!nonempty}" ] || [ "$reason" != pre_req ] \
+      || [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
     printf -v "$nonempty" "%s" "yes"
     # NOTE: Use `--skip-related` to avoid potential circular dependency:
     #       comp --[ pre_req ]--> target_comp --[ related ]--> comp
@@ -202,6 +204,19 @@ __read_fragment () {
   fi
 }
 
+run_compose_with_files () {
+  local mode="$1"
+  local all__CUR_COMPOSE_FILES_=()
+  for cf in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
+    all__CUR_COMPOSE_FILES_+=(-f "$cf")
+  done
+  if [ "$mode" = up ] ; then
+    $DOCKER_COMPOSE_CMD "${all__CUR_COMPOSE_FILES_[@]}" up -d || return 1
+  elif [ "$mode" = config ] ; then
+    $DOCKER_COMPOSE_CMD "${all__CUR_COMPOSE_FILES_[@]}" config --quiet || return 1
+  fi
+}
+
 __run_hook () {
   ( set -aeu ; source "$SCRIPTS_DIR/colors.sh" ; source .env ; ./"$1" ) \
     || { __error "HOOK '$1' FAILED!" ; return 1 ; }
@@ -258,7 +273,7 @@ __warning () {
 }
 
 __will_invoke_compose () {
-  [ "$_CUR_VERB_" = down ] || [ "$_CUR_VERB_" = pull ] || [ "$_CUR_VERB_" = up ]
+  [ "$_CUR_VERB_" = down ] || [ "$_CUR_VERB_" = pull ] || [ "$_CUR_VERB_" = up ] || [ "$_CUR_VERB_" = validate ]
 }
 
 __will_do_pre_req () {
@@ -287,6 +302,10 @@ do_validate () {
     else
       __error "$DOCKER_COMPOSE_CMD drops all '.' from project name." ; err=1
     fi
+  fi
+  if [ -z "$non_failing" ] ; then
+    echo -n "[>] Checking YAML files: "
+    run_compose_with_files config && echo "${_fg_green_}OK${_normal_}" || return 1
   fi
   [ -z "$err" ] || return 1
 
@@ -355,11 +374,7 @@ do_status () {
 }
 
 do_up () {
-  local all__CUR_COMPOSE_FILES_=()
-  for cf in "${_CUR_COMPOSE_FILES_[@]}" "${_CUR_COMPOSE_OVERRIDE_FILES_[@]}" ; do
-    all__CUR_COMPOSE_FILES_+=(-f "$cf")
-  done
-  $DOCKER_COMPOSE_CMD "${all__CUR_COMPOSE_FILES_[@]}" up -d
+  run_compose_with_files up
 }
 
 # # # # # # # # # # # # # # # # # # #     OPTIONS PARSING     # # # # # # # # # # # # # # # # # # #
@@ -545,7 +560,6 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   for _CUR_VERB_ in $VERBS ; do
     (( ++_CUR_STAGE_ ))
     if __will_do_pre_req ; then
-      [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
       __rec_ pre_req "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
     fi
     [ "$_CUR_VERB_" = validate ] || do_validate non_failing

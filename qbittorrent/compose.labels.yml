@@ -1,11 +1,11 @@
 services:
   qbittorrent:
     labels:
-      traefik.enable: true
-      traefik.http.services.qbittorrent.loadBalancer.server.port: 8080
-      #
-      traefik.http.middlewares.strip-qbittorrent-prefix.stripPrefix.prefixes: "/${QBITTORRENT_BASE_PATH:?}"
-      #
-      traefik.http.routers.qbittorrent.rule: Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${QBITTORRENT_BASE_PATH:?}`)
-      traefik.http.routers.qbittorrent.entryPoints: wan-https-service
-      traefik.http.routers.qbittorrent.middlewares: strip-qbittorrent-prefix
+    - "traefik.enable=true"
+    - "traefik.http.services.${QBITTORRENT_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8080"
+    #
+    - "traefik.http.middlewares.strip-prefix-for-${QBITTORRENT_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${QBITTORRENT_BASE_PATH:?}"
+    #
+    - "traefik.http.routers.${QBITTORRENT_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${QBITTORRENT_BASE_PATH:?}`)"
+    - "traefik.http.routers.${QBITTORRENT_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${QBITTORRENT_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${QBITTORRENT_TRAEFIK_NAMESPACE:?}"
