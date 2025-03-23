@@ -17,7 +17,7 @@ services:
       --collation-server=utf8mb4_unicode_ci
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -46,7 +46,7 @@ services:
       sh -c 'exec valkey-server --requirepass "$${REDIS_HOST_PASSWORD}"'
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -70,7 +70,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     # FIXME: Investigate why this fails to start with ${GROUP_ID:?}.
     #        Nextcloud AIO seems to be using GID 0 as well:
     #        https://github.com/nextcloud/all-in-one/blob/main/Containers/fulltextsearch/Dockerfile#L21
@@ -108,7 +108,7 @@ services:
     cap_add:
     - SYS_NICE
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -130,7 +130,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     depends_on:
@@ -181,7 +181,7 @@ services:
     entrypoint: /cron.sh
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     # FIXME: `crond` needs to run as `root` user.
     # user: "${USER_ID:?}:${GROUP_ID}"
 

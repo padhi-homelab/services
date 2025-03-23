@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -34,7 +34,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -61,7 +61,7 @@ services:
     cap_drop:
     - all
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     depends_on:

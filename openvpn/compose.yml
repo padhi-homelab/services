@@ -12,7 +12,7 @@ services:
     cap_add:
     - NET_ADMIN
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
 
     networks:
     - traefik-net

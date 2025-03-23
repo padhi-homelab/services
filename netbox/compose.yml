@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -35,7 +35,7 @@ services:
       sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
@@ -59,7 +59,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
 
     depends_on:
       postgres:

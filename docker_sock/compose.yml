@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
 
     networks:
     - docker-sock

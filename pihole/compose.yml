@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
 
     networks:
       default:
@@ -33,7 +33,7 @@ services:
     restart: unless-stopped
 
     security_opt:
-    - no-new-privileges:true
+    - no-new-privileges=true
 
     depends_on:
       dnscrypt-proxy:
