@@ -231,7 +231,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>v3.3.0</sub></code>
+        <code><sub>v4.0.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -295,7 +295,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.23.5-r...s</sub></code>
+        <code><sub>1.23.7-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -327,7 +327,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2025.3.4_2.0.5</sub></code>
+        <code><sub>2025.4.1_2.0.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -479,7 +479,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>0.55.1</sub></code>
+        <code><sub>0.55.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -511,7 +511,7 @@ for optionally customizing compositions via _overrides_.
         </a>
         <br>
         <a href='https://hub.docker.com/r/valkey/valkey'>
-          <sub>redis</sub>
+          <sub>valkey</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/r/padhihomelab/netbox/'>
@@ -521,7 +521,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>17.3...ne</sub></code>
         <br>
-        <code><sub>8.0.2...ne</sub></code>
+        <code><sub>8.1.0...ne</sub></code>
         <br>
         <code><sub>4.2.6</sub></code>
       </td>
@@ -562,8 +562,8 @@ for optionally customizing compositions via _overrides_.
           <sub>mariadb</sub>
         </a>
         <br>
-        <a href='https://hub.docker.com/_/redis'>
-          <sub>redis</sub>
+        <a href='https://hub.docker.com/r/valkey/valkey'>
+          <sub>valkey</sub>
         </a>
         <br>
         <a href='https://hub.docker.com/repository/docker/nextcloud/aio-fulltextsearch'>
@@ -585,7 +585,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>11.7.2</sub></code>
         <br>
-        <code><sub>7.4.2</sub></code>
+        <code><sub>8.1.0...ne</sub></code>
         <br>
         <code><sub>20250306...58</sub></code>
         <br>
@@ -677,7 +677,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.6.12</sub></code>
+        <code><sub>2.6.14</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -713,9 +713,9 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.1.7</sub></code>
+        <code><sub>2.1.8</sub></code>
         <br>
-        <code><sub>2025.03.0</sub></code>
+        <code><sub>2025.04.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -900,7 +900,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>3.3.4</sub></code>
+        <code><sub>3.3.5</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
