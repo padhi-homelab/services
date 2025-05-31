@@ -2,8 +2,6 @@ http:
   middlewares:
     add-ssl-headers:
       headers:
-        customRequestHeaders:
-          X-Forwarded-Proto: 'https,wss'
         forceSTSHeader: true
         stsIncludeSubdomains: false
         stsPreload: true

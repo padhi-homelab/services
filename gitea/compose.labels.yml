@@ -4,9 +4,8 @@ services:
     - "traefik.enable=true"
     - "traefik.http.services.${GITEA_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=3000"
     #
-    - "traefik.http.middlewares.https-forwarded-proto-for-${GITEA_TRAEFIK_NAMESPACE:?}.headers.customRequestHeaders.X-Forwarded-Proto=https"
     - "traefik.http.middlewares.strip-prefix-for-${GITEA_TRAEFIK_NAMESPACE:?}.stripPrefix.prefixes=/${GITEA_BASE_PATH:?}"
     #
     - "traefik.http.routers.${GITEA_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${GITEA_BASE_PATH:?}`)"
     - "traefik.http.routers.${GITEA_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
-    - "traefik.http.routers.${GITEA_TRAEFIK_NAMESPACE:?}.middlewares=https-forwarded-proto-for-${GITEA_TRAEFIK_NAMESPACE:?},strip-prefix-for-${GITEA_TRAEFIK_NAMESPACE:?}"
+    - "traefik.http.routers.${GITEA_TRAEFIK_NAMESPACE:?}.middlewares=strip-prefix-for-${GITEA_TRAEFIK_NAMESPACE:?}"
