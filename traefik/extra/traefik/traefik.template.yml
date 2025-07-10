@@ -96,26 +96,6 @@ entryPoints:
       - default@file
       - add-ssl-headers@file
       tls: true
-  wan-https-internal:
-    address: ":${SERVER_WAN_HTTPS_INTERNAL_PORT}"
-    http:
-      middlewares:
-      - block-ddos-attacks@file
-      - default@file
-      - add-ssl-headers@file
-      tls:
-        domains:
-        - main: ${SERVER_WAN_FQDN}
-  wan-https-internal-exclusive:
-    address: ":${SERVER_WAN_HTTPS_INTERNAL_PORT_EXCLUSIVE}"
-    http:
-      middlewares:
-      - block-ddos-attacks@file
-      - default@file
-      - add-ssl-headers@file
-      tls:
-        domains:
-        - main: ${SERVER_WAN_FQDN}
   wan-https-monitor:
     address: ":${SERVER_WAN_HTTPS_MONITOR_PORT}"
     http:

@@ -4,12 +4,15 @@ services:
     - "traefik.enable=true"
     - "traefik.http.services.${NTFY_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
     #
-    # FIXME: Serve (API?) over a basepath on WAN
+    # FIXME: Serve API over a basepath on WAN
+    #
+    # NOTE: Below, we disable access to the web root, but allow API access to `/<topic>` for `curl`ing.
+    #       The UI access to `/<topic>` requires `/static` access, which is blocked.
     #
     - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-wan.rule=Host(`${SERVER_WAN_FQDN:?}`) && !( PathPrefix(`/docs`) || PathPrefix(`/static`) || PathPrefix(`/${NTFY_BASE_PATH:?}`) )"
-    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-wan.entryPoints=wan-https-internal-exclusive"
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-wan.entryPoints=wan-https-monitor-exclusive"
     #
-    # FIXME: Serve dashboard over a basepath on LAN
+    # FIXME: Serve UI over a basepath on LAN
     #
     - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-lan.rule=Host(`${SERVER_LAN_FQDN:?}`)"
-    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-lan.entryPoints=lan-https-internal-exclusive"
+    - "traefik.http.routers.${NTFY_TRAEFIK_NAMESPACE:?}-lan.entryPoints=lan-https-monitor-exclusive"

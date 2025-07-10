@@ -1044,14 +1044,12 @@ running the container with a rootless docker daemon.
     <tr>
       <td rowspan='2' align='center'><strong>WAN</strong></td>
       <td align='center'><strong>Shared</strong><br>(*)</td></td>
-      <td rowspan='2' colspan='1' align='center'>:heavy_multiplication_x:</td>
-      <td align='center'>4443</td>
+      <td rowspan='2' colspan='2' align='center'>:heavy_multiplication_x:</td>
       <td align='center'>2443</td>
       <td align='center'>443</td>
     </tr>
     <tr>
       <td align='center'><strong>Exclusive</strong><br>(*<strong>1</strong>)</td></td>
-      <td align='center'>44431</td>
       <td align='center'>24431</td>
       <td align='center'>4431</td>
     </tr>
@@ -1076,7 +1074,7 @@ running the container with a rootless docker daemon.
 - **Shared**: Ports for applications that support serving under subpaths
 - **Exclusive**: Ports for containers that do not support subpaths
 <br><br>
-- **Service**: Ports for applications that serve end-user services
+- **Service**: Ports for end-user UI
 - **Monitor**: Ports for monitoring applications
 - **Internal**: Ports for other internal applications
 
