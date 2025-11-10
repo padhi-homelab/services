@@ -231,7 +231,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>v4.1.1</sub></code>
+        <code><sub>v5.1.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -363,9 +363,9 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>v3.3.25</sub></code>
+        <code><sub>v3.4.3</sub></code>
         <br>
-        <code><sub>0.22.2225</sub></code>
+        <code><sub>0.24.268</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -439,11 +439,11 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.12.4.4658</sub></code>
+        <code><sub>3.0.1.4866</sub></code>
         <br>
-        <code><sub>5.26.2.10099</sub></code>
+        <code><sub>5.28.0.10274</sub></code>
         <br>
-        <code><sub>4.0.14.2939</sub></code>
+        <code><sub>4.0.16.2944</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -715,7 +715,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>2.1.12</sub></code>
         <br>
-        <code><sub>2025.08.0</sub></code>
+        <code><sub>2025.11.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -900,7 +900,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>3.5.0</sub></code>
+        <code><sub>3.6.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -938,7 +938,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>4.4.18</sub></code>
         <br>
-        <code><sub>9.3.43</sub></code>
+        <code><sub>9.5.21</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
