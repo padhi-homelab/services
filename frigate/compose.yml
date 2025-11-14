@@ -21,7 +21,7 @@ services:
     volumes:
     - /etc/localtime:/etc/localtime:ro
     - ./data/frigate/config:/config:rw
-    - ./data/frigate/media:/media:rw
+    - ./data/frigate/media/frigate:/media/frigate:rw
 
     environment:
       TZ: ${TZ:?}
