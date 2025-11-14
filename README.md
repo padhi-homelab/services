@@ -746,35 +746,22 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://github.com/teslamate-org/teslamate'>Teslamate</a>
+        <a href='https://mosquitto.org/'>Mosquitto</a>
         <br>
-        <sub>:24432/teslamate/</sub>
+        <sub></sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Mosquitto%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_mosquitto.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B
+        B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/postgres'>
-          <sub>db</sub>
-        </a>
-        <br>
         <a href='https://hub.docker.com/_/eclipse-mosquitto'>
-          <sub>mqtt</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/teslamate/teslamate'>
-          <sub>teslamate</sub>
+          <sub>mosquitto</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>17.5...ne</sub></code>
-        <br>
-        <code><sub>2.0.20</sub></code>
-        <br>
-        <code><sub>1.31.1</sub></code>
-        <br>
+        <code><sub>2.0.22</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -786,10 +773,6 @@ for optionally customizing compositions via _overrides_.
         :heavy_check_mark:
       </td>
       <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
         :heavy_multiplication_x:
       </td>
     </tr>
@@ -915,7 +898,8 @@ if it allows running the target service as a non-root user,
 e.g. using `--user` with docker run.
 
 Note that this is different from (less secure compared to)
-running the container with a rootless docker daemon.
+running a _root-less container_,
+i.e., with a root-less docker daemon.
 
 <table>
   <tbody>
@@ -945,7 +929,7 @@ running the container with a rootless docker daemon.
 <table>
   <thead>
     <tr>
-      <td colspan='2' rowspan='2' align='center'>(Defaults Ports)</th>
+      <td colspan='2' rowspan='2' align='center'>(Default Ports)</th>
       <td colspan='1' align='center'><strong>HTTP</strong> (?<strong>80</strong>?)</td>
       <td colspan='3' align='center'><strong>HTTPS</strong> (?<strong>443</strong>?)</td>
     </tr>

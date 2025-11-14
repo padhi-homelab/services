@@ -1,0 +1,26 @@
+networks:
+  mosquitto-net:
+    external: true
+
+services:
+  mosquitto:
+    hostname: mosquitto
+    image: eclipse-mosquitto:${MOSQUITTO_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID}"
+
+    networks:
+    - mosquitto-net
+    volumes:
+    - ./config/mosquitto/mosquitto/config:/mosquitto/config:ro
+    - ./data/mosquitto/mosquitto/data:/mosquitto/data:rw
+
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "2"]
+      interval: 15s
+      timeout: 3s
+      retries: 2
+      start_period: 15s

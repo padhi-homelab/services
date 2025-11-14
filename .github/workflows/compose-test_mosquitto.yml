@@ -1,4 +1,4 @@
-name: "Docker Compose Test (Teslamate)"
+name: "Docker Compose Test (Mosquitto)"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: teslamate
+  TARGET_SERVICE: mosquitto
   TARGET_TIMEOUT: 45
 
 jobs:
@@ -26,7 +26,6 @@ jobs:
         name: "Service: Setup"
         run: |
           cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
-          cp .github/workflows/config/meta.override.yml "traefik/"
       -
         name: "Service: Start"
         run: |
@@ -44,23 +43,3 @@ jobs:
             cd ${TARGET_SERVICE} ; docker compose logs
             exit 1
           fi
-      -
-        name: "Service: Restart with Traefik"
-        run: |
-          ./comp down,up ${TARGET_SERVICE}
-      -
-        name: "Service: Wait"
-        run: |
-          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
-      -
-        name: "Service: Test with Traefik"
-        run: |
-          if ! ./comp status ${TARGET_SERVICE} ; then
-            docker ps
-            cd ${TARGET_SERVICE} ; docker compose logs
-            cd traefik ; docker compose logs
-            exit 1
-          fi
-          cd traefik
-          docker compose exec -T traefik wget --spider --no-check-certificate https://localhost:24432/teslamate/ \
-            || (docker ps ; docker compose logs ; cd ../${TARGET_SERVICE} ; docker compose logs ; exit 1)

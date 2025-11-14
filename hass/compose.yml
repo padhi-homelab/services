@@ -1,7 +1,7 @@
 networks:
   traefik-net:
     external: true
-  teslamate-mqtt:
+  mosquitto-net:
     external: true
 
 services:
@@ -15,7 +15,7 @@ services:
 
     networks:
     - traefik-net
-    - teslamate-mqtt
+    - mosquitto-net
     volumes:
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw
