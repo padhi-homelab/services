@@ -1,7 +1,9 @@
 networks:
-  traefik-net:
+  frigate-net:
     external: true
   mosquitto-net:
+    external: true
+  traefik-net:
     external: true
 
 services:
@@ -14,8 +16,9 @@ services:
     - no-new-privileges=true
 
     networks:
-    - traefik-net
+    - frigate-net
     - mosquitto-net
+    - traefik-net
     volumes:
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw

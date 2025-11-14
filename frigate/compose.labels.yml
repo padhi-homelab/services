@@ -1,0 +1,10 @@
+services:
+  frigate:
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.${FRIGATE_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8971"
+    #
+    # FIXME: Serving frigate behind a subpath is not supported, yet.
+    #
+    - "traefik.http.routers.${FRIGATE_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/`)"
+    - "traefik.http.routers.${FRIGATE_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service-exclusive"

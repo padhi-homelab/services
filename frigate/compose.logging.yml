@@ -1,0 +1,6 @@
+services:
+  frigate:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"

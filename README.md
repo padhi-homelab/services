@@ -280,6 +280,38 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
+        <a href='https://frigate.video/'>Frigate</a>
+        <br>
+        <sub>:4433/</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Frigate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_frigate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://ghcr.io/blakeblackshear/frigate'>
+          <sub>frigate</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>0.16.2</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://gitea.io/'>Gitea</a>
         <br>
         <sub>:443/gitea/</sub>

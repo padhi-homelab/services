@@ -1,0 +1,62 @@
+name: "Docker Compose Test (Frigate)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: frigate
+  TARGET_TIMEOUT: 60
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ ubuntu-24.04 , ubuntu-24.04-arm ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v5
+      -
+        name: "Service: Setup"
+        run: |
+          cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
+      -
+        name: "Service: Start"
+        run: |
+          ./comp up --skip-related --labels ignore ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          cd ${TARGET_SERVICE} ; cat .env
+          sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test"
+        run: |
+          if ! ./comp status --skip-related ${TARGET_SERVICE}; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker compose logs
+            exit 1
+          fi
+      -
+        name: "Service: Restart with Traefik"
+        run: |
+          ./comp down,up ${TARGET_SERVICE}
+      -
+        name: "Service: Wait"
+        run: |
+          sleep ${TARGET_TIMEOUT}s ; sleep ${TARGET_TIMEOUT}s
+      -
+        name: "Service: Test with Traefik"
+        run: |
+          if ! ./comp status ${TARGET_SERVICE} ; then
+            docker ps
+            cd ${TARGET_SERVICE} ; docker compose logs
+            cd traefik ; docker compose logs
+            exit 1
+          fi
