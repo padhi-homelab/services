@@ -1,7 +1,7 @@
 networks:
-  beszel:
+  beszel-net:
     external: true
-  docker-sock:
+  docker_sock-net:
     external: true
 
 services:
@@ -14,8 +14,8 @@ services:
     - no-new-privileges=true
 
     networks:
-    - beszel
-    - docker-sock
+    - beszel-net
+    - docker_sock-net
 
     environment:
       BESZEL_AGENT_DOCKER_HOST: "tcp://docker.sock-proxy:1279"

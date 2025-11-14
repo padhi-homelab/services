@@ -9,7 +9,7 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: beszel-hub
+  TARGET_SERVICE: beszel_hub
   TARGET_TIMEOUT: 90
 
 jobs:

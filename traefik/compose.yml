@@ -1,5 +1,5 @@
 networks:
-  docker-sock:
+  docker_sock-net:
     external: true
   traefik-net:
     external: true
@@ -15,7 +15,7 @@ services:
     user: "${USER_ID:?}:${GROUP_ID}"
 
     networks:
-    - docker-sock
+    - docker_sock-net
     - traefik-net
     volumes:
     - ./config/traefik/dynamic:/dynamic:ro

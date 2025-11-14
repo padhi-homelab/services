@@ -9,7 +9,7 @@ on:
   - cron: "0 8 * * *"
 
 env:
-  TARGET_SERVICE: beszel-agent
+  TARGET_SERVICE: beszel_agent
   TARGET_TIMEOUT: 90
 
 jobs:

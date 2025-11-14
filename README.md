@@ -118,7 +118,7 @@ for optionally customizing compositions via _overrides_.
         <br>
         <sub>:45876</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Agent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-agent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Agent%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel_agent.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
@@ -150,7 +150,7 @@ for optionally customizing compositions via _overrides_.
         <br>
         <sub>:24432/beszel/</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Hub%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel-hub.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Beszel%20Hub%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_beszel_hub.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B

@@ -1,5 +1,5 @@
 networks:
-  docker-sock:
+  docker_sock-net:
     external: true
 
 services:
@@ -12,7 +12,7 @@ services:
     - no-new-privileges=true
 
     networks:
-    - docker-sock
+    - docker_sock-net
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock:ro
 
