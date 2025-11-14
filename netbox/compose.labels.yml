@@ -1,8 +1,0 @@
-services:
-  netbox:
-    labels:
-    - "traefik.enable=true"
-    - "traefik.http.services.${NETBOX_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
-    #
-    - "traefik.http.routers.${NETBOX_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${NETBOX_BASE_PATH:?}`)"
-    - "traefik.http.routers.${NETBOX_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"

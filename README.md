@@ -496,58 +496,6 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://github.com/netbox-community/netbox'>Netbox</a>
-        <br>
-        <sub>:4432/netbox/</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Netbox%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_netbox.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B <br> B <br> A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/_/postgres'>
-          <sub>postgres</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/valkey/valkey'>
-          <sub>valkey</sub>
-        </a>
-        <br>
-        <a href='https://hub.docker.com/r/padhihomelab/netbox/'>
-          <sub>netbox</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>17.5...ne</sub></code>
-        <br>
-        <code><sub>8.1.3...ne</sub></code>
-        <br>
-        <code><sub>4.2.6</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-        <br>
-        :heavy_multiplication_x:
-        <br>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://nextcloud.com/'>Nextcloud</a>
         <br>
         <sub>:443/nextcloud/</sub>
@@ -954,38 +902,6 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         :heavy_multiplication_x:
         <br>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
-        <a href='https://uptime.kuma.pet/'>Uptime</a>
-        <br>
-        <sub>:24433/</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Uptime%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_uptime.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        A
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/louislam/uptime-kuma'>
-          <sub>uptime</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>1.23.16..ne</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
         :heavy_multiplication_x:
       </td>
     </tr>

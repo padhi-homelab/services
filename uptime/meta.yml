@@ -1,9 +1,0 @@
-messages:
-  up:
-    post:
-    - >-
-      ${_THIS_COMPOSITION_} dashboard may now be accessed on
-      ${_LINK_FONT_}https://${SERVER_LAN_FQDN}:${SERVER_LAN_HTTPS_MONITOR_PORT_EXCLUSIVE}/${_RESET_FONT_}
-
-related:
-- traefik
