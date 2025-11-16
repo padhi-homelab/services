@@ -3,8 +3,6 @@ networks:
     external: true
   mosquitto-net:
     external: true
-  traefik-net:
-    external: true
 
 services:
   hass:
@@ -18,13 +16,13 @@ services:
     networks:
     - frigate-net
     - mosquitto-net
-    - traefik-net
     volumes:
+    - ./config/hass/etc/cont-init.d:/etc/cont-init.d:ro
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw
+    - /etc/localtime:/etc/localtime:ro
     # NOTE: Necessary for bluetooth integration
     - /run/dbus:/run/dbus:ro
-    - ./config/hass/etc/cont-init.d:/etc/cont-init.d:ro
 
     environment:
       TZ: ${TZ:?}

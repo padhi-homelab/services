@@ -1,0 +1,4 @@
+services:
+  hass:
+    ports:
+    - ${SERVER_WAN_BINDING_IP:?}:8123:8123

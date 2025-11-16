@@ -346,7 +346,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://www.home-assistant.io/hassio/'>HAss</a>
         <br>
-        <sub>:4431/</sub>
+        <sub>:8123/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28HAss%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_hass.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
