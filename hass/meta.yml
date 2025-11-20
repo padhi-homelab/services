@@ -1,6 +1,0 @@
-messages:
-  up:
-    post:
-    - >-
-      ${_THIS_COMPOSITION_} may now be accessed on
-      ${_LINK_FONT_}https://${SERVER_WAN_FQDN}:8123/${_RESET_FONT_}

@@ -23,4 +23,6 @@ services:
       ND_LOGLEVEL: info
       ND_SCANNER_SCHEDULE: 30m
       ND_SESSIONTIMEOUT: 8h
+      ND_ENABLEINSIGHTSCOLLECTOR: false
+      ND_ENABLEEXTERNALSERVICES: false
       TZ: ${TZ:?}
