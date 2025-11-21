@@ -18,7 +18,7 @@ jobs:
     steps:
       -
         name: "Git: Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       -
         name: "Run: Test Script"
         run: _scripts/test_comp.sh
