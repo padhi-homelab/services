@@ -392,6 +392,7 @@ Verbs: (short forms within <>)
   <d>own         Stop a composition
   <o>verrides    List all override files in a composition
   <p>ull         Pull all images for a composition
+  <r>ecreate     Shorthand for \`pull,down,up\`
   <s>tatus       Display health / status of a composition
   <u>p           Start a composition
   <v>alidate     Validate a composition
@@ -429,14 +430,15 @@ expand_verbs () {
   local expanded=
   while read -rn1 char; do
     case "$char" in
-      c) expanded="$expanded clean" ;;
-      d) expanded="$expanded down" ;;
-      o) expanded="$expanded overrides" ;;
-      p) expanded="$expanded pull" ;;
-      s) expanded="$expanded status" ;;
-      u) expanded="$expanded up" ;;
-      v) expanded="$expanded validate" ;;
-      *) return 1
+      c )             expanded="$expanded clean" ;;
+      d )             expanded="$expanded down" ;;
+      o )             expanded="$expanded overrides" ;;
+      p )             expanded="$expanded pull" ;;
+      r | recreate )  expanded="$expanded pull down up" ;;
+      s )             expanded="$expanded status" ;;
+      u )             expanded="$expanded up" ;;
+      v )             expanded="$expanded validate" ;;
+      * ) return 1
     esac
   done < <( echo -n "$1" )
   VERBS="$expanded"
@@ -454,20 +456,20 @@ shift
 for opt in "$@" ; do
   shift
   case "$opt" in
-    --fail-fast)       set -- "$@" "-F" ;;
-    --skip-generate)   set -- "$@" "-G" ;;
-    --skip-overrides)  set -- "$@" "-O" ;;
-    --skip-related)    set -- "$@" "-R" ;;
+    --fail-fast )       set -- "$@" "-F" ;;
+    --skip-generate )   set -- "$@" "-G" ;;
+    --skip-overrides )  set -- "$@" "-O" ;;
+    --skip-related )    set -- "$@" "-R" ;;
 
-    --devices)         set -- "$@" "-d" ;;
-    --hooks)           set -- "$@" "-h" ;;
-    --labels)          set -- "$@" "-l" ;;
-    --logging)         set -- "$@" "-g" ;;
-    --ports)           set -- "$@" "-p" ;;
+    --devices )         set -- "$@" "-d" ;;
+    --hooks )           set -- "$@" "-h" ;;
+    --labels )          set -- "$@" "-l" ;;
+    --logging )         set -- "$@" "-g" ;;
+    --ports )           set -- "$@" "-p" ;;
 
-    --)                set -- "$@" "--" ;;
-    --*)               usage "Unrecognized option: $opt." ;;
-    *)                 set -- "$@" "$opt"
+    -- )                set -- "$@" "--" ;;
+    --* )               usage "Unrecognized option: $opt." ;;
+    * )                 set -- "$@" "$opt"
   esac
 done
 

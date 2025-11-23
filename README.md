@@ -55,7 +55,8 @@ Typical workflows:
   ```
   git pull && ./comp pdu pihole
   ```
-  Note how we specify verbs `pull,down,up` using just their first characters.
+  Note how we specify verbs `pull,down,up` using just their first characters.  
+  This sequence of verbs also has another shorthand: `r` or `recreate`.
 
 - Checking the status of compositions:
   ```
