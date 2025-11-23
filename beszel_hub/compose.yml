@@ -1,5 +1,5 @@
 networks:
-  beszel:
+  beszel-net:
     external: true
   traefik-net:
     external: true
@@ -15,7 +15,7 @@ services:
     user: "${USER_ID:?}:${GROUP_ID:?}"
 
     networks:
-    - beszel
+    - beszel-net
     - traefik-net
     volumes:
     - ./data/beszel/beszel_data:/beszel_data:rw
