@@ -379,7 +379,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         Indexarr
         <br>
-        <sub>:443/jackett/</sub>
+        <sub>:4432/jackett/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Indexarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_indexarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -451,7 +451,7 @@ for optionally customizing compositions via _overrides_.
       <th>
         <a href='https://wiki.servarr.com/'>Monitarr</a>
         <br>
-        <sub>:443/{lid,rad,son}arr/</sub>
+        <sub>:4432/{lid,rad,son}arr/</sub>
         <hr>
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Monitarr%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_monitarr.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
@@ -568,13 +568,13 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>8.1.3...ne</sub></code>
         <br>
-        <code><sub>20250710...55</sub></code>
+        <code><sub>20251031...39</sub></code>
         <br>
-        <code><sub>20250710...55</sub></code>
+        <code><sub>20251031...39</sub></code>
         <br>
-        <code><sub>31.0.7</sub></code>
+        <code><sub>32.0.2</sub></code>
         <br>
-        <code><sub>31.0.7</sub></code>
+        <code><sub>32.0.2</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
