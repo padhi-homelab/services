@@ -4,21 +4,21 @@ services:
     - "traefik.enable=true"
     - "traefik.http.services.${LIDARR_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8686"
     #
-    - "traefik.http.routers.${LIDARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${LIDARR_BASE_PATH:?}`)"
-    - "traefik.http.routers.${LIDARR_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${LIDARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${LIDARR_BASE_PATH:?}`)"
+    - "traefik.http.routers.${LIDARR_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"
 
   radarr:
     labels:
     - "traefik.enable=true"
     - "traefik.http.services.${RADARR_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=7878"
     #
-    - "traefik.http.routers.${RADARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${RADARR_BASE_PATH:?}`)"
-    - "traefik.http.routers.${RADARR_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${RADARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${RADARR_BASE_PATH:?}`)"
+    - "traefik.http.routers.${RADARR_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"
 
   sonarr:
     labels:
     - "traefik.enable=true"
     - "traefik.http.services.${SONARR_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8989"
     #
-    - "traefik.http.routers.${SONARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${SONARR_BASE_PATH:?}`)"
-    - "traefik.http.routers.${SONARR_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${SONARR_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${SONARR_BASE_PATH:?}`)"
+    - "traefik.http.routers.${SONARR_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"

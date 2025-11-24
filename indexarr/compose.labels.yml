@@ -4,5 +4,5 @@ services:
     - "traefik.enable=true"
     - "traefik.http.services.${JACKETT_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=9117"
     #
-    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${JACKETT_BASE_PATH:?}`)"
-    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${JACKETT_BASE_PATH:?}`)"
+    - "traefik.http.routers.${JACKETT_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"
