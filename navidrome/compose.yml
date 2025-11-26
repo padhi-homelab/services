@@ -26,3 +26,8 @@ services:
       ND_ENABLEINSIGHTSCOLLECTOR: false
       ND_ENABLEEXTERNALSERVICES: false
       TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:4533"]
+      interval: 15s
+      start_period: 15s

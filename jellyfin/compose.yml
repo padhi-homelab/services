@@ -1,0 +1,23 @@
+networks:
+  traefik-net:
+    external: true
+
+services:
+  jellyfin:
+    hostname: jellyfin
+    image: jellyfin/jellyfin:${JELLYFIN_VERSION:?}
+    restart: 'unless-stopped'
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID}"
+
+    networks:
+    - traefik-net
+    volumes:
+    - ./data/jellyfin/config:/config
+    - ./data/jellyfin/cache:/cache
+    - ./data/jellyfin/media:/media
+
+    environment:
+      TZ: ${TZ:?}

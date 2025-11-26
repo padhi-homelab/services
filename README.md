@@ -417,22 +417,22 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://kodi.wiki/view/MySQL/Setting_up_MySQL'>Kodi.DB</a>
+        <a href='https://jellyfin.org/'>Jellyfin</a>
         <br>
-        <sub>:3306</sub>
+        <sub>:443/jellyfin/</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Kodi.DB%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_kodi_db.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Jellyfin%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_jellyfin.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
         B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/mariadb'>
-          <sub>mariadb</sub>
+        <a href='https://hub.docker.com/r/jellyfin/jellyfin'>
+          <sub>jellyfin</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>11.7.2</sub></code>
+        <code><sub>2025112405</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:

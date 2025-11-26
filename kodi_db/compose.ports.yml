@@ -1,4 +1,0 @@
-services:
-  mariadb:
-    ports:
-    - ${SERVER_LAN_BINDING_IP:?}:3306:3306

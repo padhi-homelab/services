@@ -1,0 +1,12 @@
+services:
+  jellyfin:
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.${JELLYFIN_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8096"
+    - "traefik.http.services.${JELLYFIN_TRAEFIK_NAMESPACE:?}.loadBalancer.passHostHeader=true"
+    #
+    - "traefik.http.middlewares.headers-for-${JELLYFIN_TRAEFIK_NAMESPACE:?}.headers.customFrameOptionsValue='allow-from https://${SERVER_WAN_FQDN:?}'"
+    #
+    - "traefik.http.routers.${JELLYFIN_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${JELLYFIN_BASE_PATH}`)"
+    - "traefik.http.routers.${JELLYFIN_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"
+    - "traefik.http.routers.${JELLYFIN_TRAEFIK_NAMESPACE:?}.middlewares=headers-for-${JELLYFIN_TRAEFIK_NAMESPACE:?}"

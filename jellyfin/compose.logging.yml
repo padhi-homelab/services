@@ -1,6 +1,6 @@
 services:
-  mariadb:
+  jellyfin:
     logging:
       options:
-        max-size: "1m"
+        max-size: "4m"
         max-file: "1"
