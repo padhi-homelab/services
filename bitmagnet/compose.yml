@@ -9,7 +9,7 @@ services:
 
     network_mode: container:vpn
     volumes:
-    - ./data/postgres/var/lib/postgresql/data:/var/lib/postgresql/data:rw
+    - ./data/postgres/var/lib/postgresql:/var/lib/postgresql:rw
 
     env_file:
     - env/postgres

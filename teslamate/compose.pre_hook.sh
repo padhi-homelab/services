@@ -6,4 +6,4 @@ SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 DATA_DIR="$SELF_DIR/data"
 
 mkdir -p "$DATA_DIR/teslamate/opt/app/import" \
-         "$DATA_DIR/postgres/var/lib/postgresql/data"
+         "$DATA_DIR/postgres/var/lib/postgresql"

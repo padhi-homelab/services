@@ -830,7 +830,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>17.5...ne</sub></code>
+        <code><sub>18.1...ne</sub></code>
         <br>
         <code><sub>2.2.0</sub></code>
         <br>
