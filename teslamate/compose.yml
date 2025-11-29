@@ -6,7 +6,7 @@ networks:
 
 services:
   postgres:
-    hostname: db
+    hostname: postgres
     image: postgres:${POSTGRES_VERSION:?}
     restart: unless-stopped
 

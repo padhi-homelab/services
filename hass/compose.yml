@@ -25,6 +25,7 @@ services:
     - /run/dbus:/run/dbus:ro
 
     environment:
-      TZ: ${TZ:?}
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
+      TZ: ${TZ:?}
+      UV_INDEX_STRATEGY: unsafe-best-match
