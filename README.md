@@ -497,6 +497,38 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
+        <a href='https://mosquitto.org/'>Mosquitto</a>
+        <br>
+        <sub></sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Mosquitto%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_mosquitto.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/_/eclipse-mosquitto'>
+          <sub>mosquitto</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.0.22</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
         <a href='https://www.navidrome.org/'>Navidrome</a>
         <br>
         <sub>:443/navidrome/</sub>
@@ -779,22 +811,29 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://mosquitto.org/'>Mosquitto</a>
+        <a href='https://github.com/teslamate-org/teslamate'>Teslamate</a>
         <br>
-        <sub></sub>
+        <sub>:24432/teslamate/</sub>
         <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Mosquitto%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_mosquitto.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B
+        B <br> B <br> B
       </th>
       <th align='right'>
-        <a href='https://hub.docker.com/_/eclipse-mosquitto'>
-          <sub>mosquitto</sub>
+        <a href='https://hub.docker.com/_/postgres'>
+          <sub>db</sub>
+        </a>
+        <br>
+        <a href='https://hub.docker.com/r/teslamate/teslamate'>
+          <sub>teslamate</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.0.22</sub></code>
+        <code><sub>17.5...ne</sub></code>
+        <br>
+        <code><sub>2.2.0</sub></code>
+        <br>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -806,6 +845,8 @@ for optionally customizing compositions via _overrides_.
         :heavy_check_mark:
       </td>
       <td align='center'>
+        :heavy_check_mark:
+        <br>
         :heavy_multiplication_x:
       </td>
     </tr>
