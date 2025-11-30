@@ -28,4 +28,6 @@ services:
       DOCKER_UID: ${USER_ID:?}
       DOCKER_GID: ${GROUP_ID:?}
       TZ: ${TZ:?}
+      # FIXME: `aarch64` uv wheel seems to be missing at:
+      #        https://wheels.home-assistant.io/musllinux-index/uv/
       UV_INDEX_STRATEGY: unsafe-best-match

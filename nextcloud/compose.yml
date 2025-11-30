@@ -18,7 +18,7 @@ services:
 
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     networks:
     - default
@@ -47,7 +47,7 @@ services:
 
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     networks:
     - default
@@ -109,7 +109,7 @@ services:
     - SYS_NICE
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     networks:
     - default
@@ -131,7 +131,7 @@ services:
 
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     depends_on:
       mariadb:
@@ -183,7 +183,7 @@ services:
     security_opt:
     - no-new-privileges=true
     # FIXME: `crond` needs to run as `root` user.
-    # user: "${USER_ID:?}:${GROUP_ID}"
+    # user: "${USER_ID:?}:${GROUP_ID:?}"
 
     depends_on:
       nextcloud:

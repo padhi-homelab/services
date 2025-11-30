@@ -10,7 +10,7 @@ services:
 
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID}"
+    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     networks:
     - traefik-net
