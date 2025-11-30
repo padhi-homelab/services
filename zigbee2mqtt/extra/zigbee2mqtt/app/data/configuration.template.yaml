@@ -5,5 +5,8 @@ frontend:
   base_url: '/${ZIGBEE2MQTT_BASE_PATH}'
   enabled: true
 
+homeassistant:
+  enabled: true
+
 mqtt:
   server: 'mqtt://mosquitto:1883'
