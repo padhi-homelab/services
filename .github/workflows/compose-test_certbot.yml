@@ -30,11 +30,11 @@ jobs:
         name: "Service: Start"
         run: |
           ./comp up --labels ignore ${TARGET_SERVICE}
-          cd ${TARGET_SERVICE} ; cat .env
+          cd ${TARGET_SERVICE} ; ls -lah ; cat .env
       -
         name: "Service: Wait"
         run: |
-          cd ${TARGET_SERVICE} ; cat .env
+          cd ${TARGET_SERVICE} ; ls -lah ; cat .env
           sleep ${TARGET_TIMEOUT}s
       -
         name: "Service: Test"

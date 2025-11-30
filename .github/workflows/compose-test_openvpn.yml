@@ -32,4 +32,4 @@ jobs:
         name: "Service: Start"
         run: |
           ./comp up --labels ignore ${TARGET_SERVICE}
-          cd ${TARGET_SERVICE} ; cat .env
+          cd ${TARGET_SERVICE} ; ls -lah ; cat .env
