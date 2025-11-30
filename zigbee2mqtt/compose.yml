@@ -28,7 +28,7 @@ services:
       TZ: ${TZ:?}
 
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8080/${ZIGBEE2MQTT_BASE_PATH:?}"]
+      test: ["CMD", "wget", "--spider", "http://localhost:8080/${ZIGBEE2MQTT_BASE_PATH:?}/"]
       start_period: 20s
       interval: 30s
       retries: 5
