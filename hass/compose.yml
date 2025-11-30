@@ -21,8 +21,6 @@ services:
     - ./data/hass/config:/config:rw
     - ./data/hass/media:/media:rw
     - /etc/localtime:/etc/localtime:ro
-    # NOTE: Necessary for bluetooth integration
-    - /run/dbus:/run/dbus:ro
 
     environment:
       DOCKER_UID: ${USER_ID:?}
