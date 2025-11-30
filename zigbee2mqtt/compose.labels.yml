@@ -1,0 +1,8 @@
+services:
+  zigbee2mqtt:
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.${ZIGBEE2MQTT_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8080"
+    #
+    - "traefik.http.routers.${ZIGBEE2MQTT_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`) && PathPrefix(`/${ZIGBEE2MQTT_BASE_PATH:?}`)"
+    - "traefik.http.routers.${ZIGBEE2MQTT_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-service"

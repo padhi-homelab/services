@@ -1,0 +1,9 @@
+advanced:
+  channel: 25
+
+frontend:
+  base_url: '/${ZIGBEE2MQTT_BASE_PATH}'
+  enabled: true
+
+mqtt:
+  server: 'mqtt://mosquitto:1883'

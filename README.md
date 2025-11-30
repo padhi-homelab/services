@@ -818,7 +818,7 @@ for optionally customizing compositions via _overrides_.
         <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Teslamate%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_teslamate.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
       </th>
       <th>
-        B <br> B <br> B
+        B <br> B
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/_/postgres'>
@@ -960,6 +960,38 @@ for optionally customizing compositions via _overrides_.
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.zigbee2mqtt.io/'>Zigbee2MQTT</a>
+        <br>
+        <sub>:4432/zigbee2mqtt/</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Zigbee2MQTT%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_zigbee2mqtt.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/koenkk/zigbee2mqtt'>
+          <sub>tiny-httpd</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2.6.3</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
   </tbody>

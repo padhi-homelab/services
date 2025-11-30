@@ -1,0 +1,35 @@
+networks:
+  traefik-net:
+    external: true
+  mosquitto-net:
+    external: true
+
+services:
+  zigbee2mqtt:
+    hostname: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:${ZIGBEE2MQTT_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+    # NOTE: See https://www.zigbee2mqtt.io/guide/installation/02_docker.html
+    group_add:
+    - ${DIALOUT_OR_UUCP_GROUP_ID:?}
+
+    networks:
+    - mosquitto-net
+    - traefik-net
+    volumes:
+    - ./data/zigbee2mqtt/app/data:/app/data:rw
+    - /run/udev:/run/udev:ro
+
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8080"]
+      start_period: 20s
+      interval: 30s
+      retries: 5
+      timeout: 5s

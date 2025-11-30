@@ -1,3 +1,5 @@
-  -e ZIGBEE2MQTT_CONFIG_SERIAL_PORT=/dev/null \
-  -e ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER=dummy \
-  -e ZIGBEE2MQTT_CONFIG_FRONTEND=true \
+services:
+  zigbee2mqtt:
+    environment:
+      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/null
+      ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: dummy
