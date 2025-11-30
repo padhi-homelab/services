@@ -1,5 +1,4 @@
 services:
   zigbee2mqtt:
     environment:
-      ZIGBEE2MQTT_CONFIG_SERIAL_PORT: /dev/null
-      ZIGBEE2MQTT_CONFIG_SERIAL_ADAPTER: dummy
+      Z2M_ONBOARD_FORCE_RUN: 1
