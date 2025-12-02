@@ -421,7 +421,7 @@ Compositions found ($num_comps):" >&2
   for (( i=0 ; i<${#compositions[@]} ; i++ )) ; do
     printf "%-13s" "${compositions[i]}"
     (( (i + 1) % 7 != 0 )) || printf "\n"
-  done >&2
+  done ; echo >&2
   exit $EXIT_CODE_USAGE_ERROR
 }
 [ $# -gt 0 ] || usage
