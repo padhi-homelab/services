@@ -1,0 +1,8 @@
+services:
+  esphome:
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.services.${ESPHOME_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=6052"
+    #
+    - "traefik.http.routers.${ESPHOME_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_LAN_FQDN:?}`)"
+    - "traefik.http.routers.${ESPHOME_TRAEFIK_NAMESPACE:?}.entryPoints=lan-https-monitor-exclusive"

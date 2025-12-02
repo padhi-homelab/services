@@ -1,0 +1,28 @@
+networks:
+  traefik-net:
+    external: true
+  
+services:
+  esphome:
+    hostname: esphome
+    image: esphome/esphome:${ESPHOME_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges=true
+    # FIXME: Cannot automatically access all USB devices,
+    #        need to restart after each /dev/... addition.
+
+    networks:
+    - traefik-net
+    volumes:
+    - ./data/esphome/config:/config:rw
+
+    environment:
+      ESPHOME_DASHBOARD_USE_PING: true
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost:6052/"]
+      start_period: 30s
+      interval: 30s
