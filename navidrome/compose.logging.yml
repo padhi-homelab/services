@@ -1,6 +1,0 @@
-services:
-  navidrome:
-    logging:
-      options:
-        max-size: "2m"
-        max-file: "1"

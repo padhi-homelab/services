@@ -1,8 +1,0 @@
-services:
-  navidrome:
-    labels:
-    - "traefik.enable=true"
-    - "traefik.http.services.${NAVIDROME_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=4533"
-    #
-    - "traefik.http.routers.${NAVIDROME_TRAEFIK_NAMESPACE:?}.rule=Host(`${SERVER_WAN_FQDN:?}`) && PathPrefix(`/${NAVIDROME_BASE_PATH:?}`)"
-    - "traefik.http.routers.${NAVIDROME_TRAEFIK_NAMESPACE:?}.entryPoints=wan-https-service"

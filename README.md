@@ -561,38 +561,6 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://www.navidrome.org/'>Navidrome</a>
-        <br>
-        <sub>:443/navidrome/</sub>
-        <hr>
-        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Navidrome%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_navidrome.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
-      </th>
-      <th>
-        B
-      </th>
-      <th align='right'>
-        <a href='https://hub.docker.com/r/deluan/navidrome'>
-          <sub>navidrome</sub>
-        </a>
-      </th>
-      <td align='center'>
-        <code><sub>0.59.0</sub></code>
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_check_mark:
-      </td>
-      <td align='center'>
-        :heavy_multiplication_x:
-      </td>
-    </tr>
-    <tr>
-      <th>
         <a href='https://nextcloud.com/'>Nextcloud</a>
         <br>
         <sub>:443/nextcloud/</sub>
