@@ -1,0 +1,4 @@
+services:
+  wg:
+    ports:
+    - ${SERVER_LAN_BINDING_IP:?}:${WIREGUARD_PROXY_PORT:?}:5432 # SOCKS proxy

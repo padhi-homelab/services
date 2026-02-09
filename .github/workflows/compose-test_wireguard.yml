@@ -1,0 +1,53 @@
+name: "Docker Compose Test (WireGuard)"
+
+on:
+  pull_request:
+    branches: master
+  push:
+    branches: master
+  schedule:
+  - cron: "0 8 * * *"
+
+env:
+  TARGET_SERVICE: wireguard
+  TARGET_TIMEOUT: 30
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        platform: [ ubuntu-24.04 , ubuntu-24.04-arm ]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      -
+        name: "Git: Checkout"
+        uses: actions/checkout@v6
+      -
+        name: "Service: Setup"
+        run: |
+          ARCH=$(uname -m)
+          WGCF_URL="https://github.com/ViRb3/wgcf/releases/download/v2.2.22/wgcf_2.2.22_linux"
+          case $ARCH in
+            x86_64)
+              WGCF_URL="${WGCF_URL}_amd64"
+              ;;
+            aarch64|arm64)
+              WGCF_URL="${WGCF_URL}_arm64"
+              ;;
+            *)
+              echo "Unsupported architecture: $ARCH"
+              exit 1
+              ;;
+          esac
+          curl -fsSL "$WGCF_URL" -o wgcf
+          chmod +x wgcf
+          ./wgcf register --accept-tos
+          ./wgcf generate
+          sed -i 's/MTU.*/MTU = 1280/' wgcf-profile.conf
+          mkdir -p "wireguard/data/wg/config"
+          mv wgcf-profile.conf wireguard/data/wg/config/client.conf
+      -
+        name: "Service: Start"
+        run: |
+          ./comp up --labels ignore ${TARGET_SERVICE}
+          cd ${TARGET_SERVICE} ; ls -lah ; cat .env

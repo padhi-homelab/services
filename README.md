@@ -598,7 +598,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>12.1.2</sub></code>
         <br>
-        <code><sub>9.0.1...ne</sub></code>
+        <code><sub>9.0.2...ne</sub></code>
         <br>
         <code><sub>20260122...51</sub></code>
         <br>
@@ -960,6 +960,38 @@ for optionally customizing compositions via _overrides_.
         :heavy_multiplication_x:
         <br>
         :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <a href='https://www.wireguard.com/'>WireGuard</a>
+        <br>
+        <sub>:5432</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28WireGuard%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_wireguard.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        A
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/padhihomelab/wireguard/'>
+          <sub>vpn</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>2025.05.21-p1</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
       </td>
     </tr>
     <tr>

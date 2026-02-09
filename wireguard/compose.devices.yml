@@ -1,0 +1,4 @@
+services:
+  wg:
+    devices:
+    - /dev/net/tun:/dev/net/tun

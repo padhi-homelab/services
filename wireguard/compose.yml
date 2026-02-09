@@ -1,0 +1,29 @@
+networks:
+  traefik-net:
+    external: true
+
+services:
+  wg:
+    hostname: wg
+    container_name: wg
+    image: padhihomelab/wireguard:${WIREGUARD_TOOLS_VERSION:?}
+    restart: unless-stopped
+
+    cap_add:
+    - NET_ADMIN
+    sysctls:
+    - net.ipv4.conf.all.src_valid_mark=1
+    - net.ipv4.ip_forward=1
+    security_opt:
+    - no-new-privileges=true
+
+    networks:
+    - traefik-net
+    volumes:
+    - ./data/wg/config:/config:ro
+
+    environment:
+      CONFIG_FILE_NAME: 'client.conf'
+      FORWARDED_PORTS: ''
+      PROXY_USERNAME: 'user'
+      PROXY_PASSWORD: 'pass'
