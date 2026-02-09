@@ -975,7 +975,7 @@ for optionally customizing compositions via _overrides_.
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/padhihomelab/wireguard/'>
-          <sub>vpn</sub>
+          <sub>wg</sub>
         </a>
       </th>
       <td align='center'>
