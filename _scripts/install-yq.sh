@@ -5,7 +5,7 @@ set -Eumo pipefail
 [ ! -e "$1" ] || exit 1
 [ "$(uname)" = 'Linux' ] || exit 1
 
-VERSION=4.52.4
+VERSION=4.52.5
 OUTPUT="$1"
 
 case "$(uname -m)" in
