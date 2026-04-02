@@ -1,0 +1,4 @@
+services:
+  mosquitto:
+    ports:
+    - ${SERVER_LAN_BINDING_IP:?}:1883:1883

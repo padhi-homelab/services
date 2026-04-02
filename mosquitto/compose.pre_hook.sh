@@ -5,5 +5,5 @@ set -Eumo pipefail
 SELF_DIR="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 DATA_DIR="$SELF_DIR/data"
 
-mkdir -p "$DATA_DIR/mosquitto/mosquitto/config" \
-	 	 "$DATA_DIR/mosquitto/mosquitto/data"
+mkdir -p "$DATA_DIR/mosquitto/mosquitto/data" \
+         "$DATA_DIR/mosquitto/mosquitto/security"

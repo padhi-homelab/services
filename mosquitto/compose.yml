@@ -17,9 +17,10 @@ services:
     volumes:
     - ./config/mosquitto/mosquitto/config:/mosquitto/config:ro
     - ./data/mosquitto/mosquitto/data:/mosquitto/data:rw
-
+    - ./data/mosquitto/mosquitto/security:/mosquitto/security:ro
+    
     healthcheck:
-      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "2"]
+      test: ["CMD", "mosquitto_sub", "-p", "1884", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "2"]
       interval: 15s
       timeout: 3s
       retries: 2
