@@ -53,5 +53,5 @@ http:
         amount: 128
     limit-rate:
       rateLimit:
-        average: 64
-        burst: 32
+        average: 32
+        burst: 50
