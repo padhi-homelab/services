@@ -33,10 +33,11 @@ services:
     hostname: hortusfox
     image: ghcr.io/danielbrendel/hortusfox-web:${HORTUSFOX_VERSION:?}
     restart: unless-stopped
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+    command: ["apache2-foreground"]
 
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID:?}"
 
     depends_on:
       mariadb:
@@ -46,6 +47,7 @@ services:
     - default
     - traefik-net
     volumes:
+    - ./config/hortusfox/entrypoint.sh:/entrypoint.sh:ro
     - ./data/hortusfox/var/www/html/app/logs:/var/www/html/app/logs:rw
     - ./data/hortusfox/var/www/html/app/migrations:/var/www/html/app/migrations:rw
     - ./data/hortusfox/var/www/html/public/backup:/var/www/html/public/backup:rw
@@ -62,10 +64,12 @@ services:
       DB_USERNAME: ${MYSQL_USER:?}
       DB_PASSWORD: ${MYSQL_PASSWORD:?}
       DB_CHARSET: "utf8mb4"
+      PGID: ${GROUP_ID:?}
+      PUID: ${USER_ID:?}
       TZ: ${TZ:?}
 
     healthcheck:
-      test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost/"]
+      test: ["CMD", "curl", "-fso", "/dev/null", "http://localhost:8080/"]
       interval: 15s
       timeout: 2s
       start_period: 5s

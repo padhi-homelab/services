@@ -2,7 +2,7 @@ services:
   hortusfox:
     labels:
     - "traefik.enable=true"
-    - "traefik.http.services.${HORTUSFOX_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=80"
+    - "traefik.http.services.${HORTUSFOX_TRAEFIK_NAMESPACE:?}.loadBalancer.server.port=8080"
     #
     # FIXME: Serving hortusfox behind a subpath is not supported, yet.
     #        See https://github.com/danielbrendel/hortusfox-web/issues/506
