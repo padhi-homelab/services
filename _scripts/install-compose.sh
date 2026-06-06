@@ -12,7 +12,7 @@ DOCKER_CMD="docker"
 DOCKER_COMPOSE_VERSION=5.1.4
 
 PODMAN_CMD="podman"
-PODMAN_COMPOSE_VERSION=1.5.0
+PODMAN_COMPOSE_VERSION=1.6.0
 
 if [ -z "$RUNNER_CMD" ] ; then
   if command $DOCKER_CMD version &> /dev/null ; then
