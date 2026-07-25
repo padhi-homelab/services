@@ -4,34 +4,31 @@
 <details>
 <summary><h4>Why <code>comp</code>?</h4></summary>
 
-The multi-staged nature and repetitive commands for setting up complex compositions
-(e.g., containers with files owned by host user's UID:GID,
-shared external networks across compositions, etc.)
-is the raison d'être for `comp`.
-Some of the key considerations are highlighted below.
+`comp` eliminates the repetitive commands and multi-stage setups
+often required to run complex Docker Compose environments.
 
-For running non-root containers with the host user's UID:GID
-(e.g., to avoid permission issues with mounted volumes),
-one must grab these from the host, and pass them as `env` variables,
-for `docker compose` to pick them up.
-The same applies to `TZ` and other host-side configs as well.
-Not all of these configs are absolute constants
-that maybe added to a `.env` and never be updated again.
-In such cases, we ideally want a "hook" that runs before `docker compose` is run,
-and updates / generates the `.env` as necessary.
+While docker compose is powerful, managing advanced setups,
+such as mapping host user permissions or sharing external networks,
+typically requires writing custom wrapper scripts.
+I wrote `comp` to standardize my hooks, cleanly organize data vs config, and implement strict safety checks across all my services.
 
-Similar hooks are also desirable to set up [external networks]
-that are shared across multiple compositions.
-In such cases, the hook would execute a `docker network` command
-before running `docker compose`.
-`comp` automatically grabs all external networks in YAML files,
-and has a hook to create them if they do not already exist.
+#### Key Features:
 
-`comp` also has several safeguards that `docker compose` doesn't provide.
-For instance, any non-existent host directories that are mounted to containers
-are automatically created by Docker and are owned by `root`,
-even when the `--user` flag is set!
-`comp` errors out in such cases, requesting the user for explicit action.
+- **Dynamic Environment Hooks**:
+  Running non-root containers with the host's UID/GID is essential to avoid volume permission errors.
+  Instead of relying on static ".env" files that go stale, `comp` uses pre-run hooks to dynamically grab host-side configurations (like UID, GID, and TZ) and inject them into the compose environment.
+
+- **Automated External Networks**:
+  Sharing networks across multiple compositions usually requires manual `docker network create` commands before spinning up your containers.
+  `comp` automatically parses your YAML files for external networks and creates them on the fly if they do not already exist.
+
+- **Strict Permission Safeguards**:
+  If you mount a non-existent host directory, Docker automatically creates it as `root` even if the `--user` flag is set.
+  `comp` intercepts this behavior and safely errors out,
+  prompting you for explicit action to prevent root-owned directory messes.
+
+- **Predictable Conventions**:
+  Enforces a strict, modular directory structure mapping host files to containers, alongside standardized port allocations for WAN/LAN and internal vs. external traffic.
 
 #### Why not use Ansible / Kubernetes / XYZ?
 
@@ -40,6 +37,11 @@ Seemed like overkill, when I initially wrote `comp`.
 #### Why `bash`?
 
 Why not?
+
+#### Why is it called `comp`?
+
+Because typing `docker compose` takes 14 keystrokes,
+and I have things to do.
 </details>
 
 ### Usage
@@ -56,14 +58,17 @@ Typical workflows:
   git pull && ./comp pdu pihole
   ```
   Note how we specify verbs `pull,down,up` using just their first characters.  
-  This sequence of verbs also has another shorthand: `r` or `recreate`.
 
 - Checking the status of compositions:
   ```
   ./comp status tang pihole
   ```
+  or
+  ```
+  ./comp s tang pihole
+  ```
 
-See [comp#L373](comp#L373) for all supported supported flags and options.
+See [comp#L387](comp#L387) for all supported supported flags and options.
 
 Also see [Structure & Conventions](#structure--conventions)
 for optionally customizing compositions via _overrides_.
