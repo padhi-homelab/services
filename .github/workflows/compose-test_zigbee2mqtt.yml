@@ -28,6 +28,7 @@ jobs:
           cp .github/workflows/config/meta.override.yml "${TARGET_SERVICE}/"
           cp .github/workflows/config/meta.override.yml "traefik/"
           cp .github/workflows/config/zigbee2mqtt.override.yml "zigbee2mqtt/compose.override.yml"
+          cp .github/workflows/config/mosquitto.override.for.zigbee2mqtt.conf "mosquitto/config/mosquitto/mosquitto/config/mosquitto.conf"
       -
         name: "Service: Start"
         run: |

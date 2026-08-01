@@ -301,7 +301,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2026.7.2</sub></code>
+        <code><sub>2026.7.3</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -365,7 +365,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>1.27.0-r...s</sub></code>
+        <code><sub>1.27.1-r...s</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -435,7 +435,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>12.2.2</sub></code>
         <br>
-        <code><sub>v5.8</sub></code>
+        <code><sub>v5.9</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -477,7 +477,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>v3.5.0</sub></code>
         <br>
-        <code><sub>0.24.2027</sub></code>
+        <code><sub>0.24.2307</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -591,7 +591,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.0.22</sub></code>
+        <code><sub>2.1.2-alpine</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -841,7 +841,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>git.02...c8</sub></code>
+        <code><sub>git.97...f0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -952,7 +952,7 @@ for optionally customizing compositions via _overrides_.
         </a>
       </th>
       <td align='center'>
-        <code><sub>3.7.9</sub></code>
+        <code><sub>3.7.10</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
@@ -1054,11 +1054,11 @@ for optionally customizing compositions via _overrides_.
       </th>
       <th align='right'>
         <a href='https://hub.docker.com/r/koenkk/zigbee2mqtt'>
-          <sub>tiny-httpd</sub>
+          <sub>zigbee2mqtt</sub>
         </a>
       </th>
       <td align='center'>
-        <code><sub>2.12.1</sub></code>
+        <code><sub>2.13.0</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
