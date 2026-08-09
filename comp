@@ -79,13 +79,12 @@ __create_external_networks () {
   done
 }
 
-__rec_ () {
+__recurse () {
   local reason="$1"
   local verb="$2"
   local nonempty="_CUR_COMP_${reason^^}_IS_NONEMPTY_"
   while IFS= read -r target_comp ; do
-    [ -n "${!nonempty}" ] || [ "$reason" != pre_req ] \
-      || [ "$_CUR_STAGE_" -gt 1 ] || [ "$COMP_SELF_CALL_DEPTH" -gt 0 ] || echo
+    [ -n "$_FIRST_" ] && [ "$COMP_SELF_CALL_DEPTH" -lt 1 ] && echo ; _FIRST_=
     printf -v "$nonempty" "%s" "yes"
     # NOTE: Use `--skip-related` to avoid potential circular dependency:
     #       comp --[ pre_req ]--> target_comp --[ related ]--> comp
@@ -528,18 +527,19 @@ fi
 COMPOSITIONS=( "$@" )
 FRAGMENTS_FROM_ARGS=( "$FRAG_DEVICES" "$FRAG_HOOKS" "$FRAG_LABELS" "$FRAG_LOGGING" "$FRAG_PORTS" )
 
-_CUR_COMP_RELATED_IS_NONEMPTY_="" ; _CUR_COMP_PRE_REQ_IS_NONEMPTY_=""
 _FINAL_EXIT_CODE_=0 ; _CUR_STAGE_=0 ; _CUR_YQ_META_QUERY_PFX_=""
-unset _CUR_COMP_ _CUR_VERB_ ; __print_separator_line
+unset _CUR_COMP_ _CUR_VERB_ _FIRST_ ; __print_separator_line
 for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
+  _CUR_COMP_RELATED_IS_NONEMPTY_="" ; _CUR_COMP_PRE_REQ_IS_NONEMPTY_="" ; _FIRST_=1
   _CUR_COMP_="${_CUR_COMP_%/}" ; _DISP_CUR_COMP_="${_bold_}$_CUR_COMP_${_normal_}"
+
   if ! cd "$SELF_DIR/$_CUR_COMP_" 2>/dev/null ; then
     echo ; __error "$_DISP_CUR_COMP_ is not a base directory at '$SELF_DIR'!"
-    __fail $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
+    __print_separator_line ; __fail $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
   if ! [ -f "$SELF_DIR/$_CUR_COMP_/compose.yml" ] ; then
     echo ; __error "No 'compose.yml' found under $_DISP_CUR_COMP_!"
-    __fail $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
+    __print_separator_line ; __fail $EXIT_CODE_COMPOSITION_NOT_FOUND || continue
   fi
 
   [ ! -f "meta.override.yml" ] || _CUR_YQ_META_QUERY_PFX_='. *= load("meta.override.yml") | '
@@ -560,7 +560,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
   for _CUR_VERB_ in $VERBS ; do
     (( ++_CUR_STAGE_ ))
     if __will_do_pre_req ; then
-      __rec_ pre_req "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
+      __recurse pre_req "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
     fi
     [ "$_CUR_VERB_" = validate ] || do_validate non_failing
 
@@ -590,7 +590,7 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
 
     ! __will_invoke_compose || __verify_volumes || __fail $EXIT_CODE_SETUP_ERROR || continue
 
-    verb_ret=0 ; "do_${_CUR_VERB_}" ; verb_ret=$?
+    verb_ret=0 ; "do_${_CUR_VERB_}" ; verb_ret=$? ; _FIRST_=
 
     [ "$_CUR_VERB_" != validate ] || [ $verb_ret -ne 0 ] || echo "[=] $_DISP_CUR_COMP_ is valid!"
     [ "$_CUR_VERB_" != status ]  || [ $verb_ret -ne 0 ]  || echo "[=] $_DISP_CUR_COMP_ is healthy!"
@@ -598,8 +598,8 @@ for _CUR_COMP_ in "${COMPOSITIONS[@]}" ; do
     [ $verb_ret -eq 0 ] || __fail $EXIT_CODE_VERB_FAILURE || continue
 
     if __will_do_related ; then
-      __rec_ related "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
-      [ -z "$_CUR_COMP_RELATED_IS_NONEMPTY_" ] || echo
+      __recurse related "$_CUR_VERB_" || __fail $EXIT_CODE_VERB_FAILURE || continue
+      [ -n "$_CUR_COMP_RELATED_IS_NONEMPTY_" ] && echo
     fi
 
     if __will_invoke_compose ; then
