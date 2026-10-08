@@ -38,7 +38,7 @@ services:
     shm_size: 128mb
     security_opt:
     - no-new-privileges=true
-    user: "${USER_ID:?}:${GROUP_ID:?}"
+    # FIXME: Run as non-root user
 
     networks:
     - default

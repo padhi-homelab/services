@@ -456,7 +456,7 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
-        <a href='https://immich.app/'>immich</a>
+        <a href='https://immich.app/'>Immich</a>
         <br>
         <sub>:4431/</sub>
         <hr>
