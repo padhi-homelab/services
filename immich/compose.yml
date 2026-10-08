@@ -43,7 +43,7 @@ services:
     networks:
     - default
     volumes:
-    - ./data/postgres/var/lib/postgresql:/var/lib/postgresql:rw
+    - ./data/db/var/lib/postgresql:/var/lib/postgresql:rw
 
     env_file:
     - env/db

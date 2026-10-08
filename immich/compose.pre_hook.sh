@@ -7,5 +7,5 @@ DATA_DIR="$SELF_DIR/data"
 
 mkdir -p "$DATA_DIR/immich/data" \
          "$DATA_DIR/ml/cache" \
-         "$DATA_DIR/postgres/var/lib/postgresql" \
+         "$DATA_DIR/db/var/lib/postgresql" \
          "$DATA_DIR/valkey/data"
