@@ -1,0 +1,10 @@
+DB_HOSTNAME: db
+
+DB_DATABASE_NAME:  immich
+POSTGRES_DB:       immich
+
+DB_USERNAME:       immich_db_user
+POSTGRES_USER:     immich_db_user
+
+DB_PASSWORD:       immich_db_password
+POSTGRES_PASSWORD: immich_db_password

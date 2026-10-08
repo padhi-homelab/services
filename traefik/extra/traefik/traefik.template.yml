@@ -82,6 +82,10 @@ entryPoints:
       tls: true
   lan-https-service:
     address: ":${SERVER_LAN_HTTPS_SERVICE_PORT}"
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
     http:
       middlewares:
       - restrict-to-lan-ip@file
@@ -90,6 +94,10 @@ entryPoints:
       tls: true
   lan-https-service-exclusive:
     address: ":${SERVER_LAN_HTTPS_SERVICE_PORT_EXCLUSIVE}"
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
     http:
       middlewares:
       - restrict-to-lan-ip@file
@@ -118,6 +126,10 @@ entryPoints:
         - main: ${SERVER_WAN_FQDN}
   wan-https-service:
     address: ":${SERVER_WAN_HTTPS_SERVICE_PORT}"
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
     http:
       middlewares:
       - block-ddos-attacks@file
@@ -128,6 +140,10 @@ entryPoints:
         - main: ${SERVER_WAN_FQDN}
   wan-https-service-exclusive:
     address: ":${SERVER_WAN_HTTPS_SERVICE_PORT_EXCLUSIVE}"
+    transport:
+      respondingTimeouts:
+        readTimeout: 600s
+        idleTimeout: 600s
     http:
       middlewares:
       - block-ddos-attacks@file

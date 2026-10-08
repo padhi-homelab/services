@@ -1,0 +1,100 @@
+networks:
+  traefik-net:
+    external: true
+
+services:
+  valkey:
+    hostname: valkey
+    image: valkey/valkey:${VALKEY_VERSION:?}
+    restart: unless-stopped
+
+    command: |-
+      sh -c 'exec valkey-server --requirepass "$${REDIS_PASSWORD}"'
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+
+    networks:
+    - default
+    volumes:
+    - ./data/valkey/data:/data:rw
+
+    env_file:
+    - env/valkey
+    environment:
+      TZ: ${TZ:?}
+
+    healthcheck:
+      test: '[ $$(valkey-cli --pass "$${REDIS_PASSWORD}" ping) = ''PONG'' ]'
+      interval: 5s
+      start_period: 10s
+
+  db:
+    hostname: db
+    image: ghcr.io/immich-app/postgres:${IMMICH_DB_VERSION:?}@${IMMICH_DB_HASH:?}
+    restart: unless-stopped
+
+    shm_size: 128mb
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+
+    networks:
+    - default
+    volumes:
+    - ./data/postgres/var/lib/postgresql:/var/lib/postgresql:rw
+
+    env_file:
+    - env/db
+    environment:
+      POSTGRES_INITDB_ARGS: '--data-checksums'
+
+  ml:
+    hostname: ml
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:?}-openvino
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+
+    networks:
+    - default
+    volumes:
+    - ./data/ml/cache:/cache
+
+    env_file:
+    - env/db
+    - env/valkey
+    environment:
+      MACHINE_LEARNING_MODEL_REVISION: v2
+      TZ: ${TZ:?}
+
+  immich:
+    hostname: immich
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:?}
+    restart: unless-stopped
+
+    security_opt:
+    - no-new-privileges=true
+    user: "${USER_ID:?}:${GROUP_ID:?}"
+
+    depends_on:
+      db:
+        condition: service_healthy
+      valkey:
+        condition: service_healthy
+
+    networks:
+    - default
+    - traefik-net
+    volumes:
+    - ./data/immich/data:/data
+    - /etc/localtime:/etc/localtime:ro
+
+    env_file:
+    - env/db
+    - env/valkey
+    environment:
+      TZ: ${TZ:?}

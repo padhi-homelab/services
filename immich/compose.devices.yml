@@ -1,0 +1,12 @@
+services:
+  ml:
+    # openvino
+    device_cgroup_rules:
+    - 'c 189:* rmw'
+    devices:
+    - /dev/dri:/dev/dri
+
+  immich:
+    # quicksync
+    devices:
+    - /dev/dri:/dev/dri

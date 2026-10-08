@@ -456,6 +456,74 @@ for optionally customizing compositions via _overrides_.
     </tr>
     <tr>
       <th>
+        <a href='https://immich.app/'>immich</a>
+        <br>
+        <sub>:4431/</sub>
+        <hr>
+        <a href='https://github.com/padhi-homelab/services/actions?query=workflow%3A%22Docker+Compose+Test+%28Immich%29%22'><img src='https://img.shields.io/github/actions/workflow/status/padhi-homelab/services/compose-test_immich.yml?branch=master&logo=github&logoWidth=24&style=flat-square&label=tests'></img></a>
+      </th>
+      <th>
+        B <br> C <br> B <br> B
+      </th>
+      <th align='right'>
+        <a href='https://hub.docker.com/r/valkey/valkey'>
+          <sub>valkey</sub>
+        </a>
+        <br>
+        <a href='https://github.com/immich-app/base-images/pkgs/container/postgres'>
+          <sub>db</sub>
+        </a>
+        <br>
+        <a href='https://github.com/orgs/immich-app/packages/container/package/immich-machine-learning'>
+          <sub>ml</sub>
+        </a>
+        <br>
+        <a href='https://github.com/immich-app/immich/pkgs/container/immich-server'>
+          <sub>immich</sub>
+        </a>
+      </th>
+      <td align='center'>
+        <code><sub>9.1.2-...</sub></code>
+        <br>
+        <code><sub>v0.10.0</sub></code>
+        <br>
+        <code><sub>v3.3.0</sub></code>
+        <br>
+        <code><sub>v3.3.0</sub></code>
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+      <td align='center'>
+        :heavy_check_mark:
+        <br>
+        :heavy_check_mark:
+        <br>
+        :heavy_multiplication_x:
+        <br>
+        :heavy_multiplication_x:
+      </td>
+    </tr>
+    <tr>
+      <th>
         Indexarr
         <br>
         <sub>:4432/jackett/</sub>
@@ -645,7 +713,7 @@ for optionally customizing compositions via _overrides_.
       <td align='center'>
         <code><sub>12.2.2</sub></code>
         <br>
-        <code><sub>9.1.1...ne</sub></code>
+        <code><sub>9.1.2-...</sub></code>
         <br>
         <code><sub>20260916...31</sub></code>
         <br>

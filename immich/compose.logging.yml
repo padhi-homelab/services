@@ -1,0 +1,21 @@
+services:
+  valkey:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  db:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
+  ml:
+    logging:
+      options:
+        max-size: "4m"
+        max-file: "1"
+  immich:
+    logging:
+      options:
+        max-size: "1m"
+        max-file: "1"
