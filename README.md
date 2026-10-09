@@ -487,9 +487,9 @@ for optionally customizing compositions via _overrides_.
         <br>
         <code><sub>v0.10.0</sub></code>
         <br>
-        <code><sub>v3.3.0</sub></code>
+        <code><sub>v3.3.1</sub></code>
         <br>
-        <code><sub>v3.3.0</sub></code>
+        <code><sub>v3.3.1</sub></code>
       </td>
       <td align='center'>
         :heavy_check_mark:
